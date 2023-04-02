@@ -1,16 +1,19 @@
 package gestorAplicación;
+import java.util.ArrayList;
 
 public class Usuario {
 	private String nombre;
 	private String correo;
 	private String contrasena;
 	private int id;
+	private ArrayList<Cuenta> cuentas;
 	
-	public Usuario(String nombre, String correo, String contrasena, int id) {
+	public Usuario(String nombre, String correo, String contrasena, int id, ArrayList<Cuenta> cuentas) {
 		 this.nombre = nombre;
 		 this.contrasena = contrasena;
 		 this.correo = correo;
 		 this.id = id;
+		 this.setCuentas(cuentas);
 	}
 	
 	public Boolean verificarContrasena(String contrasena) {	return (this.contrasena.equals(contrasena)); }
@@ -28,5 +31,7 @@ public class Usuario {
 	public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
+	public ArrayList<Cuenta> getCuentas() { return cuentas; }
+	public void setCuentas(ArrayList<Cuenta> cuentas) { this.cuentas = cuentas; }
 
 }
