@@ -9,8 +9,7 @@ public class Main {
 		System.out.println(Serializador.serializar(u1));
 		Usuario u13 = (Usuario) Deserializador.deserializar("Usuario");
 		System.out.println(u13.getNombre());
-		
-
+	
 	}
 
 }
