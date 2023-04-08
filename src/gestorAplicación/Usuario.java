@@ -2,7 +2,7 @@ package gestorAplicación;
 
 import java.util.ArrayList;
 
-public class Usuario extends Estado {
+public class Usuario extends Banco {
 	//Atributos
 	private static final long serialVersionUID = 3L;
 	public static String nombreD = "Usuarios";
