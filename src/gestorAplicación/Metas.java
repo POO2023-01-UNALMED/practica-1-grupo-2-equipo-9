@@ -14,11 +14,13 @@ public class Metas implements Serializable{
 	public String nombre;
 	protected double cantidad;
 	private Date fecha;
+	private int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 	
 
 // Constructor
-	public Metas(String nombre, double cantidad, String fecha) throws ParseException{
+	public Metas(String nombre, double cantidad, String fecha, int id) throws ParseException{
+		this.setId(id);
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
@@ -54,5 +56,13 @@ public class Metas implements Serializable{
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 }

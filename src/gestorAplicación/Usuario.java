@@ -2,7 +2,8 @@ package gestorAplicación;
 
 import java.util.ArrayList;
 
-public class Usuario extends Estado {
+public class Usuario extends Banco {
+	//Atributos
 	private static final long serialVersionUID = 3L;
 	public static String nombreD = "Usuarios";
 	private String nombre;
@@ -11,6 +12,7 @@ public class Usuario extends Estado {
 	private int id;
 	private ArrayList<Cuenta> cuentas = new ArrayList<Cuenta>();
 	
+	//Constructores
 	public Usuario(String nombre, String correo, String contrasena, int id, ArrayList<Cuenta> cuentas) {
 		 this.nombre = nombre;
 		 this.contrasena = contrasena;
@@ -26,6 +28,7 @@ public class Usuario extends Estado {
 		 this.id = id;
 	}
 	
+	//Metodos de instancia
 	public Boolean verificarContrasena(String contrasena) {	return (this.contrasena.equals(contrasena)); }
 	
 	@Override
@@ -33,6 +36,7 @@ public class Usuario extends Estado {
 		System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema.");
 	}
 	
+	//Métodos Get & Set
 	public String getNombre() { return nombre; }
 	public void setNombre(String nombre) { this.nombre = nombre; }
 	public String getCorreo() { return correo; }

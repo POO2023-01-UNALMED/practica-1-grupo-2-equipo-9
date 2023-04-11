@@ -19,7 +19,7 @@ protected Movimientos(Cuenta origen,Cuenta destino, int id,double cantidad,Categ
 	this.categoria = categoria;
 	this.fecha = fecha;
 	this.id = movimientos.length +1;
-	Movimientos.movimientos = movimientos.add(this);
+	movimientos.add(this);
 	this.destino = destino;
 	this.origen = origen;
 	modificarSaldo(origen,destino,cantidad);
