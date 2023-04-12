@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class Metas implements Serializable{
 	private static final long serialVersionUID = 5L;
-	public static String nombreD = "Metas";
+	public static final String nombreD = "Metas";
 	public String nombre;
 	protected double cantidad;
 	private Date fecha;
