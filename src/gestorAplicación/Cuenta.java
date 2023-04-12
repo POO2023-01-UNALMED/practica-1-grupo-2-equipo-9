@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Cuenta extends Banco{
 	private static final long serialVersionUID = 4L;
-	public static String nombreD = "Cuentas";
+	public static final String nombreD = "Cuentas";
 
 	private Usuario titular;
 	private String tipo;

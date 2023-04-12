@@ -2,6 +2,7 @@ package gestorAplicación;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
+	public static final String nombreD = "Bancos";
 	private String nombreb;
 	private double comision;
 	
@@ -11,6 +12,11 @@ public class Banco extends Estado {
 		this.nombreb = nombreb;
 		this.comision = comision;
 	}
+	
+	public Banco() {
+		super(nombre, tasa_interes, tasa_impuestos);
+	}
+	
 	//Gets
 	public double getComision() {
 		return comision;
@@ -18,6 +24,7 @@ public class Banco extends Estado {
 	public String getNombreb() {
 		return nombreb;
 	}
+	
 	//Sets
 	public void setComision(double comision) {
 		this.comision = comision;
