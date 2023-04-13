@@ -15,6 +15,7 @@ public class Cuenta extends Banco{
 	private String divisa;
 	private String nombre;
 	private int id;
+	private Banco banco;
 	
 	public Cuenta(Banco banco, Usuario titular, String tipo, Double saldo, int clave_din, String divisa, String nombre, int id) {
 		this.titular = titular;
@@ -24,7 +25,7 @@ public class Cuenta extends Banco{
 		this.divisa = divisa;
 		this.nombre = nombre;
 		this.id = id;
-		super.setBanco(Banco);
+		this.banco = banco;
 		
 
 	}
@@ -78,6 +79,13 @@ public class Cuenta extends Banco{
 		this.id = id;
 	}
 	
+	public Banco getBanco() {
+		return banco;
+	}
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}
+	
 	
 	public int invertirSaldo() {
 		//Aclaración del método
@@ -96,7 +104,7 @@ public class Cuenta extends Banco{
 				System.out.println("Ingrese los datos de la cuenta a la cual desea transferir su saldo:");
 				//Lectura datos, posible modificación según método crearMovimiento: Cuenta destino, int id,double cantidad,Categoria categoria, Date fecha)
 				System.out.println("Cuenta destino: ");
-				String saldo = sc.nextLine();
+				String destino= sc.nextLine();
 				System.out.println("Categoria: ");
 				String categoria = sc.nextLine();
 				System.out.println("Fecha: ");
