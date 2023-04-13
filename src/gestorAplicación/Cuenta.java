@@ -2,6 +2,7 @@ package gestorAplicación;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Cuenta extends Banco{
 	private static final long serialVersionUID = 4L;
@@ -24,6 +25,8 @@ public class Cuenta extends Banco{
 		this.nombre = nombre;
 		this.id = id;
 		super.setBanco(Banco);
+		
+
 	}
 	
 	public Usuario getTitular() {
@@ -82,21 +85,30 @@ public class Cuenta extends Banco{
 	
 	public void eliminarCuenta() {//¿Validación?
 		if (this.saldo != 0) {
+			Scanner sc = new Scanner(System.in);
 			System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
 			System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
 			System.out.println("1. Cuenta externa");
 			System.out.println("2. Cuenta propia");
+			int decision_saldo = sc.nextInt();
 			//Lectura de la opción con variable decision_saldo
 			if (decision_saldo == 1) {
 				System.out.println("Ingrese los datos de la cuenta a la cual desea transferir su saldo:");
 				//Lectura datos, posible modificación según método crearMovimiento: Cuenta destino, int id,double cantidad,Categoria categoria, Date fecha)
-				Movimientos.crearMovimiento(this, destino, id, cantidad, categoria, fecha);
+				System.out.println("Cuenta destino: ");
+				String saldo = sc.nextLine();
+				System.out.println("Categoria: ");
+				String categoria = sc.nextLine();
+				System.out.println("Fecha: ");
+				//Ingresar fecha
+				Movimientos.crearMovimiento(this, destino, id, this.getSaldo(), categoria, fecha);
 			} else if (decision_saldo == 2) {
 				System.out.println("A cual de sus cuentas desea transferir su saldo:");
 				ArrayList<Cuenta> cuentas = titular.getCuentas();
 				for (int i = 1; i == cuentas.size() + 1; i++) {
 					System.out.println(i + ". " + cuentas.get(i).getNombre());
 				}
+				int decision_cuenta = sc.nextInt();
 				//Lectura de la opcion con decision_cuenta
 				Movimientos.modificarSaldo(this, cuentas.get(decision_cuenta).getNombre(), this.getSaldo());
 			} else {
@@ -108,7 +120,7 @@ public class Cuenta extends Banco{
 	}
 	
 	protected void finalize() {
-		System.out.println("La cuenta: " + this.getNombre() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema.");
+		System.out.println("La cuenta: " + this.getNombre() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 	}
 	
 	public void crearTransaccion() {
