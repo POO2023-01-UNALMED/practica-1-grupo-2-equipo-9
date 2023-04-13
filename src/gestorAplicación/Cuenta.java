@@ -116,6 +116,7 @@ public class Cuenta extends Banco{
 				return;
 			}
 		}
+		//System.gc();
 		finalize();
 	}
 	
