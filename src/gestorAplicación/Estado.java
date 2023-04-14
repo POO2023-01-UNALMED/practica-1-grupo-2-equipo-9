@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public static String nombreD = "Estados";
+	public static final String nombreD = "Estados";
 	private String nombre;
 	private double tasa_interes;
 	private double tasa_impuestos;
@@ -14,6 +14,9 @@ public class Estado implements Serializable {
 		this.nombre = nombre;
 		this.tasa_interes = tasa_interes;
 		this.tasa_impuestos = tasa_impuestos;
+	}
+	
+	public Estado() {
 	}
 	
 	//Gets

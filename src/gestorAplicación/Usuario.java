@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Usuario extends Banco {
 	//Atributos
 	private static final long serialVersionUID = 3L;
-	public static String nombreD = "Usuarios";
+	public static final String nombreD = "Usuarios";
 	private String nombre;
 	private String correo;
 	private String contrasena;
