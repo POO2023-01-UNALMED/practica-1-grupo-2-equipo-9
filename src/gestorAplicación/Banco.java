@@ -14,7 +14,6 @@ public class Banco extends Estado {
 	}
 	
 	public Banco() {
-		super(nombre, tasa_interes, tasa_impuestos);
 	}
 	
 	//Gets

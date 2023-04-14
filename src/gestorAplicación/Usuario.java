@@ -6,6 +6,7 @@ public class Usuario extends Banco {
 	//Atributos
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
+	private Suscripcion suscripcion;
 	private String nombre;
 	private String correo;
 	private String contrasena;
@@ -13,7 +14,7 @@ public class Usuario extends Banco {
 	private ArrayList<Cuenta> cuentas = new ArrayList<Cuenta>();
 	
 	//Constructores
-	public Usuario(String nombre, String correo, String contrasena, int id, ArrayList<Cuenta> cuentas) {
+	public Usuario(String nombre, String correo, String contrasena, int id, ArrayList<Cuenta> cuentas, Suscripcion suscripcion) {
 		 this.nombre = nombre;
 		 this.contrasena = contrasena;
 		 this.correo = correo;
@@ -21,11 +22,12 @@ public class Usuario extends Banco {
 		 this.setCuentas(cuentas);
 	}
 	
-	public Usuario(String nombre, String correo, String contrasena, int id) {
-		 this.nombre = nombre;
-		 this.contrasena = contrasena;
-		 this.correo = correo;
-		 this.id = id;
+	public Usuario(String nombre, String correo, String contrasena, int id, Suscripcion suscripcion) {
+		this.suscripcion = suscripcion;
+		this.nombre = nombre;
+		this.contrasena = contrasena;
+		this.correo = correo;
+		this.id = id;
 	}
 	
 	//Metodos de instancia
@@ -45,6 +47,8 @@ public class Usuario extends Banco {
 	public void setContrasena(String contrasena) { this.contrasena = contrasena; }
 	public int getId() { return id; }
 	public void setId(int id) { this.id = id; }
+	public Suscripcion getSuscripcion() { return suscripcion; }
+	public void setSuscripcion(Suscripcion suscripcion) { this.suscripcion = suscripcion; }
 	public ArrayList<Cuenta> getCuentas() { return cuentas; }
 	public void setCuentas(ArrayList<Cuenta> cuentas) { this.cuentas = cuentas; }
 	
