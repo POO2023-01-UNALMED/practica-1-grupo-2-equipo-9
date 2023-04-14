@@ -25,8 +25,7 @@ public class Cuenta extends Banco{
 		this.divisa = divisa;
 		this.nombre = nombre;
 		this.id = id;
-		this.banco = banco;
-		
+		this.banco = banco;	
 
 	}
 	

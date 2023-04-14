@@ -28,13 +28,11 @@ public class Movimientos {
 		modificarSaldo(origen,destino,cantidad);
 	}
 	//Necesitamos comprobar que el saldo sea suficiente a la hora de realizar el movimiento y la cuenta destino exista
-	public Movimientos crearMovimiento(Cuenta origen,Cuenta destino, int id,double cantidad,Categoria categoria, Date fecha){
+	public Movimientos crearMovimiento(Cuenta origen, Cuenta destino, int id, double cantidad, Categoria categoria, Date fecha){
 		Double saldo = origen.getSaldo();
-		if(saldo< cantidad) {
-			System.out.println("¡Saldo Insuficiente!Su cuenta tiene un saldo de:" + saldo + "por lo tanto es posible realizar el movimiento");
-		} else if (!origen.getCuentas().contains(destino)) {
-			System.out.println("La cuenta destino no existe, por favor ingrese una cuenta valida");
-		}else{
+		if(saldo < cantidad) {
+			System.out.println("¡Saldo Insuficiente! Su cuenta tiene un saldo de: " + saldo + " por lo tanto no es posible realizar el movimiento");
+		} else {
 			return (new Movimientos(origen,destino,id,cantidad,categoria,fecha));
 		}
 		return null;
