@@ -8,6 +8,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import baseDatos.Deserializador;
+import baseDatos.Serializador;
+
+@SuppressWarnings("unchecked")
 
 public class Metas implements Serializable{
 	private static final long serialVersionUID = 5L;
@@ -16,12 +19,10 @@ public class Metas implements Serializable{
 	protected double cantidad;
 	private Date fecha;
 	private int id;
-	private int del;
-	private ArrayList<Metas> metas = new ArrayList<Metas>();
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-	
+	public static ArrayList<Metas> mel = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
 
-	// Constructores 
+	// CONSTRUCTORES	
 	public Metas(String nombre, double cantidad, String fecha, int id) throws ParseException{
 		this.setId(id);
 		this.nombre = nombre;
@@ -46,31 +47,23 @@ public class Metas implements Serializable{
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
 	}
+		
+	// CREAR UNA META
+	public void crearMeta(Metas meta) {
+		mel.add(meta);
+		Serializador.serializar(mel, "Metas");
+	}
 	
-	public Metas(String nombre, int id) {
-		this.setId(id);
-		this.nombre = nombre;
-		}
-	
-	public Metas(double cantidad, int id) {
-		this.setId(id);
-		this.cantidad = cantidad;
-		}
-
-	// Eliminar una meta
-	public void eliminarMeta() {
-		ArrayList<Metas> mel = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
-		mel.remove(getDel() - 1);
-		finalize();
+	// ELIMINAR UNA META
+	public void eliminarMeta(int n) {
+		mel.remove(n);
+		Serializador.serializar(mel, "Metas");
 	}
 	
 	@Override
-	protected void finalize() {
-        System.out.println("La meta con nombre " + this.getNombre() + " y cantidad " + this.getCantidad() + 
-        		" para la fecha " + this.getFecha() + " fue eliminada satisfactoriamente del sistema.");
-	}
+	public void finalize() {}
 
-	// Getter y Setter
+	// GETTER Y SETTER
 	public String getNombre() {
         return nombre;
     }
@@ -87,8 +80,9 @@ public class Metas implements Serializable{
 		this.cantidad = cantidad;
 	}
 	
-	public Date getFecha() {
-        return fecha;
+	public String getFecha() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(fecha);
     }
 
     public void setFecha(Date fecha) {
@@ -101,22 +95,5 @@ public class Metas implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public ArrayList<Metas> getMetas() {
-		return metas;
-	}
-
-	public void setMetas(ArrayList<Metas> metas) {
-		this.metas = metas;
-	}
-
-	public int getDel() {
-		return del;
-	}
-
-	public void setDel(int del) {
-		this.del = del;
-	}
-	
+	}	
 }
