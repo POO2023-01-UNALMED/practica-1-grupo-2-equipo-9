@@ -17,16 +17,35 @@ public class Cuenta extends Banco{
 	private int id;
 	private Banco banco;
 	
-	public Cuenta(Banco banco, Usuario titular, String tipo, Double saldo, int clave_din, String divisa, String nombre, int id) {
+	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String divisa, String nombre) {
 		this.titular = titular;
 		this.tipo = tipo;
-		this.saldo = saldo;
+		this.saldo = 0.0;
 		this.clave_din = clave_din;
 		this.divisa = divisa;
 		this.nombre = nombre;
-		this.id = id;
 		this.banco = banco;	
 
+	}
+	
+	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String nombre, int distinguible) {
+		this.titular = titular;
+		this.tipo = tipo;
+		this.saldo = 0.0;
+		this.clave_din = clave_din;
+		this.divisa = banco.getDivisa();
+		this.nombre = nombre;
+		this.banco = banco;
+	}
+	
+	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String divisa) {
+		this.titular = titular;
+		this.tipo = tipo;
+		this.saldo = 0.0;
+		this.clave_din = clave_din;
+		this.nombre = "Cuenta" + tipo;
+		this.divisa = divisa;
+		this.banco = banco;
 	}
 	
 	public Usuario getTitular() {

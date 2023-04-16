@@ -43,11 +43,49 @@ public class Main {
 			while (clase == 1) {
 				// Contenido de Cuenta
 				System.out.println("Bienvenido a Cuenta, ¿en que te podemos ayudar?"
+						+ "\n1. Crear una cuenta"
+						+ "\n2. Eliminar una cuenta"
 						+ "\n5. Salir al menú principal");
 				
 				// SALIR AL MENÚ PRINCIPAL
 				int opcion = Integer.parseInt(sc.nextLine());
 				System.out.println("");
+				
+				// CREAR UNA CUENTA
+				while(opcion == 1) {
+					//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
+					//LA INFORMACIÓN SOLICITADA SE DE ENTER
+					System.out.println("Para crear una nueva cuenta, porfavor diligencie los siguientes datos: ");
+					System.out.println("NOTA: Si no desea ingresar la información en un campo opcional deje el espacio en blanco y continue."
+							+ "Las casillas obligatorias se marcarán con un '*'");
+					
+					System.out.println("* ¿A que Banco desea afiliar su cuenta?");
+					//Listar los bancos posibles.
+					int Banco_Afiliacion = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+					
+					//IMP: POSIBLE MODIFICACIÓN SEGÚN EL MEDIO DE INGRESO DE LA PERSONA
+					System.out.println("* Nombre del titular: ");
+					String nombre_titular = sc.nextLine();
+					System.out.println("");
+					
+					System.out.println("* Tipo de cuenta: ");
+					int Tipo_Cuenta = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+					
+					System.out.println("* Clave de la cuenta: (Recuerde que será una combinación de 4 números)");
+					int Clave_Cuenta = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+					
+					System.out.println("Divisa: (De no ser colocada ninguna se seguirá con al divisa predeterminada del Banco)");
+					String Divisa_Cuenta = sc.nextLine();
+					System.out.println("");
+					
+					System.out.println("Nombre de la Cuenta: ");
+					String Nombre_Cuenta = sc.nextLine();
+					System.out.println("");
+						
+				}
 				
 				if (opcion == 5) {
 					clase = 0;
