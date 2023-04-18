@@ -1,11 +1,11 @@
 package uiMain;
 
 import baseDatos.*;
+import gestorAplicación.Cuenta;
 import gestorAplicación.Metas;
 import gestorAplicación.Suscripcion;
 import gestorAplicación.Usuario;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -13,8 +13,8 @@ public class Main {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws ParseException {
 		
-		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, Suscripcion.DIAMANTE);
-		System.out.println(u1.getSuscripcion().getLimite_Bancos());
+		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, new Cuenta(), Suscripcion.DIAMANTE);
+		System.out.println(u1.getSuscripcion());
 		
 		Scanner sc = new Scanner(System.in);
 		int seguir = 1;

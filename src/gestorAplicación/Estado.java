@@ -16,8 +16,7 @@ public class Estado implements Serializable {
 		this.tasa_impuestos = tasa_impuestos;
 	}
 	
-	public Estado() {
-	}
+	public Estado() {}
 	
 	//Gets
 	public String getNombre() {

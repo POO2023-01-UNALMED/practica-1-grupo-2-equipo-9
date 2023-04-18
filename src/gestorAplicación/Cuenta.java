@@ -48,6 +48,8 @@ public class Cuenta extends Banco{
 		this.banco = banco;
 	}
 	
+	public Cuenta() {}
+	
 	public Usuario getTitular() {
 		return titular;
 	}
@@ -104,9 +106,17 @@ public class Cuenta extends Banco{
 		this.banco = banco;
 	}
 	
-	
-	public int invertirSaldo() {
-		//Aclaración del método
+	//Funcionalidad de Suscripciones de Usuarios
+	public int String invertirSaldo(Cuenta cuenta, Usuario usuario) {
+		float probabilidad = usuario.getSuscripcion().getProbabilidad_Inversion();
+		//Calcular probabilidad.....
+		if() {
+			cuenta.setSaldo(cuenta.getSaldo() + cuenta.getSaldo() * probabilidad);
+			return("Su inversion ha sido exitosa, su saldo actual es de: " + cuenta.getSaldo());
+		}else {
+			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
+		}
+		
 	}
 	
 	public void eliminarCuenta() {//¿Validación?

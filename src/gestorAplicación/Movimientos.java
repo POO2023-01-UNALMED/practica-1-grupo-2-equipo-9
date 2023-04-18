@@ -7,7 +7,6 @@ public class Movimientos {
 	public static final String nombreD = "Movimientos";
 
 	//	Atributos
-
 	private static ArrayList<Movimientos> movimientos = new ArrayList<>();
 	private final int id ;
 	private double cantidad;
@@ -39,13 +38,22 @@ public class Movimientos {
 	
 	}
 
-	//	Metodos
-	public String modificarSaldo(Cuenta origen,Cuenta destino, double cantidad){
-		double saldoOrigen= origen.getSaldo() - cantidad;
-		double saldoDestino = destino.getSaldo() + cantidad;
-		origen.setSaldo(saldoOrigen);
-		destino.setSaldo(saldoDestino);
-		return "El movimiento se ha realizado con exito";
+	//Métodos
+	//Funcionalidad de Suscripciones de Usuarios
+	public String modificarSaldo(Cuenta origen,Cuenta destino, double cantidad, Usuario usuario){
+		 if(usuario.getBancosAsociados().contains(origen) && usuario.getBancosAsociados().contains(destino)) {
+			 usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
+			 usuario.verificarContadorMovimientos();
+			 double saldoOrigen= origen.getSaldo() - cantidad;
+			 double saldoDestino = destino.getSaldo() + cantidad;
+			 origen.setSaldo(saldoOrigen);
+			 destino.setSaldo(saldoDestino);
+			 return ("El movimiento se ha realizado con exito");
+			 
+		 }else {
+			 return("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
+		 }
+		
 	}
 
 
