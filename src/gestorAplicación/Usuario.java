@@ -19,6 +19,7 @@ public class Usuario extends Banco {
 	private int id;
 	private ArrayList<Cuenta> cuentasAsociadas= new ArrayList<Cuenta>();
 	private Cuenta cuentaAsociada;
+	public static ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 	
 	//Constructor
 	
@@ -30,6 +31,7 @@ public class Usuario extends Banco {
 		this.setContrasena(contrasena);
 		this.setCorreo(correo);
 		this.setId(id);
+		listaUsuarios.add(this);
 	}
 	
 	//Métodos de instancia
@@ -92,7 +94,16 @@ public class Usuario extends Banco {
 		return ("");
 	}
 	
-	public Boolean verificarContrasena(String contrasena) {	return (this.contrasena.equals(contrasena)); }
+	public static boolean verificarCredenciales(String nombre, String contraseña) {
+		for (Usuario usuario: listaUsuarios) {
+			if (usuario.getNombre() == nombre || usuario.getCorreo() == nombre) {
+				if (usuario.getContrasena() == contraseña) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }

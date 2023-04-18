@@ -38,61 +38,73 @@ public class Main {
 		
 		
 		Scanner sc = new Scanner(System.in);
-		int seguir = 0;
+		int seguir = 1;
 		
 		/* LA VARIABLE SEGUIR SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL
 		 * PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE.
 		 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
 		
+		int sesioniniciada = 0;
+		// La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir
+		// los datos del usuario.
 		
-			// Interfaz de usuario
-		System.out.println("Bienvenido al gestor de dinero, ¿en qué te podemos ayudar?"
+		// Interfaz de usuario
+		System.out.println("Bienvenido al gestor de dinero."
 				+ "\n1. Ingresar Usuario"
-				+ "\n2. Crear Usuario");
+				+ "\n2. Crear Usuario"
+				+ "\n3. Cerrar Programa");
 			
-		//Validar credenciales del Usuario
 		int opcionUsuario = Integer.parseInt(sc.nextLine());
 		System.out.println("");	
 		
-		if (opcionUsuario == 1) {
-			System.out.println("Ingrese nombre de usuario o correo electrónico: ");
-			String usuario = sc.nextLine();
-			System.out.println("");
-			System.out.println("Ingrese su constraseña: ");
-			String contraseña = sc.nextLine();
-			System.out.println("");
+		while(seguir == 1) {
+			if (opcionUsuario == 1) {
+				System.out.println("Ingrese nombre de usuario o correo electrónico: ");
+				String usuario = sc.nextLine();
+				System.out.println("");
+				System.out.println("Ingrese su contraseña: ");
+				String contraseña = sc.nextLine();
+				System.out.println("");
+				
+				boolean credencial = Usuario.verificarCredenciales(usuario, contraseña);
+				if (credencial) {
+					sesioniniciada = 1;
+				} else {
+					System.out.println("Las credenciales son incorrectas, ingrese nuevamente");
+				}
 			
-			//boolean validacion = Usuario.validarDatos(usuario, contraseña);
-			//if (validacion == false) {
-				//System.out.println("Datos incorrectos, intente nuevamente.");
-			//} else {
-				//seguir = 1;
-			//}
+			} else if(opcionUsuario == 2) {
+				
+				//Creación de un Usuario. Recordar validación de igualdad de usuarios y/o correos.
+
+			} else if(opcionUsuario == 3){
+				seguir = 0;
+			} else {	
+				System.out.println("Entrada no valida");
+				System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
+				System.out.println("");
+			}
 		}
-		else if(opcionUsuario == 2) {
+		
 			
-		} else {
-			//Retornar al inicio
-		}
-			
-		while (seguir == 1) {	
-			
-			System.out.println("Bienvenido al gestor de dinero, ¿en que te podemos ayudar?"
-					+ "\n1. Ingresar a Cuenta"
-					+ "\n2. Ingresar a Usuarios"
-					+ "\n3. Ingresar a Metas"
-					+ "\n4. Ingresar a Movimientos"
+		while (sesioniniciada == 1) {	
+			System.out.println("Bienvenido, " //Colocar nombre
+					+ " a tu gestor de dinero, ¿a qué sección deseas ingresar?"
+					+ "\n1. Mis productos"
+					//+ "\n2. Ingresar a Usuarios"
+					+ "\n3. Mis metas"
+					+ "\n4. Mis movimientos"
 					+ "\n5. Salir");
 			
 			/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE()); 
 			 * DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
 			 * SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
 			
-			int clase = Integer.parseInt(sc.nextLine());
+			int seccion = Integer.parseInt(sc.nextLine());
 			System.out.println("");
 			
 			// CLASE DE CUENTA
-			while (clase == 1) {
+			while (seccion == 1) {
 				// Contenido de Cuenta
 				System.out.println("Bienvenido a Cuenta, ¿en que te podemos ayudar?"
 						+ "\n1. Crear una cuenta"
@@ -140,12 +152,12 @@ public class Main {
 				}
 				
 				if (opcion == 5) {
-					clase = 0;
+					seccion = 0;
 				}
 			}
 			
 			// CLASE DE USUARIO
-			while (clase == 2) {
+			while (seccion == 2) {
 				// Contenido de Usuario
 				System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
 						+ "\n5. Salir al menú principal");
@@ -155,12 +167,12 @@ public class Main {
 				
 				// SALIR AL MENÚ PRINCIPAL
 				if (opcion == 5) {
-					clase = 0;
+					seccion = 0;
 				}
 			}
 			
 			// CLASE DE METAS
-			while (clase == 3) {
+			while (seccion == 3) {
 				
 				System.out.println("Bienvenido a Metas, ¿en que te podemos ayudar?"
 						+ "\n1. Crear una meta"
@@ -331,7 +343,7 @@ public class Main {
 				
 				// SALIR AL MENÚ PRINCIPAL
 				if (opcion == 4) {
-					clase = 0;
+					seccion = 0;
 				}
 				
 				if (opcion != 1 && opcion != 2 && opcion != 3 && opcion != 4) {
@@ -343,7 +355,7 @@ public class Main {
 			
 			
 			// CLASE DE MOVIMIENTOS
-			while (clase == 4) {
+			while (seccion == 4) {
 				// Contenido de Movimientos
 				System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
 						+ "\n5. Salir al menú principal");
@@ -353,17 +365,17 @@ public class Main {
 				
 				// SALIR AL MENÚ PRINCIPAL
 				if (opcion == 5) {
-					clase = 0;
+					seccion = 0;
 				}
 			}
 			
 			// CERRAR EL PROGRAMA
-			if (clase == 5) {
+			if (seccion == 5) {
 				System.out.println("Hasta la próxima");
-				seguir = 0;
+				sesioniniciada = 0;
 			}
 			
-			if (clase != 1 && clase != 2 && clase != 3 && clase != 4 && clase != 5) {	
+			if (seccion != 1 && seccion != 2 && seccion != 3 && seccion != 4 && seccion != 5) {	
 				System.out.println("Entrada no valida");
 				System.out.println("");
 				continue;
