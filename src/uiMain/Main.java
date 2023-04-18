@@ -25,6 +25,11 @@ public class Main {
 		
 		while (seguir == 1) {
 			// Interfaz de usuario
+			System.out.println("Bienvenido al gestor de dinero, ¿en qué te podemos ayudar?"
+					+ "\n1. Ingresar Usuario"
+					+ "\n2. Crear Usuario");
+			
+			
 			System.out.println("Bienvenido al gestor de dinero, ¿en que te podemos ayudar?"
 					+ "\n1. Ingresar a Cuenta"
 					+ "\n2. Ingresar a Usuarios"
