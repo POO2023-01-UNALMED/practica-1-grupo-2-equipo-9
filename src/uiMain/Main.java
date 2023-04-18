@@ -17,18 +17,44 @@ public class Main {
 		System.out.println(u1.getSuscripcion());
 		
 		Scanner sc = new Scanner(System.in);
-		int seguir = 1;
+		int seguir = 0;
 		
 		/* LA VARIABLE SEGUIR SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL
 		 * PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE.
 		 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
 		
-		while (seguir == 1) {
+		
 			// Interfaz de usuario
-			System.out.println("Bienvenido al gestor de dinero, ¿en qué te podemos ayudar?"
-					+ "\n1. Ingresar Usuario"
-					+ "\n2. Crear Usuario");
+		System.out.println("Bienvenido al gestor de dinero, ¿en qué te podemos ayudar?"
+				+ "\n1. Ingresar Usuario"
+				+ "\n2. Crear Usuario");
 			
+		//Validar credenciales del Usuario
+		int opcionUsuario = Integer.parseInt(sc.nextLine());
+		System.out.println("");	
+		
+		if (opcionUsuario == 1) {
+			System.out.println("Ingrese nombre de usuario o correo electrónico: ");
+			String usuario = sc.nextLine();
+			System.out.println("");
+			System.out.println("Ingrese su constraseña: ");
+			String contraseña = sc.nextLine();
+			System.out.println("");
+			
+			boolean validacion = Usuario.validarDatos(usuario, contraseña);
+			if (validacion == false) {
+				System.out.println("Datos incorrectos, intente nuevamente.");
+			} else {
+				seguir = 1;
+			}
+		}
+		else if(opcionUsuario == 2) {
+			
+		} else {
+			//Retornar al inicio
+		}
+			
+		while (seguir == 1) {	
 			
 			System.out.println("Bienvenido al gestor de dinero, ¿en que te podemos ayudar?"
 					+ "\n1. Ingresar a Cuenta"
