@@ -9,12 +9,20 @@ public class Banco extends Estado {
 	private double comision;
 	private static ArrayList<Banco> bancos = new ArrayList<Banco>();
 	private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+	private Estado estadoAsociado;
 	
-	//Constructor
-	public Banco(String nombre, double tasa_interes, double tasa_impuestos, String nombreb, double comision, ArrayList<Banco> bancos) {
+	//Constructores
+	public Banco(String nombre, String nombreb, double tasa_interes, double tasa_impuestos, double comision) {
 		super(nombre, tasa_interes, tasa_impuestos);
 		this.nombreb = nombreb;
 		this.comision = comision;
+		bancos.add(this);
+	}
+	
+	public Banco(String nombreb, double comision, Estado estado) {
+		this.nombreb = nombreb;
+		this.comision = comision;
+		this.setEstadoAsociado(estado);
 		bancos.add(this);
 	}
 	
@@ -22,9 +30,14 @@ public class Banco extends Estado {
 	
 	//Métodos
 	
-	public String imprimirBancos() {
-		if(Banco.bancos.size() != 0) { for (int i = 0; i < Banco.bancos.size(); i++) { return(i+1 + ". " + Banco.bancos.get(i).getNombreb()); }
-		}else { return("No hay bancos en este momento, considere asociar bancos"); }
+	public String mostrarBancosTotales() {
+		if(Banco.bancos.size() != 0) { 
+			for (int i = 0; i < Banco.bancos.size(); i++) { 
+				return(i+1 + ". " + Banco.bancos.get(i).getNombreb()); 
+				}
+		}else { 
+			return("No hay bancos en este momento, considere asociar bancos"); 
+			}
 		return ("");
 	}
 	
@@ -60,7 +73,7 @@ public class Banco extends Estado {
 		return nombreb;
 	}
 
-	public ArrayList<Banco> getBancos() {
+	public static ArrayList<Banco> getBancos() {
 		return bancos;
 	}
 	
@@ -68,6 +81,10 @@ public class Banco extends Estado {
 		return (this.usuarios);
 	}
 	
+	public Estado getEstadoAsociado() {
+		return estadoAsociado;
+	}
+
 	//Sets
 	public void setComision(double comision) {
 		this.comision = comision;
@@ -76,11 +93,15 @@ public class Banco extends Estado {
 		this.nombreb = nombreb;
 	}
 
-	public void setBancos(ArrayList<Banco> bancos) {
+	public static void setBancos(ArrayList<Banco> bancos) {
 		Banco.bancos = bancos;
 	}
 
 	public void setUsuarios(ArrayList<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public void setEstadoAsociado(Estado estadoAsociado) {
+		this.estadoAsociado = estadoAsociado;
 	}
 }

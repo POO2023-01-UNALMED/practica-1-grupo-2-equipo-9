@@ -17,10 +17,12 @@ public class Usuario extends Banco {
 	private String correo;
 	private String contrasena;
 	private int id;
-	private ArrayList<Cuenta> cuentas = new ArrayList<Cuenta>();
+	private ArrayList<Cuenta> cuentasAsociadas= new ArrayList<Cuenta>();
+	private Cuenta cuentaAsociada;
 	
-	//Constructores
-	public Usuario(String nombre, String correo, String contrasena, int id, ArrayList<Cuenta> cuentas, Suscripcion suscripcion) {
+	//Constructor
+	
+	public Usuario(String nombre, String correo, String contrasena, int id, Suscripcion suscripcion) {
 		super.getUsuarios().add(this);
 		this.setSuscripcion(suscripcion);
 		this.setLimiteBancos(suscripcion.getLimite_Bancos());
@@ -28,18 +30,6 @@ public class Usuario extends Banco {
 		this.setContrasena(contrasena);
 		this.setCorreo(correo);
 		this.setId(id);
-		this.setCuentas(cuentas);
-	}
-	
-	public Usuario(String nombre, String correo, String contrasena, int id, Cuenta cuenta, Suscripcion suscripcion) {
-		super.getUsuarios().add(this);
-		this.setSuscripcion(suscripcion);
-		this.setLimiteBancos(suscripcion.getLimite_Bancos());
-		this.setNombre(nombre);
-		this.setContrasena(contrasena);
-		this.setCorreo(correo);
-		this.setId(id);
-		this.getCuentas().add(cuenta);
 	}
 	
 	//Métodos de instancia
@@ -71,6 +61,37 @@ public class Usuario extends Banco {
 		}
 	}
 	
+	public String asociarBanco(Banco banco) {
+		if(Banco.getBancos().contains(banco) && !bancosAsociados.contains(banco)) {
+			this.getBancosAsociados().add(banco);
+			return("El banco " + banco.getNombreb() + " se ha asociado con éxito al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra el banco ó debes verificar que el banco que quieres asociar no se haya asociado antes, esta es la lista de bancos asociados: " + this.mostrarBancosAsociados());
+		}
+	}
+	
+	public String asociarCuenta(Cuenta cuenta) {
+		if(Cuenta.getCuentasTotales().contains(cuenta) && bancosAsociados.contains(cuenta.getBanco())) {
+			cuenta.setTitular(this);
+			this.setCuentaAsociada(cuenta);
+			return("La cuenta " + cuenta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra tu cuenta ó debes verificar que la cuenta que quieres asociar pertenece a la lista de bancos permitidos para el usuario: " + this.mostrarBancosAsociados());
+		}
+	}
+	
+	public String mostrarBancosAsociados() {
+		ArrayList<Banco> bancos = this.getBancosAsociados();
+		if(bancos.size() != 0) {
+			for(Banco b: bancos) {
+				return(b.getNombreb());
+			}
+		}else {
+			return ("Primero debes asociar bancos, el limite para el usuario " + this.getNombre() + " es de " + this.getLimiteBancos());
+		}
+		return ("");
+	}
+	
 	public Boolean verificarContrasena(String contrasena) {	return (this.contrasena.equals(contrasena)); }
 	
 	@Override
@@ -87,8 +108,8 @@ public class Usuario extends Banco {
 	public void setId(int id) { this.id = id; }
 	public Suscripcion getSuscripcion() { return suscripcion; }
 	public void setSuscripcion(Suscripcion suscripcion) { this.suscripcion = suscripcion; }
-	public ArrayList<Cuenta> getCuentas() { return cuentas; }
-	public void setCuentas(ArrayList<Cuenta> cuentas) { this.cuentas = cuentas; }
+	public ArrayList<Cuenta> getCuentas() { return cuentasAsociadas; }
+	public void setCuentas(ArrayList<Cuenta> cuentasAsociadas) { this.cuentasAsociadas = cuentasAsociadas; }
 	public int getLimiteBancos() { return limiteBancos; }
 	public void setLimiteBancos(int limiteBancos) { this.limiteBancos = limiteBancos; }
 	public ArrayList<Banco> getBancosAsociados() { return bancosAsociados; }
@@ -97,5 +118,7 @@ public class Usuario extends Banco {
 	public void setComisionUsuario(double comisionUsuario) { this.comisionUsuario = comisionUsuario; }
 	public int getContadorMovimientos() { return contadorMovimientos; }
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
+	public Cuenta getCuentaAsociada() { return cuentaAsociada; }
+	public void setCuentaAsociada(Cuenta cuentaAsociada) { this.cuentaAsociada = cuentaAsociada; }
 	
 }

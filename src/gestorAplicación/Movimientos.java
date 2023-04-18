@@ -16,38 +16,32 @@ public class Movimientos {
 	private Cuenta origen;
 
 	//	Constructor
-	protected Movimientos(Cuenta origen, Cuenta destino, int id,double cantidad, Categoria categoria, Date fecha){
+	public Movimientos(Cuenta origen, Cuenta destino, Usuario usuario, int id, double cantidad, Categoria categoria, Date fecha){
 		this.cantidad = cantidad;
 		this.categoria = categoria;
 		this.fecha = fecha;
 		this.id = id;
 		Movimientos.movimientos.add(this);
-		this.destino = destino;
-		this.origen = origen;
-		modificarSaldo(origen,destino,cantidad);
+		this.setDestino(destino);
+		this.setOrigen(origen);
 	}
 	//Necesitamos comprobar que el saldo sea suficiente a la hora de realizar el movimiento y la cuenta destino exista
-	public Movimientos crearMovimiento(Cuenta origen, Cuenta destino, int id, double cantidad, Categoria categoria, Date fecha){
-		Double saldo = origen.getSaldo();
-		if(saldo < cantidad) {
-			System.out.println("¡Saldo Insuficiente! Su cuenta tiene un saldo de: " + saldo + " por lo tanto no es posible realizar el movimiento");
+	public static String crearMovimiento(Cuenta origen, Cuenta destino, Usuario usuario, int id, double cantidad, Categoria categoria, Date fecha){
+		if(origen.getSaldo() < cantidad) {
+			return("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
 		} else {
-			return (new Movimientos(origen,destino,id,cantidad,categoria,fecha));
+			return(new Movimientos(origen,destino, usuario, id, cantidad, categoria, fecha).modificarSaldo(origen, destino, cantidad, usuario));
 		}
-		return null;
-	
 	}
 
 	//Métodos
 	//Funcionalidad de Suscripciones de Usuarios
-	public String modificarSaldo(Cuenta origen,Cuenta destino, double cantidad, Usuario usuario){
-		 if(usuario.getBancosAsociados().contains(origen) && usuario.getBancosAsociados().contains(destino)) {
+	public String modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario){
+		 if(usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
 			 usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
 			 usuario.verificarContadorMovimientos();
-			 double saldoOrigen= origen.getSaldo() - cantidad;
-			 double saldoDestino = destino.getSaldo() + cantidad;
-			 origen.setSaldo(saldoOrigen);
-			 destino.setSaldo(saldoDestino);
+			 origen.setSaldo(origen.getSaldo() - cantidad);
+			 destino.setSaldo(destino.getSaldo() + cantidad);
 			 return ("El movimiento se ha realizado con exito");
 			 
 		 }else {
@@ -55,7 +49,6 @@ public class Movimientos {
 		 }
 		
 	}
-
 
 	//	GETS
 		public static ArrayList<Movimientos> getMovimientos() {
@@ -77,7 +70,14 @@ public class Movimientos {
 		public double getCantidad() {
 			return cantidad;
 		}
-	
+		
+		public Cuenta getOrigen() {
+			return origen;
+		}
+		
+		public Cuenta getDestino() {
+			return destino;
+		}
 	
 	//	Sets
 		public void setFecha(Date fecha) {
@@ -95,5 +95,12 @@ public class Movimientos {
 		public static void setMovimientos(ArrayList<Movimientos> movimientos) {
 			Movimientos.movimientos = movimientos;
 		}
+		
+		public void setDestino(Cuenta destino) {
+			this.destino = destino;
+		}
 
+		public void setOrigen(Cuenta origen) {
+			this.origen = origen;
+		}
 }

@@ -16,26 +16,25 @@ public class Cuenta extends Banco{
 	private String nombre;
 	private int id;
 	private Banco banco;
+	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
 	
-	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String divisa, String nombre) {
-		this.titular = titular;
+	public Cuenta(Banco banco, String tipo, int clave_din, String divisa, String nombre) {
 		this.tipo = tipo;
-		this.saldo = 0.0;
 		this.clave_din = clave_din;
 		this.divisa = divisa;
 		this.nombre = nombre;
 		this.banco = banco;	
+		cuentasTotales.add(this);
 
 	}
 	
-	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String nombre, int distinguible) {
-		this.titular = titular;
+	public Cuenta(Banco banco, String tipo, int clave_din, String nombre, int distinguible) {;
 		this.tipo = tipo;
-		this.saldo = 0.0;
 		this.clave_din = clave_din;
 		this.divisa = banco.getDivisa();
 		this.nombre = nombre;
 		this.banco = banco;
+		cuentasTotales.add(this);
 	}
 	
 	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String divisa) {
@@ -46,14 +45,23 @@ public class Cuenta extends Banco{
 		this.nombre = "Cuenta" + tipo;
 		this.divisa = divisa;
 		this.banco = banco;
+		cuentasTotales.add(this);
 	}
 	
-	public Cuenta() {}
+	public Cuenta() { cuentasTotales.add(this); }
+	
+	public static ArrayList<Cuenta> getCuentasTotales(){
+		return Cuenta.cuentasTotales;
+	}
+	
+	public static void setCuentasTotales(ArrayList<Cuenta> cuentasTotales){
+		Cuenta.cuentasTotales = cuentasTotales;
+	}
 	
 	public Usuario getTitular() {
 		return titular;
 	}
-	public void serTitular(Usuario titular) {
+	public void setTitular(Usuario titular) {
 		this.titular = titular;
 	}
 	
@@ -107,12 +115,12 @@ public class Cuenta extends Banco{
 	}
 	
 	//Funcionalidad de Suscripciones de Usuarios
-	public int String invertirSaldo(Cuenta cuenta, Usuario usuario) {
-		float probabilidad = usuario.getSuscripcion().getProbabilidad_Inversion();
-		//Calcular probabilidad.....
-		if(){
-			cuenta.setSaldo(cuenta.getSaldo() + cuenta.getSaldo() * probabilidad);
-			return("Su inversion ha sido exitosa, su saldo actual es de: " + cuenta.getSaldo());
+	public String invertirSaldo() {
+		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
+		int rand = (int)((Math.random()) + probabilidad);
+		if(rand >= 1){
+			this.setSaldo(this.getSaldo() + this.getSaldo() * probabilidad);
+			return("Su inversion ha sido exitosa, el saldo actual de la cuenta con nombre " + this.getNombre() + " es de: " + this.getSaldo());
 		}else {
 			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
 		}

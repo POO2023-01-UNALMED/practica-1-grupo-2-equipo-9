@@ -1,11 +1,16 @@
 package uiMain;
 
 import baseDatos.*;
+import gestorAplicación.Banco;
+import gestorAplicación.Categoria;
 import gestorAplicación.Cuenta;
+import gestorAplicación.Estado;
 import gestorAplicación.Metas;
+import gestorAplicación.Movimientos;
 import gestorAplicación.Suscripcion;
 import gestorAplicación.Usuario;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -13,8 +18,24 @@ public class Main {
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws ParseException {
 		
-		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, new Cuenta(), Suscripcion.DIAMANTE);
-		System.out.println(u1.getSuscripcion());
+		Estado e1 = new Estado("Colombia", 0.65, 0.2);
+		Banco b1 = new Banco("Bancolombia", 0.3, e1);
+		Banco b2 = new Banco("Davivienda", 0.5, e1);
+		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, Suscripcion.DIAMANTE);
+		Cuenta c1 = new Cuenta(b1, "Ahorros", 1234, "COP", "Cuenta 1");
+		Cuenta c2 = new Cuenta(b2, "Corriente", 5678, "USD", "Cuenta 2");
+		System.out.println(u1.asociarBanco(b1));
+		System.out.println(u1.asociarBanco(b2));
+		System.out.println(u1.asociarCuenta(c1));
+		System.out.println(u1.asociarCuenta(c2));
+		c1.setSaldo(500.0);
+		c2.setSaldo(500.0);
+		System.out.println(u1.mostrarBancosAsociados());
+		System.out.println(Movimientos.crearMovimiento(c1, c2, u1, 1, 250.0, Categoria.EDUCACION, new Date()));
+		System.out.println(c1.getSaldo());
+		System.out.println(c1.invertirSaldo());
+		
+		
 		
 		Scanner sc = new Scanner(System.in);
 		int seguir = 0;
@@ -41,12 +62,12 @@ public class Main {
 			String contraseña = sc.nextLine();
 			System.out.println("");
 			
-			boolean validacion = Usuario.validarDatos(usuario, contraseña);
-			if (validacion == false) {
-				System.out.println("Datos incorrectos, intente nuevamente.");
-			} else {
-				seguir = 1;
-			}
+			//boolean validacion = Usuario.validarDatos(usuario, contraseña);
+			//if (validacion == false) {
+				//System.out.println("Datos incorrectos, intente nuevamente.");
+			//} else {
+				//seguir = 1;
+			//}
 		}
 		else if(opcionUsuario == 2) {
 			
