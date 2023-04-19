@@ -76,6 +76,27 @@ public class Main {
 			} else if(opcionUsuario == 2) {
 				
 				//Creación de un Usuario. Recordar validación de igualdad de usuarios y/o correos.
+				System.out.println("Para crear un usuario nuevo, por favor diligencie los siguiente datos: ");
+				
+				System.out.println("Nombre: ");
+				String nombreUsuario = sc.nextLine();
+				System.out.println("");
+					
+				System.out.println("Correo electrónico: ");
+				String correoElectronico = sc.nextLine();
+				System.out.println("");
+				
+				System.out.println("Identificación: ");
+				
+				System.out.println("Contraseña: ");
+				String contraseña = sc.nextLine();
+				System.out.println("");
+				
+				System.out.println("Verificar contraseña: ");
+				String verificacionContraseña = sc.nextLine();
+				System.out.println("");
+				
+				
 
 			} else if(opcionUsuario == 3){
 				seguir = 0;
@@ -94,7 +115,7 @@ public class Main {
 					//+ "\n2. Ingresar a Usuarios"
 					+ "\n3. Mis metas"
 					+ "\n4. Mis movimientos"
-					+ "\n5. Salir");
+					+ "\n5. Cerrar sesión");
 			
 			/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE()); 
 			 * DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
@@ -103,10 +124,16 @@ public class Main {
 			int seccion = Integer.parseInt(sc.nextLine());
 			System.out.println("");
 			
+			if (seccion <= 0 & seccion > 5) {	
+				System.out.println("Entrada no valida");
+				System.out.println("");
+				continue;
+				}
+			
 			// CLASE DE CUENTA
 			while (seccion == 1) {
 				// Contenido de Cuenta
-				System.out.println("Bienvenido a Cuenta, ¿en que te podemos ayudar?"
+				System.out.println("Bienvenido a tus productos, ¿en que te podemos ayudar?"
 						+ "\n1. Crear una cuenta"
 						+ "\n2. Eliminar una cuenta"
 						+ "\n5. Salir al menú principal");
@@ -151,6 +178,7 @@ public class Main {
 						
 				}
 				
+				//SALIR AL MENÚ PRINCIPAL
 				if (opcion == 5) {
 					seccion = 0;
 				}
@@ -369,17 +397,12 @@ public class Main {
 				}
 			}
 			
-			// CERRAR EL PROGRAMA
+			// CERRAR SESIÓN
 			if (seccion == 5) {
 				System.out.println("Hasta la próxima");
 				sesioniniciada = 0;
 			}
 			
-			if (seccion != 1 && seccion != 2 && seccion != 3 && seccion != 4 && seccion != 5) {	
-				System.out.println("Entrada no valida");
-				System.out.println("");
-				continue;
-				}
 		}
 		sc.close();
 	}	

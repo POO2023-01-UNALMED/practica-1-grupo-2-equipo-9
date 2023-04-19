@@ -31,6 +31,7 @@ public class Cuenta extends Banco{
 	public Cuenta(Banco banco, String tipo, int clave_din, String nombre, int distinguible) {;
 		this.tipo = tipo;
 		this.clave_din = clave_din;
+		//Acceder a la divisa definida como predeterminada por el objeto
 		this.divisa = banco.getDivisa();
 		this.nombre = nombre;
 		this.banco = banco;

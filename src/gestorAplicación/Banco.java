@@ -32,7 +32,7 @@ public class Banco extends Estado {
 	
 	public String mostrarBancosTotales() {
 		if(Banco.bancos.size() != 0) { 
-			for (int i = 0; i < Banco.bancos.size(); i++) { 
+			for (int i = 0; i < Banco.bancos.size();) { 
 				return(i+1 + ". " + Banco.bancos.get(i).getNombreb()); 
 				}
 		}else { 
