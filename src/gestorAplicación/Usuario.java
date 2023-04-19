@@ -1,7 +1,7 @@
 package gestorAplicación;
 
 import java.util.ArrayList;
-
+import baseDatos.Deserializador;
 public class Usuario extends Banco {
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
@@ -19,6 +19,8 @@ public class Usuario extends Banco {
 	private int id;
 	private ArrayList<Cuenta> cuentasAsociadas= new ArrayList<Cuenta>();
 	private Cuenta cuentaAsociada;
+	private Boolean confiabilidad;
+	private Double deuda;
 	public static ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 	
 	//Constructor
@@ -104,7 +106,33 @@ public class Usuario extends Banco {
 		}
 		return false;
 	}
-	
+
+	//    Funcionalidad Prestamos
+	public ArrayList comprobarConfiabilidad(Usuario usuario){
+		//Desealizacion de las cuentas
+		ArrayList<Cuenta> cuentas = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuenta");
+		ArrayList<Cuenta> cuentasUsuario = new ArrayList<>();
+		ArrayList<String> cadena = new ArrayList<>();
+
+		for(int i = 0; i<cuentas.size();i++){
+			if(cuentas.get(i).getTitular()==usuario){
+				cuentasUsuario.add(cuentas.get(i));
+			}
+		}
+
+		if(getConfiabilidad()){
+			if(cuentas.size()!=0){
+				return cuentasUsuario;
+			}else{
+				cadena.add("¡Error! Usted no tiene ninguna cuenta creada");
+			}
+		}else{
+			cadena.add("¡Error! Usted ya tiene una deuda de $"+getDeuda());
+		}
+		return cadena;
+	}
+
+
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
 	
@@ -131,5 +159,10 @@ public class Usuario extends Banco {
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
 	public Cuenta getCuentaAsociada() { return cuentaAsociada; }
 	public void setCuentaAsociada(Cuenta cuentaAsociada) { this.cuentaAsociada = cuentaAsociada; }
+
+	public Boolean getConfiabilidad(){return confiabilidad;}
+	public  void setConfiabiliad(Boolean confiabilidad){this.confiabilidad = confiabilidad;}
+	public Double getDeuda(){return deuda;}
+	public  void setDeuda(Double deuda){this.deuda = deuda;}
 	
 }

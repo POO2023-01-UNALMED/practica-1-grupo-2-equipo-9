@@ -126,7 +126,29 @@ public class Cuenta extends Banco{
 			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
 		}
 	}
-	
+
+//	Funcionalidad Prestamo
+	public static ArrayList comprobarPrestamo(ArrayList<Cuenta> cuentas){
+		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
+		ArrayList<String> bancos = new ArrayList<String>();
+
+		for(int i=0;i<cuentas.size();i++){
+			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
+			if(prestamo>0){
+				cuentasPrestamo.add(cuentas.get(i));
+
+			}else{
+				bancos.add(cuentas.get(i).getBanco().getNombre());
+			}
+		}
+
+		if(cuentasPrestamo.size()!=0){
+			return cuentasPrestamo;
+		}else{
+			return bancos;
+		}
+	}
+
 	public void eliminarCuenta() {//¿Validación?
 		if (this.saldo != 0) {
 			Scanner sc = new Scanner(System.in);
