@@ -13,8 +13,8 @@ public class Banco extends Estado {
 	private double prestamo;
 	
 	//Constructores
-	public Banco(String nombre, String nombreb, double tasa_interes, double tasa_impuestos, double comision,double prestamo) {
-		super(nombre, tasa_interes, tasa_impuestos);
+	public Banco(String nombre, String nombreb, double tasa_interes, double tasa_impuestos, double comision, double prestamo, String divisa) {
+		super(nombre, tasa_interes, tasa_impuestos, divisa);
 		this.nombreb = nombreb;
 		this.comision = comision;
 		this.prestamo = prestamo;
