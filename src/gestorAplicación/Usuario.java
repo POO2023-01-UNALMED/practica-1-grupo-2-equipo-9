@@ -35,8 +35,8 @@ public class Usuario extends Banco {
 		this.setContrasena(contrasena);
 		this.setCorreo(correo);
 		this.setId(id);
-		listaUsuarios.add(this);
-		Serializador.serializar(listaUsuarios, "Usuario");
+		//listaUsuarios.add(this);
+		//Serializador.serializar(listaUsuarios, "Usuario");
 	}
 	
 	//Métodos de instancia
@@ -101,12 +101,13 @@ public class Usuario extends Banco {
 	
 	public static boolean verificarCredenciales(String nombre, String contraseña) {
 		for (Usuario usuario: listaUsuarios) {
-			if (usuario.getNombre() == nombre || usuario.getCorreo() == nombre) {
-				if (usuario.getContrasena() == contraseña) {
+			if (usuario.getNombre().equals(nombre) || usuario.getCorreo().equals(nombre)) {
+				if (usuario.getContrasena().equals(contraseña)) {
 					return true;
 				}
 			}
 		}
+		System.out.println();
 		return false;
 	}
 

@@ -41,7 +41,11 @@ public class Main {
 		System.out.println(c1.invertirSaldo());
 
 
+		Usuario u2 = new Usuario("Pepito", "pepito@gmail.com", "perez", 0, Suscripcion.DIAMANTE);
 
+		//Usuario.listaUsuarios.clear();
+		//Serializador.serializar(Usuario.listaUsuarios, "Usuario");
+		
 		Scanner sc = new Scanner(System.in);
 		int seguir = 1;
 
@@ -74,6 +78,7 @@ public class Main {
 				boolean credencial = Usuario.verificarCredenciales(usuario, contraseña);
 				if (credencial) {
 					sesioniniciada = 1;
+					seguir = 0;
 				} else {
 					System.out.println("Las credenciales son incorrectas, ingrese nuevamente");
 				}
@@ -130,7 +135,7 @@ public class Main {
 			int seccion = Integer.parseInt(sc.nextLine());
 			System.out.println("");
 
-			if (seccion <= 0 & seccion > 6) {
+			if (seccion <= 0 || seccion > 6) {
 				System.out.println("Entrada no valida");
 				System.out.println("");
 				continue;
