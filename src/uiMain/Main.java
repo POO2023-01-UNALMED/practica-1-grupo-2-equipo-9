@@ -117,7 +117,7 @@ public class Main {
 			System.out.println("Bienvenido, " //Colocar nombre
 					+ " a tu gestor de dinero, ¿a qué sección deseas ingresar?"
 					+ "\n1. Mis productos"
-					//+ "\n2. Ingresar a Usuarios"
+					+ "\n2. Ingresar a Usuarios" //Configuración
 					+ "\n3. Mis metas"
 					+ "\n4. Mis movimientos"
 					+ "\n5. Pedir Prestamo"
@@ -536,6 +536,16 @@ public class Main {
 		seccion = 0;
 
 		sc.close();
+	}
+
+	//FUNCIONALIDAD COMPRA DE CARTERA
+	static void compraCartera(Usuario usuario) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
+		ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
+		for (Cuenta cuentas: cuentasEnDeuda) {
+			System.out.println();
+		}
 	}
 }
 	

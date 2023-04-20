@@ -16,6 +16,7 @@ public class Cuenta extends Banco{
 	private String nombre;
 	private int id;
 	private Banco banco;
+	private boolean existenciaPrestamo;
 	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
 	
 	public Cuenta(Banco banco, String tipo, int clave_din, String divisa, String nombre) {
@@ -113,6 +114,13 @@ public class Cuenta extends Banco{
 	}
 	public void setBanco(Banco banco) {
 		this.banco = banco;
+	}
+	
+	public boolean getExistenciaPrestamo() {
+		return existenciaPrestamo;
+	}
+	public void setExistenciaPrestamo(boolean existenciaPrestamo) {
+		this.existenciaPrestamo = existenciaPrestamo;
 	}
 	
 	//Funcionalidad de Suscripciones de Usuarios

@@ -2,6 +2,7 @@ package gestorAplicación;
 
 import java.util.ArrayList;
 import baseDatos.Deserializador;
+import baseDatos.Serializador;
 public class Usuario extends Banco {
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
@@ -21,7 +22,8 @@ public class Usuario extends Banco {
 	private Cuenta cuentaAsociada;
 	private Boolean confiabilidad;
 	private Double deuda;
-	public static ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Usuario> listaUsuarios = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuario");
 	
 	//Constructor
 	
@@ -34,6 +36,7 @@ public class Usuario extends Banco {
 		this.setCorreo(correo);
 		this.setId(id);
 		listaUsuarios.add(this);
+		Serializador.serializar(listaUsuarios, "Usuario");
 	}
 	
 	//Métodos de instancia
@@ -132,7 +135,16 @@ public class Usuario extends Banco {
 		return cadena;
 	}
 
-
+	public ArrayList<Cuenta> retornarDeudas(){
+		ArrayList<Cuenta> cuentasEndeudadas = new ArrayList<Cuenta>();
+		for (Cuenta cuenta: cuentasAsociadas) {
+			if (cuenta.getExistenciaPrestamo()) {
+				cuentasEndeudadas.add(cuenta);
+			}
+		}
+		return cuentasEndeudadas;
+	}
+	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
 	
