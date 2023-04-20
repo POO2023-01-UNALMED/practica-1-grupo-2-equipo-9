@@ -8,10 +8,10 @@ public class Estado implements Serializable {
 	private String nombre;
 	private double tasa_interes;
 	private double tasa_impuestos;
-	private String divisa;
+	private Divisas divisa;
 	
 	//Constructor
-	public Estado(String nombre, double tasa_interes, double tasa_impuestos, String divisa) {
+	public Estado(String nombre, double tasa_interes, double tasa_impuestos, Divisas divisa) {
 		this.nombre = nombre;
 		this.tasa_interes = tasa_interes;
 		this.tasa_impuestos = tasa_impuestos;
@@ -31,7 +31,7 @@ public class Estado implements Serializable {
 		return tasa_impuestos;
 	}
 
-	public String getDivisa() {
+	public Divisas getDivisa() {
 		return divisa;
 	}
 	//Sets
@@ -45,7 +45,7 @@ public class Estado implements Serializable {
 		this.tasa_impuestos = tasa_impuestos;
 	}
 
-	public void setDivisa(String divisa) {
+	public void setDivisa(Divisas divisa) {
 		this.divisa = divisa;
 	}
 
