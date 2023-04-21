@@ -12,14 +12,14 @@ public class Cuenta extends Banco{
 	private String tipo;
 	private Double saldo;
 	private int clave_din;
-	private String divisa;
+	private Divisas divisa;
 	private String nombre;
 	private int id;
 	private Banco banco;
 	private boolean existenciaPrestamo;
 	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
 	
-	public Cuenta(Banco banco, String tipo, int clave_din, String divisa, String nombre) {
+	public Cuenta(Banco banco, String tipo, int clave_din, Divisas divisa, String nombre) {
 		this.tipo = tipo;
 		this.clave_din = clave_din;
 		this.divisa = divisa;
@@ -29,7 +29,7 @@ public class Cuenta extends Banco{
 
 	}
 	
-	public Cuenta(Banco banco, String tipo, int clave_din, String nombre, int distinguible) {;
+	public Cuenta(Banco banco, String tipo, int clave_din, String nombre) {;
 		this.tipo = tipo;
 		this.clave_din = clave_din;
 		//Acceder a la divisa definida como predeterminada por el objeto
@@ -39,7 +39,7 @@ public class Cuenta extends Banco{
 		cuentasTotales.add(this);
 	}
 	
-	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, String divisa) {
+	public Cuenta(Banco banco, Usuario titular, String tipo, int clave_din, Divisas divisa) {
 		this.titular = titular;
 		this.tipo = tipo;
 		this.saldo = 0.0;
@@ -50,7 +50,9 @@ public class Cuenta extends Banco{
 		cuentasTotales.add(this);
 	}
 	
-	public Cuenta() { cuentasTotales.add(this); }
+	public Cuenta() {
+		cuentasTotales.add(this);
+	}
 	
 	public static ArrayList<Cuenta> getCuentasTotales(){
 		return Cuenta.cuentasTotales;
@@ -88,10 +90,10 @@ public class Cuenta extends Banco{
 		this.clave_din = clave_din;
 	}
 	
-	public String getDivisa() {
+	public Divisas getDivisa() {
 		return divisa;
 	}
-	public void setDivisa(String divisa) {
+	public void setDivisa(Divisas divisa) {
 		this.divisa = divisa;
 	}
 	
@@ -135,7 +137,7 @@ public class Cuenta extends Banco{
 		}
 	}
 
-//	Funcionalidad Prestamo
+	//	Funcionalidad Prestamo
 	public static ArrayList comprobarPrestamo(ArrayList<Cuenta> cuentas){
 		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
 		ArrayList<String> bancos = new ArrayList<String>();

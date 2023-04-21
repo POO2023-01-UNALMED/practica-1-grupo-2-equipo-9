@@ -4,6 +4,7 @@ import baseDatos.*;
 import gestorAplicación.Banco;
 import gestorAplicación.Categoria;
 import gestorAplicación.Cuenta;
+import gestorAplicación.Divisas;
 import gestorAplicación.Estado;
 import gestorAplicación.Metas;
 import gestorAplicación.Movimientos;
@@ -27,8 +28,8 @@ public class Main {
 		Banco b1 = new Banco("Bancolombia", 0.3, e1);
 		Banco b2 = new Banco("Davivienda", 0.5, e1);
 		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, Suscripcion.DIAMANTE);
-		Cuenta c1 = new Cuenta(b1, "Ahorros", 1234, "COP", "Cuenta 1");
-		Cuenta c2 = new Cuenta(b2, "Corriente", 5678, "USD", "Cuenta 2");
+		Cuenta c1 = new Cuenta(b1, "Ahorros", 1234, Divisas.COP, "Cuenta 1");
+		Cuenta c2 = new Cuenta(b2, "Corriente", 5678, Divisas.USD, "Cuenta 2");
 		System.out.println(u1.asociarBanco(b1));
 		System.out.println(u1.asociarBanco(b2));
 		System.out.println(u1.asociarCuenta(c1));
@@ -548,9 +549,18 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
 		ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
+		int i = 1;
 		for (Cuenta cuentas: cuentasEnDeuda) {
-			System.out.println();
+			System.out.println(i + ". " + cuentas.getNombre());
+			i++;
 		}
+		int Cuenta_Compra = Integer.parseInt(sc.nextLine());
+		//Retornar información de la Cuenta
+		
+		cuentasEnDeuda.remove(Cuenta_Compra - 1);
+		
+		//Buscar Cuentas con posibilidad de Deuda
+		
 	}
 }
 	
