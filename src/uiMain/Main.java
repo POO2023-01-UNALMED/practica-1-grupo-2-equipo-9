@@ -9,6 +9,7 @@ import gestorAplicación.Estado;
 import gestorAplicación.Metas;
 import gestorAplicación.Movimientos;
 import gestorAplicación.Suscripcion;
+import gestorAplicación.Tipo;
 import gestorAplicación.Usuario;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -16,323 +17,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
-	
-	static int seguir = 1;
-	static int opcionMetas;
-	static int sesioniniciada = 1;
-	static int seccion = 1;
-	
-	@SuppressWarnings("unchecked")
-	public static void main(String[] args) throws ParseException {
-		/*Estado e1 = new Estado("Colombia", 0.65, 0.2, Divisas.COP);
-		Banco b1 = new Banco("Bancolombia", 0.3, e1);
-		Banco b2 = new Banco("Davivienda", 0.5, e1);
-		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, Suscripcion.DIAMANTE);
-		Cuenta c1 = new Cuenta(b1, "Ahorros", 1234, Divisas.COP, "Cuenta 1");
-		Cuenta c2 = new Cuenta(b2, "Corriente", 5678, Divisas.USD, "Cuenta 2");
-		System.out.println(u1.asociarBanco(b1));
-		System.out.println(u1.asociarBanco(b2));
-		System.out.println(u1.asociarCuenta(c1));
-		System.out.println(u1.asociarCuenta(c2));
-		c1.setSaldo(500.0);
-		c2.setSaldo(500.0);
-		Object lb = u1.mostrarBancosAsociados();
-		if(lb instanceof ArrayList) {
-			for(Banco b : (ArrayList<Banco>) lb) {
-				System.out.println(b.getNombreb());
-			}
-		}else {
-			System.out.println(lb);
-		}
-		
-		Object m1 = Movimientos.crearMovimiento(c1, c2, 250.0, Categoria.OTROS, new Date());
-		if(m1 instanceof Movimientos) {
-			System.out.println(((Movimientos) m1).getId());
-			System.out.println(((Movimientos) m1).getFecha());
-		}else {
-			System.out.println((String) m1);
-		}
-		System.out.println(c1.getSaldo());
-		Object m2 = c1.invertirSaldo();
-		if(m2 instanceof Movimientos) {
-			System.out.println(((Movimientos) m2).getId());
-			System.out.println(((Movimientos) m2).getFecha());
-		}else {
-			System.out.println((String) m2);
-		} */
-
-		//Usuario.listaUsuarios.clear();
-		//Serializador.serializar(Usuario.listaUsuarios, "Usuario");
-			
-		//-----------------------------------------------------------------------------------------		
-		/* LA VARIABLE SEGUIR SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL
-		 * PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE.
-		 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
-		
-		Scanner sc = new Scanner(System.in);
-		int seguir = 1;	
-		int sesioniniciada = 0;
-		Usuario user = null;
-		
-		// La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir
-		// los datos del usuario.
-
-		// Interfaz de usuario
-		System.out.println("Bienvenido al gestor de dinero."
-				+ "\n1. Ingresar Usuario"
-				+ "\n2. Crear Usuario"
-				+ "\n3. Cerrar Programa");
-
-		int opcionUsuario = Integer.parseInt(sc.nextLine());
-		//System.out.println("");
-
-		while(seguir == 1) {
-			System.out.println("");
-			if (opcionUsuario == 1) {
-				System.out.println("Ingrese nombre de usuario o correo electrónico: ");
-				String usuario = sc.nextLine();
-				System.out.println("");
-				System.out.println("Ingrese su contraseña: ");
-				String contraseña = sc.nextLine();
-				System.out.println("");
-
-				Object u = Usuario.verificarCredenciales(usuario, contraseña);
-				if (u instanceof Usuario) {
-					user = (Usuario) u;
-					sesioniniciada = 1;
-					seguir = 0;
-				} else {
-					System.out.println("Las credenciales son incorrectas, ingrese nuevamente");
-				}
-
-			} else if(opcionUsuario == 2) {
-
-				//Creación de un Usuario. Recordar validación de igualdad de usuarios y/o correos.
-				System.out.println("Para crear un usuario nuevo, por favor diligencie los siguiente datos: ");
-
-				System.out.println("Nombre: ");
-				String nombreUsuario = sc.nextLine();
-				System.out.println("");
-
-				System.out.println("Correo electrónico: ");
-				String correoElectronico = sc.nextLine();
-				System.out.println("");
-
-				System.out.println("Identificación: ");
-
-				System.out.println("Contraseña: ");
-				String contraseña = sc.nextLine();
-				System.out.println("");
-
-				System.out.println("Verificar contraseña: ");
-				String verificacionContraseña = sc.nextLine();
-				System.out.println("");
-
-			} else if(opcionUsuario == 3){
-				System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
-				seguir = 0;
-			} else {
-				System.out.println("");
-				System.out.println("Entrada no valida");
-				System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
-				System.out.println("Bienvenido al gestor de dinero."
-						+ "\n1. Ingresar Usuario"
-						+ "\n2. Crear Usuario"
-						+ "\n3. Cerrar Programa");
-				opcionUsuario = Integer.parseInt(sc.nextLine());
-				
-			}
-		}
-
-
-		while (sesioniniciada == 1) {
-			System.out.println("Bienvenido, "
-					+ user.getNombre()
-					+ " a tu gestor de dinero, ¿a qué sección deseas ingresar?"
-					+ "\n1. Mis productos"
-					+ "\n2. Ingresar a Usuarios" //Configuración
-					+ "\n3. Mis metas"
-					+ "\n4. Mis movimientos"
-					+ "\n5. Pedir Prestamo"
-					+ "\n6. Cerrar sesión");
-
-			/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE());
-			 * DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
-			 * SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
-
-			int seccion = Integer.parseInt(sc.nextLine());
-			System.out.println("");
-
-			if (seccion <= 0 || seccion > 6) {
-				System.out.println("Entrada no valida");
-				continue;
-				}
-
-			// CLASE DE CUENTA
-			while (seccion == 1) {
-				// Contenido de Cuenta
-				System.out.println("Bienvenido a tus productos, ¿en que te podemos ayudar?"
-						+ "\n1. Crear una cuenta"
-						+ "\n2. Eliminar una cuenta"
-						+ "\n3. Ver mis cuentas"
-						+ "\n4. Salir al menú principal");
-
-				// SALIR AL MENÚ PRINCIPAL
-				int opcion = Integer.parseInt(sc.nextLine());
-				System.out.println("");
-
-				// CREAR UNA CUENTA
-				while(opcion == 1) {
-					//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
-					//LA INFORMACIÓN SOLICITADA SE DE ENTER
-					System.out.println("Para crear una nueva cuenta, porfavor diligencie los siguientes datos: ");
-					System.out.println("NOTA: Si no desea ingresar la información en un campo opcional deje el espacio en blanco y continue."
-							+ "Las casillas obligatorias se marcarán con un '*'");
-
-					System.out.println("* ¿A que Banco desea afiliar su cuenta?");
-					//Listar los bancos posibles.
-					int Banco_Afiliacion = Integer.parseInt(sc.nextLine());
-					System.out.println("");
-
-					//IMP: POSIBLE MODIFICACIÓN SEGÚN EL MEDIO DE INGRESO DE LA PERSONA
-					System.out.println("* Nombre del titular: ");
-					String nombre_titular = sc.nextLine();
-					System.out.println("");
-
-					System.out.println("* Tipo de cuenta: ");
-					int Tipo_Cuenta = Integer.parseInt(sc.nextLine());
-					System.out.println("");
-
-					System.out.println("* Clave de la cuenta: (Recuerde que será una combinación de 4 números)");
-					int Clave_Cuenta = Integer.parseInt(sc.nextLine());
-					System.out.println("");
-
-					System.out.println("Divisa: (De no ser colocada ninguna se seguirá con al divisa predeterminada del Banco)");
-					String Divisa_Cuenta = sc.nextLine();
-					System.out.println("");
-
-					System.out.println("Nombre de la Cuenta: ");
-					String Nombre_Cuenta = sc.nextLine();
-					System.out.println("");
-
-				}
-				
-				while(opcion == 2) {
-					//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
-					if(user.getCuentasAsociadas().size() > 0) {
-						System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
-						for(Cuenta c : user.getCuentasAsociadas()) {
-							System.out.print(c.getNombre() + " ");
-						}
-						System.out.println("Inserte el nombre de la cuenta que desea eliminar: ");
-						String nombreCuenta = sc.nextLine();
-						for(Cuenta c : user.getCuentasAsociadas()) {
-							if(nombreCuenta == c.getNombre()) {
-								Cuenta.eliminarCuenta(c);
-							}
-						}
-						
-						//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
-					}else {
-						System.out.println("Primero debes crear una cuenta. ¿Deseas crear una? (Y/N)");
-						String confirmacion = sc.nextLine();
-						if(confirmacion == "Y") {
-							opcion = 1;
-						}else {
-							opcion = 0;
-							seccion = 1;
-						}	
-					}
-
-				}
-
-				//SALIR AL MENÚ PRINCIPAL
-				if (opcion == 4) {
-					seccion = 0;
-				}
-			}
-
-			// CLASE DE USUARIO
-			while (seccion == 2) {
-				// Contenido de Usuario
-				System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
-						+ "\n5. Salir al menú principal");
-
-				int opcion = Integer.parseInt(sc.nextLine());
-				System.out.println("");
-
-				// SALIR AL MENÚ PRINCIPAL
-				if (opcion == 5) {
-					seccion = 0;
-				}
-			}
-
-			// METAS
-			while (seccion == 3) {
-
-				System.out.println("Bienvenido a Metas, ¿en que te podemos ayudar?" + "\n1. Crear una meta"
-						+ "\n2. Eliminar una meta" + "\n3. Ver mis metas" + "\n4. Salir al menú principal");
-
-				opcionMetas = Integer.parseInt(sc.nextLine());
-				System.out.println("");
-
-				// Crear una meta
-				while (opcionMetas == 1) {
-					crearMeta();
-				}
-
-				// Eliminar una meta
-				while (opcionMetas == 2) {
-					eliminarMeta();
-				}
-
-				// Ver las metas
-				while (opcionMetas == 3) {
-					verMetas();
-				}
-
-				// Salir al menu principal
-				while (opcionMetas == 4) {
-					seccion = 0;
-				}
-
-				// Verificar entrada
-				if (opcionMetas != 0 && opcionMetas != 1 && opcionMetas != 2 && opcionMetas != 3 && opcionMetas != 4) {
-					System.out.println("Entrada no valida");
-					System.out.println("");
-					continue;
-				}
-
-			}
-
-			// CLASE DE MOVIMIENTOS
-			while (seccion == 4) {
-				// Contenido de Movimientos
-				System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
-						+ "\n5. Salir al menú principal");
-
-				int opcion = Integer.parseInt(sc.nextLine());
-				System.out.println("");
-
-				// SALIR AL MENÚ PRINCIPAL
-				if (opcion == 5) {
-					seccion = 0;
-				}
-			}
-//			Pedir Prestamo
-			while(seccion ==5){
-				//Main.funcionalidadPrestamo(u1);
-			}
-
-			// CERRAR SESIÓN
-			if (seccion == 6) {
-				System.out.println("Hasta la próxima");
-				sesioniniciada = 0;
-			}
-
-		}
-		sc.close();
-	}
+	static Usuario user = null;
 	
 	// FUNCIONALIDADES 
 	private static int funcionalidadPrestamo(Usuario usu){
@@ -379,7 +64,7 @@ public class Main {
 			seccion=0;
 		}
 	}
-	
+		
 	// Crear una meta
 	static void crearMeta() throws ParseException {
 		Scanner sc = new Scanner(System.in);
@@ -502,9 +187,9 @@ public class Main {
 			System.out.println("Entrada no valida");
 			System.out.println("");
 			seccion = 1;
-		}
+			}
 		sc.close();
-	}
+		}
 
 	// VER MIS METAS
 	static void verMetas() {
@@ -614,9 +299,455 @@ public class Main {
 		//Retornar información de la Cuenta
 		
 		cuentasEnDeuda.remove(Cuenta_Compra - 1);
-		
+			
 		//Buscar Cuentas con posibilidad de Deuda
+			
+		}
+	
+	//CREAR USUARIO DENTRO DEL MAIN
+	static void crearUsuario() {
+		Scanner sc = new Scanner(System.in);
+		//Creación de un Usuario
+		System.out.println("Para crear un usuario nuevo, por favor diligencie los siguiente datos: ");
+
+		System.out.print("Nombre: ");
+		String nombreUsuario = sc.nextLine();
 		
+		System.out.print("Correo electrónico: ");
+		String correoElectronico = sc.nextLine();
+		
+		/*System.out.println("Seleccione su nivel de suscripción: ");
+		for(int i = 1; i < Suscripcion.getNivelesSuscripcion().size() + 1; i++) {
+			System.out.println(i + ". " + Suscripcion.getNivelesSuscripcion().get(i-1));
+		}
+		
+		int suscripcion_op = sc.nextInt();
+		Suscripcion suscripcion = Suscripcion.getNivelesSuscripcion().get(suscripcion_op);*/
+
+		System.out.print("Contraseña: ");
+		String contrasena = sc.nextLine();
+
+		System.out.print("Verificar contraseña: ");
+		String verificacionContrasena = sc.nextLine();
+		
+		if(!(verificacionContrasena.equals(contrasena))) {
+			System.out.println("Verifique que la contraseña esté correctamente ingresada. Inténtelo de nuevo");
+			System.out.print("Contraseña: ");
+			contrasena = sc.nextLine();
+
+			System.out.print("Verificar contraseña: ");
+			verificacionContrasena = sc.nextLine();
+		}
+		
+		/*user = Usuario.crearUsuario(nombreUsuario, correoElectronico, contrasena, suscripcion);*/
+		System.out.println("Usuario creado con éxito");
+		Main.seguir = 0;
+		user = new Usuario(nombreUsuario, correoElectronico, contrasena);
 	}
+	
+	//INGRESAR USUARIO DENTRO DEL MAIN
+	static void ingresarUsuario() {
+		Scanner sc = new Scanner(System.in); 
+		System.out.print("Ingrese nombre de usuario o correo electrónico: ");
+		String usuario = sc.nextLine();
+		System.out.print("Ingrese su contraseña: ");
+		String contraseña = sc.nextLine();
+		System.out.println("");
+
+		Object u = Usuario.verificarCredenciales(usuario, contraseña);
+		if (u instanceof Usuario) {
+			sesioniniciada = 1;
+			seguir = 0;
+			user = (Usuario) u;
+		} else {
+			System.out.println("Las credenciales son incorrectas.");
+			seguir = 0;
+		}
+	}
+	
+	//CREAR BANCO DENTRO DEL MAIN
+	static void crearBanco() {
+		Scanner sc = new Scanner(System.in);
+		//Creación de un Banco
+		System.out.println("Para crear un banco nuevo, por favor diligencie los siguiente datos: ");
+
+		System.out.print("Nombre del banco: ");
+		String nombreBanco = sc.nextLine();
+		
+		System.out.print("Comisión que va a cobrar el banco (En formato double): ");
+		Double comision = sc.nextDouble();
+		
+		while(true) {
+			if(Estado.getEstadosTotales().size() == 0) {
+				System.out.println("No hay estados registrados en el sistema. Primero debes crear un estado.");
+				System.out.println("");
+				Main.crearEstado();
+			}else {
+				System.out.println("Seleccione un estado para la operación del banco. La lista de Estados disponibles son: ");
+				for(int i = 1; i < Estado.getEstadosTotales().size() + 1; i++) {
+					System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1).getNombre());
+				}
+				int estado_op = sc.nextInt();
+				Estado estado_banco = Estado.getEstadosTotales().get(estado_op - 1);
+		
+				seguir = 0;
+				new Banco(nombreBanco, comision, estado_banco);	
+				System.out.println("Banco creado con éxito");
+				break;
+			}
+		}
+	}
+	
+	//CREAR ESTADO DENTRO DEL MAIN
+	static void crearEstado() {
+		Scanner sc = new Scanner(System.in);
+		//Creación de un Estado
+		System.out.println("Para crear un estado nuevo, por favor diligencie los siguiente datos: ");
+
+		System.out.print("Nombre del estado: ");
+		String nombreEstado = sc.nextLine();
+		
+		System.out.print("Tasa de impuestos del estado (En formato double): ");
+		Double tasaImpuestosEstado = sc.nextDouble();
+		
+		System.out.println("Seleccione una divisa para la operación del estado. La lista de divisas disponibles son: ");
+		for(int i = 1; i < Divisas.getDivisas().size() + 1; i++) {
+			System.out.println(i + ". " + Divisas.getDivisas().get(i-1));
+		}
+		
+		int divisas_op = sc.nextInt();
+		Divisas divisa_estado = Divisas.getDivisas().get(divisas_op);
+		new Estado(nombreEstado, tasaImpuestosEstado, divisa_estado);
+		System.out.println("Estado creado con éxito");
+	}	
+
+	//ACCESO ADMINISTRATIVO EN MAIN
+	static void AccesoAdministrativo() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Inserta la contraseña de administrador (Es admin): ");
+		String contrasena = sc.nextLine();
+		while(!contrasena.equals("admin")) {
+			System.out.print("Contraseña errada. Inténtelo de nuevo: ");
+			contrasena = sc.nextLine();	
+		}
+		System.out.println("");
+		System.out.print("Ingresando al sistema como administrador...");
+		user = new Usuario("admin", "admin@admin.com", "admin", Suscripcion.DIAMANTE);
+
+		while(contrasena.equals("admin")) {
+			System.out.println("");
+			System.out.println("¿Qué deseas hacer?."
+					+ "\n1. Crear Usuario"
+					+ "\n2. Crear Banco"
+					+ "\n3. Crear Estado"
+					+ "\n4. Ingresar al Sistema"
+					+ "\n5. Cerrar Sesión");
+			
+			int opcionAdmin = sc.nextInt();
+					
+			if(opcionAdmin == 1) {
+				Main.crearUsuario();
+						
+			} else if(opcionAdmin == 2) {
+				Main.crearBanco();
+						
+			} else if(opcionAdmin == 3) {
+				Main.crearEstado();
+						
+			}else if(opcionAdmin == 4) {
+				sesioniniciada = 1;
+				seguir = 0;
+				break;
+						
+			} else if(opcionAdmin == 5) {
+				seguir = 0;
+				break;
+						
+			} else {
+				System.out.println("");
+				System.out.println("Entrada no valida");
+				System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
+				System.out.println("¿Qué deseas hacer?."
+						+ "\n1. Crear Usuario"
+						+ "\n2. Crear Banco"
+						+ "\n3. Crear Estado"
+						+ "\n4. Cerrar Sesión");
+				opcionAdmin = Integer.parseInt(sc.nextLine());			
+			}		
+		}
+	}	
+	
+	static int seguir = 1;
+	static int opcionMetas;
+	static int sesioniniciada = 0;
+	static int parar = 1;
+	
+	@SuppressWarnings("unchecked")
+	public static void main(String[] args) throws ParseException {
+			
+		Scanner sc = new Scanner(System.in);
+		
+		while(parar == 1) {
+			
+			/* LA VARIABLE SEGUIR SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL
+			 * PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE.
+			 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
+			// La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir
+			// los datos del usuario.
+			System.out.println("");
+			System.out.println("Bienvenido al gestor de dinero."
+					+ "\n1. Ingresar Usuario"
+					+ "\n2. Crear Usuario"
+					+ "\n3. Cerrar Programa"
+					+ "\n4. Acceso Administrativo");
+			
+			seguir = 1;
+			int opcionUsuario = Integer.parseInt(sc.nextLine());
+	
+			while(seguir == 1) {
+				System.out.println("");
+				if (opcionUsuario == 1) {
+					Main.ingresarUsuario();
+	
+				} else if(opcionUsuario == 2) {
+					Main.crearUsuario();
+	
+				} else if(opcionUsuario == 3){
+					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
+					seguir = 0;
+					parar = 0;
+					
+				} else if(opcionUsuario == 4){
+					Main.AccesoAdministrativo();
+			
+				} else {
+					System.out.println("");
+					System.out.println("Entrada no valida");
+					System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
+					System.out.println("Bienvenido al gestor de dinero."
+							+ "\n1. Ingresar Usuario"
+							+ "\n2. Crear Usuario"
+							+ "\n3. Cerrar Programa");
+					opcionUsuario = Integer.parseInt(sc.nextLine());
+					
+				}
+			}
+			
+			while (sesioniniciada == 1) {
+				System.out.println("");
+				System.out.println("Bienvenido, "
+						+ user.getNombre()
+						+ " a tu gestor de dinero, ¿a qué sección deseas ingresar?"
+						+ "\n1. Mis productos"
+						+ "\n2. Ingresar a Usuarios" //Configuración
+						+ "\n3. Mis metas"
+						+ "\n4. Mis movimientos"
+						+ "\n5. Pedir Prestamo"
+						+ "\n6. Cerrar sesión");
+	
+				/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE());
+				 * DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
+				 * SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
+	
+				int seccion = Integer.parseInt(sc.nextLine());
+				if (seccion <= 0 || seccion > 6) {
+					System.out.println("Entrada no valida");
+					continue;
+					}
+	
+				// CLASE DE CUENTA
+				while (seccion == 1) {
+					// Contenido de Cuenta
+					System.out.println("Bienvenido a tus productos, ¿en que te podemos ayudar?"
+							+ "\n1. Crear una cuenta"
+							+ "\n2. Eliminar una cuenta"
+							+ "\n3. Ver mis cuentas"
+							+ "\n4. Salir al menú principal");
+	
+					int opcion = Integer.parseInt(sc.nextLine());
+	
+					// CREAR UNA CUENTA
+					while(opcion == 1) {
+						//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
+						//LA INFORMACIÓN SOLICITADA SE DE ENTER
+						System.out.println("Para crear una nueva cuenta, favor diligencie los siguientes datos: ");
+						System.out.println("NOTA: Si no desea ingresar la información en un campo opcional deje el espacio en blanco y continue."
+								+ "Las casillas obligatorias se marcarán con un '*'");
+	
+						System.out.println("¿A que Banco desea afiliar su cuenta? La lista de Bancos disponibles son: ");
+						for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
+							System.out.print(i + ". " + Banco.getBancosTotales().get(i-1).getNombre());
+						}			
+						
+						int banco_op = Integer.parseInt(sc.nextLine());
+						Banco banco_cuenta = Banco.getBancosTotales().get(banco_op);
+	
+						System.out.print("Cuál es el tipo que quiere seleccionar para su cuenta? La lista de Tipos disponibles son: ");
+						for(int i = 1; i < Tipo.getTipos().size() + 1; i++) {
+							System.out.println(i + ". " + Tipo.getTipos().get(i-1));
+						}
+						
+						int tipo_op = sc.nextInt();
+						Tipo tipo_cuenta = Tipo.getTipos().get(tipo_op);
+	
+						System.out.print("Clave de la cuenta: (Recuerde que será una combinación de 4 números)");
+						int clave_cuenta = Integer.parseInt(sc.nextLine());
+						if(Integer.toString(clave_cuenta).length() != 4) {
+							System.out.print("");
+							System.out.print("Recuerde que será una combinación de 4 números. Inténtelo de nuevo: ");
+							clave_cuenta = Integer.parseInt(sc.nextLine());
+						}
+	
+						System.out.print("¿Cuál es la divisa que quiere seleccionar para su cuenta? La lista de Divisas disponibles son: ");
+						for(int i = 1; i < Divisas.getDivisas().size() + 1; i++) {
+							System.out.println(i + ". " + Divisas.getDivisas().get(i-1));
+						}
+						
+						int divisas_op = sc.nextInt();
+						Divisas divisas_cuenta = Divisas.getDivisas().get(divisas_op);
+	
+						System.out.print("Nombre de la Cuenta: ");
+						String nombre_cuenta = sc.nextLine();
+						
+						Cuenta.crearCuenta(banco_cuenta, tipo_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta);
+						System.out.print("Cuenta creada con éxito");
+					}
+					// ELIMINAR UNA CUENTA
+					while(opcion == 2) {
+						//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
+						if(user.getCuentasAsociadas().size() > 0) {
+							System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
+							for(Cuenta c : user.getCuentasAsociadas()) {
+								System.out.print(c.getNombre() + " ");
+							}
+							System.out.print("Inserte el nombre de la cuenta que desea eliminar: ");
+							String nombreCuenta = sc.nextLine();
+							for(Cuenta c : user.getCuentasAsociadas()) {
+								if(nombreCuenta == c.getNombre()) {
+									Cuenta.eliminarCuenta(c);
+								}
+							}
+							
+							//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
+						}else {
+							System.out.print("No hay cuentas creadas para este usuario");
+							break;
+						}
+					}
+					// VER MIS CUENTAS
+					while(opcion == 3) {
+						//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
+						if(user.getCuentasAsociadas().size() > 0) {
+							System.out.print("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
+							for(Cuenta c : user.getCuentasAsociadas()) {
+								System.out.print(c.getNombre() + " ");
+							}
+							
+							//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
+						}else {
+							System.out.print("No hay cuentas creadas para este usuario. ¿Deseas crear una? (Y/N): ");
+							String confirmacion = sc.nextLine();
+							if(confirmacion == "Y" || confirmacion == "y") {
+								opcion = 1;
+								break;
+							}else {
+								opcion = 0;
+								seccion = 1;
+							}	
+						}
+					}
+	
+					//SALIR AL MENÚ PRINCIPAL
+					if (opcion == 4) {
+						seccion = 0;
+					}
+				}
+	
+				// CLASE DE USUARIO
+				while (seccion == 2) {
+					// Contenido de Usuario
+					System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
+							+ "\n5. Salir al menú principal");
+	
+					int opcion = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+	
+					// SALIR AL MENÚ PRINCIPAL
+					if (opcion == 5) {
+						seccion = 0;
+					}
+				}
+	
+				// METAS
+				while (seccion == 3) {
+	
+					System.out.println("Bienvenido a Metas, ¿en que te podemos ayudar?" + "\n1. Crear una meta"
+							+ "\n2. Eliminar una meta" + "\n3. Ver mis metas" + "\n4. Salir al menú principal");
+	
+					opcionMetas = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+	
+					// Crear una meta
+					while (opcionMetas == 1) {
+						crearMeta();
+					}
+	
+					// Eliminar una meta
+					while (opcionMetas == 2) {
+						eliminarMeta();
+					}
+	
+					// Ver las metas
+					while (opcionMetas == 3) {
+						verMetas();
+					}
+	
+					// Salir al menu principal
+					while (opcionMetas == 4) {
+						sesioniniciada = 1;
+						seccion = 0;
+						break;
+					}
+	
+					// Verificar entrada
+					if (opcionMetas != 0 && opcionMetas != 1 && opcionMetas != 2 && opcionMetas != 3 && opcionMetas != 4) {
+						System.out.println("Entrada no valida");
+						System.out.println("");
+						continue;
+					}
+	
+				}
+	
+				// CLASE DE MOVIMIENTOS
+				while (seccion == 4) {
+					// Contenido de Movimientos
+					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
+							+ "\n5. Salir al menú principal");
+	
+					int opcion = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+	
+					// SALIR AL MENÚ PRINCIPAL
+					if (opcion == 5) {
+						seccion = 0;
+					}
+				}
+	//			Pedir Prestamo
+				while(seccion ==5){
+					Main.funcionalidadPrestamo(user);
+				}
+	
+				// CERRAR SESIÓN
+				if (seccion == 6) {
+					System.out.println("¡Vuelve pronto " + user.getNombre() + "!");
+					sesioniniciada = 0;
+				}
+	
+			}
+			
+		}
+		sc.close();
+	}
+	
 }
 	

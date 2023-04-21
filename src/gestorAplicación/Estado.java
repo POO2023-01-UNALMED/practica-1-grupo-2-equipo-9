@@ -1,31 +1,28 @@
 package gestorAplicación;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String nombreD = "Estados";
+	private static ArrayList<Estado> estadosTotales = new ArrayList<Estado>();
 	private String nombre;
-	private double tasa_interes;
 	private double tasa_impuestos;
 	private Divisas divisa;
 	
 	//Constructor
-	public Estado(String nombre, double tasa_interes, double tasa_impuestos, Divisas divisa) {
+	public Estado(String nombre, double tasa_impuestos, Divisas divisa) {
 		this.nombre = nombre;
-		this.tasa_interes = tasa_interes;
 		this.tasa_impuestos = tasa_impuestos;
 		this.divisa = divisa;
+		Estado.getEstadosTotales().add(this);
 	}
-	
-	public Estado() {}
+	public Estado(){}
 	
 	//Gets
 	public String getNombre() {
 		return nombre;
-	}
-	public double getTasa_interes() {
-		return tasa_interes;
 	}
 	public double getTasa_impuestos() {
 		return tasa_impuestos;
@@ -38,15 +35,20 @@ public class Estado implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public void setTasa_interes(double tasa_interes) {
-		this.tasa_interes = tasa_interes;
-	}
 	public void setTasa_impuestos(double tasa_impuestos) {
 		this.tasa_impuestos = tasa_impuestos;
 	}
 
 	public void setDivisa(Divisas divisa) {
 		this.divisa = divisa;
+	}
+
+	public static ArrayList<Estado> getEstadosTotales() {
+		return estadosTotales;
+	}
+
+	public static void setEstadosTotales(ArrayList<Estado> estadosTotales) {
+		Estado.estadosTotales = estadosTotales;
 	}
 
 }

@@ -22,18 +22,28 @@ public class Usuario extends Banco {
 	private ArrayList<Cuenta> cuentasAsociadas= new ArrayList<Cuenta>();
 	private Boolean confiabilidad;
 	private Double deuda;
-	public static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
+	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
 	
 	//Constructor
 	
-	public Usuario(String nombre, String correo, String contrasena, int id, Suscripcion suscripcion) {
+	public Usuario(String nombre, String correo, String contrasena, Suscripcion suscripcion) {
+		Usuario.getUsuariosTotales().add(this);
 		this.setSuscripcion(suscripcion);
 		this.setLimiteCuentas(suscripcion.getLimiteCuentas());
 		this.setNombre(nombre);
 		this.setContrasena(contrasena);
 		this.setCorreo(correo);
-		this.setId(id);
-		usuariosTotales.add(this);
+		this.setId(Usuario.getUsuariosTotales().size());
+	}
+	
+	public Usuario(String nombre, String correo, String contrasena) {
+		Usuario.getUsuariosTotales().add(this);
+		this.setSuscripcion(Suscripcion.BRONCE);
+		this.setLimiteCuentas(this.getSuscripcion().getLimiteCuentas());
+		this.setNombre(nombre);
+		this.setContrasena(contrasena);
+		this.setCorreo(correo);
+		this.setId(Usuario.getUsuariosTotales().size());
 	}
 	
 	//Métodos de instancia
@@ -143,8 +153,8 @@ public class Usuario extends Banco {
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
 	
 	//Métodos Get & Set
-	public ArrayList<Usuario> getUsuariosTotales() { return usuariosTotales; }
-	public void setUsuariosTotales(ArrayList<Usuario> usuariosTotales) { Usuario.usuariosTotales = usuariosTotales; }
+	public static ArrayList<Usuario> getUsuariosTotales() { return usuariosTotales; }
+	public static void  setUsuariosTotales(ArrayList<Usuario> usuariosTotales) { Usuario.usuariosTotales = usuariosTotales; }
 	public String getNombre() { return nombre; }
 	public void setNombre(String nombre) { this.nombre = nombre; }
 	public String getCorreo() { return correo; }

@@ -9,8 +9,9 @@ public class Cuenta extends Banco{
 	public static final String nombreD = "Cuentas";
 
 	private Usuario titular;
-	private String tipo;
+	private Tipo tipo;
 	private Double saldo;
+	private int clave;
 	private int clave_din;
 	private Divisas divisa;
 	private String nombre;
@@ -20,18 +21,18 @@ public class Cuenta extends Banco{
 	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
 	
 	//Constructores
-	public Cuenta(Banco banco, String tipo, int clave_din, Divisas divisa, String nombre) {
+	public Cuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
 		this.tipo = tipo;
-		this.clave_din = clave_din;
+		this.clave = clave;
 		this.divisa = divisa;
 		this.nombre = nombre;
 		this.banco = banco;	
 		cuentasTotales.add(this);
 	}
 	
-	public Cuenta(Banco banco, String tipo, int clave_din, String nombre) {;
-		this.tipo = tipo;
-		this.clave_din = clave_din;
+	public Cuenta(Banco banco, Tipo tipo, int clave, String nombre) {;
+		this.setTipo(tipo);
+		this.clave = clave;
 		//Acceder a la divisa definida como predeterminada por el banco
 		this.divisa = banco.getEstadoAsociado().getDivisa();
 		this.nombre = nombre;
@@ -41,6 +42,15 @@ public class Cuenta extends Banco{
 	
 	public Cuenta() {
 		cuentasTotales.add(this);
+	}
+	
+	public static Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
+		if(divisa != null) {
+			return(new Cuenta(banco, tipo, clave, divisa, nombre));
+		}else {
+			return(new Cuenta(banco, tipo, clave, nombre));
+		}
+		
 	}
 	
 	//Métodos
@@ -151,10 +161,10 @@ public class Cuenta extends Banco{
 		this.titular = titular;
 	}
 	
-	public String getTipo() {
+	public Tipo getTipo() {
 		return tipo;
 	}
-	public void setTipo(String tipo) {
+	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
 	}
 	
@@ -205,5 +215,13 @@ public class Cuenta extends Banco{
 	}
 	public void setExistenciaPrestamo(boolean existenciaPrestamo) {
 		this.existenciaPrestamo = existenciaPrestamo;
+	}
+
+	public int getClave() {
+		return clave;
+	}
+
+	public void setClave(int clave) {
+		this.clave = clave;
 	}	
 }

@@ -4,29 +4,22 @@ import java.util.ArrayList;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
+	private static ArrayList<Banco> bancosTotales = new ArrayList<Banco>();
 	public static final String nombreD = "Bancos";
 	private String nombreb;
 	private double comision;
-	private static ArrayList<Banco> bancosTotales = new ArrayList<Banco>();
+	private Divisas divisa;
 	private Estado estadoAsociado;
 	private double prestamo;
 	
-	//Constructores
-	public Banco(String nombre, String nombreb, double tasa_interes, double tasa_impuestos, double comision, double prestamo, Divisas divisa) {
-		super(nombre, tasa_interes, tasa_impuestos, divisa);
-		this.nombreb = nombreb;
-		this.comision = comision;
-		this.prestamo = prestamo;
-		bancosTotales.add(this);
-	}
+	//Constructor
 	
 	public Banco(String nombreb, double comision, Estado estado) {
 		this.nombreb = nombreb;
-		this.comision = comision;
 		this.setEstadoAsociado(estado);
+		this.comision = comision + this.getTasa_impuestos();
 		bancosTotales.add(this);
 	}
-	
 	public Banco() {}
 	
 	//Métodos
@@ -44,7 +37,7 @@ public class Banco extends Estado {
 	
 	//Funcionalidad de Suscripciones de Usuarios
 	public Object comprobarSuscripción(Usuario usuario) {
-		for(Usuario u : this.getUsuarios()) {
+		for(Usuario u : this.getUsuariosTotales()) {
 			if(usuario.getId() == u.getId()) {
 				switch(usuario.getSuscripcion()) {
 					case DIAMANTE:
@@ -83,8 +76,12 @@ public class Banco extends Estado {
 	}
 
 	public double getPrestamo(){return prestamo;}
+	
+	public Divisas getDivisa() { return divisa; }
 
 	//Sets
+	public void setDivisa(Divisas divisa) { this.divisa = divisa; }
+	
 	public void setComision(double comision) {
 		this.comision = comision;
 	}
