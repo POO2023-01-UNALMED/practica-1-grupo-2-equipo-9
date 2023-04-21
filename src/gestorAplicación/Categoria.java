@@ -6,5 +6,6 @@ public enum Categoria {
     EDUCACION,
     SALUD,
     REGALOS,
+    FINANZAS,
     OTROS
 }

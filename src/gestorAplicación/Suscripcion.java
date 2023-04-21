@@ -6,15 +6,15 @@ public enum Suscripcion{
 	PLATA(2, 0.40F), 
 	BRONCE(1, 0.20F);
 	
-	private final int limite_Bancos;
+	private final int limiteCuentas;
 	private final float probabilidad_Inversion;
 	
-	Suscripcion(int limite_Bancos, float probabilidad_Inversion){
-		this.limite_Bancos = limite_Bancos;
+	Suscripcion(int limiteCuentas, float probabilidad_Inversion){
+		this.limiteCuentas = limiteCuentas;
 		this.probabilidad_Inversion = probabilidad_Inversion;
 	}
 	
-	public int getLimite_Bancos() { return limite_Bancos; }
+	public int getLimiteCuentas() { return limiteCuentas; }
 
 	public float getProbabilidad_Inversion() { return probabilidad_Inversion; }
 }

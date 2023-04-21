@@ -7,8 +7,7 @@ public class Banco extends Estado {
 	public static final String nombreD = "Bancos";
 	private String nombreb;
 	private double comision;
-	private static ArrayList<Banco> bancos = new ArrayList<Banco>();
-	private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+	private static ArrayList<Banco> bancosTotales = new ArrayList<Banco>();
 	private Estado estadoAsociado;
 	private double prestamo;
 	
@@ -18,14 +17,14 @@ public class Banco extends Estado {
 		this.nombreb = nombreb;
 		this.comision = comision;
 		this.prestamo = prestamo;
-		bancos.add(this);
+		bancosTotales.add(this);
 	}
 	
 	public Banco(String nombreb, double comision, Estado estado) {
 		this.nombreb = nombreb;
 		this.comision = comision;
 		this.setEstadoAsociado(estado);
-		bancos.add(this);
+		bancosTotales.add(this);
 	}
 	
 	public Banco() {}
@@ -33,9 +32,9 @@ public class Banco extends Estado {
 	//Métodos
 	
 	public String mostrarBancosTotales() {
-		if(Banco.bancos.size() != 0) { 
-			for (int i = 0; i < Banco.bancos.size();) { 
-				return(i+1 + ". " + Banco.bancos.get(i).getNombreb()); 
+		if(Banco.bancosTotales.size() != 0) { 
+			for (int i = 0; i < Banco.bancosTotales.size();) { 
+				return(i+1 + ". " + Banco.bancosTotales.get(i).getNombreb()); 
 				}
 		}else { 
 			return("No hay bancos en este momento, considere asociar bancos"); 
@@ -44,7 +43,7 @@ public class Banco extends Estado {
 	}
 	
 	//Funcionalidad de Suscripciones de Usuarios
-	public String comprobarSuscripción(Usuario usuario) {
+	public Object comprobarSuscripción(Usuario usuario) {
 		for(Usuario u : this.getUsuarios()) {
 			if(usuario.getId() == u.getId()) {
 				switch(usuario.getSuscripcion()) {
@@ -75,12 +74,8 @@ public class Banco extends Estado {
 		return nombreb;
 	}
 
-	public static ArrayList<Banco> getBancos() {
-		return bancos;
-	}
-	
-	public ArrayList<Usuario> getUsuarios() {
-		return (this.usuarios);
+	public static ArrayList<Banco> getBancosTotales() {
+		return bancosTotales;
 	}
 	
 	public Estado getEstadoAsociado() {
@@ -97,12 +92,8 @@ public class Banco extends Estado {
 		this.nombreb = nombreb;
 	}
 
-	public static void setBancos(ArrayList<Banco> bancos) {
-		Banco.bancos = bancos;
-	}
-
-	public void setUsuarios(ArrayList<Usuario> usuarios) {
-		this.usuarios = usuarios;
+	public static void setBancosTotales(ArrayList<Banco> bancosTotales) {
+		Banco.bancosTotales = bancosTotales;
 	}
 
 	public void setEstadoAsociado(Estado estadoAsociado) {

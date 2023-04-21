@@ -7,7 +7,7 @@ public class Movimientos {
 	public static final String nombreD = "Movimientos";
 
 	//	Atributos
-	private static ArrayList<Movimientos> movimientos = new ArrayList<>();
+	private static ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
 	private final int id;
 	private double cantidad;
 	private Categoria categoria;
@@ -15,43 +15,66 @@ public class Movimientos {
 	private Cuenta destino;
 	private Cuenta origen;
 
-	//	Constructor
-	public Movimientos(Cuenta origen, Cuenta destino, Usuario usuario, int id, double cantidad, Categoria categoria, Date fecha) {
+	//	Constructores
+	public Movimientos(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
 		this.cantidad = cantidad;
 		this.categoria = categoria;
 		this.fecha = fecha;
-		this.id = id;
-		Movimientos.movimientos.add(this);
+		this.id = getMovimientosTotales().size();
 		this.setDestino(destino);
 		this.setOrigen(origen);
+		origen.setSaldo(origen.getSaldo() - cantidad);
+		destino.setSaldo(destino.getSaldo() + cantidad);
+	}
+	
+	public Movimientos(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
+		this.cantidad = cantidad;
+		this.categoria = categoria;
+		this.fecha = fecha;
+		this.id = getMovimientosTotales().size();
+		this.setDestino(destino);
+		this.setOrigen(new Cuenta());
+		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 
-	//Necesitamos comprobar que el saldo sea suficiente a la hora de realizar el movimiento y la cuenta destino exista
-	public static String crearMovimiento(Cuenta origen, Cuenta destino, Usuario usuario, int id, double cantidad, Categoria categoria, Date fecha) {
-		if (origen.getSaldo() < cantidad) {
-			return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
-		} else {
-			return (new Movimientos(origen, destino, usuario, id, cantidad, categoria, fecha).modificarSaldo(origen, destino, cantidad, usuario));
+	//Funcionalidad de Suscripciones de Usuarios
+	public static Object crearMovimiento(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)){
+			if (origen.getSaldo() < cantidad) {
+				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
+			} else {
+				return (new Movimientos(origen, destino, cantidad, categoria, fecha));
+			}
+		}else {
+			return("Debes verificar que las cuentas origen y/o destino existan");
+		}
+	}
+	
+	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+		if(Cuenta.getCuentasTotales().contains(destino)){
+			return (new Movimientos(destino, cantidad, categoria, fecha));
+		}else {
+			return("Debes verificar que las cuenta de destino exista");
 		}
 	}
 
 	//Métodos
 	//Funcionalidad de Suscripciones de Usuarios
-	public String modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario) {
+	/*public Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
 		if (usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
 			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
 			usuario.verificarContadorMovimientos();
-			origen.setSaldo(origen.getSaldo() - cantidad);
-			destino.setSaldo(destino.getSaldo() + cantidad);
-			return ("El movimiento se ha realizado con exito");
+			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));
 
 		} else {
 			return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
 		}
 
-	}
+	}*/
 
-	public static ArrayList comprobarPrestamo(ArrayList<Cuenta> cuentas){
+	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
 		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
 		ArrayList<String> bancos = new ArrayList<String>();
 
@@ -75,8 +98,8 @@ public class Movimientos {
 
 
 	//	GETS
-	public static ArrayList<Movimientos> getMovimientos() {
-		return Movimientos.movimientos;
+	public static ArrayList<Movimientos> getMovimientosTotales() {
+		return Movimientos.movimientosTotales;
 	}
 
 	public int getId() {
@@ -116,8 +139,8 @@ public class Movimientos {
 		this.cantidad = cantidad;
 	}
 
-	public static void setMovimientos(ArrayList<Movimientos> movimientos) {
-		Movimientos.movimientos = movimientos;
+	public static void setMovimientosTotales(ArrayList<Movimientos> movimientos) {
+		Movimientos.movimientosTotales = movimientos;
 	}
 
 	public void setDestino(Cuenta destino) {

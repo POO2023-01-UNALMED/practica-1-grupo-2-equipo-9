@@ -3,10 +3,11 @@ package gestorAplicación;
 import java.util.ArrayList;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
+
 public class Usuario extends Banco {
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
-	private int limiteBancos;
+	private int limiteCuentas;
 	private double comisionUsuario;
 	private int contadorMovimientos;
 	
@@ -19,24 +20,20 @@ public class Usuario extends Banco {
 	private String contrasena;
 	private int id;
 	private ArrayList<Cuenta> cuentasAsociadas= new ArrayList<Cuenta>();
-	private Cuenta cuentaAsociada;
 	private Boolean confiabilidad;
 	private Double deuda;
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Usuario> listaUsuarios = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuario");
+	public static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
 	
 	//Constructor
 	
 	public Usuario(String nombre, String correo, String contrasena, int id, Suscripcion suscripcion) {
-		super.getUsuarios().add(this);
 		this.setSuscripcion(suscripcion);
-		this.setLimiteBancos(suscripcion.getLimite_Bancos());
+		this.setLimiteCuentas(suscripcion.getLimiteCuentas());
 		this.setNombre(nombre);
 		this.setContrasena(contrasena);
 		this.setCorreo(correo);
 		this.setId(id);
-		//listaUsuarios.add(this);
-		//Serializador.serializar(listaUsuarios, "Usuario");
+		usuariosTotales.add(this);
 	}
 	
 	//Métodos de instancia
@@ -50,26 +47,26 @@ public class Usuario extends Banco {
 				case ORO:
 					this.setContadorMovimientos(0);
 					this.setSuscripcion(Suscripcion.DIAMANTE);
-					return("Felicidades, has sido promovido al nivel de DIAMANTE, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.DIAMANTE.getLimite_Bancos() + " bancos, la probabilidad de ganar en tu inversión es de " + Suscripcion.DIAMANTE.getProbabilidad_Inversion());
+					return("Felicidades, has sido promovido al nivel de DIAMANTE, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.DIAMANTE.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.DIAMANTE.getProbabilidad_Inversion());
 				case PLATA:
 					this.setContadorMovimientos(0);
 					this.setSuscripcion(Suscripcion.ORO);
-					return("Felicidades, has sido promovido al nivel de ORO, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.ORO.getLimite_Bancos() + " bancos, la probabilidad de ganar en tu inversión es de " + Suscripcion.ORO.getProbabilidad_Inversion());
+					return("Felicidades, has sido promovido al nivel de ORO, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.ORO.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.ORO.getProbabilidad_Inversion());
 				case BRONCE:
 					this.setContadorMovimientos(0);
 					this.setSuscripcion(Suscripcion.PLATA);
-					return("Felicidades, has sido promovido al nivel de PLATA, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.PLATA.getLimite_Bancos() + " bancos, la probabilidad de ganar en tu inversión es de " + Suscripcion.PLATA.getProbabilidad_Inversion());
+					return("Felicidades, has sido promovido al nivel de PLATA, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.PLATA.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.PLATA.getProbabilidad_Inversion());
 				default:
 					return("");
 			
 			}
 		}else {
-		return("Debes completar 5 movimientos para ser promovido de nivel");
+			return("Debes completar 5 movimientos para ser promovido de nivel");
 		}
 	}
 	
 	public String asociarBanco(Banco banco) {
-		if(Banco.getBancos().contains(banco) && !bancosAsociados.contains(banco)) {
+		if(Banco.getBancosTotales().contains(banco) && !bancosAsociados.contains(banco)) {
 			this.getBancosAsociados().add(banco);
 			return("El banco " + banco.getNombreb() + " se ha asociado con éxito al usuario " + this.getNombre());
 		}else {
@@ -78,42 +75,38 @@ public class Usuario extends Banco {
 	}
 	
 	public String asociarCuenta(Cuenta cuenta) {
-		if(Cuenta.getCuentasTotales().contains(cuenta) && bancosAsociados.contains(cuenta.getBanco())) {
+		if(Cuenta.getCuentasTotales().contains(cuenta) && bancosAsociados.contains(cuenta.getBanco()) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
 			cuenta.setTitular(this);
-			this.setCuentaAsociada(cuenta);
+			this.getCuentasAsociadas().add(cuenta);
 			return("La cuenta " + cuenta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra tu cuenta ó debes verificar que la cuenta que quieres asociar pertenece a la lista de bancos permitidos para el usuario: " + this.mostrarBancosAsociados());
+			return("No se encuentra tu cuenta ó debes verificar que la cuenta que quieres asociar pertenece a la lista de bancos permitidos para el usuario: " + this.mostrarBancosAsociados() + " ó debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario " + this.getLimiteCuentas());
 		}
 	}
 	
-	public String mostrarBancosAsociados() {
+	public Object mostrarBancosAsociados() {
 		ArrayList<Banco> bancos = this.getBancosAsociados();
 		if(bancos.size() != 0) {
-			for(Banco b: bancos) {
-				return(b.getNombreb());
-			}
+			return bancos;
 		}else {
-			return ("Primero debes asociar bancos, el limite para el usuario " + this.getNombre() + " es de " + this.getLimiteBancos());
+			return ("Primero debes asociar bancos");
 		}
-		return ("");
 	}
 	
-	public static boolean verificarCredenciales(String nombre, String contraseña) {
-		for (Usuario usuario: listaUsuarios) {
+	public static Object verificarCredenciales(String nombre, String contraseña) {
+		for (Usuario usuario: usuariosTotales) {
 			if (usuario.getNombre().equals(nombre) || usuario.getCorreo().equals(nombre)) {
 				if (usuario.getContrasena().equals(contraseña)) {
-					return true;
+					return usuario;
 				}
 			}
 		}
-		System.out.println();
-		return false;
+		return null;
 	}
 
 	//    Funcionalidad Prestamos
 	public ArrayList comprobarConfiabilidad(Usuario usuario){
-		//Desealizacion de las cuentas
+		//Deserializacion de las cuentas
 		ArrayList<Cuenta> cuentas = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuenta");
 		ArrayList<Cuenta> cuentasUsuario = new ArrayList<>();
 		ArrayList<String> cadena = new ArrayList<>();
@@ -150,6 +143,8 @@ public class Usuario extends Banco {
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
 	
 	//Métodos Get & Set
+	public ArrayList<Usuario> getUsuariosTotales() { return usuariosTotales; }
+	public void setUsuariosTotales(ArrayList<Usuario> usuariosTotales) { Usuario.usuariosTotales = usuariosTotales; }
 	public String getNombre() { return nombre; }
 	public void setNombre(String nombre) { this.nombre = nombre; }
 	public String getCorreo() { return correo; }
@@ -160,19 +155,16 @@ public class Usuario extends Banco {
 	public void setId(int id) { this.id = id; }
 	public Suscripcion getSuscripcion() { return suscripcion; }
 	public void setSuscripcion(Suscripcion suscripcion) { this.suscripcion = suscripcion; }
-	public ArrayList<Cuenta> getCuentas() { return cuentasAsociadas; }
-	public void setCuentas(ArrayList<Cuenta> cuentasAsociadas) { this.cuentasAsociadas = cuentasAsociadas; }
-	public int getLimiteBancos() { return limiteBancos; }
-	public void setLimiteBancos(int limiteBancos) { this.limiteBancos = limiteBancos; }
+	public ArrayList<Cuenta> getCuentasAsociadas() { return cuentasAsociadas; }
+	public void setCuentasAsociadas(ArrayList<Cuenta> cuentasAsociadas) { this.cuentasAsociadas = cuentasAsociadas; }
+	public int getLimiteCuentas() { return limiteCuentas; }
+	public void setLimiteCuentas(int limiteCuentas) { this.limiteCuentas = limiteCuentas; }
 	public ArrayList<Banco> getBancosAsociados() { return bancosAsociados; }
 	public void setBancosAsociados(ArrayList<Banco> bancosAsociados) { this.bancosAsociados = bancosAsociados; }
 	public double getComisionUsuario() { return comisionUsuario; }
 	public void setComisionUsuario(double comisionUsuario) { this.comisionUsuario = comisionUsuario; }
 	public int getContadorMovimientos() { return contadorMovimientos; }
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
-	public Cuenta getCuentaAsociada() { return cuentaAsociada; }
-	public void setCuentaAsociada(Cuenta cuentaAsociada) { this.cuentaAsociada = cuentaAsociada; }
-
 	public Boolean getConfiabilidad(){return confiabilidad;}
 	public  void setConfiabiliad(Boolean confiabilidad){this.confiabilidad = confiabilidad;}
 	public Double getDeuda(){return deuda;}

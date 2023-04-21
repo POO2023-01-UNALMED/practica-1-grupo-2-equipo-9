@@ -22,9 +22,9 @@ public class Main {
 	static int sesioniniciada = 1;
 	static int seccion = 1;
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws ParseException {
-
-		Estado e1 = new Estado("Colombia", 0.65, 0.2);
+		/*Estado e1 = new Estado("Colombia", 0.65, 0.2, Divisas.COP);
 		Banco b1 = new Banco("Bancolombia", 0.3, e1);
 		Banco b2 = new Banco("Davivienda", 0.5, e1);
 		Usuario u1 = new Usuario("Juan Pablo", "Juan1@gmail.com", "Juanpa0128", 0, Suscripcion.DIAMANTE);
@@ -36,25 +36,44 @@ public class Main {
 		System.out.println(u1.asociarCuenta(c2));
 		c1.setSaldo(500.0);
 		c2.setSaldo(500.0);
-		System.out.println(u1.mostrarBancosAsociados());
-		System.out.println(Movimientos.crearMovimiento(c1, c2, u1, 1, 250.0, Categoria.EDUCACION, new Date()));
+		Object lb = u1.mostrarBancosAsociados();
+		if(lb instanceof ArrayList) {
+			for(Banco b : (ArrayList<Banco>) lb) {
+				System.out.println(b.getNombreb());
+			}
+		}else {
+			System.out.println(lb);
+		}
+		
+		Object m1 = Movimientos.crearMovimiento(c1, c2, 250.0, Categoria.OTROS, new Date());
+		if(m1 instanceof Movimientos) {
+			System.out.println(((Movimientos) m1).getId());
+			System.out.println(((Movimientos) m1).getFecha());
+		}else {
+			System.out.println((String) m1);
+		}
 		System.out.println(c1.getSaldo());
-		System.out.println(c1.invertirSaldo());
-
-
-		Usuario u2 = new Usuario("Pepito", "pepito@gmail.com", "perez", 0, Suscripcion.DIAMANTE);
+		Object m2 = c1.invertirSaldo();
+		if(m2 instanceof Movimientos) {
+			System.out.println(((Movimientos) m2).getId());
+			System.out.println(((Movimientos) m2).getFecha());
+		}else {
+			System.out.println((String) m2);
+		} */
 
 		//Usuario.listaUsuarios.clear();
 		//Serializador.serializar(Usuario.listaUsuarios, "Usuario");
-		
-		Scanner sc = new Scanner(System.in);
-		int seguir = 1;
-
+			
+		//-----------------------------------------------------------------------------------------		
 		/* LA VARIABLE SEGUIR SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL
 		 * PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE.
 		 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
-
+		
+		Scanner sc = new Scanner(System.in);
+		int seguir = 1;	
 		int sesioniniciada = 0;
+		Usuario user = null;
+		
 		// La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir
 		// los datos del usuario.
 
@@ -65,9 +84,10 @@ public class Main {
 				+ "\n3. Cerrar Programa");
 
 		int opcionUsuario = Integer.parseInt(sc.nextLine());
-		System.out.println("");
+		//System.out.println("");
 
 		while(seguir == 1) {
+			System.out.println("");
 			if (opcionUsuario == 1) {
 				System.out.println("Ingrese nombre de usuario o correo electrónico: ");
 				String usuario = sc.nextLine();
@@ -76,8 +96,9 @@ public class Main {
 				String contraseña = sc.nextLine();
 				System.out.println("");
 
-				boolean credencial = Usuario.verificarCredenciales(usuario, contraseña);
-				if (credencial) {
+				Object u = Usuario.verificarCredenciales(usuario, contraseña);
+				if (u instanceof Usuario) {
+					user = (Usuario) u;
 					sesioniniciada = 1;
 					seguir = 0;
 				} else {
@@ -107,20 +128,26 @@ public class Main {
 				String verificacionContraseña = sc.nextLine();
 				System.out.println("");
 
-
-
 			} else if(opcionUsuario == 3){
+				System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 				seguir = 0;
 			} else {
+				System.out.println("");
 				System.out.println("Entrada no valida");
 				System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
-				System.out.println("");
+				System.out.println("Bienvenido al gestor de dinero."
+						+ "\n1. Ingresar Usuario"
+						+ "\n2. Crear Usuario"
+						+ "\n3. Cerrar Programa");
+				opcionUsuario = Integer.parseInt(sc.nextLine());
+				
 			}
 		}
 
 
 		while (sesioniniciada == 1) {
-			System.out.println("Bienvenido, " //Colocar nombre
+			System.out.println("Bienvenido, "
+					+ user.getNombre()
 					+ " a tu gestor de dinero, ¿a qué sección deseas ingresar?"
 					+ "\n1. Mis productos"
 					+ "\n2. Ingresar a Usuarios" //Configuración
@@ -138,7 +165,6 @@ public class Main {
 
 			if (seccion <= 0 || seccion > 6) {
 				System.out.println("Entrada no valida");
-				System.out.println("");
 				continue;
 				}
 
@@ -148,7 +174,8 @@ public class Main {
 				System.out.println("Bienvenido a tus productos, ¿en que te podemos ayudar?"
 						+ "\n1. Crear una cuenta"
 						+ "\n2. Eliminar una cuenta"
-						+ "\n5. Salir al menú principal");
+						+ "\n3. Ver mis cuentas"
+						+ "\n4. Salir al menú principal");
 
 				// SALIR AL MENÚ PRINCIPAL
 				int opcion = Integer.parseInt(sc.nextLine());
@@ -189,9 +216,38 @@ public class Main {
 					System.out.println("");
 
 				}
+				
+				while(opcion == 2) {
+					//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
+					if(user.getCuentasAsociadas().size() > 0) {
+						System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
+						for(Cuenta c : user.getCuentasAsociadas()) {
+							System.out.print(c.getNombre() + " ");
+						}
+						System.out.println("Inserte el nombre de la cuenta que desea eliminar: ");
+						String nombreCuenta = sc.nextLine();
+						for(Cuenta c : user.getCuentasAsociadas()) {
+							if(nombreCuenta == c.getNombre()) {
+								Cuenta.eliminarCuenta(c);
+							}
+						}
+						
+						//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
+					}else {
+						System.out.println("Primero debes crear una cuenta. ¿Deseas crear una? (Y/N)");
+						String confirmacion = sc.nextLine();
+						if(confirmacion == "Y") {
+							opcion = 1;
+						}else {
+							opcion = 0;
+							seccion = 1;
+						}	
+					}
+
+				}
 
 				//SALIR AL MENÚ PRINCIPAL
-				if (opcion == 5) {
+				if (opcion == 4) {
 					seccion = 0;
 				}
 			}
@@ -265,7 +321,7 @@ public class Main {
 			}
 //			Pedir Prestamo
 			while(seccion ==5){
-				Main.funcionalidadPrestamo(u1);
+				//Main.funcionalidadPrestamo(u1);
 			}
 
 			// CERRAR SESIÓN
