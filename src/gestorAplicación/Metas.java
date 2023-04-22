@@ -21,6 +21,7 @@ public class Metas implements Serializable{
 	private int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 	public static ArrayList<Metas> mel = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
+	private static ArrayList<Metas> metasTotales = new ArrayList<Metas>();;
 	
 	// FUNCIONALIDAD
 	public static int metaProxima = 0;
@@ -32,24 +33,28 @@ public class Metas implements Serializable{
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
+		Metas.getMetasTotales().add(this);
 	}
 	
 	public Metas(String nombre, double cantidad, int id) {
 		this.setId(id);
 		this.nombre = nombre;
 		this.cantidad = cantidad;
+		Metas.getMetasTotales().add(this);
 	}
 	
 	public Metas(String nombre, String fecha, int id) throws ParseException{
 		this.setId(id);
 		this.nombre = nombre;
 		this.fecha = DATE_FORMAT.parse(fecha);
+		Metas.getMetasTotales().add(this);
 	}
 	
 	public Metas(double cantidad, String fecha, int id) throws ParseException{
 		this.setId(id);
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
+		Metas.getMetasTotales().add(this);
 	}
 	
 	// METODOS
@@ -154,5 +159,13 @@ public class Metas implements Serializable{
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public static ArrayList<Metas> getMetasTotales() {
+		return metasTotales;
+	}
+
+	public static void setMetasTotales(ArrayList<Metas> metasTotales) {
+		Metas.metasTotales = metasTotales;
 	}
 }

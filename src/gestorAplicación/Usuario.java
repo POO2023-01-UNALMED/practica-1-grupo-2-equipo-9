@@ -2,7 +2,6 @@ package gestorAplicación;
 
 import java.util.ArrayList;
 import baseDatos.Deserializador;
-import baseDatos.Serializador;
 
 public class Usuario extends Banco {
 	//Funcionalidad de Suscripciones de Usuarios
