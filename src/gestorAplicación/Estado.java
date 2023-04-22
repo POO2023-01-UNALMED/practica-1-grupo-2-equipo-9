@@ -8,15 +8,17 @@ public class Estado implements Serializable {
 	public static final String nombreD = "Estados";
 	private static ArrayList<Estado> estadosTotales = new ArrayList<Estado>();
 	private String nombre;
+	private int id;
 	private double tasa_impuestos;
 	private Divisas divisa;
 	
 	//Constructor
 	public Estado(String nombre, double tasa_impuestos, Divisas divisa) {
-		this.nombre = nombre;
-		this.tasa_impuestos = tasa_impuestos;
-		this.divisa = divisa;
+		this.setNombre(nombre);
+		this.setTasa_impuestos(tasa_impuestos);
+		this.setDivisa(divisa);
 		Estado.getEstadosTotales().add(this);
+		this.setId(Estado.getEstadosTotales().size());
 	}
 	public Estado(){}
 	
@@ -49,6 +51,12 @@ public class Estado implements Serializable {
 
 	public static void setEstadosTotales(ArrayList<Estado> estadosTotales) {
 		Estado.estadosTotales = estadosTotales;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

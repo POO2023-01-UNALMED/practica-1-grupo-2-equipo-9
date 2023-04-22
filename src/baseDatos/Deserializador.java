@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import gestorAplicación.*;
 
 public class Deserializador {
-	
 	//Deserializar objetos individuales
 	public static Object deserializar(String clase) {		
 		switch(clase) {
-			case "Usuario":
+			case "Usuarios":
 				try{
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + ".dat"));
@@ -25,8 +24,7 @@ public class Deserializador {
 					return ("El Usuario no pudo ser deserializado en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("El Usuario no pudo ser deserializado en el sistema: " + ex);
-				}
-				
+				}	
 			case "Estado":
 				try{
 					File f = new File("");
@@ -40,8 +38,7 @@ public class Deserializador {
 				} catch (ClassNotFoundException ex) {
 					return ("El Estado no pudo ser deserializado en el sistema: " + ex);
 				}
-				
-			case "Cuenta":
+			case "Cuentas":
 				try{
 					File f = new File("");
 					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + ".dat")));
@@ -54,7 +51,6 @@ public class Deserializador {
 				} catch (ClassNotFoundException ex) {
 					return ("La Cuenta no pudo ser deserializada en el sistema: " + ex);
 				}
-				
 			case "Movimientos":
 				try{
 					File f = new File("");
@@ -67,8 +63,7 @@ public class Deserializador {
 					return ("El Movimiento no pudo ser deserializado en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("El Movimiento no pudo ser deserializado en el sistema: " + ex);
-				}
-				
+				}				
 			case "Metas":
 				try{
 					File f = new File("");
@@ -81,8 +76,7 @@ public class Deserializador {
 					return ("La Meta no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La Meta no pudo ser deserializada en el sistema: " + ex);
-				}
-				
+				}			
 			default:
 				return("Error de deserialización: El objeto debe estar definido en el sistema.");
 		}
@@ -92,7 +86,7 @@ public class Deserializador {
 	@SuppressWarnings("unchecked")
 	public static Object deserializar_listas(String clase) {		
 		switch(clase) {
-			case "Usuario":
+			case "Usuarios":
 				try{
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat"));
@@ -105,9 +99,8 @@ public class Deserializador {
 					return ("La lista de Usuarios no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La lista de Usuarios no pudo ser deserializada en el sistema: " + ex);
-				}
-				
-			case "Estado":
+				}				
+			case "Estados":
 				try{
 					File f = new File("");
 					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat")));
@@ -119,9 +112,8 @@ public class Deserializador {
 					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
-				}
-				
-			case "Cuenta":
+				}			
+			case "Cuentas":
 				try{
 					File f = new File("");
 					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat")));
@@ -133,8 +125,7 @@ public class Deserializador {
 					return ("La lista de Cuentas no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La lista de Cuentas no pudo ser deserializada en el sistema: " + ex);
-				}
-				
+				}	
 			case "Movimientos":
 				try{
 					File f = new File("");
@@ -147,8 +138,7 @@ public class Deserializador {
 					return ("La lista de Movimientos no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La lista de Movimientos no pudo ser deserializada en el sistema: " + ex);
-				}
-				
+				}			
 			case "Metas":
 				try{
 					File f = new File("");
@@ -161,8 +151,7 @@ public class Deserializador {
 					return ("La lista de Metas no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La lista de Metas no pudo ser deserializada en el sistema: " + ex);
-				}
-				
+				}		
 			default:
 				return("Error de deserialización: El objeto debe estar definido en el sistema.");
 		}

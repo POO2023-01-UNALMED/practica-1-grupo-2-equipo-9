@@ -274,7 +274,7 @@ public class Main {
 		seccion = 0;
 	}
 
-	//FUNCIONALIDAD COMPRA DE CARTERA
+	// FUNCIONALIDAD COMPRA DE CARTERA
 	static void compraCartera(Usuario usuario) {
 		System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
 		ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
@@ -292,7 +292,7 @@ public class Main {
 			
 		}
 	
-	//CREAR USUARIO DENTRO DEL MAIN
+	// CREAR USUARIO DENTRO DEL MAIN
 	static void crearUsuario() {
 		//Creación de un Usuario
 		System.out.println("Para crear un usuario nuevo, por favor diligencie los siguiente datos: ");
@@ -332,7 +332,7 @@ public class Main {
 		user = new Usuario(nombreUsuario, correoElectronico, contrasena);
 	}
 	
-	//INGRESAR USUARIO DENTRO DEL MAIN
+	// INGRESAR USUARIO DENTRO DEL MAIN
 	static void ingresarUsuario() {
 		System.out.print("Ingrese nombre de usuario o correo electrónico: ");
 		String usuario = sc.nextLine();
@@ -351,7 +351,7 @@ public class Main {
 		}
 	}
 	
-	//CREAR BANCO DENTRO DEL MAIN
+	// CREAR BANCO DENTRO DEL MAIN
 	static void crearBanco() {
 		//Creación de un Banco
 		System.out.println("Para crear un banco nuevo, por favor diligencie los siguiente datos: ");
@@ -383,7 +383,7 @@ public class Main {
 		}
 	}
 	
-	//CREAR ESTADO DENTRO DEL MAIN
+	// CREAR ESTADO DENTRO DEL MAIN
 	static void crearEstado() {
 		//Creación de un Estado
 		System.out.println("Para crear un estado nuevo, por favor diligencie los siguiente datos: ");
@@ -405,7 +405,7 @@ public class Main {
 		System.out.println("Estado creado con éxito");
 	}	
 
-	//ACCESO ADMINISTRATIVO EN MAIN
+	// ACCESO ADMINISTRATIVO EN MAIN
 	static void accesoAdministrativo() {
 		System.out.print("Inserta la contraseña de administrador (Es admin): ");
 		String contrasena = sc.nextLine();
@@ -460,7 +460,7 @@ public class Main {
 		}
 	}	
 	
-	//CREAR CUENTA EN MAIN
+	// CREAR CUENTA EN MAIN
 	static void crearCuenta() {
 		//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
 		//LA INFORMACIÓN SOLICITADA SE DE ENTER
@@ -513,7 +513,7 @@ public class Main {
 		}
 	}
 	
-	//ELIMINAR CUENTA EN MAIN
+	// ELIMINAR CUENTA EN MAIN
 	static void eliminarCuenta() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -542,7 +542,7 @@ public class Main {
 		}
 	}
 	
-	//VER CUENTAS EN MAIN
+	// VER CUENTAS EN MAIN
 	static void verCuentas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -565,13 +565,13 @@ public class Main {
 		}
 	}
 	
-	//VER USUARIOS TOTALES EN MAIN
+	// VER USUARIOS TOTALES EN MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
 		if(Usuario.getUsuariosTotales().size() > 0) {
-			System.out.println("La lista de Usuarios son: ");
+			System.out.println("Todos los usuarios son: ");
 			for(int i = 1; i < Usuario.getUsuariosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Usuario.getUsuariosTotales().get(i-1));
+				System.out.println(i + ". " + Usuario.getUsuariosTotales().get(i-1).getNombre());
 			}
 			
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
@@ -589,7 +589,7 @@ public class Main {
 		}
 	}
 	
-	//VER BANCOS TOTALES EN MAIN
+	// VER BANCOS TOTALES EN MAIN
 	static void verBancosTotales() {
 			//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
 			if(Banco.getBancosTotales().size() > 0) {
@@ -612,7 +612,7 @@ public class Main {
 			}
 		}
 
-	//VER CUENTAS TOTALES EN MAIN
+	// VER CUENTAS TOTALES EN MAIN
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
 		if(Cuenta.getCuentasTotales().size() > 0) {
@@ -635,7 +635,7 @@ public class Main {
 		}
 	}
 		
-	//VER MOVIMIENTOS TOTALES EN MAIN
+	// VER MOVIMIENTOS TOTALES EN MAIN
 	static void verMovimientosTotales() {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
 		if(Movimientos.getMovimientosTotales().size() > 0) {
@@ -658,7 +658,7 @@ public class Main {
 		}
 	}
 		
-	//VER METAS TOTALES EN MAIN
+	// VER METAS TOTALES EN MAIN
 	static void verMetasTotales() {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
 		if(Banco.getBancosTotales().size() > 0) {
@@ -681,7 +681,7 @@ public class Main {
 		}
 	}
 	
-	//VER METAS TOTALES EN MAIN
+	// VER METAS TOTALES EN MAIN
 	static void verEstadosTotales() {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
 		if(Estado.getEstadosTotales().size() > 0) {
@@ -704,17 +704,9 @@ public class Main {
 		}
 	}		
 	
-	//GUARDAR OBJETOS EN MAIN
+	// GUARDAR OBJETOS EN MAIN
 	static void guardarObjetos() {
 		//Guardar objetos
-		
-		listaObjetos.add(Estado.nombreD);
-		listaObjetos.add(Cuenta.nombreD);
-		listaObjetos.add(Usuario.nombreD);
-		listaObjetos.add(Banco.nombreD);
-		listaObjetos.add(Movimientos.nombreD);
-		listaObjetos.add(Metas.nombreD);
-		
 		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.println("Seleccione el objeto que quiere guardar: ");
@@ -723,56 +715,96 @@ public class Main {
 				System.out.println(i + ". " + listaObjetos.get(i-1));
 			}
 			
-			int objeto_op = Integer.parseInt(sc.nextLine());
+			System.out.println("7. Volver al menú anterior");
 			
-			if (objeto_op < 1 || objeto_op > 6) {
+			int objeto_op = Integer.parseInt(sc.nextLine());
+			if(objeto_op == 7){	
+				Main.bienvenidaApp();
+				break;
+			} else if (objeto_op < 1 || objeto_op > 7) {
 				System.out.println("Entrada no valida");
-				continue;
-				
+				continue;				
 			}else {
+				System.out.println("");
+				System.out.println("Seleccione una de las opciones: ");
+				System.out.println("1. Guardar objetos individuales. "
+						+ "\n2. Guardar listas con objetos.");
+				int serializarOpcion = Integer.parseInt(sc.nextLine());
+				
 				String objeto_nombre = listaObjetos.get(objeto_op - 1);
+				
 				if(objeto_nombre.equals("Usuarios")) {
-					Main.verUsuariosTotales();
-					System.out.print("Inserte el número del Usuario que desea guardar: ");
-					int opcionUsuario = Integer.parseInt(sc.nextLine());
-					Usuario usuarioGuardar = Usuario.getUsuariosTotales().get(opcionUsuario - 1);
-					System.out.println(Serializador.serializar(usuarioGuardar));
-					break;
+					if(serializarOpcion == 1) {
+						Main.verUsuariosTotales();
+						System.out.print("Inserte el número del Usuario que desea guardar: ");
+						int opcionUsuario = Integer.parseInt(sc.nextLine());
+						Usuario usuarioGuardar = Usuario.getUsuariosTotales().get(opcionUsuario - 1);
+						System.out.println(Serializador.serializar(usuarioGuardar));
+						break;
+					}else {
+						System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), objeto_nombre));
+						break;
+					}
 				}else if(objeto_nombre.equals("Bancos")) {
-					Main.verBancosTotales();
-					System.out.print("Inserte el número del Banco que desea guardar: ");
-					int opcionBanco = Integer.parseInt(sc.nextLine());
-					Banco bancoGuardar = Banco.getBancosTotales().get(opcionBanco - 1);
-					System.out.println(Serializador.serializar(bancoGuardar));
-					break;
+					if(serializarOpcion == 1) {
+						Main.verBancosTotales();
+						System.out.print("Inserte el número del Banco que desea guardar: ");
+						int opcionBanco = Integer.parseInt(sc.nextLine());
+						Banco bancoGuardar = Banco.getBancosTotales().get(opcionBanco - 1);
+						System.out.println(Serializador.serializar(bancoGuardar));
+						break;
+					}else {
+						System.out.println(Serializador.serializar(Banco.getBancosTotales(), objeto_nombre));
+						break;
+					}
 				}else if (objeto_nombre.equals("Movimientos")) {
-					Main.verMovimientosTotales();
-					System.out.print("Inserte el número del Movimiento que desea guardar: ");
-					int opcionMovimiento = Integer.parseInt(sc.nextLine());
-					Movimientos movimientoGuardar = Movimientos.getMovimientosTotales().get(opcionMovimiento - 1);
-					System.out.println(Serializador.serializar(movimientoGuardar));
-					break;
+					if(serializarOpcion == 1) {
+						Main.verMovimientosTotales();
+						System.out.print("Inserte el número del Movimiento que desea guardar: ");
+						int opcionMovimiento = Integer.parseInt(sc.nextLine());
+						Movimientos movimientoGuardar = Movimientos.getMovimientosTotales().get(opcionMovimiento - 1);
+						System.out.println(Serializador.serializar(movimientoGuardar));
+						break;
+					}else {
+						System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), objeto_nombre));
+						break;
+					}
 				}else if (objeto_nombre.equals("Cuentas")) {
-					Main.verCuentasTotales();
-					System.out.print("Inserte el número de la Cuenta que desea guardar: ");
-					int opcionCuenta = Integer.parseInt(sc.nextLine());
-					Cuenta cuentaGuardar = Cuenta.getCuentasTotales().get(opcionCuenta - 1);
-					System.out.println(Serializador.serializar(cuentaGuardar));
-					break;
+					if(serializarOpcion == 1) {
+						Main.verCuentasTotales();
+						System.out.print("Inserte el número de la Cuenta que desea guardar: ");
+						int opcionCuenta = Integer.parseInt(sc.nextLine());
+						Cuenta cuentaGuardar = Cuenta.getCuentasTotales().get(opcionCuenta - 1);
+						System.out.println(Serializador.serializar(cuentaGuardar));
+						break;
+					}else {
+						System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), objeto_nombre));
+						break;
+					}
 				}else if (objeto_nombre.equals("Estados")) {
-					Main.verEstadosTotales();
-					System.out.print("Inserte el número del Estado que desea guardar: ");
-					int opcionEstado = Integer.parseInt(sc.nextLine());
-					Estado estadoGuardar = Estado.getEstadosTotales().get(opcionEstado - 1);
-					System.out.println(Serializador.serializar(estadoGuardar));
-					break;
+					if(serializarOpcion == 1) {
+						Main.verEstadosTotales();
+						System.out.print("Inserte el número del Estado que desea guardar: ");
+						int opcionEstado = Integer.parseInt(sc.nextLine());
+						Estado estadoGuardar = Estado.getEstadosTotales().get(opcionEstado - 1);
+						System.out.println(Serializador.serializar(estadoGuardar));
+						break;
+					}else {
+						System.out.println(Serializador.serializar(Estado.getEstadosTotales(), objeto_nombre));
+						break;
+					}
 				}else if (objeto_nombre.equals("Metas")) {
-					Main.verMetasTotales();
-					System.out.print("Inserte el número de la Meta que desea guardar: ");
-					int opcionMeta = Integer.parseInt(sc.nextLine());
-					Metas metaGuardar = Metas.getMetasTotales().get(opcionMeta - 1);
-					System.out.println(Serializador.serializar(metaGuardar));
-					break;
+					if(serializarOpcion == 1) {
+						Main.verMetasTotales();
+						System.out.print("Inserte el número de la Meta que desea guardar: ");
+						int opcionMeta = Integer.parseInt(sc.nextLine());
+						Metas metaGuardar = Metas.getMetasTotales().get(opcionMeta - 1);
+						System.out.println(Serializador.serializar(metaGuardar));
+						break;
+					}else {
+						System.out.println(Serializador.serializar(Metas.getMetasTotales(), objeto_nombre));
+						break;
+					}
 				}
 			}
 		}
@@ -780,22 +812,118 @@ public class Main {
 	
 	//CARGAR OBJETOS EN MAIN
 	static void cargarObjetos() {
-		
+		//Guardar objetos
+		while(true) {
+			System.out.println("Bienvenido a la Base de Datos...");
+			System.out.println("Seleccione el objeto que quiere cargar: ");
+			
+			for(int i = 1; i < listaObjetos.size() + 1; i++) {
+				System.out.println(i + ". " + listaObjetos.get(i-1));
+			}
+			
+			System.out.println("7. Volver al menú anterior");
+			
+			int objeto_op = Integer.parseInt(sc.nextLine());
+			if(objeto_op == 7){	
+				Main.bienvenidaApp();
+				break;
+			} else if (objeto_op < 1 || objeto_op > 7) {
+				System.out.println("Entrada no valida");
+				continue;				
+			}else {
+				System.out.println("");
+				System.out.println("Seleccione una de las opciones: ");
+				System.out.println("1. Cargar objetos individuales. "
+						+ "\n2. Cargar listas con objetos.");
+				int serializarOpcion = Integer.parseInt(sc.nextLine());
+				
+				String objeto_nombre = listaObjetos.get(objeto_op - 1);
+				
+				if(objeto_nombre.equals("Usuarios")) {
+					if(serializarOpcion == 1) {
+						Usuario u = (Usuario) Deserializador.deserializar(objeto_nombre);
+						System.out.println("El Usuario con nombre " + u.getNombre() + " ha sido cargado con éxito en el sistema.");
+						break;
+					}else {
+						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas(objeto_nombre);
+						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+						for(Usuario u : usuariosDeserializados) {
+							System.out.println("El Usuario con nombre " + u.getNombre() + " ha sido cargado con éxito en el sistema.");
+						}
+						break;
+					}
+				}else if(objeto_nombre.equals("Bancos")) {
+					if(serializarOpcion == 1) {
+						Banco b = (Banco) Deserializador.deserializar(objeto_nombre);
+						System.out.println("El Banco con nombre " + b.getNombre() + " ha sido cargado con éxito en el sistema.");
+						break;
+					}else {
+						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas(objeto_nombre);
+						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+						for(Banco b : bancosDeserializados) {
+							System.out.println("El Banco con nombre " + b.getNombre() + " ha sido cargado con éxito en el sistema.");
+						}
+						break;
+					}
+				}else if (objeto_nombre.equals("Movimientos")) {
+					if(serializarOpcion == 1) {
+						Movimientos m = (Movimientos) Deserializador.deserializar(objeto_nombre);
+						System.out.println("El Movimiento con id " + m.getId() + " ha sido cargado con éxito en el sistema.");
+						break;
+					}else {
+						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas(objeto_nombre);
+						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+						for(Movimientos m : movimientosDeserializados) {
+							System.out.println("El Movimiento con id " + m.getId() + " ha sido cargado con éxito en el sistema.");
+						}
+						break;
+					}
+				}else if (objeto_nombre.equals("Cuentas")) {
+					if(serializarOpcion == 1) {
+						Cuenta c = (Cuenta) Deserializador.deserializar(objeto_nombre);
+						System.out.println("La Cuenta con nombre " + c.getNombre() + " ha sido cargada con éxito en el sistema.");
+						break;
+					}else {
+						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas(objeto_nombre);
+						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+						for(Cuenta c : cuentasDeserializados) {
+							System.out.println("La Cuenta con nombre " + c.getNombre() + " ha sido cargada con éxito en el sistema.");
+						}
+						break;
+					}
+				}else if (objeto_nombre.equals("Estados")) {
+					if(serializarOpcion == 1) {
+						Estado e = (Estado) Deserializador.deserializar(objeto_nombre);
+						System.out.println("El Estado con nombre " + e.getNombre() + " ha sido cargado con éxito en el sistema.");
+						break;
+					}else {
+						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas(objeto_nombre);
+						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+						for(Estado e : estadosDeserializados) {
+							System.out.println("El Estado con nombre " + e.getNombre() + " ha sido cargado con éxito en el sistema.");
+						}
+						break;
+					}
+				}else if (objeto_nombre.equals("Metas")) {
+					if(serializarOpcion == 1) {
+						Metas m = (Metas) Deserializador.deserializar(objeto_nombre);
+						System.out.println("La Meta con nombre " + m.getNombre() + " ha sido cargado con éxito en el sistema.");
+						break;
+					}else {
+						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas(objeto_nombre);
+						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+						for(Metas e : metasDeserializados) {
+							System.out.println("La Meta con nombre " + e.getNombre() + " ha sido cargado con éxito en el sistema.");
+						}
+						break;
+					}
+				}
+			}
+		}
 	}
 	
-	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
-	static ArrayList<String> listaObjetos = new ArrayList<String>();
-	static Usuario user = null;
-	static int seguir = 1;
-	static int opcionMetas;
-	static int sesioniniciada = 0;
-	static int interfaz = 1;
-	static int seccion = 0;
-	static int opcion = 0;
-	static Scanner sc = new Scanner(System.in);
-	
-	public static void main(String[] args){
-		
+	//INTERFAZ DE BIENVENIDA EN MAIN
+	static void bienvenidaApp() {
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
 			 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
@@ -813,7 +941,7 @@ public class Main {
 					+ "\n6. Cerrar Programa");
 			
 			seguir = 1;
-			int opcionUsuario = Integer.parseInt(sc.nextLine());
+			opcionUsuario = Integer.parseInt(sc.nextLine());
 			
 			while(seguir == 1) {
 				System.out.println("");
@@ -839,7 +967,6 @@ public class Main {
 					interfaz = 0;	
 				
 				} else {
-					System.out.println("");
 					System.out.println("Entrada no valida");
 					System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
 					System.out.println("Bienvenido al gestor de dinero."
@@ -1004,5 +1131,30 @@ public class Main {
 				}
 			}	
 		} sc.close();
+		
+	}
+	
+	
+	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
+	static ArrayList<String> listaObjetos = new ArrayList<String>();
+	static Usuario user = null;
+	static int seguir = 1;
+	static int opcionUsuario = 0;
+	static int opcionMetas;
+	static int sesioniniciada = 0;
+	static int interfaz = 1;
+	static int seccion = 0;
+	static int opcion = 0;
+	static Scanner sc = new Scanner(System.in);
+	
+	public static void main(String[] args){
+		listaObjetos.add(Estado.nombreD);
+		listaObjetos.add(Cuenta.nombreD);
+		listaObjetos.add(Usuario.nombreD);
+		listaObjetos.add(Banco.nombreD);
+		listaObjetos.add(Movimientos.nombreD);
+		listaObjetos.add(Metas.nombreD);
+		
+		Main.bienvenidaApp();
 	}	
 }

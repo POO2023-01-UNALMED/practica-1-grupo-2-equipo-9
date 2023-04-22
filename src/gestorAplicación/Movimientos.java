@@ -8,7 +8,7 @@ public class Movimientos {
 
 	//	Atributos
 	private static ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
-	private final int id;
+	private int id;
 	private double cantidad;
 	private Categoria categoria;
 	private Date fecha;
@@ -18,10 +18,10 @@ public class Movimientos {
 	//	Constructores
 	public Movimientos(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
-		this.cantidad = cantidad;
-		this.categoria = categoria;
-		this.fecha = fecha;
-		this.id = getMovimientosTotales().size();
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
 		this.setDestino(destino);
 		this.setOrigen(origen);
 		origen.setSaldo(origen.getSaldo() - cantidad);
@@ -29,11 +29,10 @@ public class Movimientos {
 	}
 	
 	public Movimientos(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
-		Movimientos.movimientosTotales.add(this);
-		this.cantidad = cantidad;
-		this.categoria = categoria;
-		this.fecha = fecha;
-		this.id = getMovimientosTotales().size();
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
 		this.setDestino(destino);
 		this.setOrigen(new Cuenta());
 		destino.setSaldo(destino.getSaldo() + cantidad);
@@ -145,6 +144,9 @@ public class Movimientos {
 
 	public void setDestino(Cuenta destino) {
 		this.destino = destino;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setOrigen(Cuenta origen) {
