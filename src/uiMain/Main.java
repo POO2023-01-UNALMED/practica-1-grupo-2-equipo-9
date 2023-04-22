@@ -980,7 +980,6 @@ public class Main {
 					opcionUsuario = Integer.parseInt(sc.nextLine());
 				}
 			}
-			
 			// INICIO DE SESION COMO USUARIO
 			while (sesioniniciada == 1) {
 				System.out.println("");
@@ -1005,7 +1004,6 @@ public class Main {
 					System.out.println("Entrada no valida");
 					continue;
 				}
-				
 				// CLASE DE CUENTA
 				while (seccion == 1) {
 					// Contenido de Cuenta
@@ -1040,7 +1038,6 @@ public class Main {
 						continue;
 					}
 				}
-	
 				// CLASE DE USUARIO
 				while (seccion == 2) {
 					// Contenido de Usuario
@@ -1061,7 +1058,6 @@ public class Main {
 						continue;
 					}
 				}
-	
 				// METAS
 				while (seccion == 3) {
 					// Contenido de Usuario
@@ -1098,7 +1094,6 @@ public class Main {
 						continue;
 					}
 				}
-	
 				// CLASE DE MOVIMIENTOS
 				while (seccion == 4) {
 					// Contenido de Movimientos
@@ -1118,12 +1113,10 @@ public class Main {
 						continue;
 					}
 				}
-				
 				// PEDIR PRESTAMO
 				while(seccion ==5){
 					Main.funcionalidadPrestamo(user);
 				}
-	
 				// CERRAR SESIÓN COMO USUARIO
 				if (seccion == 6) {
 					System.out.println("¡Vuelve pronto " + user.getNombre() + "!");
@@ -1131,7 +1124,6 @@ public class Main {
 				}
 			}	
 		} sc.close();
-		
 	}
 	
 	
