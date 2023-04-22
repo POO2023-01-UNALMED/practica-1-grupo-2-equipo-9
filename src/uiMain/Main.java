@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
+public final class Main {
 	
 	// FUNCIONALIDADES 
 	private static int funcionalidadPrestamo(Usuario usu){
@@ -63,7 +63,7 @@ public class Main {
 		}
 	}
 		
-	// Crear una meta
+	// CREAR UNA META
 	static void crearMeta() {
 		int id = 1;
 		// PRIMERO SE PIDEN LOS DATOS
@@ -810,7 +810,7 @@ public class Main {
 		}
 	}
 	
-	//CARGAR OBJETOS EN MAIN
+	// CARGAR OBJETOS EN MAIN
 	static void cargarObjetos() {
 		//Guardar objetos
 		while(true) {
@@ -922,7 +922,7 @@ public class Main {
 		}
 	}
 	
-	//INTERFAZ DE BIENVENIDA EN MAIN
+	// INTERFAZ DE BIENVENIDA EN MAIN
 	static void bienvenidaApp() {
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
@@ -1125,7 +1125,6 @@ public class Main {
 			}	
 		} sc.close();
 	}
-	
 	
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
 	static ArrayList<String> listaObjetos = new ArrayList<String>();
