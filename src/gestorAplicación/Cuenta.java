@@ -10,7 +10,7 @@ public class Cuenta extends Banco{
 
 	private Usuario titular;
 	private Tipo tipo;
-	private Double saldo;
+	private Double saldo = 0.0d;
 	private int clave;
 	private int clave_din;
 	private Divisas divisa;
@@ -42,15 +42,6 @@ public class Cuenta extends Banco{
 	
 	public Cuenta() {
 		cuentasTotales.add(this);
-	}
-	
-	public static Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
-		if(divisa != null) {
-			return(new Cuenta(banco, tipo, clave, divisa, nombre));
-		}else {
-			return(new Cuenta(banco, tipo, clave, nombre));
-		}
-		
 	}
 	
 	//Métodos
@@ -88,9 +79,9 @@ public class Cuenta extends Banco{
 		}
 	}
 
-	public static void eliminarCuenta(Cuenta cuenta) {//¿Validación?
-		if (cuenta.saldo != 0) {
-			Scanner sc = new Scanner(System.in);
+	public static void eliminarCuenta(Cuenta cuenta, Usuario user) {//¿Validación?
+		Scanner sc = new Scanner(System.in);
+		if (cuenta.saldo != 0.0d) {
 			System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
 			System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
 			System.out.println("1. Cuenta externa");
@@ -129,10 +120,9 @@ public class Cuenta extends Banco{
 					decision_saldo = sc.nextInt();
 				}
 			}
-			sc.close();
 		}
-		//System.gc();
 		cuentasTotales.remove(cuenta);
+		user.getCuentasAsociadas().remove(cuenta);
 		cuenta = null;
 	}
 

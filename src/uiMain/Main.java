@@ -228,7 +228,7 @@ public final class Main {
 		System.out.println("Tienes una meta para una fecha muy próxima: " + Metas.mel.get(Metas.metaProxima).getNombre()
 				+ ", " + Metas.mel.get(Metas.metaProxima).getCantidad() + ", "
 				+ Metas.mel.get(Metas.metaProxima).getFechaNormal()
-				+ "\n¿Desearías cambiar la fecha de esta meta para invertir ese dinero en tu portafolio? (y/n)");
+				+ "\n¿Desearías cambiar la fecha de esta meta para invertir ese dinero en tu portafolio? (Y/N)");
 		String cambiarFecha = sc.nextLine();
 		System.out.println("");
 
@@ -250,7 +250,7 @@ public final class Main {
 			System.out.println("Entrada no valida");
 		}
 
-		System.out.println("¿Desearías crear una nueva meta para ahorrar e invertir más dinero? (y/n)");
+		System.out.println("¿Desearías crear una nueva meta para ahorrar e invertir más dinero? (Y/N)");
 		String nuevaMeta = sc.nextLine();
 		System.out.println("");
 
@@ -348,6 +348,7 @@ public final class Main {
 		} else {
 			System.out.println("Las credenciales son incorrectas.");
 			seguir = 0;
+			Main.bienvenidaApp();
 		}
 	}
 	
@@ -423,29 +424,81 @@ public final class Main {
 					+ "\n1. Crear Usuario"
 					+ "\n2. Crear Banco"
 					+ "\n3. Crear Estado"
-					+ "\n4. Ingresar al Sistema"
-					+ "\n5. Cerrar Sesión");
+					+ "\n4. Iniciar Sesión"
+					+ "\n5. Volver al menú anterior");
 			
 			int opcionAdmin = Integer.parseInt(sc.nextLine());
 					
 			if(opcionAdmin == 1) {
-				Main.crearUsuario();
-						
+				System.out.print("¿Deseas crear el usuario por defecto? (Y/N): ");
+				String confirmacion = sc.nextLine();
+				while(true) {
+					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+						user = new Usuario("Pepe Morales", "PepeMorales@mail.com", "12345", Suscripcion.DIAMANTE);
+						System.out.println("El usuario por defecto fue creado con éxito, éstas son las credenciales de ingreso: ");
+						System.out.println("Nombre: " + user.getNombre());
+						System.out.println("Contraseña: " + user.getContrasena());
+						break;
+					}else if(confirmacion.equals("N") || confirmacion.equals("n")){
+						Main.crearUsuario();
+						break;
+					}else {
+						System.out.println("");
+						System.out.print("Seleccione la opción correcta. ¿Deseas crear el usuario por defecto? (Y/N): ");
+						confirmacion = sc.nextLine();
+					}
+				}			
 			} else if(opcionAdmin == 2) {
-				Main.crearBanco();
-						
+				if(Estado.getEstadosTotales().size() == 0) {
+					System.out.println("Para crear un banco debes crear un estado primero. Volviendo al menú anterior.");
+				}else {
+					System.out.print("¿Deseas crear el banco por defecto? (Y/N): ");
+					String confirmacion = sc.nextLine();
+					while(true) {
+						if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+							Banco banco = new Banco("Banco de Colombia", 0.3, Estado.getEstadosTotales().get(0));
+							System.out.println("El banco por defecto fue creado con éxito, éstos son sus datos: ");
+							System.out.println("Nombre: " + banco.getNombreb());
+							System.out.println("Comisión: " + banco.getComision());
+							System.out.println("Estado asociado: " + banco.getEstadoAsociado().getNombre());
+							break;
+						}else if(confirmacion.equals("N") || confirmacion.equals("n")){
+							Main.crearBanco();
+							break;
+						}else {
+							System.out.println("");
+							System.out.print("Seleccione la opción correcta. ¿Deseas crear el banco por defecto? (Y/N): ");
+							confirmacion = sc.nextLine();
+						}
+					}	
+				}		
 			} else if(opcionAdmin == 3) {
-				Main.crearEstado();
-						
+				System.out.print("¿Deseas crear el estado por defecto? (Y/N): ");
+				String confirmacion = sc.nextLine();
+				while(true) {
+					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+						Estado estado = new Estado("Colombia", 0.2, Divisas.COP);
+						System.out.println("El estado por defecto fue creado con éxito, éstos son sus datos: ");
+						System.out.println("Nombre: " + estado.getNombre());
+						System.out.println("Tasa de impuestos: " + estado.getTasa_impuestos());
+						System.out.println("Divisa: " + estado.getDivisa());
+						break;
+					}else if(confirmacion.equals("N") || confirmacion.equals("n")){
+						Main.crearEstado();
+						break;
+					}else {
+						System.out.println("");
+						System.out.print("Seleccione la opción correcta. ¿Deseas crear el estado por defecto? (Y/N): ");
+						confirmacion = sc.nextLine();
+					}	
+				}
 			}else if(opcionAdmin == 4) {
 				sesioniniciada = 1;
 				seguir = 0;
-				break;
-						
+				break;		
 			} else if(opcionAdmin == 5) {
 				seguir = 0;
-				break;
-						
+				break;			
 			} else {
 				System.out.println("");
 				System.out.println("Entrada no valida");
@@ -454,7 +507,8 @@ public final class Main {
 						+ "\n1. Crear Usuario"
 						+ "\n2. Crear Banco"
 						+ "\n3. Crear Estado"
-						+ "\n4. Cerrar Sesión");
+						+ "\n4. Iniciar Sesión"
+						+ "\n5. Volver al menú anterior");
 				opcionAdmin = Integer.parseInt(sc.nextLine());			
 			}		
 		}
@@ -470,46 +524,42 @@ public final class Main {
 			seccion = 1;
 		}else {
 			System.out.println("Para crear una nueva cuenta, favor diligencie los siguientes datos: ");
-			System.out.println("NOTA: Si no desea ingresar la información en un campo opcional deje el espacio en blanco y continue."
-					+ "Las casillas obligatorias se marcarán con un '*'");
-
-			System.out.println("¿A que Banco desea afiliar su cuenta? La lista de Bancos disponibles son: ");
-			for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
-				System.out.print(i + ". " + Banco.getBancosTotales().get(i-1).getNombre());
-			}			
-			
+			System.out.println("¿A que Banco desea afiliar su cuenta?: ");
+			Main.verBancosTotales();
 			int banco_op = Integer.parseInt(sc.nextLine());
-			Banco banco_cuenta = Banco.getBancosTotales().get(banco_op);
+			Banco banco_cuenta = Banco.getBancosTotales().get(banco_op - 1);
+			user.asociarBanco(banco_cuenta);
 
-			System.out.print("Cuál es el tipo que quiere seleccionar para su cuenta? La lista de Tipos disponibles son: ");
+			System.out.println("Cuál es el tipo que quiere seleccionar para su cuenta? La lista de Tipos disponibles son: ");
 			for(int i = 1; i < Tipo.getTipos().size() + 1; i++) {
 				System.out.println(i + ". " + Tipo.getTipos().get(i-1));
 			}
 			
-			int tipo_op = sc.nextInt();
+			int tipo_op = Integer.parseInt(sc.nextLine());
 			Tipo tipo_cuenta = Tipo.getTipos().get(tipo_op);
 
-			System.out.print("Clave de la cuenta: (Recuerde que será una combinación de 4 números)");
+			System.out.print("Clave de la cuenta (Recuerde que será una combinación de 4 números): ");
 			int clave_cuenta = Integer.parseInt(sc.nextLine());
-			if(Integer.toString(clave_cuenta).length() != 4) {
+			while(Integer.toString(clave_cuenta).length() != 4) {
 				System.out.print("");
 				System.out.print("Recuerde que será una combinación de 4 números. Inténtelo de nuevo: ");
 				clave_cuenta = Integer.parseInt(sc.nextLine());
 			}
-
-			System.out.print("¿Cuál es la divisa que quiere seleccionar para su cuenta? La lista de Divisas disponibles son: ");
+			System.out.println("");
+			System.out.println("¿Cuál es la divisa que quiere seleccionar para su cuenta? La lista de Divisas disponibles son: ");
 			for(int i = 1; i < Divisas.getDivisas().size() + 1; i++) {
 				System.out.println(i + ". " + Divisas.getDivisas().get(i-1));
 			}
 			
-			int divisas_op = sc.nextInt();
+			int divisas_op = Integer.parseInt(sc.nextLine());
 			Divisas divisas_cuenta = Divisas.getDivisas().get(divisas_op);
-
+			
+			System.out.println("");
 			System.out.print("Nombre de la Cuenta: ");
 			String nombre_cuenta = sc.nextLine();
 			
-			Cuenta.crearCuenta(banco_cuenta, tipo_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta);
-			System.out.print("Cuenta creada con éxito");
+			user.asociarCuenta(new Cuenta(banco_cuenta, tipo_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta));
+			System.out.println("Cuenta creada con éxito");
 		}
 	}
 	
@@ -518,14 +568,16 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
-			for(Cuenta c : user.getCuentasAsociadas()) {
-				System.out.print(c.getNombre() + " ");
+			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
+				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
 			}
-			System.out.print("Inserte el nombre de la cuenta que desea eliminar: ");
-			String nombreCuenta = sc.nextLine();
-			for(Cuenta c : user.getCuentasAsociadas()) {
-				if(nombreCuenta == c.getNombre()) {
-					Cuenta.eliminarCuenta(c);
+			System.out.println("");
+			System.out.print("Inserte el numero de la cuenta que desea eliminar: ");
+			int cuentaOp = Integer.parseInt(sc.nextLine());
+			for(int i = 0; i < user.getCuentasAsociadas().size(); i++) {
+				if(user.getCuentasAsociadas().get(cuentaOp - 1) == user.getCuentasAsociadas().get(i)) {
+					Cuenta.eliminarCuenta(user.getCuentasAsociadas().get(i), user);
+					System.gc();
 				}
 			}
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -546,9 +598,9 @@ public final class Main {
 	static void verCuentas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
-			System.out.print("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
+			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
-				System.out.println(i + ". " + user.getCuentasAsociadas().get(i-1));
+				System.out.println(i + ". " + user.getCuentasAsociadas().get(i-1).getNombre());
 			}
 			
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -571,7 +623,7 @@ public final class Main {
 		if(Usuario.getUsuariosTotales().size() > 0) {
 			System.out.println("Todos los usuarios son: ");
 			for(int i = 1; i < Usuario.getUsuariosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Usuario.getUsuariosTotales().get(i-1).getNombre());
+				System.out.println(i + ". " + Usuario.getUsuariosTotales().get(i - 1).getNombre());
 			}
 			
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
@@ -595,7 +647,7 @@ public final class Main {
 			if(Banco.getBancosTotales().size() > 0) {
 				System.out.println("La lista de Bancos son: ");
 				for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
-					System.out.println(i + ". " + Banco.getBancosTotales().get(i-1));
+					System.out.println(i + ". " + Banco.getBancosTotales().get(i - 1).getNombreb());
 				}
 				
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
@@ -618,7 +670,7 @@ public final class Main {
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas son: ");
 			for(int i = 1; i < Cuenta.getCuentasTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i-1));
+				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1).getNombre());
 			}
 					
 		//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -641,7 +693,7 @@ public final class Main {
 		if(Movimientos.getMovimientosTotales().size() > 0) {
 			System.out.println("La lista de Movimientos son: ");
 			for(int i = 1; i < Movimientos.getMovimientosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Movimientos.getMovimientosTotales().get(i-1));
+				System.out.println(i + ". " + Movimientos.getMovimientosTotales().get(i - 1).getId());
 			}
 					
 		//SE IMPRIME QUE NO EXISTEN MOVIMIENTOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
@@ -661,10 +713,10 @@ public final class Main {
 	// VER METAS TOTALES EN MAIN
 	static void verMetasTotales() {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
-		if(Banco.getBancosTotales().size() > 0) {
+		if(Metas.getMetasTotales().size() > 0) {
 			System.out.println("La lista de Metas son: ");
-			for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Banco.getBancosTotales().get(i-1));
+			for(int i = 1; i < Metas.getMetasTotales().size() + 1; i++) {
+				System.out.println(i + ". " + Metas.getMetasTotales().get(i - 1).getNombre());
 			}
 					
 		//SE IMPRIME QUE NO EXISTEN METAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -687,7 +739,7 @@ public final class Main {
 		if(Estado.getEstadosTotales().size() > 0) {
 			System.out.println("La lista de Estados son: ");
 			for(int i = 1; i < Estado.getEstadosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1));
+				System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1).getNombre());
 			}
 						
 		//SE IMPRIME QUE NO EXISTEN ESTADOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
@@ -1019,14 +1071,17 @@ public final class Main {
 					// Crear una cuenta
 					while(opcion == 1) {
 						Main.crearCuenta();
+						break;
 					}
 					// Eliminar una cuenta
 					while(opcion == 2) {
 						Main.eliminarCuenta();
+						break;
 					}
 					// Ver mis cuentas
 					while(opcion == 3) {
 						Main.verCuentas();
+						break;
 					}
 					// Volver al menú anterior
 					if (opcion == 4) {

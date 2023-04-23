@@ -5,7 +5,7 @@ import baseDatos.Deserializador;
 
 public class Usuario extends Banco {
 	//Funcionalidad de Suscripciones de Usuarios
-	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
+	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
 	private double comisionUsuario;
 	private int contadorMovimientos;
@@ -18,7 +18,7 @@ public class Usuario extends Banco {
 	private String correo;
 	private String contrasena;
 	private int id;
-	private ArrayList<Cuenta> cuentasAsociadas= new ArrayList<Cuenta>();
+	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private Boolean confiabilidad;
 	private Double deuda;
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
