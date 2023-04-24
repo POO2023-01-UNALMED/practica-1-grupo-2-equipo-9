@@ -658,6 +658,36 @@ public final class Main {
 		}
 	}
 	
+	//INVERTIR SALDO DE CUENTA DEL MAIN
+	static void invertirSaldoUsuario(Usuario user) {
+		Main.verCuentasAsociadas();
+		if(opcion == 0) {
+			
+		}else {
+			System.out.println("");
+			Main.verCuentasAsociadas();
+			System.out.print("Seleccione el número de cuenta asociada al usuario para realizar la inversión de saldo: ");
+			int opcion_banco = Integer.parseInt(sc.nextLine());
+			while(true) {
+				if(opcion_banco < 1 && opcion_banco > user.getCuentasAsociadas().size()) {
+					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
+					opcion_banco = Integer.parseInt(sc.nextLine());
+				}else {
+					System.out.println("");
+					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
+					Object inversion = c.invertirSaldo();
+					if(inversion instanceof Movimientos) {
+						System.out.println("La inversión ha sido exitosa y la cantidad de saldo ganado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) inversion).getCantidad());
+						break;
+					}else {
+						System.out.println(inversion);
+						break;
+					}
+				}
+			}		
+		}
+	}
+	
 	// CREAR BANCO DENTRO DEL MAIN
 	static void crearBanco() {
 		System.out.println("");
@@ -908,7 +938,7 @@ public final class Main {
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
-				System.out.println(i + ". " + user.getCuentasAsociadas().get(i-1).getNombre());
+				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
 			}
 			
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -1345,14 +1375,19 @@ public final class Main {
 		}
 	}
 	
+	// ASOCIAR CUENTA CON USUARIO EN MAIN
+	static void asociarCuentaUsuario(Cuenta cuenta) {
+		System.out.println(user.asociarCuenta(cuenta));
+	}
+	
 	// INTERFAZ DE BIENVENIDA EN MAIN
 	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
-			 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
-			
+			* ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
+				
 			/* La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir los datos del usuario. */
-			
+				
 			// INTERFAZ DE BIENVENIDA
 			System.out.println("");
 			System.out.println("Bienvenido al gestor de dinero."
@@ -1362,33 +1397,33 @@ public final class Main {
 					+ "\n4. Guardar Objetos"
 					+ "\n5. Cargar Objetos"
 					+ "\n6. Cerrar Programa");
-			
+				
 			seguir = 1;
 			opcionUsuario = Integer.parseInt(sc.nextLine());
-			
+				
 			while(seguir == 1) {
 				System.out.println("");
-				
+					
 				if (opcionUsuario == 1) {
 					Main.ingresarUsuario();
-	
+		
 				} else if(opcionUsuario == 2) {
 					Main.crearUsuario();
-					
+						
 				} else if(opcionUsuario == 3){
 					Main.accesoAdministrativo();
-					
+						
 				} else if(opcionUsuario == 4){
 					Main.guardarObjetos();
-					
+						
 				} else if(opcionUsuario == 5){
 					Main.cargarObjetos();
-			
+				
 				} else if(opcionUsuario == 6){
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 					seguir = 0;
 					interfaz = 0;	
-				
+					
 				} else {
 					System.out.println("Entrada no valida");
 					System.out.println("NOTA: Recuerde que debe ingresar el numeral de la opción que desea escoger.");
@@ -1399,7 +1434,7 @@ public final class Main {
 							+ "\n4. Guardar Objetos"
 							+ "\n5. Cargar Objetos"
 							+ "\n6. Cerrar Programa");
-					
+						
 					opcionUsuario = Integer.parseInt(sc.nextLine());
 				}
 			}
@@ -1415,13 +1450,13 @@ public final class Main {
 						+ "\n4. Mis movimientos"
 						+ "\n5. Pedir Prestamo"
 						+ "\n6. Cerrar sesión");
-	
+		
 				/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE());
-				 * DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
-				 * SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
-	
+				* DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
+				* SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
+		
 				seccion = Integer.parseInt(sc.nextLine());
-				
+					
 				// COMPROBAR QUE LA SECCION PUEDA EJECUTARSE
 				if (seccion < 1 || seccion > 6) {
 					System.out.println("Entrada no valida");
@@ -1433,33 +1468,54 @@ public final class Main {
 					System.out.println("");
 					System.out.println("Bienvenido a tus productos, ¿en que te podemos ayudar?"
 							+ "\n1. Crear una cuenta"
-							+ "\n2. Eliminar una cuenta"
-							+ "\n3. Ver mis cuentas"
-							+ "\n4. Salir al menú principal");
-					
+							+ "\n2. Asociar una cuenta"
+							+ "\n3. Eliminar una cuenta"
+							+ "\n4. Ver mis cuentas"
+							+ "\n5. Salir al menú principal");
+						
 					opcion = Integer.parseInt(sc.nextLine());
 					
 					// Crear una cuenta
-					while(opcion == 1) {
+					if(opcion == 1) {
 						Main.crearCuenta();
-						break;
+					}
+					// Asociar una cuenta
+					else if(opcion == 2) {
+						Main.verCuentasTotales();
+						if(opcion == 0) {
+			
+						} else {
+							System.out.println("");
+							Main.verCuentasTotales();
+							System.out.print("Seleccione el número de cuenta para asociarla al usuario: ");
+							int opcion_cuenta = Integer.parseInt(sc.nextLine());
+							while(true) {
+								if(opcion_cuenta < 1 || opcion_cuenta > Cuenta.getCuentasTotales().size()) {
+									System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
+									opcion_cuenta = Integer.parseInt(sc.nextLine());
+								}else {
+									System.out.println("");
+									Cuenta cuenta = Cuenta.getCuentasTotales().get(opcion_cuenta - 1);
+									Main.asociarCuentaUsuario(cuenta);
+									break;
+								}
+							} 
+						}	
 					}
 					// Eliminar una cuenta
-					while(opcion == 2) {
+					else if(opcion == 3) {
 						Main.eliminarCuenta();
-						break;
 					}
 					// Ver mis cuentas
-					while(opcion == 3) {
+					else if(opcion == 4) {
 						Main.verCuentasAsociadas();
-						break;
 					}
-					// Volver al menú anterior
-					if (opcion == 4) {
+					// Salir al menú principal
+					else if (opcion == 5) {
 						seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcion < 1 || opcion > 4) {
+					else if (opcion < 1 || opcion > 5) {
 						System.out.println("Entrada no valida");
 						continue;
 					}
@@ -1470,25 +1526,26 @@ public final class Main {
 					System.out.println("");
 					System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
 							+ "\n1. Comprobar suscripción del usuario"
-							+ "\n2. Ver mis bancos"
-							+ "\n3. Comprobar Suscripción"
-							+ "\n4. Salir al menú principal");
-	
+							+ "\n2. Ver mis bancos asociados"
+							+ "\n3. Invertir saldo de cuenta"
+							+ "\n4. Consignar saldo a mi cuenta"
+							+ "\n5. Salir al menú principal");
+		
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
-					
+						
 					if(opcion == 1) {
 						Main.comprobarSuscripcion(user);
-	
+		
 					} else if(opcion == 2) {
 						Main.verBancosAsociados();
-						
+							
 					} else if(opcion == 3) {
-						
-					}
+						Main.invertirSaldoUsuario(user);
+					} 	
 					// Volver al menú anterior
 					else if (opcion == 4) {
-						seccion = 0;
+							seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
 					else {
@@ -1505,9 +1562,9 @@ public final class Main {
 							+ "\n2. Eliminar una meta" 
 							+ "\n3. Ver mis metas" 
 							+ "\n4. Salir al menú principal");
-	
+		
 					opcionMetas = Integer.parseInt(sc.nextLine());
-	
+		
 					// Crear una meta
 					while (opcionMetas == 1) {
 						Main.crearMeta();
@@ -1537,10 +1594,10 @@ public final class Main {
 					// Contenido de Movimientos
 					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
 							+ "\n5. Salir al menú principal");
-	
+		
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
-	
+		
 					// Volver al menú anterior
 					if (opcion == 5) {
 						seccion = 0;
