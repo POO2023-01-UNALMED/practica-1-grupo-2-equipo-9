@@ -116,7 +116,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(nombreMe, cantidadMe, fechaMe, Metas.id);
+					Metas meta = new Metas(nombreMe, cantidadMe, fechaMe, 1);
 					user.asociarMeta(meta);
 				}
 
@@ -161,7 +161,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(nombreMe, cantidadMe, Metas.id);
+					Metas meta = new Metas(nombreMe, cantidadMe, 1);
 					user.asociarMeta(meta);
 				}
 
@@ -206,7 +206,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(nombreMe, fechaMe, Metas.id);
+					Metas meta = new Metas(nombreMe, fechaMe, 1);
 					user.asociarMeta(meta);
 				}
 			}
@@ -250,7 +250,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(cantidadMe, fechaMe, Metas.id);
+					Metas meta = new Metas(cantidadMe, fechaMe, 1);
 					user.asociarMeta(meta);
 				}
 
@@ -468,7 +468,90 @@ public final class Main {
 				System.out.println("Entrada no valida");
 			}
 
-//				Banco.retornoPortafolio(riesgo, invertir, Metas.plazo);
+			if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 1) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nServicios de comunicación"
+						+ "\nconsumo discrecional"
+						+ "\nBienes raíces"
+						+ "\n" 
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 2
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 2) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nProductos básicos de consumo\r\n"
+						+ "Energía\r\n"
+						+ "Compañías de inteligencia artificial\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			
+			// Portafolio 3
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 3) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nFinanzas\r\n"
+						+ "Cuidado de la salud\r\n"
+						+ "Servicios de comunicación\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 4
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 4) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nOro\r\n"
+						+ "Acciones industriales\r\n"
+						+ "Información tecnológica\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 5
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 5) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nMateriales de construcción\r\n"
+						+ "Bienes raíces\r\n"
+						+ "Finanzas\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 6
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 6) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nCuidado de la salud\r\n"
+						+ "Utilidades\r\n"
+						+ "Comodidades\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 7
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 7) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nOro\r\n"
+						+ "Bonos gubernamentales a mediano plazo\r\n"
+						+ "Información tecnológica\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 8
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 8) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nCompañías de inteligencia artificial\r\n"
+						+ "Bonos gubernamentales a largo plazo\r\n"
+						+ "Productos básicos de consumo\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			// Portafolio 9
+			else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 9) {
+				System.out.println("Deberías invertir tu dinero en: "
+						+ "\nMaquinaria de construcción\r\n"
+						+ "Empresas de cuidado del medio ambiente\r\n"
+						+ "Energía\r\n"
+						+ "\n"
+						+ Banco.bancoAsociado(riesgo, user));
+			}
+			else {
+				System.out.println("No tenemos portafolios para recomendarte");
+			}
 
 			System.out.println("");
 			System.out.println("Finalmente, para mejorar aún más tu inversión, te recomendamos "

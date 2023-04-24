@@ -10,26 +10,23 @@ import java.util.Locale;
 import baseDatos.Deserializador;
 import baseDatos.Serializador;
 
-@SuppressWarnings("unchecked")
-
-public class Metas implements Serializable{
+public class Metas implements Serializable {
 	private static final long serialVersionUID = 5L;
 	public static final String nombreD = "Metas";
 	public String nombre;
 	private double cantidad;
 	private Date fecha;
-	public static int id;
+	public int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-	public static ArrayList<Metas> mel = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
 	private static ArrayList<Metas> metasTotales = new ArrayList<Metas>();;
 	private Usuario dueno;
-	
+
 	// FUNCIONALIDAD
 	public static Metas metaProxima;
 	public static String plazo;
 
-	// CONSTRUCTORES	
-	public Metas(String nombre, double cantidad, String fecha, int id) throws ParseException{
+	// CONSTRUCTORES
+	public Metas(String nombre, double cantidad, String fecha, int id) throws ParseException {
 		this.setId(id);
 		this.nombre = nombre;
 		this.cantidad = cantidad;
@@ -37,7 +34,7 @@ public class Metas implements Serializable{
 		Metas.getMetasTotales().add(this);
 		id++;
 	}
-	
+
 	public Metas(String nombre, double cantidad, int id) {
 		this.setId(id);
 		this.nombre = nombre;
@@ -45,23 +42,23 @@ public class Metas implements Serializable{
 		Metas.getMetasTotales().add(this);
 		id++;
 	}
-	
-	public Metas(String nombre, String fecha, int id) throws ParseException{
+
+	public Metas(String nombre, String fecha, int id) throws ParseException {
 		this.setId(id);
 		this.nombre = nombre;
 		this.fecha = DATE_FORMAT.parse(fecha);
 		Metas.getMetasTotales().add(this);
 		id++;
 	}
-	
-	public Metas(double cantidad, String fecha, int id) throws ParseException{
+
+	public Metas(double cantidad, String fecha, int id) throws ParseException {
 		this.setId(id);
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
 		Metas.getMetasTotales().add(this);
 		id++;
 	}
-	
+
 	// Metodos de la funcionalidad asesoramiento de inversion.
 	public static void revisionMetas(Usuario u) {
 		Date proximaFecha = null;
@@ -156,33 +153,33 @@ public class Metas implements Serializable{
 
 	// GETTER Y SETTER
 	public String getNombre() {
-        return nombre;
-    }
+		return nombre;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
 	public double getCantidad() {
 		return cantidad;
 	}
-	
+
 	public void setCantidad(double cantidad) {
 		this.cantidad = cantidad;
 	}
-	
-	public String getFechaNormal() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(fecha);
-    }
-	
-	public Date getFecha() {
-        return fecha;
-    }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
+	public String getFechaNormal() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(fecha);
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 
 	public int getId() {
 		return id;
@@ -199,12 +196,11 @@ public class Metas implements Serializable{
 	public static void setMetasTotales(ArrayList<Metas> metasTotales) {
 		Metas.metasTotales = metasTotales;
 	}
-	
+
 	public Usuario getDueno() {
 		return dueno;
 	}
 
-	
 	public void setDueno(Usuario dueno) {
 		this.dueno = dueno;
 	}

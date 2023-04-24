@@ -1,6 +1,8 @@
 package gestorAplicación;
 
 import java.util.ArrayList;
+import java.time.Instant;
+import java.util.Date;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
@@ -57,6 +59,69 @@ public class Banco extends Estado {
 				}
 			}
 		} return ("No encontramos tu ID registrado en este banco, considera registrarte en nuestro banco.");
+	}
+	
+	// Método funcionalidad Asesoramiento de inversiones
+	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
+		
+		double interes = Math.random() + riesgo;
+		if (interes < Math.random() + riesgo) {
+			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(riesgo-1), Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
+			
+			if (user.getCuentasAsociadas() != null) {
+				double x = user.getCuentasAsociadas().get(0).getSaldo();
+				double cobro = x*interes-x;
+				Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro, Categoria.TRANSPORTE, Date.from(Instant.now()));
+				
+				if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
+					int n = (int) Math.round(interes);
+					return n;
+				}
+				else {
+					int n = (int) Math.round(interes - 2);
+					return n;
+				}
+			}
+		}
+		else {
+			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(user.getBancosAsociados().size()-1), Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
+			
+			if (user.getCuentasAsociadas() != null) {
+				double x = user.getCuentasAsociadas().get(0).getSaldo();
+				double cobro = x*interes-x;
+				Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro, Categoria.TRANSPORTE, Date.from(Instant.now()));
+				
+				if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
+					int n = (int) Math.round(interes + 2);
+					return n;
+				}
+				else {
+					int n = (int) Math.round(interes + 4);
+					return n;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	public static String bancoAsociado(int riesgo, Usuario user) {
+		double interes = Math.random() + riesgo;
+		String asociado = null;
+		
+		if (user.getBancosAsociados().size() >= riesgo) {
+			asociado = "El banco asociado a este portafolio es: " + 
+					user.getBancosAsociados().get(riesgo-1).getNombreb() + 
+					" con una taza de interes del: " + Math.round(interes*100.0)/100.0 + "%";
+		}
+		
+		else {
+			Banco banco = new Banco("Banco de inversiones", riesgo, Estado.getEstadosTotales().get(0));
+			user.asociarBanco(banco);
+			asociado = "El banco asociado a este portafolio es: " + 
+					user.getBancosAsociados().get(user.getBancosAsociados().size()-1).getNombreb() + 
+					" con una taza de interes del: " + Math.round(interes*100.0)/100.0 + "%";
+		}
+		return asociado;
 	}
 	
 	//Gets
