@@ -882,7 +882,6 @@ public final class Main {
 		}
 	}
 	
-	// VER BANCOS USUARIOS TOTALES EN MAIN
 	// VER USUARIOS TOTALES EN MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
@@ -908,7 +907,6 @@ public final class Main {
 	}
 	
 	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN
-	// COMPROBAR SUSCRIPCION DEL USUARIO EN MAIN
 	static void comprobarSuscripcion(Usuario user) {
 		Main.verBancosAsociados();
 		if(opcion == 0) {
@@ -932,7 +930,6 @@ public final class Main {
 	}
 	
 	// VER BANCOS TOTALES EN EL MAIN
-	// VER BANCOS TOTALES EN MAIN
 	static void verBancosTotales() {
 			//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
 			if(Banco.getBancosTotales().size() > 0) {
@@ -956,7 +953,6 @@ public final class Main {
 		}
 	
 	// VER CUENTAS TOTALES EN EL MAIN
-	// VER CUENTAS TOTALES EN MAIN
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
 		if(Cuenta.getCuentasTotales().size() > 0) {
@@ -980,7 +976,6 @@ public final class Main {
 	}
 	
 	// VER MOVIMIENTOS TOTALES EN EL MAIN
-	// VER MOVIMIENTOS TOTALES EN MAIN
 	static void verMovimientosTotales() {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
 		if(Movimientos.getMovimientosTotales().size() > 0) {
@@ -1003,7 +998,6 @@ public final class Main {
 		}
 	}
 		
-	// VER METAS TOTALES EN EL MAIN
 	// VER METAS TOTALES EN MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
@@ -1028,7 +1022,6 @@ public final class Main {
 	}
 	
 	// VER ESTADOS TOTALES EN EL MAIN
-	// VER METAS TOTALES EN MAIN
 	static void verEstadosTotales() {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
 		if(Estado.getEstadosTotales().size() > 0) {
@@ -1051,7 +1044,6 @@ public final class Main {
 		}
 	}		
 	
-	// GUARDAR OBJETOS EN EL MAIN
 	// GUARDAR OBJETOS EN MAIN
 	static void guardarObjetos() throws ParseException {
 		//Guardar objetos
@@ -1158,7 +1150,6 @@ public final class Main {
 		}
 	}
 	
-	// CARGAR OBJETOS EN EL MAIN
 	// CARGAR OBJETOS EN MAIN
 	static void cargarObjetos() throws ParseException {
 		//Guardar objetos
