@@ -1,6 +1,7 @@
 package uiMain;
 
-import baseDatos.*;
+import baseDatos.Serializador;
+import baseDatos.Deserializador;
 import gestorAplicación.Banco;
 import gestorAplicación.Categoria;
 import gestorAplicación.Cuenta;
@@ -576,6 +577,7 @@ public final class Main {
 	
 	// CREAR BANCO DENTRO DEL MAIN
 	static void crearBanco() {
+		System.out.println("");
 		//Creación de un Banco
 		System.out.println("Para crear un banco nuevo, por favor diligencie los siguiente datos: ");
 
@@ -588,9 +590,9 @@ public final class Main {
 		while(true) {
 			if(Estado.getEstadosTotales().size() == 0) {
 				System.out.println("No hay estados registrados en el sistema. Primero debes crear un estado.");
-				System.out.println("");
 				Main.crearEstado();
 			}else {
+				System.out.println("");
 				System.out.println("Seleccione un estado para la operación del banco. La lista de Estados disponibles son: ");
 				for(int i = 1; i < Estado.getEstadosTotales().size() + 1; i++) {
 					System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1).getNombre());
@@ -608,6 +610,7 @@ public final class Main {
 	
 	// CREAR ESTADO DENTRO DEL MAIN
 	static void crearEstado() {
+		System.out.println("");
 		//Creación de un Estado
 		System.out.println("Para crear un estado nuevo, por favor diligencie los siguiente datos: ");
 
@@ -816,8 +819,8 @@ public final class Main {
 		}
 	}
 	
-	// VER CUENTAS EN MAIN
-	static void verCuentas() {
+	// VER CUENTAS ASOCIADAS AL USUARIO EN MAIN
+	static void verCuentasAsociadas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
@@ -839,6 +842,47 @@ public final class Main {
 		}
 	}
 	
+	// VER BANCOS ASOCIADOS AL USUARIO EN MAIN
+	static void verBancosAsociados() {
+		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
+		if(user.getBancosAsociados().size() > 0) {
+			System.out.println("La lista de Bancos asociados por el Usuario " + user.getNombre() + " son: ");
+			for(int i = 1; i < user.getBancosAsociados().size() + 1; i++) {
+				System.out.println(i + ". " + user.getBancosAsociados().get(i - 1).getNombreb());
+			}
+				
+		//SE IMPRIME QUE NO EXISTEN BANCOS ASOCIADOS, SE LE PREGUNTA AL USUARIO SI DESEA ASOCIAR UNO	
+		}else {
+			System.out.print("No hay bancos asociados para este usuario. ¿Deseas asociar uno? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				Main.verBancosTotales();
+				if(opcion == 0) {
+						
+				}else {
+					System.out.println("");
+					Main.verBancosTotales();
+					System.out.print("Seleccione el número de banco para asociar: ");
+					int opcion_banco = Integer.parseInt(sc.nextLine());
+					while(true) {
+						if(opcion_banco < 1 && opcion_banco > Banco.getBancosTotales().size()) {
+							System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
+							opcion_banco = Integer.parseInt(sc.nextLine());
+						}else {
+							System.out.println(user.asociarBanco(Banco.getBancosTotales().get(opcion_banco - 1)));
+							break;
+						}	
+					}	
+				}	
+			}else {
+				System.out.println("Volviendo al menú anterior");
+				opcion = 0;
+				seccion = 2;
+			}	
+		}
+	}
+	
+	// VER BANCOS USUARIOS TOTALES EN MAIN
 	// VER USUARIOS TOTALES EN MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
@@ -863,6 +907,31 @@ public final class Main {
 		}
 	}
 	
+	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN
+	// COMPROBAR SUSCRIPCION DEL USUARIO EN MAIN
+	static void comprobarSuscripcion(Usuario user) {
+		Main.verBancosAsociados();
+		if(opcion == 0) {
+			
+		}else {
+			System.out.println("");
+			Main.verBancosAsociados();
+			System.out.print("Seleccione el número de banco asociado al usuario para comprobar suscripción: ");
+			int opcion_banco = Integer.parseInt(sc.nextLine());
+			while(true) {
+				if(opcion_banco < 1 && opcion_banco > Banco.getBancosTotales().size()) {
+					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
+					opcion_banco = Integer.parseInt(sc.nextLine());
+				}else {
+					System.out.println("");
+					System.out.println(Banco.getBancosTotales().get(opcion_banco - 1).comprobarSuscripción(user));
+					break;
+				}
+			}		
+		}
+	}
+	
+	// VER BANCOS TOTALES EN EL MAIN
 	// VER BANCOS TOTALES EN MAIN
 	static void verBancosTotales() {
 			//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
@@ -881,11 +950,12 @@ public final class Main {
 				}else {
 					System.out.println("Volviendo al menú anterior");
 					opcion = 0;
-					seccion = 1;
+					seccion = 2;
 				}	
 			}
 		}
-
+	
+	// VER CUENTAS TOTALES EN EL MAIN
 	// VER CUENTAS TOTALES EN MAIN
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
@@ -908,7 +978,8 @@ public final class Main {
 			}	
 		}
 	}
-		
+	
+	// VER MOVIMIENTOS TOTALES EN EL MAIN
 	// VER MOVIMIENTOS TOTALES EN MAIN
 	static void verMovimientosTotales() {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
@@ -932,6 +1003,7 @@ public final class Main {
 		}
 	}
 		
+	// VER METAS TOTALES EN EL MAIN
 	// VER METAS TOTALES EN MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
@@ -955,6 +1027,7 @@ public final class Main {
 		}
 	}
 	
+	// VER ESTADOS TOTALES EN EL MAIN
 	// VER METAS TOTALES EN MAIN
 	static void verEstadosTotales() {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
@@ -978,6 +1051,7 @@ public final class Main {
 		}
 	}		
 	
+	// GUARDAR OBJETOS EN EL MAIN
 	// GUARDAR OBJETOS EN MAIN
 	static void guardarObjetos() throws ParseException {
 		//Guardar objetos
@@ -1084,6 +1158,7 @@ public final class Main {
 		}
 	}
 	
+	// CARGAR OBJETOS EN EL MAIN
 	// CARGAR OBJETOS EN MAIN
 	static void cargarObjetos() throws ParseException {
 		//Guardar objetos
@@ -1261,7 +1336,7 @@ public final class Main {
 						+ user.getNombre()
 						+ " a tu gestor de dinero, ¿a qué sección deseas ingresar?"
 						+ "\n1. Mis productos"
-						+ "\n2. Ingresar a Usuarios" //Configuración
+						+ "\n2. Ingresar a Usuarios" 
 						+ "\n3. Mis metas"
 						+ "\n4. Mis movimientos"
 						+ "\n5. Pedir Prestamo"
@@ -1302,7 +1377,7 @@ public final class Main {
 					}
 					// Ver mis cuentas
 					while(opcion == 3) {
-						Main.verCuentas();
+						Main.verCuentasAsociadas();
 						break;
 					}
 					// Volver al menú anterior
@@ -1320,17 +1395,29 @@ public final class Main {
 					// Contenido de Usuario
 					System.out.println("");
 					System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
-							+ "\n5. Salir al menú principal");
+							+ "\n1. Comprobar suscripción del usuario"
+							+ "\n2. Ver mis bancos"
+							+ "\n3. Comprobar Suscripción"
+							+ "\n4. Comprobar Suscripción");
 	
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
+					
+					if(opcion == 1) {
+						Main.comprobarSuscripcion(user);
 	
+					} else if(opcion == 2) {
+						Main.verBancosAsociados();
+						
+					} else if(opcion == 3) {
+						
+					}
 					// Volver al menú anterior
-					if (opcion == 5) {
+					else if (opcion == 4) {
 						seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcion < 1 || opcion > 5) {
+					else {
 						System.out.println("Entrada no valida");
 						continue;
 					}
@@ -1366,7 +1453,7 @@ public final class Main {
 						break;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcionMetas < 1 || opcionMetas>4 ) {
+					if (opcionMetas < 1 || opcionMetas > 4 ) {
 						System.out.println("Entrada no valida");
 						continue;
 					}
@@ -1424,5 +1511,6 @@ public final class Main {
 		listaObjetos.add(Metas.nombreD);
 		
 		Main.bienvenidaApp();
+		
 	}	
 }
