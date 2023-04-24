@@ -56,7 +56,7 @@ public class Cuenta extends Banco{
 	//Funcionalidad de Suscripciones de Usuarios
 	public Object invertirSaldo() {
 		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
-		int rand = (int)((Math.random()) + probabilidad);
+		double rand = (double)((Math.random()) + probabilidad);
 		if(rand >= 1){
 			return (Movimientos.crearMovimiento(this, this.getSaldo() + this.getSaldo() * probabilidad, Categoria.FINANZAS, new Date()));
 		}else {

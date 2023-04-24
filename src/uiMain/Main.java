@@ -1389,7 +1389,7 @@ public final class Main {
 							+ "\n1. Comprobar suscripción del usuario"
 							+ "\n2. Ver mis bancos"
 							+ "\n3. Comprobar Suscripción"
-							+ "\n4. Comprobar Suscripción");
+							+ "\n4. Salir al menú principal");
 	
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
