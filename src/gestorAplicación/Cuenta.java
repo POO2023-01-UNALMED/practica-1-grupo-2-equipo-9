@@ -45,6 +45,13 @@ public class Cuenta extends Banco{
 	}
 	
 	//Métodos
+	public Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
+		return(new Cuenta(banco, tipo, clave, divisa, nombre));
+	}
+	
+	public Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, String nombre) {
+		return(new Cuenta(banco, tipo, clave, nombre));
+	}
 	
 	//Funcionalidad de Suscripciones de Usuarios
 	public Object invertirSaldo() {

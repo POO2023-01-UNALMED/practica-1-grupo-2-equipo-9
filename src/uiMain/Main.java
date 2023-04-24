@@ -64,7 +64,7 @@ public final class Main {
 	}
 		
 	// CREAR UNA META
-		static void crearMeta() throws ParseException {
+	static void crearMeta() throws ParseException {
 			// FORMATO EN EL QUE DESEA CREAR LA META
 			System.out.println("¿En qué formato le gustaría crear su meta?: " + "\n1. NombreMeta, CantidadMeta, FechaMeta"
 					+ "\n2. NombreMeta, CantidadMeta" + "\n3. NombreMeta, FechaMeta" + "\n4. CantidadMeta, FechaMeta");
@@ -288,8 +288,8 @@ public final class Main {
 			}
 		}
 
-		// ELIMINAR UNA META
-		static void eliminarMeta() {
+	// ELIMINAR UNA META
+	static void eliminarMeta() {
 			System.out.println("¿Cual meta deseas eliminar?");
 
 			// Opciones
@@ -325,8 +325,8 @@ public final class Main {
 				}
 		}
 
-		// VER MIS METAS
-		static void verMetas() {
+	// VER MIS METAS
+	static void verMetas() {
 			for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
 
 				String name = user.getMetasAsociadas().get(i).getNombre();
@@ -374,8 +374,8 @@ public final class Main {
 			}
 		}
 
-		// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
-		static void asesorInversiones() throws ParseException {
+	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
+	static void asesorInversiones() throws ParseException {
 
 			System.out.println("¿Cuál es su tolerancia de riesgos?: " + "\n1. Baja" + "\n2. Media" + "\n3. Alta");
 			int riesgo = Integer.parseInt(sc.nextLine());
