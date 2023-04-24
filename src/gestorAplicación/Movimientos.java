@@ -14,6 +14,11 @@ public class Movimientos {
 	private Date fecha;
 	private Cuenta destino;
 	private Cuenta origen;
+	
+	// Funcionalidad de Asesor Inversiones
+	private Usuario owner;
+	public static String nombreCategoria;
+	public static double cantidadCategoria;
 
 	//	Constructores
 	public Movimientos(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
@@ -93,8 +98,127 @@ public class Movimientos {
 			return bancos;
 		}
 	}
+	
+	// METODOS PARA LA FUNCIONALIDAD DE ASESORAMIENTO DE INVERSION
+	public static String analizarCategoria(Usuario u) {
+		int transporte = 0;
+		int comida = 0;
+		int educacion = 0;
+		int finanzas = 0;
+		int otros = 0;
+		int regalos = 0;
+		int salud = 0;
 
+		// Buscar la categoría en la que más dinero ha gastado el usuario
+		for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+			Categoria categoria = u.getMovimientosAsociadas().get(i).getCategoria();
+			if (categoria == Categoria.TRANSPORTE) {
+				transporte++;
+			} else if (categoria == Categoria.COMIDA) {
+				comida++;
+			} else if (categoria == Categoria.EDUCACION) {
+				educacion++;
+			} else if (categoria == Categoria.SALUD) {
+				salud++;
+			} else if (categoria == Categoria.REGALOS) {
+				regalos++;
+			} else if (categoria == Categoria.FINANZAS) {
+				finanzas++;
+			} else if (categoria == Categoria.OTROS) {
+				otros++;
+			}
+		}
 
+		int big = 0;
+		int posicion = 0;
+		ArrayList<Integer> mayor = new ArrayList<Integer>();
+
+		mayor.add(transporte);
+		mayor.add(comida);
+		mayor.add(educacion);
+		mayor.add(salud);
+		mayor.add(regalos);
+		mayor.add(finanzas);
+		mayor.add(otros);
+
+		for (int e = 0; e < mayor.size(); e++) {
+			if (mayor.get(e) > big) {
+				big = mayor.get(e);
+				posicion = e;
+			}
+		}
+
+		if (posicion == 0) {
+			nombreCategoria = "Transporte";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.TRANSPORTE == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		}
+
+		else if (posicion == 1) {
+			nombreCategoria = "Comida";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.COMIDA == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		}
+
+		else if (posicion == 2) {
+			nombreCategoria = "Educacion";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.EDUCACION == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		}
+
+		else if (posicion == 3) {
+			nombreCategoria = "Salud";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.SALUD == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		}
+
+		else if (posicion == 4) {
+			nombreCategoria = "Regalos";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.REGALOS == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		}
+
+		else if (posicion == 5) {
+			nombreCategoria = "Finanzas";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.FINANZAS == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		}
+
+		else if (posicion == 6) {
+			nombreCategoria = "Otros";
+			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
+				if (Categoria.OTROS == u.getMovimientosAsociadas().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+				}
+			}
+		} else {
+			nombreCategoria = "No has hecho ningún movimiento";
+		}
+		return "La categoría en la que más dinero ha gastado es en: " + nombreCategoria + " que suma un total de "
+				+ cantidadCategoria + ".";
+	}
+
+	public static void alerta() {
+
+	}
 
 	//	GETS
 	public static ArrayList<Movimientos> getMovimientosTotales() {
@@ -151,5 +275,13 @@ public class Movimientos {
 
 	public void setOrigen(Cuenta origen) {
 		this.origen = origen;
+	}
+	
+	public Usuario getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Usuario owner) {
+		this.owner = owner;
 	}
 }

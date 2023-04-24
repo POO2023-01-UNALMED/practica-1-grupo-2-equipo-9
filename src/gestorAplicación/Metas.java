@@ -16,15 +16,16 @@ public class Metas implements Serializable{
 	private static final long serialVersionUID = 5L;
 	public static final String nombreD = "Metas";
 	public String nombre;
-	protected double cantidad;
+	private double cantidad;
 	private Date fecha;
-	private int id;
+	public static int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 	public static ArrayList<Metas> mel = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
 	private static ArrayList<Metas> metasTotales = new ArrayList<Metas>();;
+	private Usuario dueno;
 	
 	// FUNCIONALIDAD
-	public static int metaProxima = 0;
+	public static Metas metaProxima;
 	public static String plazo;
 
 	// CONSTRUCTORES	
@@ -34,6 +35,7 @@ public class Metas implements Serializable{
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
 		Metas.getMetasTotales().add(this);
+		id++;
 	}
 	
 	public Metas(String nombre, double cantidad, int id) {
@@ -41,6 +43,7 @@ public class Metas implements Serializable{
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		Metas.getMetasTotales().add(this);
+		id++;
 	}
 	
 	public Metas(String nombre, String fecha, int id) throws ParseException{
@@ -48,6 +51,7 @@ public class Metas implements Serializable{
 		this.nombre = nombre;
 		this.fecha = DATE_FORMAT.parse(fecha);
 		Metas.getMetasTotales().add(this);
+		id++;
 	}
 	
 	public Metas(double cantidad, String fecha, int id) throws ParseException{
@@ -55,73 +59,100 @@ public class Metas implements Serializable{
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
 		Metas.getMetasTotales().add(this);
+		id++;
 	}
 	
-	// METODOS
-	
-	// Crear una meta
-	public static void crearMeta(Metas meta) {
-		mel.add(meta);
-		Serializador.serializar(mel, "Metas");
-	}
-	
-	// Eliminar una meta
-	public void eliminarMeta(int n) {
-		mel.remove(n);
-		Serializador.serializar(mel, "Metas");
-	}
-	
-	// Metodos de la funcionalidad asesoramiento de inversion
-	public static void revisionMetas() {
-		Date proximaFecha = mel.get(0).getFecha();
-		for (int i = 1; i < mel.size()-1; i++) {
-			for (int e = 1; e < mel.size() + 1; e++) {	
-					if (mel.get(e-1).getFecha().compareTo(proximaFecha) < 0) {
-						proximaFecha = mel.get(e-1).getFecha();
-						metaProxima = e-1;
-					}
-					else {
+	// Metodos de la funcionalidad asesoramiento de inversion.
+	public static void revisionMetas(Usuario u) {
+		Date proximaFecha = null;
+
+		// Debemos comparar cada fecha con todas las otras fechas, por eso hay dos
+		// loops.
+		for (int i = 0; i < u.getMetasAsociadas().size(); i++) {
+
+			for (int e = 0; e < u.getMetasAsociadas().size(); e++) {
+
+				int r = u.getMetasAsociadas().get(e).getFecha().compareTo(u.getMetasAsociadas().get(i).getFecha());
+
+				if (proximaFecha != null) {
+
+					if (r < 0) {
+
+						int t = u.getMetasAsociadas().get(e).getFecha().compareTo(proximaFecha);
+
+						if (t < 0) {
+							proximaFecha = u.getMetasAsociadas().get(e).getFecha();
+							metaProxima = u.getMetasAsociadas().get(e);
+						}
+
+						else {
+							continue;
+						}
+					} else {
 						continue;
 					}
+				} else {
+
+					proximaFecha = u.getMetasAsociadas().get(e).getFecha();
+
 				}
+			}
 		}
 	}
-	
-	public static void cambiarFecha(String Fecha) {
+
+	public static void cambioFecha(Metas metaMe, String Fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			Date nuevaFecha = sdf.parse(Fecha);
-			mel.get(metaProxima).setFecha(nuevaFecha);
-			Serializador.serializar(mel, "Metas");
-			plazo(nuevaFecha);
+			metaMe.setFecha(nuevaFecha);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void plazo(Date nuevaFecha) throws ParseException {
+
+	public static void determinarPlazo(Metas me1) throws ParseException {
 		SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-	    Date d1 = sdformat.parse("2024-01-01");
-	    Date d2 = sdformat.parse("2026-01-01");
-		if (nuevaFecha.compareTo(d1) < 0) {
+		Date d1 = sdformat.parse("2024-01-01");
+		Date d2 = sdformat.parse("2026-01-01");
+		if (me1.getFecha().compareTo(d1) < 0) {
 			plazo = "Corto";
-		}
-		else if (nuevaFecha.compareTo(d1) > 0 && nuevaFecha.compareTo(d2) < 0) {
+		} else if (me1.getFecha().compareTo(d1) > 0 && me1.getFecha().compareTo(d2) < 0) {
 			plazo = "Mediano";
-		}
-		else {
+		} else {
 			plazo = "Largo";
 		}
 	}
-	
-	public static void prioridadMetas(Metas me) {
-		mel.remove(mel.size()-1);
-		mel.add(0, me);
-		Serializador.serializar(mel, "Metas");
+
+	public static void prioridadMetas(Usuario u, Metas me) {
+		u.getMetasAsociadas().remove(u.getMetasAsociadas().size() - 1);
+		u.getMetasAsociadas().add(0, me);
 	}
-	
+
 	@Override
-	public void finalize() {}
+	public void finalize() {
+		String name = this.getNombre();
+		double amount = this.getCantidad();
+		Date date = this.getFecha();
+		if (date == null) {
+			System.out.print("La meta con nombre " + this.getNombre()
+//				+ "y cantidad" + this.getCantidad()
+					+ " fue eliminada satisfactoriamente del sistema.");
+		} else if (amount == 0) {
+			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
+					+ " fue eliminada satisfactoriamente del sistema.");
+		} else if (name == null) {
+			System.out.print("La meta para la fecha " + this.getFechaNormal()
+//				+ "y cantidad" + this.getCantidad()
+					+ " fue eliminada satisfactoriamente del sistema.");
+		} else {
+			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
+//				+ "y cantidad" + this.getCantidad()
+					+ " fue eliminada satisfactoriamente del sistema.");
+		}
+
+		// el getCantidad no funciona por ser double. No encontre la manera de
+		// solucionarlo
+	}
 
 	// GETTER Y SETTER
 	public String getNombre() {
@@ -167,5 +198,14 @@ public class Metas implements Serializable{
 
 	public static void setMetasTotales(ArrayList<Metas> metasTotales) {
 		Metas.metasTotales = metasTotales;
+	}
+	
+	public Usuario getDueno() {
+		return dueno;
+	}
+
+	
+	public void setDueno(Usuario dueno) {
+		this.dueno = dueno;
 	}
 }

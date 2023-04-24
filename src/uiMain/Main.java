@@ -64,29 +64,210 @@ public final class Main {
 	}
 		
 	// CREAR UNA META
-	static void crearMeta() {
-		int id = 1;
-		// PRIMERO SE PIDEN LOS DATOS
-		System.out.println("Llene los siguientes campos para crear una meta");
+		static void crearMeta() throws ParseException {
+			// FORMATO EN EL QUE DESEA CREAR LA META
+			System.out.println("¿En qué formato le gustaría crear su meta?: " + "\n1. NombreMeta, CantidadMeta, FechaMeta"
+					+ "\n2. NombreMeta, CantidadMeta" + "\n3. NombreMeta, FechaMeta" + "\n4. CantidadMeta, FechaMeta");
 
-		System.out.println("Nombre de la meta: ");
-		String nombreMe = sc.nextLine();
-		System.out.println("");
-
-		System.out.println("Cantidad de ahorro: ");
-		double cantidadMe = Double.parseDouble(sc.nextLine());
-		System.out.println("");
-
-		System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
-		String fechaMe = sc.nextLine();
-		System.out.println("");
-
-		// Validar entradas
-		if (nombreMe == null || cantidadMe == 0 || fechaMe == null) {
-			System.out.println("Alguna de la entrada de los campos no es válida");
+			int formato = Integer.parseInt(sc.nextLine());
 			System.out.println("");
-			System.out.println("¿Desea volver a comenzar con el proceso?"
-					+ "\nEscriba “y” para sí o “n” para salir al menú de Metas");
+
+			if (formato == 1) {
+				// PRIMERO SE PIDEN LOS DATOS
+				System.out.println("Llene los siguientes campos para crear una meta");
+
+				System.out.println("Nombre de la meta: ");
+				String nombreMe = sc.nextLine();
+				System.out.println("");
+
+				System.out.println("Cantidad de ahorro: ");
+				double cantidadMe = Double.parseDouble(sc.nextLine());
+				System.out.println("");
+
+				System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
+				String fechaMe = sc.nextLine();
+				System.out.println("");
+
+				// Validar entradas
+				if (nombreMe == null || cantidadMe == 0 || fechaMe == null) {
+					System.out.println("Alguna de la entrada de los campos no es válida");
+					System.out.println("");
+					System.out.println("¿Desea volver a comenzar con el proceso?"
+							+ "\nEscriba “y” para sí o “n” para salir al menú de Metas");
+					String c = sc.nextLine();
+					System.out.println("");
+
+					if (c.equals("y") || c.equals("Y")) {
+						opcionMetas = 1;
+					}
+
+					// Salir al menu de metas
+					else if (c.equals("n") || c.equals("N")) {
+						opcionMetas = 0;
+					}
+
+					// Validar entrada
+					else {
+						System.out.println("Entrada no valida");
+						System.out.println("");
+						seccion = 1;
+					}
+				}
+
+				else {
+					Metas meta = new Metas(nombreMe, cantidadMe, fechaMe, Metas.id);
+					user.asociarMeta(meta);
+				}
+
+			}
+
+			if (formato == 2) {
+				// PRIMERO SE PIDEN LOS DATOS
+				System.out.println("Llene los siguientes campos para crear una meta");
+
+				System.out.println("Nombre de la meta: ");
+				String nombreMe = sc.nextLine();
+				System.out.println("");
+
+				System.out.println("Cantidad de ahorro: ");
+				double cantidadMe = Double.parseDouble(sc.nextLine());
+				System.out.println("");
+
+				// Validar entradas
+				if (nombreMe == null || cantidadMe == 0) {
+					System.out.println("Alguna de la entrada de los campos no es válida");
+					System.out.println("");
+					System.out.println("¿Desea volver a comenzar con el proceso?"
+							+ "\nEscriba “y” para sí o “n” para salir al menú de Metas");
+					String c = sc.nextLine();
+					System.out.println("");
+
+					if (c.equals("y") || c.equals("Y")) {
+						opcionMetas = 1;
+					}
+
+					// Salir al menu de metas
+					else if (c.equals("n") || c.equals("N")) {
+						opcionMetas = 0;
+					}
+
+					// Validar entrada
+					else {
+						System.out.println("Entrada no valida");
+						System.out.println("");
+						seccion = 1;
+					}
+				}
+
+				else {
+					Metas meta = new Metas(nombreMe, cantidadMe, Metas.id);
+					user.asociarMeta(meta);
+				}
+
+			}
+
+			if (formato == 3) {
+				// PRIMERO SE PIDEN LOS DATOS
+				System.out.println("Llene los siguientes campos para crear una meta");
+
+				System.out.println("Nombre de la meta: ");
+				String nombreMe = sc.nextLine();
+				System.out.println("");
+
+				System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
+				String fechaMe = sc.nextLine();
+				System.out.println("");
+
+				// Validar entradas
+				if (nombreMe == null || fechaMe == null) {
+					System.out.println("Alguna de la entrada de los campos no es válida");
+					System.out.println("");
+					System.out.println("¿Desea volver a comenzar con el proceso?"
+							+ "\nEscriba “y” para sí o “n” para salir al menú de Metas");
+					String c = sc.nextLine();
+					System.out.println("");
+
+					if (c.equals("y") || c.equals("Y")) {
+						opcionMetas = 1;
+					}
+
+					// Salir al menu de metas
+					else if (c.equals("n") || c.equals("N")) {
+						opcionMetas = 0;
+					}
+
+					// Validar entrada
+					else {
+						System.out.println("Entrada no valida");
+						System.out.println("");
+						seccion = 1;
+					}
+				}
+
+				else {
+					Metas meta = new Metas(nombreMe, fechaMe, Metas.id);
+					user.asociarMeta(meta);
+				}
+			}
+
+			if (formato == 4) {
+				// PRIMERO SE PIDEN LOS DATOS
+				System.out.println("Llene los siguientes campos para crear una meta");
+
+				System.out.println("Cantidad de ahorro: ");
+				double cantidadMe = Double.parseDouble(sc.nextLine());
+				System.out.println("");
+
+				System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
+				String fechaMe = sc.nextLine();
+				System.out.println("");
+
+				// Validar entradas
+				if (cantidadMe == 0 || fechaMe == null) {
+					System.out.println("Alguna de la entrada de los campos no es válida");
+					System.out.println("");
+					System.out.println("¿Desea volver a comenzar con el proceso?"
+							+ "\nEscriba “y” para sí o “n” para salir al menú de Metas");
+					String c = sc.nextLine();
+					System.out.println("");
+
+					if (c.equals("y") || c.equals("Y")) {
+						opcionMetas = 1;
+					}
+
+					// Salir al menu de metas
+					else if (c.equals("n") || c.equals("N")) {
+						opcionMetas = 0;
+					}
+
+					// Validar entrada
+					else {
+						System.out.println("Entrada no valida");
+						System.out.println("");
+						seccion = 1;
+					}
+				}
+
+				else {
+					Metas meta = new Metas(cantidadMe, fechaMe, Metas.id);
+					user.asociarMeta(meta);
+				}
+
+			}
+
+			if (formato != 1 && formato != 2 && formato != 3 && formato != 4) {
+				System.out.println("Alguna de las entradas no es valida");
+			}
+
+			System.out.println("Sus metas son: ");
+
+			// Mostrar las metas del usuario
+			verMetas();
+
+			System.out.println("");
+
+			// Terminar o continuar
+			System.out.println("¿Desea crear otra meta? " + "\nEscriba “y” para sí o “n” para salir al menú de Metas");
 			String c = sc.nextLine();
 			System.out.println("");
 
@@ -107,172 +288,213 @@ public final class Main {
 			}
 		}
 
-		else {
-			// Usamos metoso crearMeta
-			Metas.crearMeta(new Metas(nombreMe, cantidadMe, fechaMe, id));
-		}
+		// ELIMINAR UNA META
+		static void eliminarMeta() {
+			System.out.println("¿Cual meta deseas eliminar?");
 
-		System.out.println("Sus metas son: ");
+			// Opciones
+			for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
+				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre());
+			}
 
-		// Mostrar las metas del usuario
-		for (int i = 0; i < Metas.mel.size(); i++) {
-			System.out.println(i + 1 + ". " + Metas.mel.get(i).getNombre() + ", " + Metas.mel.get(i).getCantidad()
-					+ ", " + Metas.mel.get(i).getFechaNormal());
-		}
-
-		System.out.println("");
-
-		// Terminar o continuar
-		System.out.println("¿Desea crear otra meta? " + "\nEscriba “y” para sí o “n” para salir al menú de Metas");
-		String c = sc.nextLine();
-		System.out.println("");
-
-		if (c.equals("y") || c.equals("Y")) {
-			opcionMetas = 1;
-		}
-
-		// Salir al menu de metas
-		else if (c.equals("n") || c.equals("N")) {
-			opcionMetas = 0;
-		}
-
-		// Validar entrada
-		else {
-			System.out.println("Entrada no valida");
+			int n = Integer.parseInt(sc.nextLine());
 			System.out.println("");
-			seccion = 1;
-		}
-	}
 
-	// ELIMINAR UNA META
-	static void eliminarMeta() {
-		System.out.println("¿Cual meta deseas eliminar?");
+			// llamamos la metodo eliminarMetas
+			user.eliminarMetas(n - 1);
 
-		// Opciones
-		for (int i = 0; i < Metas.mel.size(); i++) {
-			System.out.println(i + 1 + ". " + Metas.mel.get(i).getNombre());
-		}
-
-		int n = Integer.parseInt(sc.nextLine());
-		System.out.println("");
-
-		System.out.println("La meta con nombre " + Metas.mel.get(n - 1).getNombre() + " y cantidad "
-				+ Metas.mel.get(n - 1).getCantidad() + " para la fecha " + Metas.mel.get(n - 1).getFechaNormal()
-				+ " fue eliminada satisfactoriamente del sistema." + "\n");
-
-		// llamamos la metodo eliminarMeta
-		Metas.mel.get(n - 1).eliminarMeta(n - 1);
-
-		// Terminar o continuar
-		System.out.println("¿Desea eliminar otra meta? " + "\nEscriba “y” para sí o “n” para salir al menú de Metas");
-		String c = sc.nextLine();
-		System.out.println("");
-
-		if (c.equals("y") || c.equals("Y")) {
-			opcionMetas = 2;
-		}
-
-		// Salir al menu de metas
-		else if (c.equals("n") || c.equals("N")) {
-			opcionMetas = 0;
-		}
-
-		// Validar entrada
-		else {
-			System.out.println("Entrada no valida");
+			// Terminar o continuar
+			System.out.println("¿Desea eliminar otra meta? " + "\nEscriba “y” para sí o “n” para salir al menú de Metas");
+			String c = sc.nextLine();
 			System.out.println("");
-			seccion = 1;
+
+			if (c.equals("y") || c.equals("Y")) {
+				opcionMetas = 2;
+			}
+
+			// Salir al menu de metas
+			else if (c.equals("n") || c.equals("N")) {
+				opcionMetas = 0;
+			}
+
+			// Validar entrada
+			else {
+				System.out.println("Entrada no valida");
+				System.out.println("");
+				seccion = 1;
+				}
+		}
+
+		// VER MIS METAS
+		static void verMetas() {
+			for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
+
+				String name = user.getMetasAsociadas().get(i).getNombre();
+				double amount = user.getMetasAsociadas().get(i).getCantidad();
+				Date date = user.getMetasAsociadas().get(i).getFecha();
+
+				if (date == null) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getCantidad());
+				}
+				
+				else if (amount == 0) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				} 
+				
+				else if (name == null) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getCantidad() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				} 
+				
+				else {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getCantidad() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
+			}
+
+			System.out.println("");
+
+			// SALIR AL MENU PRINCIPAL
+			System.out.println("Escriba “y” para salir al menú de Metas");
+			String c = sc.nextLine();
+			System.out.println("");
+
+			if (c.equals("y") || c.equals("Y")) {
+				opcionMetas = 0;
+			}
+
+			// Validar entrada
+			else {
+				System.out.println("Entrada no valida");
+				System.out.println("");
+				seccion = 1;
 			}
 		}
 
-	// VER MIS METAS
-	static void verMetas() {
-		for (int i = 0; i < Metas.mel.size(); i++) {
-			System.out.println(i + 1 + ". " + Metas.mel.get(i).getNombre() + ", " + Metas.mel.get(i).getCantidad()
-					+ ", " + Metas.mel.get(i).getFechaNormal());
-		}
+		// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
+		static void asesorInversiones() throws ParseException {
 
-		System.out.println("");
-
-		// SALIR AL MENU PRINCIPAL
-		System.out.println("Escriba “y” para salir al menú de Metas");
-		String c = sc.nextLine();
-		System.out.println("");
-
-		if (c.equals("y") || c.equals("Y")) {
-			opcionMetas = 0;
-		}
-
-		// Validar entrada
-		else {
-			System.out.println("Entrada no valida");
+			System.out.println("¿Cuál es su tolerancia de riesgos?: " + "\n1. Baja" + "\n2. Media" + "\n3. Alta");
+			int riesgo = Integer.parseInt(sc.nextLine());
 			System.out.println("");
-			seccion = 1;
-		}
-	}
 
-	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
-	static void asesorInversiones() throws ParseException {
-		System.out.println("¿Cuál es su tolerancia de riesgos?: " + "\n1. Baja" + "\n2. Media" + "\n3. Alta");
-		int riesgo = Integer.parseInt(sc.nextLine());
-		System.out.println("");
+			System.out.println("¿Qué cantidad piensa invertir?: ");
+			int invertir = Integer.parseInt(sc.nextLine());
+			System.out.println("");
 
-		System.out.println("¿Qué cantidad piensa invertir?: ");
-		int invertir = Integer.parseInt(sc.nextLine());
-		System.out.println("");
-
-		// Revisar que las entradas sean correctas
-
-		Metas.revisionMetas();
-
-		System.out.println("Tienes una meta para una fecha muy próxima: " + Metas.mel.get(Metas.metaProxima).getNombre()
-				+ ", " + Metas.mel.get(Metas.metaProxima).getCantidad() + ", "
-				+ Metas.mel.get(Metas.metaProxima).getFechaNormal()
-				+ "\n¿Desearías cambiar la fecha de esta meta para invertir ese dinero en tu portafolio? (Y/N)");
-		String cambiarFecha = sc.nextLine();
-		System.out.println("");
-
-		if (cambiarFecha.equals("y") || cambiarFecha.equals("Y")) {
-			System.out.println("¿Para que fecha desearías cambiar la meta? (formato dd/MM/yyyy");
-			String nuevaFecha = sc.nextLine();
-			Metas.cambiarFecha(nuevaFecha);
-			System.out.println("La fecha ha sido modificada satisfactoriamente");
-			System.out.println(Metas.plazo);
-
-		}
-
-		else if (cambiarFecha.equals("n") || cambiarFecha.equals("N")) {
-			Metas.plazo(Metas.mel.get(Metas.metaProxima).getFecha());
-
-		}
-
-		else {
-			System.out.println("Entrada no valida");
-		}
-
-		System.out.println("¿Desearías crear una nueva meta para ahorrar e invertir más dinero? (Y/N)");
-		String nuevaMeta = sc.nextLine();
-		System.out.println("");
-
-		if (nuevaMeta.equals("y") || nuevaMeta.equals("Y")) {
-			crearMeta();
-			System.out.println("La meta será puesta como prioridad en tu lista de metas");
-			Metas.prioridadMetas(Metas.mel.get(Metas.mel.size() - 1));
-			for (int i = 0; i < Metas.mel.size(); i++) {
-				System.out.println(i + 1 + ". " + Metas.mel.get(i).getNombre());
+			// Revisar que las entradas sean correctas
+			if (riesgo != 1 && riesgo != 2 && riesgo != 3) {
+				System.out.println("Alguna de las entradas no es válida");
 			}
-		}
 
-		else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {
-			seccion = 0;
-		}
+			Metas.revisionMetas(user);
 
-		else {
-			System.out.println("Entrada no valida");
-		}
+			System.out.println("Tienes una meta para una fecha muy próxima: " + Metas.metaProxima.getNombre() + ", "
+					+ Metas.metaProxima.getCantidad() + ", " + Metas.metaProxima.getFechaNormal()
+					+ "\n¿Desearías cambiar la fecha de esta meta para invertir ese dinero " + "en tu portafolio? (y/n)");
+			String cambiarFecha = sc.nextLine();
+			System.out.println("");
 
-		seccion = 0;
-	}
+			if (cambiarFecha.equals("y") || cambiarFecha.equals("Y")) {
+				System.out.println("¿Para que fecha desearías cambiar la meta? " + "(formato dd/MM/yyyy)");
+				String nuevaFecha = sc.nextLine();
+				Metas.cambioFecha(Metas.metaProxima, nuevaFecha);
+				System.out.println("La fecha ha sido modificada satisfactoriamente");
+				Metas.determinarPlazo(Metas.metaProxima);
+				System.out.println("");
+				System.out.println("Su plazo de inversión basado en las fechas de sus metas es: " + "plazo " + Metas.plazo);
+				System.out.println("");
+			}
+
+			else if (cambiarFecha.equals("n") || cambiarFecha.equals("N")) {
+				Metas.determinarPlazo(Metas.metaProxima);
+				System.out.println("Su plazo de inversión basado en las fechas de sus metas es: " + "plazo " + Metas.plazo);
+				System.out.println("");
+			}
+
+			else {
+				System.out.println("Entrada no valida");
+			}
+
+			System.out.println("Con el fin de aumentar la inversión inicial y hacer una buena "
+					+ "recomendación, analizaremos sus movimientos para encontrar la categoría "
+					+ "en la que más dinero ha gastado.");
+			System.out.println("");
+
+			// Buscamos la categoría en la que el usuario ha gastado más dinero
+			Movimientos.analizarCategoria(user);
+
+			System.out.println("La categoría en la que más dinero ha gastado es en: " + Movimientos.nombreCategoria
+					+ " que suma un total de " + Movimientos.cantidadCategoria + ".");
+			System.out.println("Le sugerimos crear una meta con el fin de ahorrar la misma "
+					+ "cantidad que ha gastado en esta categoría . Si desea crear la meta escriba “y”. En caso contrario escriba “n”.");
+			String nuevaMeta = sc.nextLine();
+			System.out.println("");
+
+			// Crear una meta con los parametros preestablecidos
+			if (nuevaMeta.equals("y") || nuevaMeta.equals("Y")) {
+				System.out.println("El nombre y los ahorros ya están definidos. Tu solo define " + "la fecha que desees.");
+
+				System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
+				String fechaMe = sc.nextLine();
+				System.out.println("");
+
+				// Usamos metodo crearMeta
+				Metas metaCategoria = new Metas(Movimientos.nombreCategoria, Movimientos.cantidadCategoria, fechaMe, 1);
+				
+				user.asociarMeta(metaCategoria);
+				
+				System.out.println("La meta ha sido creada satisfactoriamente.");
+
+				// Priorizamos la meta
+				System.out.println("La meta será puesta como prioridad en tu lista de metas");
+				Metas.prioridadMetas(user, user.getMetasAsociadas().get(user.getMetasAsociadas().size() - 1));
+				verMetas();
+				
+
+				System.out.println("¿Desearía además crear la alarma de ahorro? Esta alarma "
+						+ "se encargará de  dar una alerta cada vez que vayas a hacer un "
+						+ "movimiento en la categoría x. (y/n)");
+
+				Movimientos.alerta();
+				// crear una alerta para cuando se hagan movimientos en cierta categoría. Falta hacerlo
+
+			} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {
+			} else {
+				System.out.println("Entrada no valida");
+			}
+
+//				Banco.retornoPortafolio(riesgo, invertir, Metas.plazo);
+
+			System.out.println("");
+			System.out.println("Finalmente, para mejorar aún más tu inversión, te recomendamos "
+					+ "hacer un préstamo con nuestra funcionalidad “Pedir un préstamo’’. "
+					+ "\n¿Deseas hacer el préstamo? (y/n)");
+
+			String prestamo = sc.nextLine();
+			if (prestamo.equals("y") || prestamo.equals("Y")) {
+
+				funcionalidadPrestamo(user);
+
+			} else if (prestamo.equals("n") || prestamo.equals("N")) {
+				System.out.println("¿Deseas hacer el préstamo pero los intereses de los bancos te parecen muy altos?(y/n)");
+				String prestamoI = sc.nextLine();
+				if (prestamoI.equals("y") || prestamoI.equals("Y")) {
+					System.out.println("Tenemos la solución para ti, aunque no sea la más correcta…");
+
+//						Usuario.gotaGota();
+
+				}
+			} else {
+				System.out.println("Entrada no valida");
+			}
+			System.out.println("");
+			System.out.println("Ha sido un placer asesorarte en este proceso, "
+					+ "espero que nuestra recomendación haya sido de ayuda");
+		}
 
 	// FUNCIONALIDAD COMPRA DE CARTERA
 	static void compraCartera(Usuario usuario) {
@@ -333,7 +555,7 @@ public final class Main {
 	}
 	
 	// INGRESAR USUARIO DENTRO DEL MAIN
-	static void ingresarUsuario() {
+	static void ingresarUsuario() throws ParseException {
 		System.out.print("Ingrese nombre de usuario o correo electrónico: ");
 		String usuario = sc.nextLine();
 		System.out.print("Ingrese su contraseña: ");
@@ -711,7 +933,7 @@ public final class Main {
 	}
 		
 	// VER METAS TOTALES EN MAIN
-	static void verMetasTotales() {
+	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
 		if(Metas.getMetasTotales().size() > 0) {
 			System.out.println("La lista de Metas son: ");
@@ -757,7 +979,7 @@ public final class Main {
 	}		
 	
 	// GUARDAR OBJETOS EN MAIN
-	static void guardarObjetos() {
+	static void guardarObjetos() throws ParseException {
 		//Guardar objetos
 		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
@@ -863,7 +1085,7 @@ public final class Main {
 	}
 	
 	// CARGAR OBJETOS EN MAIN
-	static void cargarObjetos() {
+	static void cargarObjetos() throws ParseException {
 		//Guardar objetos
 		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
@@ -975,7 +1197,7 @@ public final class Main {
 	}
 	
 	// INTERFAZ DE BIENVENIDA EN MAIN
-	static void bienvenidaApp() {
+	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
 			 * ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
@@ -1193,7 +1415,7 @@ public final class Main {
 	static int opcion = 0;
 	static Scanner sc = new Scanner(System.in);
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws ParseException{
 		listaObjetos.add(Estado.nombreD);
 		listaObjetos.add(Cuenta.nombreD);
 		listaObjetos.add(Usuario.nombreD);

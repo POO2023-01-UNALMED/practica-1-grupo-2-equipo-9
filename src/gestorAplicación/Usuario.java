@@ -22,6 +22,8 @@ public class Usuario extends Banco {
 	private Boolean confiabilidad;
 	private Double deuda;
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
+	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
+	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
 	
 	//Constructor
 	
@@ -93,6 +95,26 @@ public class Usuario extends Banco {
 		}
 	}
 	
+	public String asociarMeta(Metas meta) {
+		if(Metas.getMetasTotales().contains(meta)) {
+			meta.setDueno(this);
+			this.getMetasAsociadas().add(meta);
+			return("La meta " + meta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra tu meta ó debes verificar que la meta que quieres asociar exista" );
+		}
+	}
+	
+	public String asociarMovimiento(Movimientos movimiento) {
+		if(Movimientos.getMovimientosTotales().contains(movimiento)) {
+			movimiento.setOwner(this);
+			this.getMovimientosAsociadas().add(movimiento);
+			return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra el movimiento. Por favor asegurese de que el movimiento se haya realizado con éxito" );
+		}
+	}
+	
 	public Object mostrarBancosAsociados() {
 		ArrayList<Banco> bancos = this.getBancosAsociados();
 		if(bancos.size() != 0) {
@@ -148,6 +170,11 @@ public class Usuario extends Banco {
 		return cuentasEndeudadas;
 	}
 	
+	public void eliminarMetas(int n) {
+		this.getMetasAsociadas().remove(n);
+		Metas.getMetasTotales().remove(n);
+	}
+	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
 	
@@ -178,5 +205,9 @@ public class Usuario extends Banco {
 	public  void setConfiabiliad(Boolean confiabilidad){this.confiabilidad = confiabilidad;}
 	public Double getDeuda(){return deuda;}
 	public  void setDeuda(Double deuda){this.deuda = deuda;}
+	public ArrayList<Metas> getMetasAsociadas() {return metasAsociadas;}
+	public void setMetasAsociadas(ArrayList<Metas> metasAsociadas) {this.metasAsociadas = metasAsociadas;}
+	public ArrayList<Movimientos> getMovimientosAsociadas() {return movimientosAsociadas;}
+	public void setMovimientosAsociadas(ArrayList<Movimientos> movimientosAsociadas) {this.movimientosAsociadas = movimientosAsociadas;}
 	
 }
