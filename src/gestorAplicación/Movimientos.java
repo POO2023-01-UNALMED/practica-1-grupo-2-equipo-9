@@ -101,6 +101,16 @@ public class Movimientos {
 	//Métodos para funcionalidad cambio de divisa
 	public void facilitarInformación(Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion) {
 		for (int i = 0; i < titular.getBancosAsociados().size() ; i++) {
+			//int totalOrigen=0;
+			titular.getBancosAsociados().get(i).setAsociado(true);
+		}
+		String cadena= divisaOrigen.name() + divisaDevolucion.name();
+		for (int j = 0; j < Banco.getBancosTotales().size(); j++) {
+			ArrayList<Banco> elBanco =  Banco.getBancosTotales().get(j).getTasas();
+			for (int k = 0; j< elBanco.size(); k++ )
+			if (cadena.equals(Banco.getBancosTotales().get(j).getTasas())) {
+				
+			}
 		}
 	}
 	

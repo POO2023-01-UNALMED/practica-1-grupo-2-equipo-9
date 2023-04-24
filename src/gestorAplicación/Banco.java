@@ -8,16 +8,18 @@ public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
 	private static ArrayList<Banco> bancosTotales = new ArrayList<Banco>();
 	public static final String nombreD = "Bancos";
-	private String nombreb;
+	private String nombre;
 	private double comision;
 	private Divisas divisa;
 	private Estado estadoAsociado;
 	private double prestamo;
+	private boolean asociado = false;
+	private static ArrayList<Banco> clave = new ArrayList<Banco>
 	
 	//Constructor
 	
-	public Banco(String nombreb, double comision, Estado estado) {
-		this.nombreb = nombreb;
+	public Banco(String nombre, double comision, Estado estado) {
+		this.nombre = nombre;
 		this.setEstadoAsociado(estado);
 		this.comision = comision + this.getTasa_impuestos();
 		bancosTotales.add(this);
@@ -29,12 +31,16 @@ public class Banco extends Estado {
 	public String mostrarBancosTotales() {
 		if(Banco.bancosTotales.size() != 0) { 
 			for (int i = 0; i < Banco.bancosTotales.size();) { 
-				return(i+1 + ". " + Banco.bancosTotales.get(i).getNombreb()); 
+				return(i+1 + ". " + Banco.bancosTotales.get(i).getNombre()); 
 				}
 		}else { 
 			return("No hay bancos en este momento, considere asociar bancos"); 
 			}
 		return ("");
+	}
+	public String mostrarClaves(int k) {
+		String clave="";
+		return clave;
 	}
 	
 	//Funcionalidad de Suscripciones de Usuarios
@@ -128,8 +134,8 @@ public class Banco extends Estado {
 	public double getComision() {
 		return comision;
 	}
-	public String getNombreb() {
-		return nombreb;
+	public String getNombre() {
+		return nombre;
 	}
 
 	public static ArrayList<Banco> getBancosTotales() {
@@ -150,8 +156,8 @@ public class Banco extends Estado {
 	public void setComision(double comision) {
 		this.comision = comision;
 	}
-	public void setNombreb(String nombreb) {
-		this.nombreb = nombreb;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public static void setBancosTotales(ArrayList<Banco> bancosTotales) {
@@ -163,4 +169,9 @@ public class Banco extends Estado {
 	}
 
 	public void setPrestamo(Double prestamo){this.prestamo = prestamo;}
+	public boolean isAsociado() {
+		return asociado;
+	}
+	public void setAsociado(boolean asociado) {
+		this.asociado = asociado;
 }
