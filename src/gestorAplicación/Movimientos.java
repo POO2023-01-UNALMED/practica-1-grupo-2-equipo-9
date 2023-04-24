@@ -98,6 +98,11 @@ public class Movimientos {
 			return bancos;
 		}
 	}
+	//Métodos para funcionalidad cambio de divisa
+	public void facilitarInformación(Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion) {
+		for (int i = 0; i < titular.getBancosAsociados().size() ; i++) {
+		}
+	}
 	
 	// METODOS PARA LA FUNCIONALIDAD DE ASESORAMIENTO DE INVERSION
 	public static String analizarCategoria(Usuario u) {
