@@ -16,6 +16,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import java.time.Instant;
+import java.util.Date;
 
 public final class Main {
 	
@@ -374,6 +376,25 @@ public final class Main {
 				seccion = 1;
 			}
 		}
+
+
+	//CREAR MOVIMIENTO EN MAIN
+	static void crearMovimiento(){
+		System.out.println("Para realizar un MOVIMIENTO por favor ingresar los siguientes datos:");
+		System.out.println("Ingrese el id de la cuenta origen:");
+		int origen = Integer.parseInt(sc.nextLine());
+		System.out.println("Ingrese el id la cuenta destino:");
+		int destino = Integer.parseInt(sc.nextLine());
+		System.out.print("Ingrese la cantidad a enviar:$");
+		double cantidad = Double.parseDouble(sc.nextLine());
+		System.out.println("selecione la categoria del movimiento");
+		for(int i =0;i<Categoria.values().length;i++){
+			System.out.println(i+"-"+Categoria.values()[i]);
+		}
+		int numCategoria = Integer.parseInt(sc.nextLine());
+		Categoria categoria = Categoria.values()[numCategoria];
+		System.out.println(Movimientos.crearMovimiento(origen,destino,cantidad,categoria,Date.from(Instant.now())));
+	}
 
 	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
 	static void asesorInversiones() throws ParseException {

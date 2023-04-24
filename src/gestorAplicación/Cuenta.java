@@ -65,7 +65,7 @@ public class Cuenta extends Banco{
 	}
 
 	//	Funcionalidad Prestamo
-	public static ArrayList<> comprobarPrestamo(ArrayList<Cuenta> cuentas){
+	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
 		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
 		ArrayList<String> bancos = new ArrayList<String>();
 

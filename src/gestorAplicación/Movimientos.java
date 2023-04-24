@@ -2,6 +2,7 @@ package gestorAplicación;
 
 import java.util.Date;
 import java.util.ArrayList;
+import gestorAplicación.Cuenta;
 
 public class Movimientos {
 	public static final String nombreD = "Movimientos";
@@ -55,7 +56,36 @@ public class Movimientos {
 			return("Debes verificar que las cuentas origen y/o destino existan");
 		}
 	}
-	
+
+	public static Object crearMovimiento(int origen, int destino, double cantidad, Categoria categoria, Date fecha) {
+		Cuenta cuentaOrigen = null;
+		Cuenta cuentaDestino = null;
+		ArrayList<Cuenta> cuentasTotales = Cuenta.getCuentasTotales();
+		for(int i =0;i<cuentasTotales.size();i++){
+			if(cuentasTotales.get(i).getId() == origen){
+				cuentaOrigen = cuentasTotales.get(i);
+			}else if(cuentasTotales.get(i).getId() == destino){
+				cuentaDestino = cuentasTotales.get(i);
+			}
+		}
+
+		if(cuentaOrigen != null && cuentaDestino != null){
+			if (cuentaOrigen.getSaldo() < cantidad) {
+				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + cuentaOrigen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
+			} else {
+				return (new Movimientos(cuentaOrigen, cuentaDestino, cantidad, categoria, fecha));
+			}
+		}else {
+			return("Debes verificar que las cuentas origen y/o destino existan");
+		}
+	}
+
+
+	public String toString() {
+		return("Movimiento creado\nFecha:"+getFecha()+"\nID:"+getId()+"\nOrigen:"+getOrigen().getId()+"\nDestino:"+getDestino().getId()+"\nCantidad:"+
+				getCantidad()+"\nCategoria:"+getCategoria().name());
+	}
+
 	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
 			return (new Movimientos(destino, cantidad, categoria, fecha));
