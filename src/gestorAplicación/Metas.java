@@ -7,8 +7,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import baseDatos.Deserializador;
-import baseDatos.Serializador;
 
 public class Metas implements Serializable {
 	private static final long serialVersionUID = 5L;
