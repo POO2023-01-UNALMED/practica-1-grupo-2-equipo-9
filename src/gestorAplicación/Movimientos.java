@@ -56,6 +56,14 @@ public class Movimientos {
 			return("Debes verificar que las cuentas origen y/o destino existan");
 		}
 	}
+	
+	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+		if(Cuenta.getCuentasTotales().contains(destino)){
+			return (new Movimientos(destino, cantidad, categoria, fecha));
+		}else {
+			return("Debes verificar que las cuenta de destino exista");
+		}
+	}
 
 	public static Object crearMovimiento(int origen, int destino, double cantidad, Categoria categoria, Date fecha) {
 		Cuenta cuentaOrigen = null;
@@ -84,14 +92,6 @@ public class Movimientos {
 	public String toString() {
 		return("Movimiento creado\nFecha:"+getFecha()+"\nID:"+getId()+"\nOrigen:"+getOrigen().getId()+"\nDestino:"+getDestino().getId()+"\nCantidad:"+
 				getCantidad()+"\nCategoria:"+getCategoria().name());
-	}
-
-	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
-		if(Cuenta.getCuentasTotales().contains(destino)){
-			return (new Movimientos(destino, cantidad, categoria, fecha));
-		}else {
-			return("Debes verificar que las cuenta de destino exista");
-		}
 	}
 
 	//Métodos
@@ -128,6 +128,7 @@ public class Movimientos {
 			return bancos;
 		}
 	}
+	
 	//Métodos para funcionalidad cambio de divisa
 	public void facilitarInformación(Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion) {
 		for (int i = 0; i < titular.getBancosAsociados().size() ; i++) {

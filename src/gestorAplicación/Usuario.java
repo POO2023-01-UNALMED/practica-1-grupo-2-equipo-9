@@ -86,12 +86,12 @@ public class Usuario extends Banco {
 	}
 	
 	public String asociarCuenta(Cuenta cuenta) {
-		if(Cuenta.getCuentasTotales().contains(cuenta) && bancosAsociados.contains(cuenta.getBanco()) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
+		if(Cuenta.getCuentasTotales().contains(cuenta) && !cuentasAsociadas.contains(cuenta) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
 			cuenta.setTitular(this);
 			this.getCuentasAsociadas().add(cuenta);
 			return("La cuenta " + cuenta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra tu cuenta ó debes verificar que la cuenta que quieres asociar pertenece a la lista de bancos permitidos para el usuario: " + this.mostrarBancosAsociados() + " ó debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario " + this.getLimiteCuentas());
+			return("No se encuentra tu cuenta, debes verificar que la cuenta que quieres asociar no haya sido asociada antes ó debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario: " + this.getLimiteCuentas());
 		}
 	}
 	
@@ -123,6 +123,15 @@ public class Usuario extends Banco {
 			return ("Primero debes asociar bancos");
 		}
 	}
+	
+//	public Object mostrarCuentasAsociadas() {
+//		ArrayList<Cuenta> cuentas = this.getCuentasAsociadas();
+//		if(cuentas.size() != 0) {
+//			return cuentas;
+//		}else {
+//			return ("Primero debes asociar cuentas");
+//		}
+//	}
 	
 	public static Object verificarCredenciales(String nombre, String contraseña) {
 		for (Usuario usuario: usuariosTotales) {
@@ -209,5 +218,4 @@ public class Usuario extends Banco {
 	public void setMetasAsociadas(ArrayList<Metas> metasAsociadas) {this.metasAsociadas = metasAsociadas;}
 	public ArrayList<Movimientos> getMovimientosAsociadas() {return movimientosAsociadas;}
 	public void setMovimientosAsociadas(ArrayList<Movimientos> movimientosAsociadas) {this.movimientosAsociadas = movimientosAsociadas;}
-	
 }

@@ -29,7 +29,7 @@ public class Cuenta extends Banco{
 		this.nombre = nombre;
 		this.banco = banco;	
 		cuentasTotales.add(this);
-	}
+	}	
 	
 	public Cuenta(Banco banco, Tipo tipo, int clave, String nombre) {;
 		this.setTipo(tipo);
@@ -87,7 +87,8 @@ public class Cuenta extends Banco{
 		}
 	}
 
-	public static void eliminarCuenta(Cuenta cuenta, Usuario user) {//¿Validación?
+	//REVISAR
+	public static void eliminarCuenta(Cuenta cuenta, Usuario user) {
 		Scanner sc = new Scanner(System.in);
 		if (cuenta.saldo != 0.0d) {
 			System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -101,11 +102,11 @@ public class Cuenta extends Banco{
 				if (decision_saldo == 1) {
 					System.out.println("Ingrese los datos de la cuenta a la cual desea transferir su saldo:");
 					//Lectura datos, posible modificación según método crearMovimiento: Cuenta destino, int id,double cantidad,Categoria categoria, Date fecha)
-					System.out.println("Cuenta destino: ");
+					System.out.print("Nombre de la cuenta destino: ");
 					String destino = sc.nextLine();
 					for(Cuenta dest : Cuenta.getCuentasTotales()) {
 						if(destino == dest.getNombre()) {
-							Movimientos.crearMovimiento(cuenta, dest, cuenta.getSaldo(), Categoria.OTROS, new Date());
+							System.out.println(Movimientos.crearMovimiento(cuenta, dest, cuenta.getSaldo(), Categoria.OTROS, new Date()))
 							break;
 						}
 					}
@@ -113,11 +114,11 @@ public class Cuenta extends Banco{
 					System.out.println("A cual de sus cuentas desea transferir su saldo:");
 					ArrayList<Cuenta> cuentas = cuenta.getTitular().getCuentasAsociadas();
 					for (int i = 1; i == cuentas.size() + 1; i++) {
-						System.out.println(i + ". " + cuentas.get(i).getNombre());
+						System.out.println(i + ". " + cuentas.get(i - 1).getNombre());
 					}
 					int decision_cuenta = sc.nextInt();
 					//Lectura de la opcion con decision_cuenta
-					Movimientos.crearMovimiento(cuenta, cuentas.get(decision_cuenta), cuenta.getSaldo(), Categoria.OTROS, new Date());
+					Movimientos.crearMovimiento(cuenta, cuentas.get(decision_cuenta - 1), cuenta.getSaldo(), Categoria.OTROS, new Date());
 					break;
 				} else {
 					System.out.println("Opción no válida. Inténtelo de nuevo");
@@ -174,7 +175,6 @@ public class Cuenta extends Banco{
 	public static ArrayList<Cuenta> getCuentasTotales(){
 		return Cuenta.cuentasTotales;
 	}
-	
 	public static void setCuentasTotales(ArrayList<Cuenta> cuentasTotales){
 		Cuenta.cuentasTotales = cuentasTotales;
 	}
@@ -245,7 +245,6 @@ public class Cuenta extends Banco{
 	public int getClave() {
 		return clave;
 	}
-
 	public void setClave(int clave) {
 		this.clave = clave;
 	}	

@@ -65,7 +65,7 @@ public final class Main {
 		}
 	}
 		
-	// CREAR UNA META
+	// CREAR UNA META EN EL MAIN
 	static void crearMeta() throws ParseException {
 		// FORMATO EN EL QUE DESEA CREAR LA META
 		System.out.println("¿En qué formato le gustaría crear su meta?: " + "\n1. NombreMeta, CantidadMeta, FechaMeta"
@@ -290,7 +290,7 @@ public final class Main {
 		}
 	}
 
-	// ELIMINAR UNA META
+	// ELIMINAR UNA META EN EL MAIN
 	static void eliminarMeta() {
 		System.out.println("¿Cual meta deseas eliminar?");
 
@@ -327,7 +327,7 @@ public final class Main {
 		}
 	}
 
-	// VER MIS METAS
+	// VER MIS METAS EN EL MAIN
 	static void verMetas() {
 		for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
 
@@ -358,7 +358,7 @@ public final class Main {
 		}
 	}
 
-	// CREAR MOVIMIENTO EN MAIN
+	// CREAR MOVIMIENTO EN EL MAIN
 	static void crearMovimiento() {
 		System.out.println("Para realizar un MOVIMIENTO por favor ingresar los siguientes datos:");
 		System.out.println("Ingrese el id de la cuenta origen:");
@@ -590,7 +590,7 @@ public final class Main {
 			
 		}
 	
-	// CREAR USUARIO DENTRO DEL MAIN
+	// CREAR USUARIO DENTRO EN EL MAIN
 	static void crearUsuario() {
 		//Creación de un Usuario
 		System.out.println("Para crear un usuario nuevo, por favor diligencie los siguiente datos: ");
@@ -630,7 +630,7 @@ public final class Main {
 		user = new Usuario(nombreUsuario, correoElectronico, contrasena);
 	}
 	
-	// INGRESAR USUARIO DENTRO DEL MAIN
+	// INGRESAR USUARIO DENTRO EN EL MAIN
 	static void ingresarUsuario() throws ParseException {
 		System.out.print("Ingrese nombre de usuario o correo electrónico: ");
 		String usuario = sc.nextLine();
@@ -650,11 +650,11 @@ public final class Main {
 		}
 	}
 	
-	//INVERTIR SALDO DE CUENTA DEL MAIN
+	//INVERTIR SALDO DE CUENTA EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
 	static void invertirSaldoUsuario(Usuario user) {
-		Main.verCuentasAsociadas();
-		if(opcion == 0) {
-			
+		if(user.getCuentasAsociadas().size() == 0) {
+			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
+			seccion = 1;
 		}else {
 			System.out.println("");
 			Main.verCuentasAsociadas();
@@ -664,12 +664,17 @@ public final class Main {
 				if(opcion_banco < 1 && opcion_banco > user.getCuentasAsociadas().size()) {
 					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
 					opcion_banco = Integer.parseInt(sc.nextLine());
+				}else if(user.getCuentasAsociadas().get(opcion_banco - 1).getSaldo() <= 0){
+					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
+					System.out.println("Para invertir saldo debemos comprobar que el saldo de la cuenta sea diferente de cero." + "El saldo para la cuenta " + c.getNombre() + " es de " + c.getSaldo());
+					System.out.println("Volviendo al menú anterior.");
+					break;	
 				}else {
 					System.out.println("");
 					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
-						System.out.println("La inversión ha sido exitosa y la cantidad de saldo ganado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) inversion).getCantidad());
+						System.out.println("La inversión ha sido exitosa y la cantidad de saldo acumulado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) inversion).getCantidad());
 						break;
 					}else {
 						System.out.println(inversion);
@@ -680,7 +685,39 @@ public final class Main {
 		}
 	}
 	
-	// CREAR BANCO DENTRO DEL MAIN
+	//CONSIGNAR COMO USUARIO EN SALDO DE CUENTA EN EL MAIN
+	static void consignarSaldoCuenta(Usuario user) {
+		if(user.getCuentasAsociadas().size() == 0) {
+			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
+			seccion = 1;
+		}else {
+			System.out.println("");
+			Main.verCuentasAsociadas();
+			System.out.print("Seleccione el número de cuenta asociada al usuario para realizar la consignación de saldo: ");
+			int opcion_banco = Integer.parseInt(sc.nextLine());
+			while(true) {
+				if(opcion_banco < 1 && opcion_banco > user.getCuentasAsociadas().size()) {
+					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
+					opcion_banco = Integer.parseInt(sc.nextLine());
+				}else {
+					System.out.println("");
+					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
+					System.out.print("Ingrese el monto de su consignación de saldo(En formato double): ");
+					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
+					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
+					if(saldo_movimiento instanceof Movimientos) {
+						System.out.println("La consignación de saldo ha sido exitosa, la cantidad de saldo consignado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) saldo_movimiento).getCantidad());
+						break;
+					}else {
+						System.out.println(saldo_movimiento);
+						break;
+					}
+				}
+			}		
+		}
+	}	
+	
+	// CREAR BANCO DENTRO EN EL MAIN
 	static void crearBanco() {
 		System.out.println("");
 		//Creación de un Banco
@@ -713,7 +750,7 @@ public final class Main {
 		}
 	}
 	
-	// CREAR ESTADO DENTRO DEL MAIN
+	// CREAR ESTADO DENTRO EN EL MAIN
 	static void crearEstado() {
 		System.out.println("");
 		//Creación de un Estado
@@ -736,7 +773,7 @@ public final class Main {
 		System.out.println("Estado creado con éxito");
 	}	
 
-	// ACCESO ADMINISTRATIVO EN MAIN
+	// ACCESO ADMINISTRATIVO EN EL MAIN
 	static void accesoAdministrativo() {
 		System.out.print("Inserta la contraseña de administrador (Es admin): ");
 		String contrasena = sc.nextLine();
@@ -844,7 +881,7 @@ public final class Main {
 		}
 	}	
 	
-	// CREAR CUENTA EN MAIN
+	// CREAR CUENTA EN EL MAIN
 	static void crearCuenta() {
 		//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
 		//LA INFORMACIÓN SOLICITADA SE DE ENTER
@@ -862,11 +899,11 @@ public final class Main {
 
 			System.out.println("Cuál es el tipo que quiere seleccionar para su cuenta? La lista de Tipos disponibles son: ");
 			for(int i = 1; i < Tipo.getTipos().size() + 1; i++) {
-				System.out.println(i + ". " + Tipo.getTipos().get(i-1));
+				System.out.println(i + ". " + Tipo.getTipos().get(i - 1));
 			}
 			
 			int tipo_op = Integer.parseInt(sc.nextLine());
-			Tipo tipo_cuenta = Tipo.getTipos().get(tipo_op);
+			Tipo tipo_cuenta = Tipo.getTipos().get(tipo_op - 1);
 
 			System.out.print("Clave de la cuenta (Recuerde que será una combinación de 4 números): ");
 			int clave_cuenta = Integer.parseInt(sc.nextLine());
@@ -878,11 +915,11 @@ public final class Main {
 			System.out.println("");
 			System.out.println("¿Cuál es la divisa que quiere seleccionar para su cuenta? La lista de Divisas disponibles son: ");
 			for(int i = 1; i < Divisas.getDivisas().size() + 1; i++) {
-				System.out.println(i + ". " + Divisas.getDivisas().get(i-1));
+				System.out.println(i + ". " + Divisas.getDivisas().get(i - 1));
 			}
 			
 			int divisas_op = Integer.parseInt(sc.nextLine());
-			Divisas divisas_cuenta = Divisas.getDivisas().get(divisas_op);
+			Divisas divisas_cuenta = Divisas.getDivisas().get(divisas_op - 1);
 			
 			System.out.println("");
 			System.out.print("Nombre de la Cuenta: ");
@@ -893,7 +930,7 @@ public final class Main {
 		}
 	}
 	
-	// ELIMINAR CUENTA EN MAIN
+	// ELIMINAR CUENTA EN EL MAIN
 	static void eliminarCuenta() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -904,10 +941,18 @@ public final class Main {
 			System.out.println("");
 			System.out.print("Inserte el numero de la cuenta que desea eliminar: ");
 			int cuentaOp = Integer.parseInt(sc.nextLine());
-			for(int i = 0; i < user.getCuentasAsociadas().size(); i++) {
-				if(user.getCuentasAsociadas().get(cuentaOp - 1) == user.getCuentasAsociadas().get(i)) {
-					Cuenta.eliminarCuenta(user.getCuentasAsociadas().get(i), user);
-					System.gc();
+			while(true) {
+				if(cuentaOp < 1 || cuentaOp > user.getCuentasAsociadas().size()) {
+					System.out.print("Inténtelo de nuevo. Inserte el numero de la cuenta que desea eliminar: ");
+					cuentaOp = Integer.parseInt(sc.nextLine());
+				}else {
+					for(int i = 0; i < user.getCuentasAsociadas().size(); i++) {
+						if(user.getCuentasAsociadas().get(cuentaOp - 1) == user.getCuentasAsociadas().get(i)) {
+							Cuenta.eliminarCuenta(user.getCuentasAsociadas().get(i), user);
+							System.gc();
+							break;
+						}
+					}	
 				}
 			}
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -924,7 +969,7 @@ public final class Main {
 		}
 	}
 	
-	// VER CUENTAS ASOCIADAS AL USUARIO EN MAIN
+	// VER CUENTAS ASOCIADAS AL USUARIO EN EL MAIN
 	static void verCuentasAsociadas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -941,13 +986,12 @@ public final class Main {
 				Main.crearCuenta();
 			}else {
 				System.out.println("Volviendo al menú anterior");
-				opcion = 0;
 				seccion = 1;
 			}	
 		}
 	}
 	
-	// VER BANCOS ASOCIADOS AL USUARIO EN MAIN
+	// VER BANCOS ASOCIADOS AL USUARIO EN EL MAIN
 	static void verBancosAsociados() {
 		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
 		if(user.getBancosAsociados().size() > 0) {
@@ -987,7 +1031,7 @@ public final class Main {
 		}
 	}
 	
-	// VER USUARIOS TOTALES EN MAIN
+	// VER USUARIOS TOTALES EN EL MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
 		if(Usuario.getUsuariosTotales().size() > 0) {
@@ -1011,11 +1055,11 @@ public final class Main {
 		}
 	}
 	
-	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN
+	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
 	static void comprobarSuscripcion(Usuario user) {
-		Main.verBancosAsociados();
-		if(opcion == 0) {
-			
+		if(user.getBancosAsociados().size() == 0) {
+			System.out.println("Primero debes asociar bancos. Volviendo al menú anterior");
+			seccion = 1;
 		}else {
 			System.out.println("");
 			Main.verBancosAsociados();
@@ -1103,7 +1147,7 @@ public final class Main {
 		}
 	}
 		
-	// VER METAS TOTALES EN MAIN
+	// VER METAS TOTALES EN EL MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
 		if(Metas.getMetasTotales().size() > 0) {
@@ -1149,7 +1193,7 @@ public final class Main {
 		}
 	}		
 	
-	// GUARDAR OBJETOS EN MAIN
+	// GUARDAR OBJETOS EN EL MAIN
 	static void guardarObjetos() throws ParseException {
 		//Guardar objetos
 		while(true) {
@@ -1255,7 +1299,7 @@ public final class Main {
 		}
 	}
 	
-	// CARGAR OBJETOS EN MAIN
+	// CARGAR OBJETOS EN EL MAIN
 	static void cargarObjetos() throws ParseException {
 		//Guardar objetos
 		while(true) {
@@ -1367,12 +1411,12 @@ public final class Main {
 		}
 	}
 	
-	// ASOCIAR CUENTA CON USUARIO EN MAIN
+	// ASOCIAR CUENTA CON USUARIO EN EL MAIN
 	static void asociarCuentaUsuario(Cuenta cuenta) {
 		System.out.println(user.asociarCuenta(cuenta));
 	}
 	
-	// INTERFAZ DE BIENVENIDA EN MAIN
+	// INTERFAZ DE BIENVENIDA EN EL MAIN
 	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
@@ -1451,7 +1495,7 @@ public final class Main {
 				seccion = Integer.parseInt(sc.nextLine());
 					
 				// COMPROBAR QUE LA SECCION PUEDA EJECUTARSE
-				if (seccion < 1 || seccion > 6) {
+				if (seccion < 1 || seccion > 7) {
 					System.out.println("Entrada no valida");
 					continue;
 				}
@@ -1474,9 +1518,9 @@ public final class Main {
 					}
 					// Asociar una cuenta
 					else if(opcion == 2) {
-						Main.verCuentasTotales();
-						if(opcion == 0) {
-			
+						if(Cuenta.getCuentasTotales().size() == 0) {
+							System.out.println("Primero debes crear cuentas. Volviendo al menú anterior");
+							seccion = 1;
 						} else {
 							System.out.println("");
 							Main.verCuentasTotales();
@@ -1535,9 +1579,13 @@ public final class Main {
 							
 					} else if(opcion == 3) {
 						Main.invertirSaldoUsuario(user);
-					} 	
+					}
+					
+					 else if(opcion == 4) {
+						Main.consignarSaldoCuenta(user);
+					} 
 					// Volver al menú anterior
-					else if (opcion == 4) {
+					else if (opcion == 5) {
 							seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
@@ -1609,15 +1657,14 @@ public final class Main {
 					Main.asesorInversiones();
 				}
 				// CERRAR SESIÓN COMO USUARIO
-				if (seccion == 7) {
+				else if (seccion == 7) {
 					System.out.println("¡Vuelve pronto " + user.getNombre() + "!");
 					sesioniniciada = 0;
 				}
 			}
 		} sc.close();
 	}
-	
-	
+		
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
 	static ArrayList<String> listaObjetos = new ArrayList<String>();
 	static Usuario user = null;
