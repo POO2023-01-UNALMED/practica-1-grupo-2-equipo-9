@@ -1056,10 +1056,10 @@ public final class Main {
 	}
 	
 	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
-	static void comprobarSuscripcion(Usuario user) {
+	static void modificarSuscripcionUsuario(Usuario user) {
 		if(user.getBancosAsociados().size() == 0) {
 			System.out.println("Primero debes asociar bancos. Volviendo al menú anterior");
-			seccion = 1;
+			seccion = 2;
 		}else {
 			System.out.println("");
 			Main.verBancosAsociados();
@@ -1074,7 +1074,30 @@ public final class Main {
 					System.out.println(Banco.getBancosTotales().get(opcion_banco - 1).comprobarSuscripción(user));
 					break;
 				}
-			}		
+			}
+			System.out.print("¿Desea cambiar su nivel de suscripción? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				for(int i = 1; i < Suscripcion.getNivelesSuscripcion().size() + 1; i++) {
+					System.out.println(i + ". " + Suscripcion.getNivelesSuscripcion().get(i - 1).name());
+				}
+				System.out.print("Seleccione el número de suscripción: ");
+				int opcion_suscripcion = Integer.parseInt(sc.nextLine());
+				while(true) {
+					if(opcion_suscripcion < 1 && opcion_suscripcion > Suscripcion.getNivelesSuscripcion().size()) {
+						System.out.print("Debes seleccionar un nivel de suscripción válido. Inténtalo de nuevo:");
+						opcion_suscripcion = Integer.parseInt(sc.nextLine());
+					}else {
+						System.out.println("");
+						user.setSuscripcion(Suscripcion.getNivelesSuscripcion().get(opcion_suscripcion - 1));
+						System.out.println("El nivel de suscripción del usuario " + user.getNombre() + " se ha actualizado a " + user.getSuscripcion().name());
+						break;
+					}
+				}
+			}else {
+				System.out.println("Volviendo al menú anterior");
+				seccion = 2;
+			}	
 		}
 	}
 	
@@ -1562,7 +1585,7 @@ public final class Main {
 					// Contenido de Usuario
 					System.out.println("");
 					System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
-							+ "\n1. Comprobar suscripción del usuario"
+							+ "\n1. Modificar suscripción del usuario"
 							+ "\n2. Ver mis bancos asociados"
 							+ "\n3. Invertir saldo de cuenta"
 							+ "\n4. Consignar saldo a mi cuenta"
@@ -1572,7 +1595,7 @@ public final class Main {
 					System.out.println("");
 						
 					if(opcion == 1) {
-						Main.comprobarSuscripcion(user);
+						Main.modificarSuscripcionUsuario(user);
 		
 					} else if(opcion == 2) {
 						Main.verBancosAsociados();
