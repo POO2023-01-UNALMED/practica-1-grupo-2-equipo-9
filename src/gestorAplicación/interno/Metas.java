@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.time.Instant;
 
 public class Metas implements Serializable {
 	private static final long serialVersionUID = 5L;
@@ -59,17 +60,27 @@ public class Metas implements Serializable {
 
 	// Metodos de la funcionalidad asesoramiento de inversion.
 	public static void revisionMetas(Usuario u) {
-		Date proximaFecha = null;
+		
+		Date proximaFecha = u.getMetasAsociadas().get(0).getFecha();
+		
+		if (u.getMetasAsociadas().size() == 1) {
+			if (u.getMetasAsociadas().get(0).getFecha() == null) {
+				proximaFecha = Date.from(Instant.now());
+				metaProxima = null;
+			}
+			metaProxima = u.getMetasAsociadas().get(0);
+		}
 
 		// Debemos comparar cada fecha con todas las otras fechas, por eso hay dos
 		// loops.
 		for (int i = 0; i < u.getMetasAsociadas().size(); i++) {
 
 			for (int e = 0; e < u.getMetasAsociadas().size(); e++) {
-
-				int r = u.getMetasAsociadas().get(e).getFecha().compareTo(u.getMetasAsociadas().get(i).getFecha());
-
-				if (proximaFecha != null) {
+				if (u.getMetasAsociadas().get(e).getFecha() == null
+						|| u.getMetasAsociadas().get(i).getFecha() == null) {
+					continue;
+				} else {
+					int r = u.getMetasAsociadas().get(e).getFecha().compareTo(u.getMetasAsociadas().get(i).getFecha());
 
 					if (r < 0) {
 
@@ -85,12 +96,10 @@ public class Metas implements Serializable {
 						}
 					} else {
 						continue;
+
 					}
-				} else {
-
-					proximaFecha = u.getMetasAsociadas().get(e).getFecha();
-
 				}
+
 			}
 		}
 	}

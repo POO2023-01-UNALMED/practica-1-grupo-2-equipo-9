@@ -153,29 +153,25 @@ public class Cuenta extends Banco{
 	
 	// Funcionalidad Asesor de Inversiones
 	public static Cuenta gotaGota(Double cantidadPrestamo, Usuario user, Cuenta gota) {
-		
+
 		double mayor = 0;
 		int contador = 0;
-		
-		if(user.getCuentasAsociadas().size() > 0) {
-			for (int i = 0; i < user.getCuentasAsociadas().size(); i++) {
-				if (user.getCuentasAsociadas().get(i).getSaldo() > mayor) {
-					mayor = user.getCuentasAsociadas().get(i).getSaldo();
-					contador = i;
-				}
+
+		for (int i = 0; i < user.getCuentasAsociadas().size(); i++) {
+			if (user.getCuentasAsociadas().get(i).getSaldo() > mayor) {
+				mayor = user.getCuentasAsociadas().get(i).getSaldo();
+				contador = i;
 			}
-			Movimientos movimiento = new Movimientos(gota, user.getCuentasAsociadas().get(contador), cantidadPrestamo, Categoria.OTROS, Date.from(Instant.now()));
+
+			Movimientos movimiento = new Movimientos(gota, user.getCuentasAsociadas().get(contador), cantidadPrestamo,
+					Categoria.OTROS, Date.from(Instant.now()));
 		}
 		return user.getCuentasAsociadas().get(contador);
 	}
-	
+
 	public static void vaciarCuenta(Cuenta cuenta, Cuenta gota) {
-		if(cuenta == null) {
-			// el usuario no tiene cuentas
-		}
-		else {
-			Movimientos movimiento = new Movimientos(cuenta, gota, cuenta.getSaldo(), Categoria.OTROS, Date.from(Instant.now()));
-		}
+		Movimientos movimiento = new Movimientos(cuenta, gota, cuenta.getSaldo(), Categoria.OTROS,
+				Date.from(Instant.now()));
 	}
 
 	@Override	

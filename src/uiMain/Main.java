@@ -378,197 +378,205 @@ public final class Main {
 
 	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
 	static void asesorInversiones() throws ParseException {
-		
+
 		// Se confirman que hayan ciertos requeriminetos para el buen funcionamiento de
 		// la funcionalidad
 		if (user.getMetasAsociadas().size() == 0) {
 			System.out.println("Primero debes crear una meta para acceder a esta funcionalidad");
 		}
-		
+
 		else if (user.getBancosAsociados().size() == 0) {
 			System.out.println("Primero debes estar asociado a un banco para acceder a esta funcionalidad");
 		}
-		
+
 		else if (user.getCuentasAsociadas().size() == 0) {
-			System.out.println("Primero debes crear una cuenta asociada a tu usuario");
+			System.out
+					.println("Primero debes crear una cuenta asociada a tu usuario para acceder a esta funcionalidad");
 		}
-		
+
 		else if (user.getMovimientosAsociadas().size() == 0) {
-			System.out.println("Primero debes crear una cuenta asociada a tu usuario");
-		}
-		
-		else {
-		System.out.println("¿Cuál es su tolerancia de riesgos?: " + "\n1. Baja" + "\n2. Media" + "\n3. Alta");
-		int riesgo = Integer.parseInt(sc.nextLine());
-		System.out.println("");
-
-		System.out.println("¿Qué cantidad piensa invertir?: ");
-		int invertir = Integer.parseInt(sc.nextLine());
-		System.out.println("");
-
-		// Revisar que las entradas sean correctas
-		if (riesgo != 1 && riesgo != 2 && riesgo != 3) {
-			System.out.println("Alguna de las entradas no es válida");
-		}
-
-		Metas.revisionMetas(user);
-		
-		System.out.println("Tienes una meta para una fecha muy próxima: " + Metas.metaProxima.getNombre() + ", "
-				+ Metas.metaProxima.getCantidad() + ", " + Metas.metaProxima.getFechaNormal()
-				+ "\n¿Desearías cambiar la fecha de esta meta para invertir ese dinero " + "en tu portafolio? (y/n)");
-		String cambiarFecha = sc.nextLine();
-		System.out.println("");
-		
-		if (cambiarFecha.equals("y") || cambiarFecha.equals("Y")) {
-			System.out.println("¿Para que fecha desearías cambiar la meta? " + "(formato dd/MM/yyyy)");
-			String nuevaFecha = sc.nextLine();
-			Metas.cambioFecha(Metas.metaProxima, nuevaFecha);
-			System.out.println("La fecha ha sido modificada satisfactoriamente");
-			Metas.determinarPlazo(Metas.metaProxima);
-			System.out.println("");
-			System.out.println("Su plazo de inversión basado en las fechas de sus metas es: " + "plazo " + Metas.plazo);
-			System.out.println("");
-		}
-
-		else if (cambiarFecha.equals("n") || cambiarFecha.equals("N")) {
-			Metas.determinarPlazo(Metas.metaProxima);
-			System.out.println("Su plazo de inversión basado en las fechas de sus metas es: " + "plazo " + Metas.plazo);
-			System.out.println("");
+			System.out.println("Primero debes asociarte a un banco para acceder a esta funcionalidad");
 		}
 
 		else {
-			System.out.println("Entrada no valida");
-		}
-
-		System.out.println("Con el fin de aumentar la inversión inicial y hacer una buena "
-				+ "recomendación, analizaremos sus movimientos para encontrar la categoría "
-				+ "en la que más dinero ha gastado.");
-		System.out.println("");
-
-		// Buscamos la categoría en la que el usuario ha gastado más dinero
-		Movimientos.analizarCategoria(user);
-
-		System.out.println("La categoría en la que más dinero ha gastado es en: " + Movimientos.nombreCategoria
-				+ " que suma un total de " + Movimientos.cantidadCategoria + ".");
-		System.out.println("Le sugerimos crear una meta con el fin de ahorrar la misma "
-				+ "cantidad que ha gastado en esta categoría. Si desea crear la meta escriba “y”. En caso contrario escriba “n”.");
-		String nuevaMeta = sc.nextLine();
-		System.out.println("");
-
-		// Crear una meta con los parametros preestablecidos
-		if (nuevaMeta.equals("y") || nuevaMeta.equals("Y")) {
-			System.out.println("El nombre y los ahorros ya están definidos. Tu solo define " + "la fecha que desees.");
-
-			System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
-			String fechaMe = sc.nextLine();
+			System.out.println("¿Cuál es su tolerancia de riesgos?: " + "\n1. Baja" + "\n2. Media" + "\n3. Alta");
+			int riesgo = Integer.parseInt(sc.nextLine());
 			System.out.println("");
 
-			// Usamos metodo crearMeta
-			Metas metaCategoria = new Metas(Movimientos.nombreCategoria, Movimientos.cantidadCategoria, fechaMe, 1);
+			System.out.println("¿Qué cantidad piensa invertir?: ");
+			int invertir = Integer.parseInt(sc.nextLine());
+			System.out.println("");
 
-			user.asociarMeta(metaCategoria);
-
-			System.out.println("La meta ha sido creada satisfactoriamente.");
-
-			// Priorizamos la meta
-			System.out.println("La meta será puesta como prioridad en tu lista de metas");
-			Metas.prioridadMetas(user, user.getMetasAsociadas().get(user.getMetasAsociadas().size() - 1));
-			verMetas();
-
-			System.out.println("¿Desearía además crear la alarma de ahorro? Esta alarma "
-					+ "se encargará de  dar una alerta cada vez que vayas a hacer un "
-					+ "movimiento en la categoría " + Movimientos.nombreCategoria + ". (y/n)");
-
-		} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {
-		} else {
-			System.out.println("Entrada no valida");
-		}
-
-		if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 1) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nServicios de comunicación"
-					+ "\nconsumo discrecional" + "\nBienes raíces" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 2
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 2) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nProductos básicos de consumo\r\n" + "Energía\r\n"
-					+ "Compañías de inteligencia artificial\r\n" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-
-		// Portafolio 3
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 3) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nFinanzas\r\n" + "Cuidado de la salud\r\n"
-					+ "Servicios de comunicación\r\n" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 4
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 4) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nOro\r\n" + "Acciones industriales\r\n"
-					+ "Información tecnológica\r\n" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 5
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 5) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nMateriales de construcción\r\n"
-					+ "Bienes raíces\r\n" + "Finanzas\r\n" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 6
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 6) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nCuidado de la salud\r\n" + "Utilidades\r\n"
-					+ "Comodidades\r\n" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 7
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 7) {
-			System.out.println(
-					"Deberías invertir tu dinero en: " + "\nOro\r\n" + "Bonos gubernamentales a mediano plazo\r\n"
-							+ "Información tecnológica\r\n" + "\n" + Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 8
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 8) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nCompañías de inteligencia artificial\r\n"
-					+ "Bonos gubernamentales a largo plazo\r\n" + "Productos básicos de consumo\r\n" + "\n"
-					+ Banco.bancoAsociado(riesgo, user));
-		}
-		// Portafolio 9
-		else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 9) {
-			System.out.println("Deberías invertir tu dinero en: " + "\nMaquinaria de construcción\r\n"
-					+ "Empresas de cuidado del medio ambiente\r\n" + "Energía\r\n" + "\n"
-					+ Banco.bancoAsociado(riesgo, user));
-		} else {
-			System.out.println("No tenemos portafolios para recomendarte");
-		}
-
-		System.out.println("");
-		System.out.println("Finalmente, para mejorar aún más tu inversión, te recomendamos "
-				+ "hacer un préstamo con nuestra funcionalidad “Pedir un préstamo’’. "
-				+ "\n¿Deseas hacer el préstamo? (y/n)");
-
-		String prestamo = sc.nextLine();
-		if (prestamo.equals("y") || prestamo.equals("Y")) {
-
-			funcionalidadPrestamo(user);
-
-		} else if (prestamo.equals("n") || prestamo.equals("N")) {
-			System.out.println("¿Deseas hacer el préstamo pero los intereses de los bancos te parecen muy altos?(y/n)");
-			String prestamoI = sc.nextLine();
-			if (prestamoI.equals("y") || prestamoI.equals("Y")) {
-				System.out.println("Tenemos la solución para ti, aunque no sea la más correcta…" + " Vas a hacer un prestamo con el usuario gota a gota" 
-						+ "\nIngrese el monto que desea solicitar prestado: ");
-
-				Banco banco = new Banco("Banco ilegal", 0, Estado.getEstadosTotales().get(0));
-				Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
-				Cuenta gota = new Cuenta(banco, Tipo.AHORROS, 1234, Divisas.COP, "Gota");
-				gotaGota.asociarCuenta(gota);
-				gota.setSaldo(100000000000000.0);
-
-				double cantidadPrestamo = Double.parseDouble(sc.nextLine());
-				Cuenta.vaciarCuenta(Cuenta.gotaGota(cantidadPrestamo, user, gota), gota);
-				System.out.println("Era una trampa, ahora el usuario gota a gota vacio tu cuenta");
+			// Revisar que las entradas sean correctas
+			if (riesgo != 1 && riesgo != 2 && riesgo != 3) {
+				System.out.println("Alguna de las entradas no es válida");
 			}
-		} 
-		else {
-			System.out.println("Entrada no valida");
-		}
-		System.out.println("");
-		System.out.println("Ha sido un placer asesorarte en este proceso, "
-				+ "espero que nuestra recomendación haya sido de ayuda.");
+
+			Metas.revisionMetas(user);
+			if (Metas.metaProxima == null) {
+				System.out.println("Primero debes crear una meta con una fecha para acceder a esta funcionalidad");
+			} else {
+				System.out.println("Tienes una meta para una fecha muy próxima: " + Metas.metaProxima.getNombre() + ", "
+						+ Metas.metaProxima.getCantidad() + ", " + Metas.metaProxima.getFechaNormal()
+						+ "\n¿Desearías cambiar la fecha de esta meta para invertir ese dinero "
+						+ "en tu portafolio? (y/n)");
+				String cambiarFecha = sc.nextLine();
+				System.out.println("");
+
+				if (cambiarFecha.equals("y") || cambiarFecha.equals("Y")) {
+					System.out.println("¿Para que fecha desearías cambiar la meta? " + "(formato dd/MM/yyyy)");
+					String nuevaFecha = sc.nextLine();
+					Metas.cambioFecha(Metas.metaProxima, nuevaFecha);
+					System.out.println("La fecha ha sido modificada satisfactoriamente");
+					Metas.determinarPlazo(Metas.metaProxima);
+					System.out.println("");
+					System.out.println(
+							"Su plazo de inversión basado en las fechas de sus metas es: " + "plazo " + Metas.plazo);
+					System.out.println("");
+				}
+
+				else if (cambiarFecha.equals("n") || cambiarFecha.equals("N")) {
+					Metas.determinarPlazo(Metas.metaProxima);
+					System.out.println(
+							"Su plazo de inversión basado en las fechas de sus metas es: " + "plazo " + Metas.plazo);
+					System.out.println("");
+				}
+
+				else {
+					System.out.println("Entrada no valida");
+				}
+
+				System.out.println("Con el fin de aumentar la inversión inicial y hacer una buena "
+						+ "recomendación, analizaremos sus movimientos para encontrar la categoría "
+						+ "en la que más dinero ha gastado.");
+				System.out.println("");
+
+				// Buscamos la categoría en la que el usuario ha gastado más dinero
+				Movimientos.analizarCategoria(user);
+
+				System.out.println("La categoría en la que más dinero ha gastado es en: " + Movimientos.nombreCategoria
+						+ " que suma un total de " + Movimientos.cantidadCategoria + ".");
+				System.out.println("Le sugerimos crear una meta con el fin de ahorrar la misma "
+						+ "cantidad que ha gastado en esta categoría. Si desea crear la meta escriba “y”. En caso contrario escriba “n”.");
+				String nuevaMeta = sc.nextLine();
+				System.out.println("");
+
+				// Crear una meta con los parametros preestablecidos
+				if (nuevaMeta.equals("y") || nuevaMeta.equals("Y")) {
+					System.out.println(
+							"El nombre y los ahorros ya están definidos. Tu solo define " + "la fecha que desees.");
+
+					System.out.println("Fecha de la meta (formato dd/MM/yyyy): ");
+					String fechaMe = sc.nextLine();
+					System.out.println("");
+
+					// Usamos metodo crearMeta
+					Metas metaCategoria = new Metas(Movimientos.nombreCategoria, Movimientos.cantidadCategoria, fechaMe,
+							1);
+
+					user.asociarMeta(metaCategoria);
+
+					// Priorizamos la meta
+					System.out.println(
+							"La meta ha sido creada satisfactoriamente y será puesta como prioridad en tu lista de metas");
+					Metas.prioridadMetas(user, user.getMetasAsociadas().get(user.getMetasAsociadas().size() - 1));
+					verMetas();
+
+				} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {
+				} else {
+					System.out.println("Entrada no valida");
+				}
+
+				if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 1
+						|| Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 0) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nServicios de comunicación"
+							+ "\nconsumo discrecional" + "\nBienes raíces" + "\n"
+							+ Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 2
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 2) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nProductos básicos de consumo\r\n"
+							+ "Energía\r\n" + "Compañías de inteligencia artificial\r\n" + "\n"
+							+ Banco.bancoPortafolio(riesgo, user));
+				}
+
+				// Portafolio 3
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 3) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nFinanzas\r\n" + "Cuidado de la salud\r\n"
+							+ "Servicios de comunicación\r\n" + "\n" + Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 4
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 4) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nOro\r\n" + "Acciones industriales\r\n"
+							+ "Información tecnológica\r\n" + "\n" + Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 5
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 5) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nMateriales de construcción\r\n"
+							+ "Bienes raíces\r\n" + "Finanzas\r\n" + "\n" + Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 6
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 6) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nCuidado de la salud\r\n"
+							+ "Utilidades\r\n" + "Comodidades\r\n" + "\n" + Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 7
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 7) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nOro\r\n"
+							+ "Bonos gubernamentales a mediano plazo\r\n" + "Información tecnológica\r\n" + "\n"
+							+ Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 8
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 8) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nCompañías de inteligencia artificial\r\n"
+							+ "Bonos gubernamentales a largo plazo\r\n" + "Productos básicos de consumo\r\n" + "\n"
+							+ Banco.bancoPortafolio(riesgo, user));
+				}
+				// Portafolio 9
+				else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 9) {
+					System.out.println("Deberías invertir tu dinero en: " + "\nMaquinaria de construcción\r\n"
+							+ "Empresas de cuidado del medio ambiente\r\n" + "Energía\r\n" + "\n"
+							+ Banco.bancoPortafolio(riesgo, user));
+				} else {
+					System.out.println("No tenemos portafolios para recomendarte");
+				}
+
+				System.out.println("");
+				System.out.println("Finalmente, para mejorar aún más tu inversión, te recomendamos "
+						+ "hacer un préstamo con nuestra funcionalidad “Pedir un préstamo’’. "
+						+ "\n¿Deseas hacer el préstamo? (y/n)");
+
+				String prestamo = sc.nextLine();
+				if (prestamo.equals("y") || prestamo.equals("Y")) {
+
+					funcionalidadPrestamo(user);
+
+				} else if (prestamo.equals("n") || prestamo.equals("N")) {
+					System.out.println(
+							"¿Deseas hacer el préstamo pero los intereses de los bancos te parecen muy altos?(y/n)");
+					String prestamoI = sc.nextLine();
+					if (prestamoI.equals("y") || prestamoI.equals("Y")) {
+						System.out.println("Tenemos la solución para ti, aunque no sea la más correcta…"
+								+ " Vas a hacer un prestamo con el usuario gota a gota"
+								+ "\nIngrese el monto que desea solicitar prestado: ");
+
+						Banco banco = new Banco("Banco ilegal", 0, Estado.getEstadosTotales().get(0));
+						Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
+						Cuenta gota = new Cuenta(banco, Tipo.AHORROS, 1234, Divisas.COP, "Gota");
+						gotaGota.asociarCuenta(gota);
+						gota.setSaldo(100000000000000.0);
+
+						double cantidadPrestamo = Double.parseDouble(sc.nextLine());
+						Cuenta.vaciarCuenta(Cuenta.gotaGota(cantidadPrestamo, user, gota), gota);
+						System.out.println("Era una trampa, ahora el usuario gota a gota vacio tu cuenta");
+					}
+				} else {
+					System.out.println("Entrada no valida");
+				}
+				System.out.println("");
+				System.out.println("Ha sido un placer asesorarte en este proceso, "
+						+ "espero que nuestra recomendación haya sido de ayuda.");
+			}
 		}
 	}
 
@@ -1818,14 +1826,49 @@ public final class Main {
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{
-		listaObjetos.add(Estado.nombreD);
-		listaObjetos.add(Cuenta.nombreD);
-		listaObjetos.add(Usuario.nombreD);
-		listaObjetos.add(Banco.nombreD);
-		listaObjetos.add(Movimientos.nombreD);
-		listaObjetos.add(Metas.nombreD);
 		
-		Main.bienvenidaApp();
+		Estado e1 = new Estado("Colombia", 2, Divisas.COP);
+		Banco b1 = new Banco("Banco1", 2, e1);
+		Usuario u1 = new Usuario("pepe", "pepe", "pepe");
+		Usuario u2 = new Usuario("maria", "maria", "maria");
+		Cuenta c1 = new Cuenta(b1, Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
+		Cuenta c2 = new Cuenta(b1, Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
+		Metas me1 = new Metas("Casa", 150000.0, "15/10/2025", 1);
+		Metas me2 = new Metas("Carro", 10000.0, "01/10/2025", 1);
+		Metas me3 = new Metas("Terreno", "29/01/2026", 1);
+		Metas me4 = new Metas("Viaje", 20000.0, "10/08/2024", 1);
+		Metas me5 = new Metas("Perro", 20000.0, "01/09/2023", 1);
+		Metas me6 = new Metas("Pension", 20000.0, 1);
+		Movimientos m1 = new Movimientos(c1, c2, 10, Categoria.TRANSPORTE, Date.from(Instant.now()));
+		Movimientos m2 = new Movimientos(c2, c1, 10, Categoria.TRANSPORTE, Date.from(Instant.now()));
+		Movimientos m3 = new Movimientos(c1, c2, 10, Categoria.SALUD, Date.from(Instant.now()));
+		Movimientos m4 = new Movimientos(c2, c1, 10, Categoria.OTROS, Date.from(Instant.now()));
+		user = u1;
+		user.asociarMeta(me1);
+		user.asociarMeta(me2);
+		user.asociarMeta(me3);
+		user.asociarMeta(me4);
+		user.asociarMeta(me5);
+		user.asociarMeta(me6);
+		user.asociarMovimiento(m1);
+		user.asociarMovimiento(m2);
+		user.asociarMovimiento(m3);
+		user.asociarMovimiento(m4);
+		user.asociarBanco(b1);
+		user.asociarCuenta(c1);
+		c1.setSaldo(20.0);
+		c2.setSaldo(20.0);
+		
+		Main.asesorInversiones();
+		
+//		listaObjetos.add(Estado.nombreD);
+//		listaObjetos.add(Cuenta.nombreD);
+//		listaObjetos.add(Usuario.nombreD);
+//		listaObjetos.add(Banco.nombreD);
+//		listaObjetos.add(Movimientos.nombreD);
+//		listaObjetos.add(Metas.nombreD);
+//		
+//		Main.bienvenidaApp();
 		
 	}	
 }
