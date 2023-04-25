@@ -38,21 +38,24 @@ public class Banco extends Estado {
 	public String mostrarBancosTotales() {
 		if(Banco.bancosTotales.size() != 0) { 
 			for (int i = 0; i < Banco.bancosTotales.size();) { 
-				return(i+1 + ". " + Banco.bancosTotales.get(i).getNombre()); 
+				return(i + 1 + ". " + Banco.bancosTotales.get(i).getNombre()); 
 				}
 		}else { 
 			return("No hay bancos en este momento, considere asociar bancos"); 
 			}
 		return ("");
 	}
+	
 	public String mostrarDic(int k) {
 		String clave= getDic().get(k);
 		return clave;
 	}
+	
 	public String mostrarDic() {
 		
 		return"";
 	}
+	
 	//Funcionalidad de Suscripciones de Usuarios
 	public Object comprobarSuscripción(Usuario usuario) {
 		for(Usuario u : Usuario.getUsuariosTotales()) {

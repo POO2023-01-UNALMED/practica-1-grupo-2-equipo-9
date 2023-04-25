@@ -704,7 +704,8 @@ public final class Main {
 					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
-						System.out.println("La inversión ha sido exitosa y la cantidad de saldo acumulado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) inversion).getCantidad());
+						System.out.println(inversion);
+						System.out.println("");
 						System.out.println(user.verificarContadorMovimientos());
 						break;
 					}else {
@@ -755,6 +756,7 @@ public final class Main {
 		}
 	}
 	
+	//TRANSFERIR SALDO ENTRE CUENTAS POR USUARIO EN EL MAIN
 	static void transferirSaldoCuentasUsuario(Usuario user) {
 		if(user.getCuentasAsociadas().size() == 0) {
 			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
@@ -798,9 +800,8 @@ public final class Main {
 						int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
 						Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
 						Object modificar_saldo = Cuenta.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
-								
 						if(modificar_saldo instanceof Movimientos) {
-							System.out.println("El movimiento fue realizado con éxito");
+							System.out.println((Movimientos) modificar_saldo);
 							System.out.println(user.verificarContadorMovimientos());
 							break;
 						}else {
@@ -909,6 +910,7 @@ public final class Main {
 						System.out.println("El usuario por defecto fue creado con éxito, éstas son las credenciales de ingreso: ");
 						System.out.println("Nombre: " + user.getNombre());
 						System.out.println("Contraseña: " + user.getContrasena());
+						System.out.println("");
 						break;
 					}else if(confirmacion.equals("N") || confirmacion.equals("n")){
 						Main.crearUsuario();
@@ -932,6 +934,7 @@ public final class Main {
 							System.out.println("Nombre: " + banco.getNombre());
 							System.out.println("Comisión: " + banco.getComision());
 							System.out.println("Estado asociado: " + banco.getEstadoAsociado().getNombre());
+							System.out.println("");
 							break;
 						}else if(confirmacion.equals("N") || confirmacion.equals("n")){
 							Main.crearBanco();
@@ -953,12 +956,12 @@ public final class Main {
 						System.out.println("Nombre: " + estado.getNombre());
 						System.out.println("Tasa de impuestos: " + estado.getTasa_impuestos());
 						System.out.println("Divisa: " + estado.getDivisa());
+						System.out.println("");
 						break;
 					}else if(confirmacion.equals("N") || confirmacion.equals("n")){
 						Main.crearEstado();
 						break;
 					}else {
-						System.out.println("");
 						System.out.print("Seleccione la opción correcta. ¿Deseas crear el estado por defecto? (Y/N): ");
 						confirmacion = sc.nextLine();
 					}	
@@ -1816,7 +1819,6 @@ public final class Main {
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{
-				
 		listaObjetos.add(Estado.nombreD);
 		listaObjetos.add(Cuenta.nombreD);
 		listaObjetos.add(Usuario.nombreD);

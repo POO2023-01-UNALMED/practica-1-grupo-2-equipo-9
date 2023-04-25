@@ -54,7 +54,7 @@ public class Movimientos {
 			if (origen.getSaldo() < cantidad) {
 				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
 			} else {
-				return (new Movimientos(origen, destino, cantidad, categoria, fecha));
+				return (new Movimientos(origen, destino, cantidad - cantidad * destino.getEstadoAsociado().getTasa_impuestos(), categoria, fecha));
 			}
 		}else {
 			return("Debes verificar que las cuentas origen y/o destino existan");
@@ -63,7 +63,7 @@ public class Movimientos {
 	
 	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
-			return (new Movimientos(destino, cantidad, categoria, fecha));
+			return (new Movimientos(destino, cantidad - cantidad * destino.getBanco().getEstadoAsociado().getTasa_impuestos(), categoria, fecha));
 		}else {
 			return("Debes verificar que las cuenta de destino exista");
 		}
@@ -94,8 +94,8 @@ public class Movimientos {
 
 
 	public String toString() {
-		return("Movimiento creado\nFecha:"+getFecha()+"\nID:"+getId()+"\nOrigen:"+getOrigen().getId()+"\nDestino:"+getDestino().getId()+"\nCantidad:"+
-				getCantidad()+"\nCategoria:"+getCategoria().name());
+		return("Movimiento creado \n Fecha:" + getFecha() + "\nID:" + getId() + "\nOrigen:" + getOrigen().getId() + "\nDestino:" + getDestino().getId() + "\nCantidad:" +
+				getCantidad() + "\nCategoria:" + getCategoria().name());
 	}
 
 
