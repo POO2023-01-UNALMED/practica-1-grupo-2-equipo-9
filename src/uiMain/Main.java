@@ -1,17 +1,17 @@
 package uiMain;
 
 import baseDatos.Serializador;
-import externo.Banco;
-import externo.Divisas;
-import externo.Estado;
+import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Divisas;
+import gestorAplicación.externo.Estado;
 import baseDatos.Deserializador;
-import interno.Categoria;
-import interno.Cuenta;
-import interno.Metas;
-import interno.Movimientos;
-import interno.Suscripcion;
-import interno.Tipo;
-import interno.Usuario;
+import gestorAplicación.interno.Categoria;
+import gestorAplicación.interno.Cuenta;
+import gestorAplicación.interno.Metas;
+import gestorAplicación.interno.Movimientos;
+import gestorAplicación.interno.Suscripcion;
+import gestorAplicación.interno.Tipo;
+import gestorAplicación.interno.Usuario;
 
 import java.text.ParseException;
 import java.util.ArrayList;

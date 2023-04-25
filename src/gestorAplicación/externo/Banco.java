@@ -1,14 +1,14 @@
-package externo;
+package gestorAplicación.externo;
 
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
 
-import interno.Categoria;
-import interno.Cuenta;
-import interno.Movimientos;
-import interno.Tipo;
-import interno.Usuario;
+import gestorAplicación.interno.Categoria;
+import gestorAplicación.interno.Cuenta;
+import gestorAplicación.interno.Movimientos;
+import gestorAplicación.interno.Tipo;
+import gestorAplicación.interno.Usuario;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;

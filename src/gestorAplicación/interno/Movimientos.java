@@ -1,9 +1,9 @@
-package interno;
+package gestorAplicación.interno;
 
 import java.util.Date;
 
-import externo.Banco;
-import externo.Divisas;
+import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Divisas;
 
 import java.util.ArrayList;
 

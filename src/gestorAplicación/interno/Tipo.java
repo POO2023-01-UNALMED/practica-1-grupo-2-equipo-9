@@ -1,4 +1,4 @@
-package interno;
+package gestorAplicación.interno;
 
 import java.util.ArrayList;
 

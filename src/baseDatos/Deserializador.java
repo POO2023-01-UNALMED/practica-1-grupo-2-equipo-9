@@ -6,12 +6,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
-import externo.Estado;
-import gestorAplicación.*;
-import interno.Cuenta;
-import interno.Metas;
-import interno.Movimientos;
-import interno.Usuario;
+import gestorAplicación.externo.Estado;
+import gestorAplicación.interno.Cuenta;
+import gestorAplicación.interno.Metas;
+import gestorAplicación.interno.Movimientos;
+import gestorAplicación.interno.Usuario;
 
 public class Deserializador {
 	//Deserializar objetos individuales

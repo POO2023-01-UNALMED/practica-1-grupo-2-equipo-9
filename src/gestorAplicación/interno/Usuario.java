@@ -1,8 +1,8 @@
-package interno;
+package gestorAplicación.interno;
 
 import java.util.ArrayList;
 import baseDatos.Deserializador;
-import externo.Banco;
+import gestorAplicación.externo.Banco;
 
 public class Usuario extends Banco {
 	//Funcionalidad de Suscripciones de Usuarios

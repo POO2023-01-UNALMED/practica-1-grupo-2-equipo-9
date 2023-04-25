@@ -1,4 +1,4 @@
-package externo;
+package gestorAplicación.externo;
 
 import java.util.ArrayList;
 
