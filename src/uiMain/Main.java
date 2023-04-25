@@ -1827,48 +1827,13 @@ public final class Main {
 	
 	public static void main(String[] args) throws ParseException{
 		
-		Estado e1 = new Estado("Colombia", 2, Divisas.COP);
-		Banco b1 = new Banco("Banco1", 2, e1);
-		Usuario u1 = new Usuario("pepe", "pepe", "pepe");
-		Usuario u2 = new Usuario("maria", "maria", "maria");
-		Cuenta c1 = new Cuenta(b1, Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
-		Cuenta c2 = new Cuenta(b1, Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
-		Metas me1 = new Metas("Casa", 150000.0, "15/10/2025", 1);
-		Metas me2 = new Metas("Carro", 10000.0, "01/10/2025", 1);
-		Metas me3 = new Metas("Terreno", "29/01/2026", 1);
-		Metas me4 = new Metas("Viaje", 20000.0, "10/08/2024", 1);
-		Metas me5 = new Metas("Perro", 20000.0, "01/09/2023", 1);
-		Metas me6 = new Metas("Pension", 20000.0, 1);
-		Movimientos m1 = new Movimientos(c1, c2, 10, Categoria.TRANSPORTE, Date.from(Instant.now()));
-		Movimientos m2 = new Movimientos(c2, c1, 10, Categoria.TRANSPORTE, Date.from(Instant.now()));
-		Movimientos m3 = new Movimientos(c1, c2, 10, Categoria.SALUD, Date.from(Instant.now()));
-		Movimientos m4 = new Movimientos(c2, c1, 10, Categoria.OTROS, Date.from(Instant.now()));
-		user = u1;
-		user.asociarMeta(me1);
-		user.asociarMeta(me2);
-		user.asociarMeta(me3);
-		user.asociarMeta(me4);
-		user.asociarMeta(me5);
-		user.asociarMeta(me6);
-		user.asociarMovimiento(m1);
-		user.asociarMovimiento(m2);
-		user.asociarMovimiento(m3);
-		user.asociarMovimiento(m4);
-		user.asociarBanco(b1);
-		user.asociarCuenta(c1);
-		c1.setSaldo(20.0);
-		c2.setSaldo(20.0);
+		listaObjetos.add(Estado.nombreD);
+		listaObjetos.add(Cuenta.nombreD);
+		listaObjetos.add(Usuario.nombreD);
+		listaObjetos.add(Banco.nombreD);
+		listaObjetos.add(Movimientos.nombreD);
+		listaObjetos.add(Metas.nombreD);
 		
-		Main.asesorInversiones();
-		
-//		listaObjetos.add(Estado.nombreD);
-//		listaObjetos.add(Cuenta.nombreD);
-//		listaObjetos.add(Usuario.nombreD);
-//		listaObjetos.add(Banco.nombreD);
-//		listaObjetos.add(Movimientos.nombreD);
-//		listaObjetos.add(Metas.nombreD);
-//		
-//		Main.bienvenidaApp();
-		
+		Main.bienvenidaApp();
 	}	
 }
