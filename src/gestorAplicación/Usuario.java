@@ -79,7 +79,7 @@ public class Usuario extends Banco {
 	public String asociarBanco(Banco banco) {
 		if(Banco.getBancosTotales().contains(banco) && !bancosAsociados.contains(banco)) {
 			this.getBancosAsociados().add(banco);
-			return("El banco " + banco.getNombreb() + " se ha asociado con éxito al usuario " + this.getNombre());
+			return("El banco " + banco.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
 		}else {
 			return("No se encuentra el banco ó debes verificar que el banco que quieres asociar no se haya asociado antes, esta es la lista de bancos asociados: " + this.mostrarBancosAsociados());
 		}
