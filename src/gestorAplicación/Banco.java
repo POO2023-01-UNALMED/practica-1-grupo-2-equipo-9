@@ -14,7 +14,8 @@ public class Banco extends Estado {
 	private Estado estadoAsociado;
 	private double prestamo;
 	private boolean asociado = false;
-	private static ArrayList<Banco> clave = new ArrayList<Banco>
+	private ArrayList<String> dic = new ArrayList<String>();
+	private ArrayList<Double> cionario = new ArrayList<Double>();
 	
 	//Constructor
 	
@@ -38,11 +39,14 @@ public class Banco extends Estado {
 			}
 		return ("");
 	}
-	public String mostrarClaves(int k) {
-		String clave="";
+	public String mostrarDic(int k) {
+		String clave= getDic().get(k);
 		return clave;
 	}
-	
+	public String mostrarDic() {
+		
+		return"";
+	}
 	//Funcionalidad de Suscripciones de Usuarios
 	public Object comprobarSuscripción(Usuario usuario) {
 		for(Usuario u : Usuario.getUsuariosTotales()) {
@@ -71,7 +75,7 @@ public class Banco extends Estado {
 	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
 		
 		double interes = Math.random() + riesgo;
-		if (interes < Math.random() + riesgo) {
+		if (Math.random() < 0.5) {
 			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(riesgo-1), Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
 			
 			if (user.getCuentasAsociadas() != null) {
@@ -116,7 +120,7 @@ public class Banco extends Estado {
 		
 		if (user.getBancosAsociados().size() >= riesgo) {
 			asociado = "El banco asociado a este portafolio es: " + 
-					user.getBancosAsociados().get(riesgo-1).getNombreb() + 
+					user.getBancosAsociados().get(riesgo-1).getNombre() + 
 					" con una taza de interes del: " + Math.round(interes*100.0)/100.0 + "%";
 		}
 		
@@ -124,7 +128,7 @@ public class Banco extends Estado {
 			Banco banco = new Banco("Banco de inversiones", riesgo, Estado.getEstadosTotales().get(0));
 			user.asociarBanco(banco);
 			asociado = "El banco asociado a este portafolio es: " + 
-					user.getBancosAsociados().get(user.getBancosAsociados().size()-1).getNombreb() + 
+					user.getBancosAsociados().get(user.getBancosAsociados().size()-1).getNombre() + 
 					" con una taza de interes del: " + Math.round(interes*100.0)/100.0 + "%";
 		}
 		return asociado;
@@ -149,6 +153,15 @@ public class Banco extends Estado {
 	public double getPrestamo(){return prestamo;}
 	
 	public Divisas getDivisa() { return divisa; }
+	public boolean isAsociado() {
+		return asociado;
+	}
+	public ArrayList<String> getDic() {
+		return dic;
+	}
+	public ArrayList<Double> getCionario() {
+		return cionario;
+	}
 
 	//Sets
 	public void setDivisa(Divisas divisa) { this.divisa = divisa; }
@@ -169,9 +182,14 @@ public class Banco extends Estado {
 	}
 
 	public void setPrestamo(Double prestamo){this.prestamo = prestamo;}
-	public boolean isAsociado() {
-		return asociado;
-	}
+	
 	public void setAsociado(boolean asociado) {
 		this.asociado = asociado;
+	}
+	public void setDic(ArrayList<String> dic) {
+		this.dic = dic;
+	}
+	public void setCionario(ArrayList<Double> cionario) {
+		this.cionario = cionario;
+	}
 }

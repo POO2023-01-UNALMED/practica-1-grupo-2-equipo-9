@@ -136,10 +136,9 @@ public class Movimientos {
 		}
 		String cadena= divisaOrigen.name() + divisaDevolucion.name();
 		for (int j = 0; j < Banco.getBancosTotales().size(); j++) {
-			ArrayList<Banco> elBanco =  Banco.getBancosTotales().get(j).getTasas();
-			for (int k = 0; j< elBanco.size(); k++ )
-			if (cadena.equals(Banco.getBancosTotales().get(j).getTasas())) {
-				
+			for (int k = 0; j< Banco.getBancosTotales().get(j).getDic().size(); k++ )
+				if (cadena.equals(Banco.getBancosTotales().get(j).getDic().get(k))) {
+					
 			}
 		}
 	}
@@ -254,15 +253,10 @@ public class Movimientos {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
 				}
 			}
-		} else {
-			nombreCategoria = "No has hecho ningún movimiento";
+
 		}
 		return "La categoría en la que más dinero ha gastado es en: " + nombreCategoria + " que suma un total de "
 				+ cantidadCategoria + ".";
-	}
-
-	public static void alerta() {
-
 	}
 
 	//	GETS
