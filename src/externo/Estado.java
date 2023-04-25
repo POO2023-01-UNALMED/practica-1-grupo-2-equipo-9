@@ -1,4 +1,4 @@
-package gestorAplicación;
+package externo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

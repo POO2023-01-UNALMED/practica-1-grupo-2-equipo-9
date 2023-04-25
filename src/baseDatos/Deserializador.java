@@ -5,7 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+
+import externo.Estado;
 import gestorAplicación.*;
+import interno.Cuenta;
+import interno.Metas;
+import interno.Movimientos;
+import interno.Usuario;
 
 public class Deserializador {
 	//Deserializar objetos individuales

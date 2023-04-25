@@ -1,8 +1,12 @@
-package gestorAplicación;
+package interno;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+
+import externo.Banco;
+import externo.Divisas;
+
 import java.time.Instant;
 
 public class Cuenta extends Banco{

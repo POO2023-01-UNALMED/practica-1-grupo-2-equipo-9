@@ -1,8 +1,11 @@
-package gestorAplicación;
+package interno;
 
 import java.util.Date;
+
+import externo.Banco;
+import externo.Divisas;
+
 import java.util.ArrayList;
-import gestorAplicación.Cuenta;
 
 public class Movimientos {
 	public static final String nombreD = "Movimientos";

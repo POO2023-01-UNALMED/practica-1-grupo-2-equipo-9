@@ -4,8 +4,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import externo.Estado;
+
 import java.io.IOException;
 import gestorAplicación.*;
+import interno.Cuenta;
+import interno.Metas;
+import interno.Movimientos;
+import interno.Usuario;
 
 public class Serializador{	
 	//Serializar objetos individuales

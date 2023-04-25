@@ -1,17 +1,18 @@
 package uiMain;
 
 import baseDatos.Serializador;
+import externo.Banco;
+import externo.Divisas;
+import externo.Estado;
 import baseDatos.Deserializador;
-import gestorAplicación.Banco;
-import gestorAplicación.Categoria;
-import gestorAplicación.Cuenta;
-import gestorAplicación.Divisas;
-import gestorAplicación.Estado;
-import gestorAplicación.Metas;
-import gestorAplicación.Movimientos;
-import gestorAplicación.Suscripcion;
-import gestorAplicación.Tipo;
-import gestorAplicación.Usuario;
+import interno.Categoria;
+import interno.Cuenta;
+import interno.Metas;
+import interno.Movimientos;
+import interno.Suscripcion;
+import interno.Tipo;
+import interno.Usuario;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -573,20 +574,49 @@ public final class Main {
 	}
 
 	// FUNCIONALIDAD COMPRA DE CARTERA
-	static void compraCartera(Usuario usuario) {
-		System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
-		ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
-		int i = 1;
-		for (Cuenta cuentas: cuentasEnDeuda) {
-			System.out.println(i + ". " + cuentas.getNombre());
-			i++;
-		}
-		int Cuenta_Compra = Integer.parseInt(sc.nextLine());
-		//Retornar información de la Cuenta
-		
-		cuentasEnDeuda.remove(Cuenta_Compra - 1);
+		static void compraCartera(Usuario usuario) {
+			System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
+			ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
+			ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+			ArrayList<Cuenta> cuentasCapacesdeDeuda = new ArrayList<Cuenta>();
+			int i = 1;
+			for (Cuenta cuentas: cuentasEnDeuda) {
+				System.out.println(i + ". " + cuentas.getNombre());
+				i++;
+			}
+			System.out.println("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
+			int Cuenta_Compra = Integer.parseInt(sc.nextLine());
+			//Verificar si entrada está correcta.
+			//Retornar información de la Cuenta
+			System.out.println("Información de la cuenta: ");
+			System.out.println(cuentasEnDeuda.get(Cuenta_Compra - 1));
 			
-		//Buscar Cuentas con posibilidad de Deuda
+			System.out.println("");
+			System.out.println("Confirme por favor si esta es la cuenta a la cual desea aplicar este mecanismo financiero (y/n): ");
+			String ConfirmacionI = sc.nextLine();
+			
+			if (ConfirmacionI.equals("y") || ConfirmacionI.equals("Y")) {
+				cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
+				//cuentasCapacesdeDeuda = CapacidadDeuda(cuentasAux);
+				//ArrayList<Double> = verificarTasasdeInteres(cuentasCapacesdeDeuda, usuario.Suscripcion);
+				
+				System.out.println("Las cuentas a tu nombre capaces de recibir la deuda de la cuenta son: ");
+				
+			}
+			else if (ConfirmacionI.equals("n") || ConfirmacionI.equals("N")) {
+				System.out.println();
+				//Salir de la función o rescribir opción
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+			// Hacer la validación de los datos.
+			
+			// Validar Cuentas que puedan recibir una Deuda
+			
+			// Enviar posibles Cuentas que reciben Deuda a atributo que regrese tasadeinteres y se regresa Array con estos valores
+			
+			// Se escoge estos valores y se hace el movimiento.
 			
 		}
 	
