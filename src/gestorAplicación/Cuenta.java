@@ -46,11 +46,11 @@ public class Cuenta extends Banco{
 	}
 	
 	//Métodos
-	public Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
+	public static Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
 		return(new Cuenta(banco, tipo, clave, divisa, nombre));
 	}
 	
-	public Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, String nombre) {
+	public static Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, String nombre) {
 		return(new Cuenta(banco, tipo, clave, nombre));
 	}
 	
@@ -59,11 +59,23 @@ public class Cuenta extends Banco{
 		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
 		double rand = (double)((Math.random()) + probabilidad);
 		if(rand >= 1){
+			this.getTitular().setContadorMovimientos(this.getTitular().getContadorMovimientos() + 1);
 			return (Movimientos.crearMovimiento(this, this.getSaldo() + this.getSaldo() * probabilidad, Categoria.FINANZAS, new Date()));
 		}else {
 			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
 		}
 	}
+	
+	//Funcionalidad de Suscripciones de Usuarios
+		public static Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
+			if (usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
+				usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
+				return (Movimientos.crearMovimiento(origen, destino, cantidad, categoria, new Date()));
+
+			} else {
+				return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
+			}
+		}
 
 	//	Funcionalidad Prestamo
 	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
@@ -106,7 +118,7 @@ public class Cuenta extends Banco{
 					String destino = sc.nextLine();
 					for(Cuenta dest : Cuenta.getCuentasTotales()) {
 						if(destino == dest.getNombre()) {
-							System.out.println(Movimientos.crearMovimiento(cuenta, dest, cuenta.getSaldo(), Categoria.OTROS, new Date()))
+							System.out.println(Movimientos.crearMovimiento(cuenta, dest, cuenta.getSaldo(), Categoria.OTROS, new Date()));
 							break;
 						}
 					}

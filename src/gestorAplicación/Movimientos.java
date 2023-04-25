@@ -43,7 +43,8 @@ public class Movimientos {
 		this.setOrigen(new Cuenta());
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
-
+	
+	//Métodos
 	//Funcionalidad de Suscripciones de Usuarios
 	public static Object crearMovimiento(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)){
@@ -94,19 +95,6 @@ public class Movimientos {
 				getCantidad()+"\nCategoria:"+getCategoria().name());
 	}
 
-	//Métodos
-	//Funcionalidad de Suscripciones de Usuarios
-	/*public Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
-		if (usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
-			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
-			usuario.verificarContadorMovimientos();
-			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));
-
-		} else {
-			return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
-		}
-
-	}*/
 
 	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
 		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();

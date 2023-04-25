@@ -72,7 +72,7 @@ public class Usuario extends Banco {
 			
 			}
 		}else {
-			return("Debes completar 5 movimientos para ser promovido de nivel");
+			return("Debes completar 5 movimientos para ser promovido de nivel, llevas " + this.getContadorMovimientos() + " movimiento(s)");
 		}
 	}
 	

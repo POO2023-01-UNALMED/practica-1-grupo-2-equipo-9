@@ -659,22 +659,23 @@ public final class Main {
 			System.out.println("");
 			Main.verCuentasAsociadas();
 			System.out.print("Seleccione el número de cuenta asociada al usuario para realizar la inversión de saldo: ");
-			int opcion_banco = Integer.parseInt(sc.nextLine());
+			int opcion_cuenta = Integer.parseInt(sc.nextLine());
 			while(true) {
-				if(opcion_banco < 1 && opcion_banco > user.getCuentasAsociadas().size()) {
-					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
-					opcion_banco = Integer.parseInt(sc.nextLine());
-				}else if(user.getCuentasAsociadas().get(opcion_banco - 1).getSaldo() <= 0){
-					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
+				if(opcion_cuenta < 1 && opcion_cuenta > user.getCuentasAsociadas().size()) {
+					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo:");
+					opcion_cuenta = Integer.parseInt(sc.nextLine());
+				}else if(user.getCuentasAsociadas().get(opcion_cuenta - 1).getSaldo() <= 0){
+					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
 					System.out.println("Para invertir saldo debemos comprobar que el saldo de la cuenta sea diferente de cero." + "El saldo para la cuenta " + c.getNombre() + " es de " + c.getSaldo());
 					System.out.println("Volviendo al menú anterior.");
 					break;	
 				}else {
 					System.out.println("");
-					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
+					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
 						System.out.println("La inversión ha sido exitosa y la cantidad de saldo acumulado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) inversion).getCantidad());
+						System.out.println(user.verificarContadorMovimientos());
 						break;
 					}else {
 						System.out.println(inversion);
@@ -694,14 +695,14 @@ public final class Main {
 			System.out.println("");
 			Main.verCuentasAsociadas();
 			System.out.print("Seleccione el número de cuenta asociada al usuario para realizar la consignación de saldo: ");
-			int opcion_banco = Integer.parseInt(sc.nextLine());
+			int opcion_cuenta = Integer.parseInt(sc.nextLine());
 			while(true) {
-				if(opcion_banco < 1 && opcion_banco > user.getCuentasAsociadas().size()) {
-					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
-					opcion_banco = Integer.parseInt(sc.nextLine());
+				if(opcion_cuenta < 1 && opcion_cuenta > user.getCuentasAsociadas().size()) {
+					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo:");
+					opcion_cuenta = Integer.parseInt(sc.nextLine());
 				}else {
 					System.out.println("");
-					Cuenta c = user.getCuentasAsociadas().get(opcion_banco - 1);
+					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
 					System.out.print("Ingrese el monto de su consignación de saldo(En formato double): ");
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
 					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
@@ -712,6 +713,71 @@ public final class Main {
 						System.out.println(saldo_movimiento);
 						break;
 					}
+				}
+			}		
+		}
+	}	
+	
+	//VER CATEGORIAS EN EL MAIN
+	static void verCategorias() {
+		for(int i = 1; i < Categoria.getCategorias().size() + 1; i++) {
+			System.out.println(i + ". " + Categoria.getCategorias().get(i - 1));
+		}
+	}
+	
+	static void transferirSaldoCuentasUsuario(Usuario user) {
+		if(user.getCuentasAsociadas().size() == 0) {
+			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
+			seccion = 1;
+		}else {
+			System.out.println("");
+			Main.verCuentasAsociadas();
+			System.out.print("Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
+			int opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+			while(true) {
+				if(opcion_cuenta_origen < 1 && opcion_cuenta_origen > user.getCuentasAsociadas().size()) {
+					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo:");
+					opcion_cuenta_origen = Integer.parseInt(sc.nextLine());	
+				}else {
+					System.out.println("");
+					Cuenta c_origen = user.getCuentasAsociadas().get(opcion_cuenta_origen - 1);
+					
+					Main.verCuentasTotales();
+					System.out.print("Seleccione el número de cuenta destino donde deseas transferir saldo: ");
+					int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
+					Cuenta c_destino = null;
+					while(true) {
+						if(opcion_cuenta_destino < 1 || opcion_cuenta_destino > user.getCuentasAsociadas().size()) {
+							System.out.print("Inténtelo de nuevo. Seleccione el número de cuenta destino donde deseas transferir saldo: ");
+							opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
+						}else {
+							c_destino = Cuenta.getCuentasTotales().get(opcion_cuenta_destino - 1);
+							break;
+							}
+						}
+					if(c_destino == null) {
+						
+					}else {
+						System.out.println("");
+						System.out.print("Inserte el monto de la transferencia(En formato double): ");
+						double monto_transferencia = Double.parseDouble(sc.nextLine());
+						Main.verCategorias();
+							
+						System.out.println("");
+						System.out.print("Seleccione el número de categoría para la transferencia: ");
+						int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
+						Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
+						Object modificar_saldo = Cuenta.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
+								
+						if(modificar_saldo instanceof Movimientos) {
+							System.out.println("El movimiento fue realizado con éxito");
+							System.out.println(user.verificarContadorMovimientos());
+							break;
+						}else {
+							System.out.println(modificar_saldo);
+							break;	
+						}	
+					}	
 				}
 			}		
 		}
@@ -775,18 +841,26 @@ public final class Main {
 
 	// ACCESO ADMINISTRATIVO EN EL MAIN
 	static void accesoAdministrativo() {
-		System.out.print("Inserta la contraseña de administrador (Es admin): ");
-		String contrasena = sc.nextLine();
-		while(!contrasena.equals("admin")) {
-			System.out.print("Contraseña errada. Inténtelo de nuevo: ");
-			contrasena = sc.nextLine();	
-		}
-		System.out.println("");
-		System.out.print("Ingresando al sistema como administrador...");
-		user = new Usuario("admin", "admin@admin.com", "admin", Suscripcion.DIAMANTE);
-
-		while(contrasena.equals("admin")) {
+		if(contrasena_admin.equals("admin")) {
+			for(Usuario u : Usuario.getUsuariosTotales()) {
+				if(u.getNombre() == "admin") {
+					user = u;
+				}		
+			}
+		}else {
+			System.out.print("Inserta la contraseña de administrador (Es admin): ");
+			contrasena_admin = sc.nextLine();
+			while(!contrasena_admin.equals("admin")) {
+				System.out.print("Contraseña errada. Inténtelo de nuevo: ");
+				contrasena_admin = sc.nextLine();	
+			}
 			System.out.println("");
+			System.out.print("Ingresando al sistema como administrador...");
+			System.out.print("");
+			user = new Usuario("admin", "admin@admin.com", "admin", Suscripcion.DIAMANTE);
+		}
+		
+		while(contrasena_admin.equals("admin")) {
 			System.out.println("¿Qué deseas hacer?."
 					+ "\n1. Crear Usuario"
 					+ "\n2. Crear Banco"
@@ -801,7 +875,7 @@ public final class Main {
 				String confirmacion = sc.nextLine();
 				while(true) {
 					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-						user = new Usuario("Pepe Morales", "PepeMorales@mail.com", "12345", Suscripcion.DIAMANTE);
+						new Usuario("Pepe Morales", "PepeMorales@mail.com", "12345", Suscripcion.DIAMANTE);
 						System.out.println("El usuario por defecto fue creado con éxito, éstas son las credenciales de ingreso: ");
 						System.out.println("Nombre: " + user.getNombre());
 						System.out.println("Contraseña: " + user.getContrasena());
@@ -901,7 +975,6 @@ public final class Main {
 			for(int i = 1; i < Tipo.getTipos().size() + 1; i++) {
 				System.out.println(i + ". " + Tipo.getTipos().get(i - 1));
 			}
-			
 			int tipo_op = Integer.parseInt(sc.nextLine());
 			Tipo tipo_cuenta = Tipo.getTipos().get(tipo_op - 1);
 
@@ -912,20 +985,20 @@ public final class Main {
 				System.out.print("Recuerde que será una combinación de 4 números. Inténtelo de nuevo: ");
 				clave_cuenta = Integer.parseInt(sc.nextLine());
 			}
+			
 			System.out.println("");
 			System.out.println("¿Cuál es la divisa que quiere seleccionar para su cuenta? La lista de Divisas disponibles son: ");
 			for(int i = 1; i < Divisas.getDivisas().size() + 1; i++) {
 				System.out.println(i + ". " + Divisas.getDivisas().get(i - 1));
 			}
-			
 			int divisas_op = Integer.parseInt(sc.nextLine());
 			Divisas divisas_cuenta = Divisas.getDivisas().get(divisas_op - 1);
 			
 			System.out.println("");
-			System.out.print("Nombre de la Cuenta: ");
+			System.out.print("Inserte el nombre de la cuenta: ");
 			String nombre_cuenta = sc.nextLine();
 			
-			user.asociarCuenta(new Cuenta(banco_cuenta, tipo_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta));
+			System.out.println(user.asociarCuenta(new Cuenta(banco_cuenta, tipo_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
 			System.out.println("Cuenta creada con éxito");
 		}
 	}
@@ -1128,7 +1201,7 @@ public final class Main {
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
 		if(Cuenta.getCuentasTotales().size() > 0) {
-			System.out.println("La lista de Cuentas son: ");
+			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			for(int i = 1; i < Cuenta.getCuentasTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1).getNombre());
 			}
@@ -1448,7 +1521,6 @@ public final class Main {
 			/* La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir los datos del usuario. */
 				
 			// INTERFAZ DE BIENVENIDA
-			System.out.println("");
 			System.out.println("Bienvenido al gestor de dinero."
 					+ "\n1. Ingresar Usuario"
 					+ "\n2. Crear Usuario"
@@ -1465,19 +1537,24 @@ public final class Main {
 					
 				if (opcionUsuario == 1) {
 					Main.ingresarUsuario();
-		
+					System.out.println("");
+
 				} else if(opcionUsuario == 2) {
 					Main.crearUsuario();
-						
+					System.out.println("");
+
 				} else if(opcionUsuario == 3){
 					Main.accesoAdministrativo();
-						
+					System.out.println("");
+	
 				} else if(opcionUsuario == 4){
 					Main.guardarObjetos();
-						
+					System.out.println("");
+	
 				} else if(opcionUsuario == 5){
 					Main.cargarObjetos();
-				
+					System.out.println("");
+
 				} else if(opcionUsuario == 6){
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 					seguir = 0;
@@ -1589,7 +1666,8 @@ public final class Main {
 							+ "\n2. Ver mis bancos asociados"
 							+ "\n3. Invertir saldo de cuenta"
 							+ "\n4. Consignar saldo a mi cuenta"
-							+ "\n5. Salir al menú principal");
+							+ "\n5. Transferir saldo entre cuentas"
+							+ "\n6. Salir al menú principal");
 		
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
@@ -1607,8 +1685,13 @@ public final class Main {
 					 else if(opcion == 4) {
 						Main.consignarSaldoCuenta(user);
 					} 
+					
+					 else if(opcion == 5) {
+							Main.transferirSaldoCuentasUsuario(user);
+					}
+					
 					// Volver al menú anterior
-					else if (opcion == 5) {
+					else if (opcion == 6) {
 							seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
@@ -1682,6 +1765,7 @@ public final class Main {
 				// CERRAR SESIÓN COMO USUARIO
 				else if (seccion == 7) {
 					System.out.println("¡Vuelve pronto " + user.getNombre() + "!");
+					System.out.println("");
 					sesioniniciada = 0;
 				}
 			}
@@ -1698,6 +1782,7 @@ public final class Main {
 	static int interfaz = 1;
 	static int seccion = 0;
 	static int opcion = 0;
+	static String contrasena_admin = "";
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{

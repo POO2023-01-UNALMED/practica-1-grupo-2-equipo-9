@@ -20,7 +20,9 @@ public enum Suscripcion{
 	
 	//Métodos
 	public int getLimiteCuentas() { return limiteCuentas; }
+	
 	public float getProbabilidad_Inversion() { return probabilidad_Inversion; }
+	
 	public static ArrayList<Suscripcion> getNivelesSuscripcion() {
 		ArrayList<Suscripcion> listaSuscripcion = new ArrayList<Suscripcion>();
 		listaSuscripcion.add(DIAMANTE);
