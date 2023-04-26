@@ -1322,8 +1322,8 @@ public final class Main {
 	}		
 	
 	// GUARDAR OBJETOS EN EL MAIN
-	static void guardarObjetos() throws ParseException {
-		//Guardar objetos
+	static void guardarObjetosIndividuales() throws ParseException {
+		//Guardar objetos individuales
 		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.println("Seleccione el objeto que quiere guardar: ");
@@ -1426,10 +1426,42 @@ public final class Main {
 			}
 		}
 	}
+	//Guardar Objetos
+	static void guardarObjetos() throws ParseException{
+		System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
+		String confirmacion = sc.nextLine();
+		while(true){
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));
+				//System.out.println(Serializador.serializar(Usuario.getBancosTotales(), "Bancos"));
+				System.out.println(Serializador.serializar(Usuario.getEstadosTotales(), "Estados"));
+				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));
+				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));
+				System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));
+				System.out.println();
+			}
+			else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+				break;
+			}
+			else {
+				System.out.println("Opción no válida");
+				System.out.println("NOTA: Solo se recibe como respuesta Y o N");
+				System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
+				confirmacion = sc.nextLine();
+			}
+		}
+	}
+	//Cargar Objetos en el main
+	static void cargarObjetos() throws ParseException{
+		while(true) {
+			System.out.println("Bienvenido a la Base de Datos...");
+			
+		}
+	}
 	
 	// CARGAR OBJETOS EN EL MAIN
-	static void cargarObjetos() throws ParseException {
-		//Guardar objetos
+	static void cargarObjetosIndividuales() throws ParseException {
+		//Cargar objetos
 		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.println("Seleccione el objeto que quiere cargar: ");

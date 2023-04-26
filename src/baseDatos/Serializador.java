@@ -91,7 +91,17 @@ public class Serializador{
 					return("La lista de Usuarios fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
 					return("La lista de Usuarios no pudo ser guardada en el sistema: " + ex);
-				}			
+				}	
+//			case "Bancos":
+//				try{
+//					File f = new File("");
+//					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
+//					streamSalida.writeObject(objetos);
+//					streamSalida.close();
+//					return("La lista de Bancos fue guardada satisfactoriamente en el sistema.");
+//				}catch(IOException ex) {
+//					return("La lista de Bancos no pudo ser guardada en el sistema: " + ex);
+//				}
 			case "Estados":
 				try{
 					File f = new File("");
