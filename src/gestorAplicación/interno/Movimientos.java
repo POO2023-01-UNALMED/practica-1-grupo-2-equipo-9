@@ -54,7 +54,7 @@ public class Movimientos {
 			if (origen.getSaldo() < cantidad) {
 				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
 			} else {
-				return (new Movimientos(origen, destino, cantidad - cantidad * destino.getEstadoAsociado().getTasa_impuestos(), categoria, fecha));
+				return (new Movimientos(origen, destino, cantidad - cantidad * (destino.getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 			}
 		}else {
 			return("Debes verificar que las cuentas origen y/o destino existan");
@@ -63,9 +63,9 @@ public class Movimientos {
 	
 	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
-			return (new Movimientos(destino, cantidad - cantidad * destino.getBanco().getEstadoAsociado().getTasa_impuestos(), categoria, fecha));
+			return (new Movimientos(destino, cantidad - cantidad * (destino.getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 		}else {
-			return("Debes verificar que las cuenta de destino exista");
+			return("Debes verificar que la cuenta de destino exista");
 		}
 	}
 
@@ -91,8 +91,19 @@ public class Movimientos {
 			return("Debes verificar que las cuentas origen y/o destino existan");
 		}
 	}
+	
+	//Funcionalidad de Suscripciones de Usuarios
+	public static Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
+		if (usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
+			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
+			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));
 
+		} else {
+			return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
+		}
+	}
 
+	
 	public String toString() {
 		return("Movimiento creado \n Fecha:" + getFecha() + "\nID:" + getId() + "\nOrigen:" + getOrigen().getId() + "\nDestino:" + getDestino().getId() + "\nCantidad:" +
 				getCantidad() + "\nCategoria:" + getCategoria().name());

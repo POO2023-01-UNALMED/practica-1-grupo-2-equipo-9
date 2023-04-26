@@ -60,6 +60,7 @@ public class Banco extends Estado {
 	public Object comprobarSuscripción(Usuario usuario) {
 		for(Usuario u : Usuario.getUsuariosTotales()) {
 			if(usuario.getId() == u.getId()) {
+				usuario.setLimiteCuentas(usuario.getSuscripcion().getLimiteCuentas());
 				switch(usuario.getSuscripcion()) {
 					case DIAMANTE:
 						this.setComision(this.getComision() * 0.50);

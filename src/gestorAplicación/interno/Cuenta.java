@@ -69,17 +69,6 @@ public class Cuenta extends Banco{
 			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
 		}
 	}
-	
-	//Funcionalidad de Suscripciones de Usuarios
-		public static Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
-			if (usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
-				usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
-				return (Movimientos.crearMovimiento(origen, destino, cantidad, categoria, new Date()));
-
-			} else {
-				return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
-			}
-		}
 
 	//	Funcionalidad Prestamo
 	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){

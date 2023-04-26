@@ -854,7 +854,7 @@ public final class Main {
 						System.out.print("Seleccione el número de categoría para la transferencia: ");
 						int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
 						Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
-						Object modificar_saldo = Cuenta.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
+						Object modificar_saldo = Movimientos.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
 						if(modificar_saldo instanceof Movimientos) {
 							System.out.println((Movimientos) modificar_saldo);
 							System.out.println(user.verificarContadorMovimientos());
@@ -1482,6 +1482,7 @@ public final class Main {
 			}
 		}
 	}
+	
 	//Guardar Objetos
 	static void guardarObjetos() throws ParseException{
 		System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
@@ -1507,6 +1508,7 @@ public final class Main {
 			}
 		}
 	}
+	
 	//Cargar Objetos en el main
 	static void cargarObjetos() throws ParseException{
 		while(true) {
