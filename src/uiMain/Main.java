@@ -1264,26 +1264,26 @@ public final class Main {
 	
 	// VER BANCOS TOTALES EN EL MAIN
 	static void verBancosTotales() {
-			//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
-			if(Banco.getBancosTotales().size() > 0) {
-				System.out.println("La lista de Bancos son: ");
-				for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
-					System.out.println(i + ". " + Banco.getBancosTotales().get(i - 1).getNombre());
-				}
-				
-			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
-			}else {
-				System.out.print("No hay bancos creados. ¿Deseas crear uno? (Y/N): ");
-				String confirmacion = sc.nextLine();
-				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-					Main.crearBanco();
-				}else {
-					System.out.println("Volviendo al menú anterior");
-					opcion = 0;
-					seccion = 2;
-				}	
+		//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
+		if(Banco.getBancosTotales().size() > 0) {
+			System.out.println("La lista de Bancos son: ");
+			for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
+				System.out.println(i + ". " + Banco.getBancosTotales().get(i - 1).getNombre());
 			}
+				
+		//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
+		}else {
+			System.out.print("No hay bancos creados. ¿Deseas crear uno? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				Main.crearBanco();
+			}else {
+				System.out.println("Volviendo al menú anterior");
+				opcion = 0;
+				seccion = 2;
+			}	
 		}
+	}
 	
 	// VER CUENTAS TOTALES EN EL MAIN
 	static void verCuentasTotales() {
