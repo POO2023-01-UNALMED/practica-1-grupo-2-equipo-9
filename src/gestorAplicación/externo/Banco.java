@@ -64,16 +64,20 @@ public class Banco extends Estado {
 				switch(usuario.getSuscripcion()) {
 					case DIAMANTE:
 						this.setComision(this.getComision() * 0.50);
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + (this.getComision() * 0.50) + " de comision");
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + (this.getComision() * 0.50) + " de comision");
 					case ORO:
 						this.setComision(this.getComision() * 0.65);
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + this.getComision() * 0.65 + " de comision");
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + this.getComision() * 0.65 + " de comision");
 					case PLATA:
 						this.setComision(this.getComision() * 0.85);
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + this.getComision() * 0.85 + " de comision");
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + this.getComision() * 0.85 + " de comision");
 					case BRONCE:
 						this.setComision(this.getComision());
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + this.getComision() + " de comision");	
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + this.getComision() + " de comision");	
 					default:
 						return ("No encontramos tu grado de suscripción, considera registrarte en nuestro banco.");
 				}
