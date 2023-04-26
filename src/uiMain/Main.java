@@ -3,6 +3,7 @@ package uiMain;
 import baseDatos.Serializador;
 import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 import gestorAplicación.externo.Estado;
 import gestorAplicación.interno.Categoria;
@@ -670,13 +671,97 @@ public final class Main {
 		
 		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
 		
-		// Validar Cuentas que puedan recibir una Deuda
+		ArrayList<Cuenta> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux);
+		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
-		// Enviar posibles Cuentas que reciben Deuda a atributo que regrese tasadeinteres y se regresa Array con estos valores
+		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
+		for (int i = 0; i <= cuentasCapacesDeuda.size(); i++) {
+			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
+					+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
+			System.out.println("");
+		}
+		
+		//Atributo de validacion de la entrada Cuenta_Destino
+		boolean validacion_Cuenta_Destino = true;
+		while (validacion_Cuenta_Destino) {
+			System.out.println("Por favor escoga la cuenta destino de la deuda:");
+			int Cuenta_Destino = Integer.parseInt(sc.nextLine());
+			if (Cuenta_Destino >= 1 || Cuenta_Destino <= cuentasCapacesDeuda.size()) {
+				validacion_Cuenta_Destino = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		//Atributo de validacion de la entrada Periodicidad
+		boolean validacion_Periodicidad = true;
+		//Atributo auxiliar para almacenar decision de periodicidad
+		int Periodicidad = 0;
+		while (validacion_Periodicidad) {
+			System.out.println("¿Desea mantener la periodicidad del pago de la deuda?"
+					+ "\n1. Sí"
+					+ "\n2. No");
+			Periodicidad = Integer.parseInt(sc.nextLine());
+			if (Periodicidad == 1 || Periodicidad == 2) {
+				validacion_Periodicidad = false;
+			} else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		if (Periodicidad == 1) {
+			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " /*Agregar atributo de plazo de pago */);
+		}
+		if (Periodicidad == 2) {
+			//Atributo de validacion de la seleccion de periodicidad
+			boolean validacion_Seleccion_Periodicidad = true;
+			//Atributo de la periodicidad
+			Cuotas eleccion_periodicidad = null;
+			int seleccion_periodicidad = 0;
+			
+			while (validacion_Seleccion_Periodicidad) {
+				System.out.println("Por favor seleccione la nueva periodicidad de la Deuda: "
+						+ "\n1. 1 Cuota"
+						+ "\n2. 6 Cuotas"
+						+ "\n3. 12 Cuotas"
+						+ "\n4. 18 Cuotas"
+						+ "\n5. 24 Cuotas"
+						+ "\n6. 36 Cuotas"
+						+ "\n7. 48 Cuotas");
+				seleccion_periodicidad = Integer.parseInt(sc.nextLine());
+				if (seleccion_periodicidad < 1 || seleccion_periodicidad > 7) {
+					System.out.println("Entrada no válidad, intente de nuevo");
+				}
+				else {
+					validacion_Seleccion_Periodicidad = false;
+				}
+			}
+			switch(seleccion_periodicidad) {
+				case 1:
+					//eleccion_periodicidad = cuotas.1 
+					break;
+				case 2:
+					//eleccion_periodicidad = cuotas.2
+					break;
+				case 3:
+					//eleccion_periodicidad = cuotas.3
+					break;
+				case 4:
+					break;
+				case 5:
+					break;
+				case 6:
+					break;
+				case 7:
+					break;
+			}
+		}
+				
+		
 		
 		// Se escoge estos valores y se hace el movimiento.
 		
-			//cuentasCapacesdeDeuda = CapacidadDeuda(cuentasAux);
 			//ArrayList<Double> = verificarTasasdeInteres(cuentasCapacesdeDeuda, usuario.getSuscripcion());
 			
 			//System.out.println("Las cuentas a tu nombre capaces de recibir la deuda de la cuenta son: ");

@@ -186,14 +186,20 @@ public class Usuario extends Banco {
 		return cadena;
 	}
 
+	//Funcionalidad Compra Cartera
 	public ArrayList<Cuenta> retornarDeudas(){
-		ArrayList<Cuenta> cuentasEndeudadas = new ArrayList<Cuenta>();
+		ArrayList<Cuenta> cuentasConDeuda = new ArrayList<Cuenta>();
 		for (Cuenta cuenta: cuentasAsociadas) {
 			if (cuenta.getExistenciaPrestamo()) {
-				cuentasEndeudadas.add(cuenta);
+				cuentasConDeuda.add(cuenta);
 			}
 		}
-		return cuentasEndeudadas;
+		return cuentasConDeuda;
+	}
+	
+	//Funcionalidad Compra Cartera
+	public ArrayList<Cuenta> Capacidad_Endeudamiento(ArrayList<Cuenta> cuentas) {
+		
 	}
 	
 	public void eliminarMetas(int n) {

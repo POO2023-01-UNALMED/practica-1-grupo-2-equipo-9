@@ -10,6 +10,8 @@ public class Estado implements Serializable {
 	private String nombre;
 	private int id;
 	private double tasa_impuestos;
+	private double interes_bancario_corriente;
+	private double tasa_usura;
 	private Divisas divisa;
 	
 	//Constructor
@@ -33,6 +35,7 @@ public class Estado implements Serializable {
 	public Divisas getDivisa() {
 		return divisa;
 	}
+	
 	//Sets
 	public void setNombre(String nombre) {
 		this.nombre = nombre;

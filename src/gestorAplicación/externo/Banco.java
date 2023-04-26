@@ -145,6 +145,10 @@ public class Banco extends Estado {
 		return asociado;
 	}
 	
+	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Cuenta> cuentas){
+		
+	}
+	
 	//Gets
 	public double getComision() {
 		return comision;
