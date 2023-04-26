@@ -581,19 +581,50 @@ public final class Main {
 	}
 
 	// FUNCIONALIDAD COMPRA DE CARTERA
-		static void compraCartera(Usuario usuario) {
+	static void compraCartera(Usuario usuario) {
+		//Arreglo que almacena las cuentas con deuda alguna 
+		ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
+		
+		//Comprobación de existencia de Deudas por parte del Usuario
+		if (cuentasEnDeuda.size() == 0) {
+			System.out.println("El usuario " + usuario.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
+			return;
+		}
+		
+		//Arreglo que almacena las cuentas asociadas a un usuario
+		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		//Arreglo que almacena las cuentas capaces de recibir una deuda
+		ArrayList<Cuenta> cuentasCapacesdeDeuda = new ArrayList<Cuenta>();
+		
+		//Atributo auxiliar que almacenará el índice de la cuenta escogida por el usuario
+		int Cuenta_Compra = 0;
+		//Booleano usado para repetir el proceso de seleccion de cuenta
+		boolean seleccion_Cuenta = true;
+		
+		while (seleccion_Cuenta) {
 			System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
-			ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
-			ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
-			ArrayList<Cuenta> cuentasCapacesdeDeuda = new ArrayList<Cuenta>();
+		
+			//Impresión Cuentas con Préstamo Asociado
 			int i = 1;
 			for (Cuenta cuentas: cuentasEnDeuda) {
 				System.out.println(i + ". " + cuentas.getNombre());
 				i++;
 			}
-			System.out.println("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
-			int Cuenta_Compra = Integer.parseInt(sc.nextLine());
-			//Verificar si entrada está correcta.
+			
+			//Atributo para validación entrada Cuenta_Compra
+			boolean validacion_Cuenta_Compra = true;
+			while (validacion_Cuenta_Compra) {
+				System.out.println("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
+				Cuenta_Compra = Integer.parseInt(sc.nextLine());
+				
+				if (Cuenta_Compra >= 1 || Cuenta_Compra < i) {
+					validacion_Cuenta_Compra = false;
+				}
+				else {
+					System.out.println("Entrada no válida, intente de nuevo.");
+				}
+			}
+		
 			//Retornar información de la Cuenta
 			System.out.println("Información de la cuenta: ");
 			System.out.println(cuentasEnDeuda.get(Cuenta_Compra - 1));
@@ -602,30 +633,47 @@ public final class Main {
 			System.out.println("Confirme por favor si esta es la cuenta a la cual desea aplicar este mecanismo financiero (y/n): ");
 			String ConfirmacionI = sc.nextLine();
 			
+			
 			if (ConfirmacionI.equals("y") || ConfirmacionI.equals("Y")) {
-				cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
-				//cuentasCapacesdeDeuda = CapacidadDeuda(cuentasAux);
-				//ArrayList<Double> = verificarTasasdeInteres(cuentasCapacesdeDeuda, usuario.Suscripcion);
-				
-				System.out.println("Las cuentas a tu nombre capaces de recibir la deuda de la cuenta son: ");
-				
+				seleccion_Cuenta = false;
 			}
 			else if (ConfirmacionI.equals("n") || ConfirmacionI.equals("N")) {
-				System.out.println();
-				//Salir de la función o rescribir opción
+				boolean validacion_ConfirmacionII = true;
+				while (validacion_ConfirmacionII) {
+					System.out.println("¿Qué desea hacer?"
+							+ "\n1. Reescoger cuenta."
+							+ "\n2. Salir de la funcionalidad.");
+					int ConfirmacionII = Integer.parseInt(sc.nextLine());
+					if (ConfirmacionII == 1) {
+						validacion_ConfirmacionII = false;
+					}
+					else if(ConfirmacionII == 2) {
+						return;
+					}
+					else {
+						System.out.println("Entrada no válida, intente de nuevo.");
+					}
+				}
+				
 			}
 			else {
-				System.out.println("Entrada no válida, intente de nuevo");
+				System.out.println("Entrada no válida");
 			}
-			// Hacer la validación de los datos.
-			
-			// Validar Cuentas que puedan recibir una Deuda
-			
-			// Enviar posibles Cuentas que reciben Deuda a atributo que regrese tasadeinteres y se regresa Array con estos valores
-			
-			// Se escoge estos valores y se hace el movimiento.
-			
 		}
+		
+		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
+		
+		// Validar Cuentas que puedan recibir una Deuda
+		
+		// Enviar posibles Cuentas que reciben Deuda a atributo que regrese tasadeinteres y se regresa Array con estos valores
+		
+		// Se escoge estos valores y se hace el movimiento.
+		
+			//cuentasCapacesdeDeuda = CapacidadDeuda(cuentasAux);
+			//ArrayList<Double> = verificarTasasdeInteres(cuentasCapacesdeDeuda, usuario.getSuscripcion());
+			
+			//System.out.println("Las cuentas a tu nombre capaces de recibir la deuda de la cuenta son: ");
+	}
 	
 	// CREAR USUARIO DENTRO EN EL MAIN
 	static void crearUsuario() {
@@ -1826,7 +1874,7 @@ public final class Main {
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{
-		
+
 		listaObjetos.add(Estado.nombreD);
 		listaObjetos.add(Cuenta.nombreD);
 		listaObjetos.add(Usuario.nombreD);
@@ -1835,5 +1883,6 @@ public final class Main {
 		listaObjetos.add(Metas.nombreD);
 		
 		Main.bienvenidaApp();
+
 	}	
 }

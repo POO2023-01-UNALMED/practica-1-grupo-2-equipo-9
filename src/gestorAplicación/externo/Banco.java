@@ -198,4 +198,8 @@ public class Banco extends Estado {
 	public void setCionario(ArrayList<Double> cionario) {
 		this.cionario = cionario;
 	}
+	
+	public String toString() {
+		return this.nombre;
+	}
 }

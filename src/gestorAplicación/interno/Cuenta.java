@@ -259,5 +259,13 @@ public class Cuenta extends Banco{
 	}
 	public void setClave(int clave) {
 		this.clave = clave;
-	}	
+	}
+	
+	public String toString() {
+		return "Cuenta: " + this.nombre +
+				"\nCuenta de " + this.tipo + " # " + this.id +
+				"\nBanco: " + this.banco +
+				"\nDivisa: " + this.divisa +
+				"\nSaldo: " + this.saldo + " " + this.divisa;
+	}
 }
