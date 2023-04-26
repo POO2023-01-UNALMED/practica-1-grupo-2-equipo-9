@@ -20,8 +20,7 @@ public class Usuario extends Banco {
 	private String contrasena;
 	private int id;
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
-	private Boolean confiabilidad;
-	private Double deuda;
+
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
@@ -157,15 +156,32 @@ public class Usuario extends Banco {
 				cuentasUsuario.add(cuentas.get(i));
 			}
 		}
+//		Conseguimos la suscripciones y miramos las deudas
+		Suscripcion suscripcion = getSuscripcion();
+		ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
+//		comprobamos y contamos las deudas que estan asociadas al usuario
+		int totalDeudas=0;
+		ArrayList<Deuda> deudasUsuario = new ArrayList<>();
 
-		if(getConfiabilidad()){
-			if(cuentas.size()!=0){
+		for(int i=0;i<deudas.size();i++){
+			if(deudas.get(i).getTitular() == usuario){
+				totalDeudas++;
+				deudasUsuario.add(deudas.get(i));
+			}
+		}
+//		returns
+		if(totalDeudas<suscripcion.getMaxDeudas()){
+			if(cuentasUsuario.size()!=0){
 				return cuentasUsuario;
 			}else{
-				cadena.add("¡Error! Usted no tiene ninguna cuenta creada");
+				cadena.add("¡Error! Usted no tiene ninguna cuenta Corriente creada");
 			}
 		}else{
-			cadena.add("¡Error! Usted ya tiene una deuda de $"+getDeuda());
+			cadena.add("¡Error! La suscripción"+usuario.getSuscripcion().name()+"solo permite realizar un total de"+usuario.getSuscripcion().getMaxDeudas()+". Usted tiene"+usuario.getSuscripcion().getMaxDeudas()+"/"+usuario.getSuscripcion().getMaxDeudas()+"Deudas");
+//			Agrega a cadena todas las cuentas del usuario para mostrarselas
+			for(int i =0;i<deudasUsuario.size();i++){
+				cadena.add("1-Deuda con id"+deudasUsuario.get(i).getId()+"efectuada por el banco"+deudasUsuario.get(i).getBanco()+" en la cuenta"+deudasUsuario.get(i).getCuenta()+"por una cantidad de"+deudasUsuario.get(i).getCantidad());
+			}
 		}
 		return cadena;
 	}
@@ -211,10 +227,6 @@ public class Usuario extends Banco {
 	public void setComisionUsuario(double comisionUsuario) { this.comisionUsuario = comisionUsuario; }
 	public int getContadorMovimientos() { return contadorMovimientos; }
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
-	public Boolean getConfiabilidad(){return confiabilidad;}
-	public  void setConfiabiliad(Boolean confiabilidad){this.confiabilidad = confiabilidad;}
-	public Double getDeuda(){return deuda;}
-	public  void setDeuda(Double deuda){this.deuda = deuda;}
 	public ArrayList<Metas> getMetasAsociadas() {return metasAsociadas;}
 	public void setMetasAsociadas(ArrayList<Metas> metasAsociadas) {this.metasAsociadas = metasAsociadas;}
 	public ArrayList<Movimientos> getMovimientosAsociadas() {return movimientosAsociadas;}

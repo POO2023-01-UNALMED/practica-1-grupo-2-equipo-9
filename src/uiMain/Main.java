@@ -21,6 +21,7 @@ import java.time.Instant;
 public final class Main {
 	
 	// FUNCIONALIDADES 
+
 	private static int funcionalidadPrestamo(Usuario usu){
 		int seccion = 0;
 		System.out.println("Bienvenido a Prestamos");
@@ -32,25 +33,29 @@ public final class Main {
 				System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
 				for(int i=0;i<prestamo.size();i++){
 					Cuenta cuenta = (Cuenta) prestamo.get(i);
-					System.out.println(i+"-Cuenta: "+ cuenta.getNombre()+" Maximo a prestar:"+cuenta.getBanco().getPrestamo());
+					System.out.println(i+"-Cuenta: "+ cuenta.getNombre()+" Maximo a prestar:"+cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getPorcentajePrestamo());
 				}
 				System.out.println(prestamo.size()+"-Salir al Menú");
 				System.out.println("Seleccione una:");
+//				recibe la opccion del usuario
 				int opcion = Integer.parseInt(sc.nextLine());
 				System.out.println("");
+
+//				En caso de que desee salir se sale,
 				if(opcion==prestamo.size()){
 					seccion =0;
 				}else{
+//					encaso de que seleccione una de las cuentas
 					Cuenta cuenta = (Cuenta) prestamo.get(opcion);
-					double maxPrestamo = cuenta.getBanco().getPrestamo();
+					double maxPrestamo = cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getLimiteCuentas();
 					System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $"+maxPrestamo);
-					maxPrestamo = Integer.parseInt(sc.nextLine());
+					maxPrestamo = Double.parseDouble(sc.nextLine());
 					Boolean exito = Movimientos.realizarPrestamo(cuenta,maxPrestamo);
 					if(exito){
 						System.out.println("|----------------------------------|\n\nPrestamo Realizado con Exito\n\n|----------------------------------|\n\n");
 					}else{
 						System.out.println("|----------------------------------|\n\nPor favor seleccione una cantidad adecuada\n\n|----------------------------------|\n\n");
-
+						funcionalidadPrestamo(usu);
 					}
 				}
 
@@ -60,7 +65,9 @@ public final class Main {
 				seccion=0;
 			}
 		}else{
-			System.out.println("|----------------------------------|\n\n"+prestamo.get(0)+"\n\n|----------------------------------|\n\n");
+			for(int i = 0;i<prestamo.size();i++){
+				System.out.println(prestamo.get(i));
+			}
 			seccion=0;
 		}
 	}

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Movimientos {
 	public static final String nombreD = "Movimientos";
+	private static final long serialVersionUID = 5L;
 
 	//	Atributos
 	private static ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
@@ -110,25 +111,22 @@ public class Movimientos {
 	}
 
 
-	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
-		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
-		ArrayList<String> bancos = new ArrayList<String>();
-
-		for(int i=0;i<cuentas.size();i++){
-			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
-			if(prestamo>0){
-				cuentasPrestamo.add(cuentas.get(i));
-
-			}else{
-				bancos.add(cuentas.get(i).getBanco().getNombre());
-			}
-		}
-
-		if(cuentasPrestamo.size()!=0){
-			return cuentasPrestamo;
+	//	Funcionalidad Prestamos
+	public Boolean realizarPrestamo(Corriente cuenta,double cantidad){
+		Banco banco = cuenta.getBanco();
+		Usuario titular = cuenta.getTitular();
+		double maxCantidad = banco.getPrestamo()*titular.getSuscripcion().getPorcentajePrestamo();
+		//	Comprueba que la cantidad si sea la adecuada
+		if(cantidad>maxCantidad){
+			return false;
 		}else{
-			return bancos;
+			//		Creamos instancia de la clase deuda
+			Deuda deuda = new Deuda(cantidad,cuenta,titular,banco);
+//		agrega el dinero a la cuenta
+			cuenta.setSaldo(cuenta.setSaldo+cantidad);
+			return true;
 		}
+
 	}
 	
 	//Métodos para funcionalidad cambio de divisa

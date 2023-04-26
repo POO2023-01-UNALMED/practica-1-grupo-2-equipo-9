@@ -71,10 +71,11 @@ public class Cuenta extends Banco{
 	}
 
 	//	Funcionalidad Prestamo
-	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
-		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
+	public static ArrayList<?> comprobarPrestamo(ArrayList<Corriente> cuentas){
+		ArrayList<Corriente> cuentasPrestamo = new ArrayList<Cuenta>();
 		ArrayList<String> bancos = new ArrayList<String>();
 
+		//Pasamos por todas las cuentas del usuario y comprobamos que el prestamo sea diferente de 0
 		for(int i=0;i<cuentas.size();i++){
 			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
 			if(prestamo>0){
