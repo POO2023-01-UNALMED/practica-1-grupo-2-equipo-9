@@ -82,48 +82,45 @@ public class Banco extends Estado {
 	
 	// Método funcionalidad Asesoramiento de inversiones
 	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
-		
+
 		double interes = Math.random() + riesgo;
 		if (Math.random() < 0.5) {
-			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(riesgo-1), Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
-			
-			if (user.getCuentasAsociadas() != null) {
-				double x = user.getCuentasAsociadas().get(0).getSaldo();
-				double cobro = x*interes-x;
-				Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro, Categoria.TRANSPORTE, Date.from(Instant.now()));
-				
-				if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
-					int n = (int) Math.round(interes);
-					return n;
-				}
-				else {
-					int n = (int) Math.round(interes - 2);
-					return n;
-				}
+			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(riesgo - 1), Tipo.AHORROS, 1234, Divisas.COP,
+					"Ahorros");
+
+			double x = user.getCuentasAsociadas().get(0).getSaldo();
+			double cobro = x * interes - x;
+			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro,
+					Categoria.OTROS, Date.from(Instant.now()));
+
+			if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
+				int n = (int) Math.round(interes);
+				return n;
+			} else {
+				int n = (int) Math.round(interes - 2);
+				return n;
+			}
+
+		} else {
+			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1),
+					Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
+
+			double x = user.getCuentasAsociadas().get(0).getSaldo();
+			double cobro = x * interes - x;
+			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro,
+					Categoria.OTROS, Date.from(Instant.now()));
+
+			if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
+				int n = (int) Math.round(interes + 2);
+				return n;
+			} else {
+				int n = (int) Math.round(interes + 4);
+				return n;
 			}
 		}
-		else {
-			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(user.getBancosAsociados().size()-1), Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
-			
-			if (user.getCuentasAsociadas() != null) {
-				double x = user.getCuentasAsociadas().get(0).getSaldo();
-				double cobro = x*interes-x;
-				Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro, Categoria.TRANSPORTE, Date.from(Instant.now()));
-				
-				if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
-					int n = (int) Math.round(interes + 2);
-					return n;
-				}
-				else {
-					int n = (int) Math.round(interes + 4);
-					return n;
-				}
-			}
-		}
-		return 0;
 	}
 	
-	public static String bancoAsociado(int riesgo, Usuario user) {
+	public static String bancoPortafolio(int riesgo, Usuario user) {
 		double interes = Math.random() + riesgo;
 		String asociado = null;
 		
@@ -200,5 +197,9 @@ public class Banco extends Estado {
 	}
 	public void setCionario(ArrayList<Double> cionario) {
 		this.cionario = cionario;
+	}
+	
+	public String toString() {
+		return this.nombre;
 	}
 }
