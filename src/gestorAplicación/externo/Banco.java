@@ -211,7 +211,7 @@ public class Banco extends Estado {
 	private double[] retornarDescuentosSuscripcion() {
 		double[] descuento;
 		for(int i = 1; i < 5; i++) {
-			descuento[i] = this.desc_suscripcion * i;
+			descuento[i - 1] = this.desc_suscripcion * i;
 		}
 		return descuento;
 	}
