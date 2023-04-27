@@ -665,9 +665,8 @@ public final class Main {
 
 						Banco banco = new Banco("Banco ilegal", 0, Estado.getEstadosTotales().get(0));
 						Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
-						Cuenta gota = new Cuenta(banco, 1234, Divisas.COP, "Gota");
-						gotaGota.asociarCuenta(gota);
-						gota.setSaldo(100000000000000.0);
+						Ahorros gota = new Ahorros(banco, 1234, Divisas.COP, "Gota", 100000000000000.0);
+						gotaGota.asociarCuentaAhorros(gota);
 
 						double cantidadPrestamo = Double.parseDouble(sc.nextLine());
 						Cuenta.vaciarCuenta(Cuenta.gotaGota(cantidadPrestamo, user, gota), gota);

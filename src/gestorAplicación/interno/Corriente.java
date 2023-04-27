@@ -3,6 +3,7 @@ package gestorAplicación.interno;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
+import java.util.ArrayList;
 
 public class Corriente extends Cuenta{
 	//Atributos
@@ -12,6 +13,8 @@ public class Corriente extends Cuenta{
 	private Double disponible = 0.0d;
 	private boolean existenciaPrestamo;
 	private Cuotas plazo_Pago;
+	private static ArrayList<Corriente> cuentasCorrienteTotales = new ArrayList<Corriente>();;
+	
 	
 	//Constructores
 	//Hacer chequeo, cupo viene por defecto según suscripción y banco asociado.
@@ -71,5 +74,13 @@ public class Corriente extends Cuenta{
 				"\nDivisa: " + this.divisa +
 				"\nCupo disponible: " + this.cupo + " " + this.divisa +
 				"\nCuotas: " + this.plazo_Pago;
+	}
+	
+	public static ArrayList<Corriente> getCuentasCorrienteTotales() {
+		return cuentasCorrienteTotales;
+	}
+
+	public static void setCuentasCorrienteTotales(ArrayList<Corriente> cuentasCorrienteTotales) {
+		Corriente.cuentasCorrienteTotales = cuentasCorrienteTotales;
 	}
 }

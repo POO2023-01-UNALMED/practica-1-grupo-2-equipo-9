@@ -2,11 +2,13 @@ package gestorAplicación.interno;
 
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
+import java.util.ArrayList;
 
 public class Ahorros extends Cuenta{
 	//Atributos
 	private static final long serialVersionUID = 7L;
 	public static final String nombreD = "Ahorros";
+	private static ArrayList<Ahorros> cuentasAhorroTotales = new ArrayList<Ahorros>();;
 
 	//Constructores
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre, Double saldo) {
@@ -56,7 +58,16 @@ public class Ahorros extends Cuenta{
 	public double getSaldo() {
 		return saldo;
 	}
+	
 	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
+	}
+	
+	public static ArrayList<Ahorros> getCuentasAhorroTotales() {
+		return cuentasAhorroTotales;
+	}
+
+	public static void setCuentasAhorroTotales(ArrayList<Ahorros> cuentasAhorroTotales) {
+		Ahorros.cuentasAhorroTotales = cuentasAhorroTotales;
 	}
 }

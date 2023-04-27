@@ -10,6 +10,8 @@ import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
+import gestorAplicación.interno.Ahorros;
+import gestorAplicación.interno.Corriente;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
@@ -87,44 +89,80 @@ public class Banco extends Estado {
 	}
 	
 	// Método funcionalidad Asesoramiento de inversiones
-	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
+public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
 
-		double interes = Math.random() + riesgo;
-		if (Math.random() < 0.5) {
-			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(riesgo - 1), Tipo.AHORROS, 1234, Divisas.COP,
-					"Ahorros");
+	double interes = Math.random() + riesgo;
+	if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+		Ahorros cuenta = new Ahorros(user.getBancosAsociados().get(riesgo - 1), 1234, Divisas.COP, "Ahorros", 10.0);
 
-			double x = user.getCuentasAsociadas().get(0).getSaldo();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
+		double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAhorrosAsociadas().get(0), cobro,
+				Categoria.OTROS, Date.from(Instant.now()));
 
-			if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
-				int n = (int) Math.round(interes);
-				return n;
-			} else {
-				int n = (int) Math.round(interes - 2);
-				return n;
-			}
-
+		if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+			int n = (int) Math.round(interes);
+			return n;
 		} else {
-			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1),
-					Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
+			int n = (int) Math.round(interes - 2);
+			return n;
+		}
 
-			double x = user.getCuentasAsociadas().get(0).getSaldo();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
+	}
 
-			if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
-				int n = (int) Math.round(interes + 2);
-				return n;
-			} else {
-				int n = (int) Math.round(interes + 4);
-				return n;
-			}
+	else if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+		Ahorros cuenta = new Ahorros(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1), 1234,
+				Divisas.COP, "Ahorros", 1000.0);
+
+		double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAhorrosAsociadas().get(0), cobro,
+				Categoria.OTROS, Date.from(Instant.now()));
+
+		if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+			int n = (int) Math.round(interes + 2);
+			return n;
+		} else {
+			int n = (int) Math.round(interes + 4);
+			return n;
 		}
 	}
+
+	else if (user.getCuentasCorrienteAsociadas().get(0).getCupo() > invertir) {
+		Corriente cuenta = new Corriente(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1), 1234, Divisas.COP, "Corriente");
+
+		double x = user.getCuentasCorrienteAsociadas().get(0).getCupo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasCorrienteAsociadas().get(0), cobro,
+				Categoria.OTROS, Date.from(Instant.now()));
+
+		if (user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
+			int n = (int) Math.round(interes);
+			return n;
+		} else {
+			int n = (int) Math.round(interes - 2);
+			return n;
+		}
+
+	}
+
+	else {
+		Corriente cuenta = new Corriente(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1), 1234, Divisas.COP, "Corriente");
+
+		double x = user.getCuentasCorrienteAsociadas().get(0).getCupo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasCorrienteAsociadas().get(0), cobro, Categoria.OTROS,
+				Date.from(Instant.now()));
+
+		if (user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
+			int n = (int) Math.round(interes + 2);
+			return n;
+		} else {
+			int n = (int) Math.round(interes + 4);
+			return n;
+		}
+	}
+}
 	
 	public static String bancoPortafolio(int riesgo, Usuario user) {
 		double interes = Math.random() + riesgo;

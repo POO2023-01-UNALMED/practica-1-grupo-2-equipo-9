@@ -24,6 +24,8 @@ public class Usuario extends Banco {
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
+	private ArrayList<Corriente> CuentasCorrienteAsociadas = new ArrayList<Corriente>();
+	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
 	
 	//Constructor
 	
@@ -112,6 +114,26 @@ public class Usuario extends Banco {
 			return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
 			return("No se encuentra el movimiento. Por favor asegurese de que el movimiento se haya realizado con éxito" );
+		}
+	}
+	
+	public String asociarCuentaCorriente(Corriente corriente) {
+		if(Corriente.getCuentasCorrienteTotales().contains(corriente)) {
+			corriente.setTitular(this);
+			this.getCuentasCorrienteAsociadas().add(corriente);
+			return("La cuenta corriente ha sido asociada correctamente al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra el la cuenta corriente. Por favor asegurese de que exista" );
+		}
+	}
+	
+	public String asociarCuentaAhorros(Ahorros ahorros) {
+		if(Ahorros.getCuentasAhorroTotales().contains(ahorros)) {
+			ahorros.setTitular(this);
+			this.getCuentasAhorrosAsociadas().add(ahorros);
+			return("La cuenta de ahorros ha sido asociada correctamente al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra el la cuenta de ahorros. Por favor asegurese de que exista");
 		}
 	}
 	
@@ -246,4 +268,8 @@ public class Usuario extends Banco {
 	public void setMetasAsociadas(ArrayList<Metas> metasAsociadas) {this.metasAsociadas = metasAsociadas;}
 	public ArrayList<Movimientos> getMovimientosAsociadas() {return movimientosAsociadas;}
 	public void setMovimientosAsociadas(ArrayList<Movimientos> movimientosAsociadas) {this.movimientosAsociadas = movimientosAsociadas;}
+	public ArrayList<Corriente> getCuentasCorrienteAsociadas() {return CuentasCorrienteAsociadas;}
+	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
+	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}
+	public void setCuentasAhorrosAsociadas(ArrayList<Ahorros> cuentasAhorrosAsociadas) {CuentasAhorrosAsociadas = cuentasAhorrosAsociadas;}
 }
