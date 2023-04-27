@@ -3,7 +3,6 @@ package gestorAplicación.externo;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
-import java.
 
 import gestorAplicación.interno.Categoria;
 import gestorAplicación.interno.Corriente;
@@ -209,7 +208,7 @@ public class Banco extends Estado {
 	}
 	
 	private double[] retornarDescuentosSuscripcion() {
-		double[] descuento;
+		double[] descuento = null;
 		for(int i = 1; i < 5; i++) {
 			descuento[i - 1] = this.desc_suscripcion * i;
 		}

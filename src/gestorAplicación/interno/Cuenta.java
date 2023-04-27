@@ -18,7 +18,6 @@ public abstract class Cuenta extends Banco{
 	private int clave_din;
 	protected Divisas divisa;
 	protected String nombre;
-	protected double saldo = 0.0d;
 	protected int id;
 	protected Banco banco;
 	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
@@ -213,12 +212,7 @@ public abstract class Cuenta extends Banco{
 	public void setClave(int clave) {
 		this.clave = clave;
 	}
-	public double getSaldo() {
-		return saldo;
-	}
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
-	}
+
 	public String toString() {
 		return "Cuenta: " + this.nombre +
 				"\n# " + this.id +
