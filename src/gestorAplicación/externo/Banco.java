@@ -3,12 +3,16 @@ package gestorAplicación.externo;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
+import java.
 
 import gestorAplicación.interno.Categoria;
+import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Movimientos;
-import gestorAplicación.interno.Tipo;
+import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
+import gestorAplicación.interno.Ahorros;
+import gestorAplicación.interno.Corriente;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
@@ -22,6 +26,11 @@ public class Banco extends Estado {
 	private boolean asociado = false;
 	private ArrayList<String> dic = new ArrayList<String>();
 	private ArrayList<Double> cionario = new ArrayList<Double>();
+	
+	//Funcionalidad Compra de Cartera
+	private double desc_suscripcion = 0.2;
+	private double desc_movimientos_porcentaje = 0.2;
+	private int desc_movimientos_cantidad = 5;
 	
 	//Constructor
 	
@@ -60,19 +69,24 @@ public class Banco extends Estado {
 	public Object comprobarSuscripción(Usuario usuario) {
 		for(Usuario u : Usuario.getUsuariosTotales()) {
 			if(usuario.getId() == u.getId()) {
+				usuario.setLimiteCuentas(usuario.getSuscripcion().getLimiteCuentas());
 				switch(usuario.getSuscripcion()) {
 					case DIAMANTE:
 						this.setComision(this.getComision() * 0.50);
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + (this.getComision() * 0.50) + " de comision");
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + (this.getComision() * 0.50) + " de comision");
 					case ORO:
 						this.setComision(this.getComision() * 0.65);
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + this.getComision() * 0.65 + " de comision");
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + this.getComision() * 0.65 + " de comision");
 					case PLATA:
 						this.setComision(this.getComision() * 0.85);
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + this.getComision() * 0.85 + " de comision");
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + this.getComision() * 0.85 + " de comision");
 					case BRONCE:
 						this.setComision(this.getComision());
-						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, por eso te cobramos " + this.getComision() + " de comision");	
+						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
+								+ "por eso te cobramos " + this.getComision() + " de comision");	
 					default:
 						return ("No encontramos tu grado de suscripción, considera registrarte en nuestro banco.");
 				}
@@ -84,16 +98,15 @@ public class Banco extends Estado {
 	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
 
 		double interes = Math.random() + riesgo;
-		if (Math.random() < 0.5) {
-			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(riesgo - 1), Tipo.AHORROS, 1234, Divisas.COP,
-					"Ahorros");
-
-			double x = user.getCuentasAsociadas().get(0).getSaldo();
+		if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+			Ahorros cuenta = new Ahorros(user.getBancosAsociados().get(riesgo - 1), 1234, Divisas.COP, "Ahorros", 10.0);
+	
+			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
 			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro,
+			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAhorrosAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
-
-			if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
+	
+			if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
 				int n = (int) Math.round(interes);
 				return n;
 			} else {
@@ -101,24 +114,61 @@ public class Banco extends Estado {
 				return n;
 			}
 
+	}
+
+	else if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+		Ahorros cuenta = new Ahorros(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1), 1234,
+				Divisas.COP, "Ahorros", 1000.0);
+
+		double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAhorrosAsociadas().get(0), cobro,
+				Categoria.OTROS, Date.from(Instant.now()));
+
+		if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+			int n = (int) Math.round(interes + 2);
+			return n;
 		} else {
-			Cuenta cuenta = new Cuenta(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1),
-					Tipo.AHORROS, 1234, Divisas.COP, "Ahorros");
-
-			double x = user.getCuentasAsociadas().get(0).getSaldo();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
-
-			if (user.getCuentasAsociadas().get(0).getSaldo() < invertir) {
-				int n = (int) Math.round(interes + 2);
-				return n;
-			} else {
-				int n = (int) Math.round(interes + 4);
-				return n;
-			}
+			int n = (int) Math.round(interes + 4);
+			return n;
 		}
 	}
+
+	else if (user.getCuentasCorrienteAsociadas().get(0).getCupo() > invertir) {
+		Corriente cuenta = new Corriente(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1), 1234, Divisas.COP, "Corriente");
+
+		double x = user.getCuentasCorrienteAsociadas().get(0).getCupo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasCorrienteAsociadas().get(0), cobro,
+				Categoria.OTROS, Date.from(Instant.now()));
+
+		if (user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
+			int n = (int) Math.round(interes);
+			return n;
+		} else {
+			int n = (int) Math.round(interes - 2);
+			return n;
+		}
+
+	}
+
+	else {
+		Corriente cuenta = new Corriente(user.getBancosAsociados().get(user.getBancosAsociados().size() - 1), 1234, Divisas.COP, "Corriente");
+
+		double x = user.getCuentasCorrienteAsociadas().get(0).getCupo();
+		double cobro = x * interes - x;
+		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasCorrienteAsociadas().get(0), cobro, Categoria.OTROS,
+				Date.from(Instant.now()));
+
+		if (user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
+			int n = (int) Math.round(interes + 2);
+			return n;
+		} else {
+			int n = (int) Math.round(interes + 4);
+			return n;
+		}
+	}
+}
 	
 	public static String bancoPortafolio(int riesgo, Usuario user) {
 		double interes = Math.random() + riesgo;
@@ -138,6 +188,58 @@ public class Banco extends Estado {
 					" con una taza de interes del: " + Math.round(interes*100.0)/100.0 + "%";
 		}
 		return asociado;
+	}
+	
+	public static Double verificarTasasdeInteres(Suscripcion suscripcion, Corriente cuenta){
+		Double interes = 0.0;
+		double descuento_movimientos = cuenta.getBanco().retornarDescuentosMovimientos(cuenta);
+		double[] descuento_suscripcion = cuenta.getBanco().retornarDescuentosSuscripcion();
+		double[] descuento_total = Banco.descuentoTotal(descuento_movimientos, descuento_suscripcion);
+		switch(suscripcion) {
+			case DIAMANTE:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[3];
+			case ORO:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[2];
+			case PLATA:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[1];
+			case BRONCE:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[0];
+		}
+		return interes;
+	}
+	
+	private double[] retornarDescuentosSuscripcion() {
+		double[] descuento;
+		for(int i = 1; i < 5; i++) {
+			descuento[i - 1] = this.desc_suscripcion * i;
+		}
+		return descuento;
+	}
+	
+	//Método para recibir el descuento ocasionado por la cantidad de movimientos
+	private double retornarDescuentosMovimientos(Corriente cuenta) {
+		//Atributo que almacena todos los movimientos que están asociados del usuario con un Banco
+		ArrayList<Movimientos> movimientosOriginariosconBanco = Movimientos.verificarMovimientosUsuario_Banco(cuenta.getTitular(), cuenta.getBanco());
+		double descuento = Math.floorDiv(movimientosOriginariosconBanco.size(), this.desc_movimientos_cantidad) * this.desc_movimientos_porcentaje;
+		return descuento;
+	}
+	
+	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Corriente> cuentas){
+		ArrayList<Double> tasasdeInteres = new ArrayList<Double>();
+		Suscripcion suscripcion = usuario.getSuscripcion();
+		for (Cuenta cuenta : cuentas) {
+			Double interes = verificarTasasdeInteres(suscripcion, (Corriente) cuenta);
+			tasasdeInteres.add(interes);
+		}
+		return tasasdeInteres;
+	}
+	
+	public static double[] descuentoTotal(double movimientos, double[] suscripcion) {
+		double[] descuento_total = suscripcion;
+		for (double descuento: descuento_total) {
+			descuento = descuento + movimientos;
+		}
+		return descuento_total;
 	}
 	
 	//Gets

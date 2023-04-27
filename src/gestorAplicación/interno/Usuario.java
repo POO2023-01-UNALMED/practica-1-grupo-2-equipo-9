@@ -5,29 +5,32 @@ import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
 
 public class Usuario extends Banco {
+	//Atributos
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
-	private double comisionUsuario;
-	private int contadorMovimientos;
 	
-	//Atributos
+	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private int contadorMovimientos;
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
+	
 	private Suscripcion suscripcion;
 	private String nombre;
 	private String correo;
 	private String contrasena;
 	private int id;
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
-	private Boolean confiabilidad;
-	private Double deuda;
-	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
-	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
+	
+	//REVISAR
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
+	private ArrayList<Corriente> CuentasCorrienteAsociadas = new ArrayList<Corriente>();
+	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
+	private double comisionUsuario;
+	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
+
 	
 	//Constructor
-	
 	public Usuario(String nombre, String correo, String contrasena, Suscripcion suscripcion) {
 		Usuario.getUsuariosTotales().add(this);
 		this.setSuscripcion(suscripcion);
@@ -116,6 +119,26 @@ public class Usuario extends Banco {
 		}
 	}
 	
+	public String asociarCuentaCorriente(Corriente corriente) {
+		if(Corriente.getCuentasCorrienteTotales().contains(corriente)) {
+			corriente.setTitular(this);
+			this.getCuentasCorrienteAsociadas().add(corriente);
+			return("La cuenta corriente ha sido asociada correctamente al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra el la cuenta corriente. Por favor asegurese de que exista" );
+		}
+	}
+	
+	public String asociarCuentaAhorros(Ahorros ahorros) {
+		if(Ahorros.getCuentasAhorroTotales().contains(ahorros)) {
+			ahorros.setTitular(this);
+			this.getCuentasAhorrosAsociadas().add(ahorros);
+			return("La cuenta de ahorros ha sido asociada correctamente al usuario " + this.getNombre());
+		}else {
+			return("No se encuentra el la cuenta de ahorros. Por favor asegurese de que exista");
+		}
+	}
+	
 	public Object mostrarBancosAsociados() {
 		ArrayList<Banco> bancos = this.getBancosAsociados();
 		if(bancos.size() != 0) {
@@ -157,27 +180,59 @@ public class Usuario extends Banco {
 				cuentasUsuario.add(cuentas.get(i));
 			}
 		}
+//		Conseguimos la suscripciones y miramos las deudas
+		Suscripcion suscripcion = getSuscripcion();
+		ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
+//		comprobamos y contamos las deudas que estan asociadas al usuario
+		int totalDeudas=0;
+		ArrayList<Deuda> deudasUsuario = new ArrayList<>();
 
-		if(getConfiabilidad()){
-			if(cuentas.size()!=0){
+		for(int i=0;i<deudas.size();i++){
+			if(deudas.get(i).getTitular() == usuario){
+				totalDeudas++;
+				deudasUsuario.add(deudas.get(i));
+			}
+		}
+//		returns
+		if(totalDeudas<suscripcion.getMaxDeudas()){
+			if(cuentasUsuario.size()!=0){
 				return cuentasUsuario;
 			}else{
-				cadena.add("¡Error! Usted no tiene ninguna cuenta creada");
+				cadena.add("¡Error! Usted no tiene ninguna cuenta Corriente creada");
 			}
 		}else{
-			cadena.add("¡Error! Usted ya tiene una deuda de $"+getDeuda());
+			cadena.add("¡Error! La suscripción"+usuario.getSuscripcion().name()+"solo permite realizar un total de"+usuario.getSuscripcion().getMaxDeudas()+". Usted tiene"+usuario.getSuscripcion().getMaxDeudas()+"/"+usuario.getSuscripcion().getMaxDeudas()+"Deudas");
+//			Agrega a cadena todas las cuentas del usuario para mostrarselas
+			for(int i =0;i<deudasUsuario.size();i++){
+				cadena.add("1-Deuda con id"+deudasUsuario.get(i).getId()+"efectuada por el banco"+deudasUsuario.get(i).getBanco()+" en la cuenta"+deudasUsuario.get(i).getCuenta()+"por una cantidad de"+deudasUsuario.get(i).getCantidad());
+			}
 		}
 		return cadena;
 	}
 
-	public ArrayList<Cuenta> retornarDeudas(){
-		ArrayList<Cuenta> cuentasEndeudadas = new ArrayList<Cuenta>();
+	//Funcionalidad Compra Cartera
+	public ArrayList<Corriente> retornarDeudas(){
+		ArrayList<Corriente> cuentasConDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentasAsociadas) {
-			if (cuenta.getExistenciaPrestamo()) {
-				cuentasEndeudadas.add(cuenta);
+			if (((Corriente) cuenta).getExistenciaPrestamo()) {
+				cuentasConDeuda.add((Corriente) cuenta);
 			}
 		}
-		return cuentasEndeudadas;
+		return cuentasConDeuda;
+	}
+	
+	//Funcionalidad Compra Cartera
+	public ArrayList<Corriente> Capacidad_Endeudamiento(ArrayList<Cuenta> cuentas, Corriente cuenta_a_Aplicar) {
+		double deuda = cuenta_a_Aplicar.getCupo() - cuenta_a_Aplicar.getDisponible();
+		ArrayList<Corriente> cuentasCapacesDeuda = new ArrayList<Corriente>();
+		for (Cuenta cuenta: cuentas) {
+			if (cuenta instanceof Corriente) {
+				if (((Corriente) cuenta).getCupo() >= deuda) {
+					cuentasCapacesDeuda.add((Corriente) cuenta);
+				}
+			}
+		}
+		return cuentasCapacesDeuda;
 	}
 	
 	public void eliminarMetas(int n) {
@@ -211,12 +266,12 @@ public class Usuario extends Banco {
 	public void setComisionUsuario(double comisionUsuario) { this.comisionUsuario = comisionUsuario; }
 	public int getContadorMovimientos() { return contadorMovimientos; }
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
-	public Boolean getConfiabilidad(){return confiabilidad;}
-	public  void setConfiabiliad(Boolean confiabilidad){this.confiabilidad = confiabilidad;}
-	public Double getDeuda(){return deuda;}
-	public  void setDeuda(Double deuda){this.deuda = deuda;}
 	public ArrayList<Metas> getMetasAsociadas() {return metasAsociadas;}
 	public void setMetasAsociadas(ArrayList<Metas> metasAsociadas) {this.metasAsociadas = metasAsociadas;}
 	public ArrayList<Movimientos> getMovimientosAsociadas() {return movimientosAsociadas;}
 	public void setMovimientosAsociadas(ArrayList<Movimientos> movimientosAsociadas) {this.movimientosAsociadas = movimientosAsociadas;}
+	public ArrayList<Corriente> getCuentasCorrienteAsociadas() {return CuentasCorrienteAsociadas;}
+	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
+	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}
+	public void setCuentasAhorrosAsociadas(ArrayList<Ahorros> cuentasAhorrosAsociadas) {CuentasAhorrosAsociadas = cuentasAhorrosAsociadas;}
 }

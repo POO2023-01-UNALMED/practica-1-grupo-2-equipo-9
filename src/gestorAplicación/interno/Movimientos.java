@@ -1,16 +1,15 @@
 package gestorAplicación.interno;
 
 import java.util.Date;
-
+import java.io.Serializable;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
-
 import java.util.ArrayList;
 
-public class Movimientos {
-	public static final String nombreD = "Movimientos";
-
+public class Movimientos implements Serializable{
 	//	Atributos
+	public static final String nombreD = "Movimientos";
+	private static final long serialVersionUID = 5L;
 	private static ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
 	private int id;
 	private double cantidad;
@@ -43,7 +42,7 @@ public class Movimientos {
 		this.setFecha(fecha);
 		this.setId(Movimientos.getMovimientosTotales().size());
 		this.setDestino(destino);
-		this.setOrigen(new Cuenta());
+		this.setOrigen(null);
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
@@ -52,9 +51,9 @@ public class Movimientos {
 	public static Object crearMovimiento(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)){
 			if (origen.getSaldo() < cantidad) {
-				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
+				return("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
 			} else {
-				return (new Movimientos(origen, destino, cantidad - cantidad * destino.getEstadoAsociado().getTasa_impuestos(), categoria, fecha));
+				return(new Movimientos(origen, destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 			}
 		}else {
 			return("Debes verificar que las cuentas origen y/o destino existan");
@@ -63,9 +62,9 @@ public class Movimientos {
 	
 	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
-			return (new Movimientos(destino, cantidad - cantidad * destino.getBanco().getEstadoAsociado().getTasa_impuestos(), categoria, fecha));
+			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 		}else {
-			return("Debes verificar que las cuenta de destino exista");
+			return("Debes verificar que la cuenta de destino exista");
 		}
 	}
 
@@ -91,33 +90,46 @@ public class Movimientos {
 			return("Debes verificar que las cuentas origen y/o destino existan");
 		}
 	}
+	
+	//Funcionalidad de Suscripciones de Usuarios
+	public static Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
+		if (usuario.getCuentasAsociadas().contains(origen) && usuario.getCuentasAsociadas().contains(destino)) {
+			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
+			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));
 
+		} else {
+			return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
+		}
+	}
 
+	
 	public String toString() {
-		return("Movimiento creado \n Fecha:" + getFecha() + "\nID:" + getId() + "\nOrigen:" + getOrigen().getId() + "\nDestino:" + getDestino().getId() + "\nCantidad:" +
-				getCantidad() + "\nCategoria:" + getCategoria().name());
+		if(this.getOrigen() == null) {
+			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
+					getCantidad() + "\nCategoria: " + getCategoria().name());
+		}else {
+			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
+					getCantidad() + "\nCategoria: " + getCategoria().name());
+		}
 	}
 
 
-	public static ArrayList<?> comprobarPrestamo(ArrayList<Cuenta> cuentas){
-		ArrayList<Cuenta> cuentasPrestamo = new ArrayList<Cuenta>();
-		ArrayList<String> bancos = new ArrayList<String>();
-
-		for(int i=0;i<cuentas.size();i++){
-			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
-			if(prestamo>0){
-				cuentasPrestamo.add(cuentas.get(i));
-
-			}else{
-				bancos.add(cuentas.get(i).getBanco().getNombre());
-			}
-		}
-
-		if(cuentasPrestamo.size()!=0){
-			return cuentasPrestamo;
+	//	Funcionalidad Prestamos
+	public Boolean realizarPrestamo(Corriente cuenta,double cantidad){
+		Banco banco = cuenta.getBanco();
+		Usuario titular = cuenta.getTitular();
+		double maxCantidad = banco.getPrestamo()*titular.getSuscripcion().getPorcentajePrestamo();
+		//	Comprueba que la cantidad si sea la adecuada
+		if(cantidad>maxCantidad){
+			return false;
 		}else{
-			return bancos;
+			//		Creamos instancia de la clase deuda
+			Deuda deuda = new Deuda(cantidad,cuenta,titular,banco);
+//		agrega el dinero a la cuenta
+			cuenta.setSaldo(cuenta.setSaldo()+cantidad);
+			return true;
 		}
+
 	}
 	
 	//Métodos para funcionalidad cambio de divisa
@@ -249,6 +261,49 @@ public class Movimientos {
 		}
 		return "La categoría en la que más dinero ha gastado es en: " + nombreCategoria + " que suma un total de "
 				+ cantidadCategoria + ".";
+	}
+	
+	//Funcionalidad Compra de Cartera
+	//Método que retorna un arreglo con los movimientos que salgan de una cuenta específica
+	public static ArrayList<Movimientos> verificarOrigenMovimientos(ArrayList<Movimientos> movimientosAsociados, Cuenta cuenta){
+		ArrayList<Movimientos> movimientosOriginariosCuenta = new ArrayList<Movimientos>();
+		for (Movimientos movimiento: movimientosAsociados) {
+			if(movimiento.origen == cuenta) {
+				movimientosOriginariosCuenta.add(movimiento);
+			}
+		}
+		return movimientosOriginariosCuenta;
+	}
+	
+	//Método que retorna un arreglo con los movimientos que entren a una cuenta específica
+	public static ArrayList<Movimientos> verificarDestinoMovimientos(ArrayList<Movimientos> movimientosAsociados, Cuenta cuenta){
+		ArrayList<Movimientos> movimientosDestinoCuenta = new ArrayList<Movimientos>();
+		for (Movimientos movimiento: movimientosAsociados) {
+			if(movimiento.destino == cuenta) {
+				movimientosDestinoCuenta.add(movimiento);
+			}
+		}
+		return movimientosDestinoCuenta;
+	}
+	
+	public static ArrayList<Movimientos> verificarMovimientosUsuario_Banco(Usuario usuario, Banco banco){
+		ArrayList<Movimientos> movimientosAsociados = usuario.getMovimientosAsociadas();
+		ArrayList<Cuenta> cuentasAsociadas = usuario.getCuentasAsociadas();
+		ArrayList<Cuenta> cuentasAsociadasaBanco = new ArrayList<Cuenta>();
+		ArrayList<Movimientos> movimientosUsuario_Banco = new ArrayList<Movimientos>();
+		for(Cuenta cuenta: cuentasAsociadas) {
+			if(cuenta.getBanco() == banco) {
+				cuentasAsociadasaBanco.add(cuenta);
+			}
+		}
+		for(Cuenta cuenta: cuentasAsociadasaBanco) {
+			ArrayList<Movimientos> movimientosAux = Movimientos.verificarOrigenMovimientos(movimientosAsociados, cuenta);
+			for (Movimientos movimiento: movimientosAux) {
+				movimientosUsuario_Banco.add(movimiento);
+			}
+		}
+		return movimientosUsuario_Banco;
+		
 	}
 
 	//	GETS
