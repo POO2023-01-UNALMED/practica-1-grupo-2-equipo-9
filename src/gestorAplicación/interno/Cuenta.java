@@ -131,6 +131,7 @@ public abstract class Cuenta extends Banco{
 		cuentasTotales.remove(cuenta);
 		user.getCuentasAsociadas().remove(cuenta);
 		cuenta = null;
+		sc.close();
 	}
 	
 	// Funcionalidad Asesor de Inversiones

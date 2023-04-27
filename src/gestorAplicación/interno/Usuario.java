@@ -5,30 +5,32 @@ import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
 
 public class Usuario extends Banco {
+	//Atributos
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
-	private double comisionUsuario;
-	private int contadorMovimientos;
 	
-	//Atributos
+	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private int contadorMovimientos;
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
+	
 	private Suscripcion suscripcion;
 	private String nombre;
 	private String correo;
 	private String contrasena;
 	private int id;
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
-
-	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();;
-	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
+	
+	//REVISAR
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
 	private ArrayList<Corriente> CuentasCorrienteAsociadas = new ArrayList<Corriente>();
 	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
+	private double comisionUsuario;
+	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
+
 	
 	//Constructor
-	
 	public Usuario(String nombre, String correo, String contrasena, Suscripcion suscripcion) {
 		Usuario.getUsuariosTotales().add(this);
 		this.setSuscripcion(suscripcion);

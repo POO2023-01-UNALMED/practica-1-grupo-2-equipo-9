@@ -1978,35 +1978,31 @@ public final class Main {
 					System.out.println("");
 					System.out.println("Bienvenido a Usuarios, ¿en que te podemos ayudar?"
 							+ "\n1. Modificar suscripción del usuario"
-							+ "\n2. Ver mis bancos asociados"
-							+ "\n3. Invertir saldo de cuenta"
-							+ "\n4. Consignar saldo a mi cuenta"
-							+ "\n5. Transferir saldo entre cuentas"
-							+ "\n6. Salir al menú principal");
+							+ "\n2. Invertir saldo de cuenta"
+							+ "\n3. Consignar saldo a mi cuenta"
+							+ "\n4. Transferir saldo entre cuentas"
+							+ "\n5. Salir al menú principal");
 		
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
 						
 					if(opcion == 1) {
 						Main.modificarSuscripcionUsuario(user);
-		
-					} else if(opcion == 2) {
-						Main.verBancosAsociados();
 							
-					} else if(opcion == 3) {
+					} else if(opcion == 2) {
 						Main.invertirSaldoUsuario(user);
 					}
 					
-					 else if(opcion == 4) {
+					 else if(opcion == 3) {
 						Main.consignarSaldoCuenta(user);
 					} 
 					
-					 else if(opcion == 5) {
+					 else if(opcion == 4) {
 							Main.transferirSaldoCuentasUsuario(user);
 					}
 					
 					// Volver al menú anterior
-					else if (opcion == 6) {
+					else if (opcion == 5) {
 							seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse

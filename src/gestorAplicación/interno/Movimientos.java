@@ -1,13 +1,12 @@
 package gestorAplicación.interno;
 
 import java.util.Date;
-
+import java.io.Serializable;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
-
 import java.util.ArrayList;
 
-public class Movimientos {
+public class Movimientos implements Serializable{
 	//	Atributos
 	public static final String nombreD = "Movimientos";
 	private static final long serialVersionUID = 5L;
@@ -94,7 +93,7 @@ public class Movimientos {
 	
 	//Funcionalidad de Suscripciones de Usuarios
 	public static Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
-		if (usuario.getBancosAsociados().contains(origen.getBanco()) && usuario.getBancosAsociados().contains(destino.getBanco())) {
+		if (usuario.getCuentasAsociadas().contains(origen) && usuario.getCuentasAsociadas().contains(destino)) {
 			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
 			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));
 

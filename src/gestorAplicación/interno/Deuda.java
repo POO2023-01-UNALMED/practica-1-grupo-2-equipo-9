@@ -4,9 +4,9 @@ import gestorAplicación.externo.Banco;
 import java.util.ArrayList;
 
 public class Deuda {
+//  Atributos
     public static final String nombreD = "Deuda";
     private static final long serialVersionUID = 6L;
-//    Atributos
     private int id;
     private double cantidad;
     private Corriente cuenta;
