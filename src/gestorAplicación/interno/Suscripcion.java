@@ -15,7 +15,7 @@ public enum Suscripcion{
 	private final float porcentajePrestamo;
 	
 	//Constructor
-	Suscripcion(int limiteCuentas, float probabilidad_Inversion,int maxDeudas,float porcentajePrestamo){
+	Suscripcion(int limiteCuentas, float probabilidad_Inversion, int maxDeudas, float porcentajePrestamo){
 		this.limiteCuentas = limiteCuentas;
 		this.probabilidad_Inversion = probabilidad_Inversion;
 		this.maxDeudas = maxDeudas;

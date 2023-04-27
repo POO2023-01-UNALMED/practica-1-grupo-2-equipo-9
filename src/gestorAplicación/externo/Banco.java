@@ -5,8 +5,10 @@ import java.time.Instant;
 import java.util.Date;
 
 import gestorAplicación.interno.Categoria;
+import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Movimientos;
+import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
 
 public class Banco extends Estado {
@@ -144,8 +146,29 @@ public class Banco extends Estado {
 		return asociado;
 	}
 	
-	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Cuenta> cuentas){
-		
+	public static Double verificarTasasdeInteres(Suscripcion suscripcion, Corriente cuenta){
+		Double interes = 0.0;
+		switch(suscripcion) {
+			case DIAMANTE:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * 0.25;
+			case ORO:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * 0.5;
+			case PLATA:
+				interes = cuenta.getBanco().getInteres_bancario_corriente();
+			case BRONCE:
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * 1.5;
+		}
+		return interes;
+	}
+	
+	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Corriente> cuentas){
+		ArrayList<Double> tasasdeInteres = new ArrayList<Double>();
+		Suscripcion suscripcion = usuario.getSuscripcion();
+		for (Cuenta cuenta : cuentas) {
+			Double interes = verificarTasasdeInteres(suscripcion, (Corriente) cuenta);
+			tasasdeInteres.add(interes);
+		}
+		return tasasdeInteres;
 	}
 	
 	//Gets

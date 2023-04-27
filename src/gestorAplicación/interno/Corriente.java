@@ -1,6 +1,7 @@
 package gestorAplicación.interno;
 
 import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 
 public class Corriente extends Cuenta{
@@ -8,20 +9,22 @@ public class Corriente extends Cuenta{
 	public static final String nombreD = "Corriente";
 	
 	//Atributos
-	private Double Cupo = 0.0d;
+	private Double Cupo;
+	private Double Disponible = 0.0d;
 	private boolean existenciaPrestamo;
+	private Cuotas plazo_Pago;
 	
 	//Constructores
 	//Hacer chequeo, cupo viene por defecto según suscripción y banco asociado.
-	protected Corriente(Banco banco, int clave, Divisas divisa, String nombre) {
+	public Corriente(Banco banco, int clave, Divisas divisa, String nombre) {
 		super(banco, clave, divisa, nombre);
 	}	
 	
-	protected Corriente(Banco banco, int clave, String nombre) {
+	public Corriente(Banco banco, int clave, String nombre) {
 		super(banco, clave, nombre);
 	}
 	
-	protected Corriente() {
+	public Corriente() {
 		super();
 	}
 	
@@ -40,6 +43,7 @@ public class Corriente extends Cuenta{
 	public void setCupo(Double cupo) {
 		Cupo = cupo;
 	}
+	
 	public boolean getExistenciaPrestamo() {
 		return existenciaPrestamo;
 	}
@@ -47,6 +51,20 @@ public class Corriente extends Cuenta{
 		this.existenciaPrestamo = existenciaPrestamo;
 	}
 	
+	public Cuotas getPlazo_Pago() {
+		return plazo_Pago;
+	}
+	public void setPlazo_Pago(Cuotas plazo_Pago) {
+		this.plazo_Pago = plazo_Pago;
+	}
+	
+	public Double getDisponible() {
+		return Disponible;
+	}
+	public void setDisponible(Double disponible) {
+		Disponible = disponible;
+	}
+
 	public String toString() {
 		return "Cuenta: " + this.nombre +
 				"\nCuenta Corriente # " + this.id +

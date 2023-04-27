@@ -26,15 +26,15 @@ public class Ahorros extends Cuenta{
 		this.saldo = saldo;
 	}
 	
-	protected Ahorros(Banco banco, int clave, Divisas divisa, String nombre) {
+	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre) {
 		super(banco, clave, divisa, nombre);
 	}	
 	
-	protected Ahorros(Banco banco, int clave, String nombre) {
+	public Ahorros(Banco banco, int clave, String nombre) {
 		super(banco, clave, nombre);
 	}
 	
-	protected Ahorros() {
+	public Ahorros() {
 		super();
 	}
 	

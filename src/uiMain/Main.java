@@ -6,7 +6,9 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 import gestorAplicación.externo.Estado;
+import gestorAplicación.interno.Ahorros;
 import gestorAplicación.interno.Categoria;
+import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
@@ -684,7 +686,7 @@ public final class Main {
 	// FUNCIONALIDAD COMPRA DE CARTERA
 	static void compraCartera(Usuario usuario) {
 		//Arreglo que almacena las cuentas con deuda alguna 
-		ArrayList<Cuenta> cuentasEnDeuda = usuario.retornarDeudas();
+		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
 		
 		//Comprobación de existencia de Deudas por parte del Usuario
 		if (cuentasEnDeuda.size() == 0) {
@@ -694,8 +696,6 @@ public final class Main {
 		
 		//Arreglo que almacena las cuentas asociadas a un usuario
 		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
-		//Arreglo que almacena las cuentas capaces de recibir una deuda
-		ArrayList<Cuenta> cuentasCapacesdeDeuda = new ArrayList<Cuenta>();
 		
 		//Atributo auxiliar que almacenará el índice de la cuenta escogida por el usuario
 		int Cuenta_Compra = 0;
@@ -718,7 +718,7 @@ public final class Main {
 				System.out.println("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
 				Cuenta_Compra = Integer.parseInt(sc.nextLine());
 				
-				if (Cuenta_Compra >= 1 || Cuenta_Compra < i) {
+				if (Cuenta_Compra >= 1 && Cuenta_Compra < i) {
 					validacion_Cuenta_Compra = false;
 				}
 				else {
@@ -764,7 +764,9 @@ public final class Main {
 		
 		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
 		
-		ArrayList<Cuenta> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux);
+		//Arreglo que almacena las cuentas capaces de recibir la deuda
+		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuentasEnDeuda.get(Cuenta_Compra - 1));
+		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
@@ -776,10 +778,12 @@ public final class Main {
 		
 		//Atributo de validacion de la entrada Cuenta_Destino
 		boolean validacion_Cuenta_Destino = true;
+		//Atributo auxiliar que almacenará la cuenta destino de la deuda
+		int Cuenta_Destino = 0;
 		while (validacion_Cuenta_Destino) {
 			System.out.println("Por favor escoga la cuenta destino de la deuda:");
-			int Cuenta_Destino = Integer.parseInt(sc.nextLine());
-			if (Cuenta_Destino >= 1 || Cuenta_Destino <= cuentasCapacesDeuda.size()) {
+			Cuenta_Destino = Integer.parseInt(sc.nextLine());
+			if (Cuenta_Destino >= 1 && Cuenta_Destino <= cuentasCapacesDeuda.size()) {
 				validacion_Cuenta_Destino = false;
 			}
 			else {
@@ -804,7 +808,7 @@ public final class Main {
 		}
 		
 		if (Periodicidad == 1) {
-			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " /*Agregar atributo de plazo de pago */);
+			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago());
 		}
 		if (Periodicidad == 2) {
 			//Atributo de validacion de la seleccion de periodicidad
@@ -854,14 +858,6 @@ public final class Main {
 					break;
 			}
 		}
-				
-		
-		
-		// Se escoge estos valores y se hace el movimiento.
-		
-			//ArrayList<Double> = verificarTasasdeInteres(cuentasCapacesdeDeuda, usuario.getSuscripcion());
-			
-			//System.out.println("Las cuentas a tu nombre capaces de recibir la deuda de la cuenta son: ");
 	}
 	
 	// CREAR USUARIO DENTRO EN EL MAIN
@@ -1275,8 +1271,14 @@ public final class Main {
 			String nombre_cuenta = sc.nextLine();
 			
 			//Revisión, según tipo se va a cambiar como se crea el objeto
-			System.out.println(user.asociarCuenta(new Cuenta(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
-			System.out.println("Cuenta creada con éxito");
+			if (tipo_op == 1) {
+				System.out.println(user.asociarCuenta(new Ahorros(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
+				System.out.println("Cuenta creada con éxito");
+			}
+			if (tipo_op == 2) {
+				System.out.println(user.asociarCuenta(new Corriente(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
+			}
+			
 		}
 	}
 	

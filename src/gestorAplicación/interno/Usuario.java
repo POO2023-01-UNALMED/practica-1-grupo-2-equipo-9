@@ -187,19 +187,28 @@ public class Usuario extends Banco {
 	}
 
 	//Funcionalidad Compra Cartera
-	public ArrayList<Cuenta> retornarDeudas(){
-		ArrayList<Cuenta> cuentasConDeuda = new ArrayList<Cuenta>();
+	public ArrayList<Corriente> retornarDeudas(){
+		ArrayList<Corriente> cuentasConDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentasAsociadas) {
-			if (cuenta.getExistenciaPrestamo()) {
-				cuentasConDeuda.add(cuenta);
+			if (((Corriente) cuenta).getExistenciaPrestamo()) {
+				cuentasConDeuda.add((Corriente) cuenta);
 			}
 		}
 		return cuentasConDeuda;
 	}
 	
 	//Funcionalidad Compra Cartera
-	public ArrayList<Cuenta> Capacidad_Endeudamiento(ArrayList<Cuenta> cuentas) {
-		
+	public ArrayList<Corriente> Capacidad_Endeudamiento(ArrayList<Cuenta> cuentas, Corriente cuenta_a_Aplicar) {
+		double deuda = cuenta_a_Aplicar.getCupo() - cuenta_a_Aplicar.getDisponible();
+		ArrayList<Corriente> cuentasCapacesDeuda = new ArrayList<Corriente>();
+		for (Cuenta cuenta: cuentas) {
+			if (cuenta instanceof Corriente) {
+				if (((Corriente) cuenta).getCupo() >= deuda) {
+					cuentasCapacesDeuda.add((Corriente) cuenta);
+				}
+			}
+		}
+		return cuentasCapacesDeuda;
 	}
 	
 	public void eliminarMetas(int n) {

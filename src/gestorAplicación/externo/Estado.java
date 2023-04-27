@@ -11,7 +11,6 @@ public class Estado implements Serializable {
 	private int id;
 	private double tasa_impuestos;
 	private double interes_bancario_corriente;
-	private double tasa_usura;
 	private Divisas divisa;
 	
 	//Constructor
@@ -51,15 +50,22 @@ public class Estado implements Serializable {
 	public static ArrayList<Estado> getEstadosTotales() {
 		return estadosTotales;
 	}
-
 	public static void setEstadosTotales(ArrayList<Estado> estadosTotales) {
 		Estado.estadosTotales = estadosTotales;
 	}
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public double getInteres_bancario_corriente() {
+		return interes_bancario_corriente;
+	}
+	public void setInteres_bancario_corriente(double interes_bancario_corriente) {
+		this.interes_bancario_corriente = interes_bancario_corriente;
 	}
 
 }
