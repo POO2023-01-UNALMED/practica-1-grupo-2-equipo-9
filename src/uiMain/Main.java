@@ -828,7 +828,7 @@ public final class Main {
 						+ "\n7. 48 Cuotas");
 				seleccion_periodicidad = Integer.parseInt(sc.nextLine());
 				if (seleccion_periodicidad < 1 || seleccion_periodicidad > 7) {
-					System.out.println("Entrada no válidad, intente de nuevo");
+					System.out.println("Entrada no válida, intente de nuevo");
 				}
 				else {
 					validacion_Seleccion_Periodicidad = false;

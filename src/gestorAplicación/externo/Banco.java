@@ -148,19 +148,25 @@ public class Banco extends Estado {
 	
 	public static Double verificarTasasdeInteres(Suscripcion suscripcion, Corriente cuenta){
 		Double interes = 0.0;
+		ArrayList<Double> multiplicadores_interes = cuenta.getBanco().retornarMultiplicadores(cuenta.getTitular().getMovimientosAsociadas(), cuenta);
 		switch(suscripcion) {
 			case DIAMANTE:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * 0.25;
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(3);
 			case ORO:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * 0.5;
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(2);
 			case PLATA:
-				interes = cuenta.getBanco().getInteres_bancario_corriente();
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(1);
 			case BRONCE:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * 1.5;
+				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(0);
 		}
 		return interes;
 	}
 	
+	private ArrayList<Double> retornarMultiplicadores(ArrayList<Movimientos> movimientosAsociados, Corriente cuenta) {
+		ArrayList<Movimientos> movimientosOriginariosCuenta = Movimientos.verificarOrigenMovimientos(movimientosAsociados, cuenta);
+		
+		return null;
+	}
 	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Corriente> cuentas){
 		ArrayList<Double> tasasdeInteres = new ArrayList<Double>();
 		Suscripcion suscripcion = usuario.getSuscripcion();

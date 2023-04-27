@@ -9,8 +9,8 @@ public class Corriente extends Cuenta{
 	public static final String nombreD = "Corriente";
 	
 	//Atributos
-	private Double Cupo;
-	private Double Disponible = 0.0d;
+	private Double cupo;
+	private Double disponible = 0.0d;
 	private boolean existenciaPrestamo;
 	private Cuotas plazo_Pago;
 	
@@ -38,10 +38,10 @@ public class Corriente extends Cuenta{
 	}
 	
 	public Double getCupo() {
-		return Cupo;
+		return cupo;
 	}
 	public void setCupo(Double cupo) {
-		Cupo = cupo;
+		this.cupo = cupo;
 	}
 	
 	public boolean getExistenciaPrestamo() {
@@ -59,10 +59,10 @@ public class Corriente extends Cuenta{
 	}
 	
 	public Double getDisponible() {
-		return Disponible;
+		return disponible;
 	}
 	public void setDisponible(Double disponible) {
-		Disponible = disponible;
+		this.disponible = disponible;
 	}
 
 	public String toString() {
@@ -70,6 +70,7 @@ public class Corriente extends Cuenta{
 				"\nCuenta Corriente # " + this.id +
 				"\nBanco: " + this.banco +
 				"\nDivisa: " + this.divisa +
-				"\nCupo disponible: " + this.Cupo + " " + this.divisa;
+				"\nCupo disponible: " + this.cupo + " " + this.divisa +
+				"\nCuotas: " + this.plazo_Pago;
 	}
 }

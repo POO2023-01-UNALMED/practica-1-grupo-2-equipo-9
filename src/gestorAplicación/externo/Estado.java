@@ -10,8 +10,13 @@ public class Estado implements Serializable {
 	private String nombre;
 	private int id;
 	private double tasa_impuestos;
-	private double interes_bancario_corriente;
 	private Divisas divisa;
+	
+	//Funcionalidad Compra Cartera
+	//Atributo que almacena el interes bancario corriente determinado por cada Estado
+	private double interes_bancario_corriente;
+	//Atributo que almacena el multiplicador máximo aplicable al interes_bancario_corriente
+	private double tasas_usura;
 	
 	//Constructor
 	public Estado(String nombre, double tasa_impuestos, Divisas divisa) {
@@ -66,6 +71,13 @@ public class Estado implements Serializable {
 	}
 	public void setInteres_bancario_corriente(double interes_bancario_corriente) {
 		this.interes_bancario_corriente = interes_bancario_corriente;
+	}
+	
+	public double getTasas_usura() {
+		return tasas_usura;
+	}
+	public void setTasas_usura(double tasas_usura) {
+		this.tasas_usura = tasas_usura;
 	}
 
 }

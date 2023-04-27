@@ -259,6 +259,27 @@ public class Movimientos {
 		return "La categoría en la que más dinero ha gastado es en: " + nombreCategoria + " que suma un total de "
 				+ cantidadCategoria + ".";
 	}
+	
+	//Funcionalidad Compra de Cartera
+	public static ArrayList<Movimientos> verificarOrigenMovimientos(ArrayList<Movimientos> movimientosAsociados, Cuenta cuenta){
+		ArrayList<Movimientos> movimientosOriginariosCuenta = new ArrayList<Movimientos>();
+		for (Movimientos movimiento: movimientosAsociados) {
+			if(movimiento.origen == cuenta) {
+				movimientosOriginariosCuenta.add(movimiento);
+			}
+		}
+		return movimientosOriginariosCuenta;
+	}
+	
+	public static ArrayList<Movimientos> verificarDestinoMovimientos(ArrayList<Movimientos> movimientosAsociados, Cuenta cuenta){
+		ArrayList<Movimientos> movimientosDestinoCuenta = new ArrayList<Movimientos>();
+		for (Movimientos movimiento: movimientosAsociados) {
+			if(movimiento.destino == cuenta) {
+				movimientosDestinoCuenta.add(movimiento);
+			}
+		}
+		return movimientosDestinoCuenta;
+	}
 
 	//	GETS
 	public static ArrayList<Movimientos> getMovimientosTotales() {
