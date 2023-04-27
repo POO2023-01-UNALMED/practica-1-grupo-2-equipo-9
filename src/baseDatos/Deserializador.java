@@ -11,6 +11,7 @@ import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Usuario;
+import gestorAplicación.externo.Banco;
 
 public class Deserializador {
 	//Deserializar objetos individuales
@@ -30,6 +31,19 @@ public class Deserializador {
 				} catch (ClassNotFoundException ex) {
 					return ("El Usuario no pudo ser deserializado en el sistema: " + ex);
 				}	
+			case "Banco":
+				try{
+					File f = new File("");
+					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + ".dat")));
+					Banco b = (Banco) streamEntrada.readObject();
+					streamEntrada.close();
+					return b;
+				
+				}catch(IOException ex) {
+					return ("El Banco no pudo ser deserializado en el sistema: " + ex);
+				} catch (ClassNotFoundException ex) {
+					return ("El Banco no pudo ser deserializado en el sistema: " + ex);
+				}
 			case "Estado":
 				try{
 					File f = new File("");
@@ -117,7 +131,20 @@ public class Deserializador {
 					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
 				} catch (ClassNotFoundException ex) {
 					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
-				}			
+				}	
+			case "Bancos":
+				try{
+					File f = new File("");
+					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
+					ArrayList<Banco> b = (ArrayList<Banco>) streamEntrada.readObject();
+					streamEntrada.close();
+					return b;
+				
+				}catch(IOException ex) {
+					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
+				} catch (ClassNotFoundException ex) {
+					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
+				}	
 			case "Cuentas":
 				try{
 					File f = new File("");

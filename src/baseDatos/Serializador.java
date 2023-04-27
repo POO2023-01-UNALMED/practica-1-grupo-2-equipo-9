@@ -12,6 +12,7 @@ import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Usuario;
+import gestorAplicación.externo.Banco;
 
 public class Serializador{	
 	//Serializar objetos individuales
@@ -38,7 +39,18 @@ public class Serializador{
 					return("El Estado con id: " + e.getId() + " y nombre: " + e.getNombre() + " fue guardado satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
 					return("El Estado con id: " + e.getId() + " y nombre: " + e.getNombre() + " no pudo ser guardado en el sistema: " + ex);
-				}	
+				}
+			case "Banco":
+				Estado b = (Banco) objeto;
+				try{
+					File f = new File("");
+					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + ".dat")));
+					streamSalida.writeObject(b);
+					streamSalida.close();
+					return("El Banco con id: " + b.getId() + " y nombre: " + b.getNombre() + " fue guardado satisfactoriamente en el sistema.");
+				}catch(IOException ex) {
+					return("El Banco con id: " + b.getId() + " y nombre: " + b.getNombre() + " no pudo ser guardado en el sistema: " + ex);
+				}
 			case "Cuenta":
 				Cuenta c = (Cuenta) objeto;
 				try{
@@ -92,16 +104,16 @@ public class Serializador{
 				}catch(IOException ex) {
 					return("La lista de Usuarios no pudo ser guardada en el sistema: " + ex);
 				}	
-//			case "Bancos":
-//				try{
-//					File f = new File("");
-//					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
-//					streamSalida.writeObject(objetos);
-//					streamSalida.close();
-//					return("La lista de Bancos fue guardada satisfactoriamente en el sistema.");
-//				}catch(IOException ex) {
-//					return("La lista de Bancos no pudo ser guardada en el sistema: " + ex);
-//				}
+			case "Bancos":
+				try{
+					File f = new File("");
+					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
+					streamSalida.writeObject(objetos);
+					streamSalida.close();
+					return("La lista de Bancos fue guardada satisfactoriamente en el sistema.");
+				}catch(IOException ex) {
+					return("La lista de Bancos no pudo ser guardada en el sistema: " + ex);
+				}
 			case "Estados":
 				try{
 					File f = new File("");

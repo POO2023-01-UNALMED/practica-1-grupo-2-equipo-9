@@ -12,6 +12,10 @@ import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Tipo;
 import gestorAplicación.interno.Usuario;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1489,7 +1493,7 @@ public final class Main {
 		while(true){
 			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 				System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));
-				//System.out.println(Serializador.serializar(Usuario.getBancosTotales(), "Bancos"));
+				System.out.println(Serializador.serializar(Usuario.getBancosTotales(), "Bancos"));
 				System.out.println(Serializador.serializar(Usuario.getEstadosTotales(), "Estados"));
 				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));
 				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));
@@ -1508,16 +1512,65 @@ public final class Main {
 		}
 	}
 	//Cargar Objetos en el main
+	
 	static void cargarObjetos() throws ParseException{
-		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
-			
-		}
+			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			while(true){
+				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+//					for (int i=0 ; i < listaObjetos.size(); i++) {
+//						
+//					}
+					File f = new File("");
+					File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
+					if (fUsuario.exists() ) {
+						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
+						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+					}
+					File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
+					if (fEstado.exists()) {
+						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
+						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+					}
+					File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
+					if (fBanco.exists()) {
+						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
+						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+					}
+					File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
+					if (fMovimientos.exists()) {
+						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
+						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+					}
+					File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");;
+					if (fMetas.exists()) {
+						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
+						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+					}
+					File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
+					if (fCuenta.exists()) {
+						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
+						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+					}
+					
+					
+				}
+				else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+					break;
+				}
+				else {
+					System.out.println("Opción no válida");
+					System.out.println("NOTA: Solo se recibe como respuesta Y o N");
+					System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+					confirmacion = sc.nextLine();
+				}
+			}
 	}
 	
 	// CARGAR OBJETOS EN EL MAIN
 	static void cargarObjetosIndividuales() throws ParseException {
-		//Cargar objetos
+		//Cargar objetos individuales
 		while(true) {
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.println("Seleccione el objeto que quiere cargar: ");
