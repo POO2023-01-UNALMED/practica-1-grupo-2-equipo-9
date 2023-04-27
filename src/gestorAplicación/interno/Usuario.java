@@ -11,6 +11,7 @@ public class Usuario extends Banco {
 	private int limiteCuentas;
 	
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
@@ -20,7 +21,6 @@ public class Usuario extends Banco {
 	private String correo;
 	private String contrasena;
 	private int id;
-	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	
 	//REVISAR
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
