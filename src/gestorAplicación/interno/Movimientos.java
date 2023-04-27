@@ -8,10 +8,9 @@ import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
 
 public class Movimientos {
+	//	Atributos
 	public static final String nombreD = "Movimientos";
 	private static final long serialVersionUID = 5L;
-
-	//	Atributos
 	private static ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
 	private int id;
 	private double cantidad;
@@ -44,7 +43,7 @@ public class Movimientos {
 		this.setFecha(fecha);
 		this.setId(Movimientos.getMovimientosTotales().size());
 		this.setDestino(destino);
-		this.setOrigen(new Cuenta());
+		this.setOrigen(null);
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
@@ -53,9 +52,9 @@ public class Movimientos {
 	public static Object crearMovimiento(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)){
 			if (origen.getSaldo() < cantidad) {
-				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
+				return("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
 			} else {
-				return (new Movimientos(origen, destino, cantidad - cantidad * (destino.getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
+				return(new Movimientos(origen, destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 			}
 		}else {
 			return("Debes verificar que las cuentas origen y/o destino existan");
@@ -64,7 +63,7 @@ public class Movimientos {
 	
 	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
-			return (new Movimientos(destino, cantidad - cantidad * (destino.getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
+			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 		}else {
 			return("Debes verificar que la cuenta de destino exista");
 		}
@@ -106,8 +105,13 @@ public class Movimientos {
 
 	
 	public String toString() {
-		return("Movimiento creado \n Fecha:" + getFecha() + "\nID:" + getId() + "\nOrigen:" + getOrigen().getId() + "\nDestino:" + getDestino().getId() + "\nCantidad:" +
-				getCantidad() + "\nCategoria:" + getCategoria().name());
+		if(this.getOrigen() == null) {
+			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
+					getCantidad() + "\nCategoria: " + getCategoria().name());
+		}else {
+			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
+					getCantidad() + "\nCategoria: " + getCategoria().name());
+		}
 	}
 
 

@@ -944,6 +944,7 @@ public final class Main {
 					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
+						System.out.println("La inversión de saldo ha sido exitosa: ");
 						System.out.println(inversion);
 						System.out.println("");
 						System.out.println(user.verificarContadorMovimientos());
@@ -978,7 +979,9 @@ public final class Main {
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
 					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
 					if(saldo_movimiento instanceof Movimientos) {
-						System.out.println("La consignación de saldo ha sido exitosa, la cantidad de saldo consignado para la cuenta " + c.getNombre() + " es de: " + ((Movimientos) saldo_movimiento).getCantidad());
+						System.out.println("");
+						System.out.println("La consignación de saldo ha sido exitosa: ");
+						System.out.println(saldo_movimiento);
 						break;
 					}else {
 						System.out.println(saldo_movimiento);

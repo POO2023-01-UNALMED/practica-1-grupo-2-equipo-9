@@ -5,10 +5,9 @@ import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 
 public class Corriente extends Cuenta{
+	//Atributos
 	private static final long serialVersionUID = 8L;
 	public static final String nombreD = "Corriente";
-	
-	//Atributos
 	private Double cupo;
 	private Double disponible = 0.0d;
 	private boolean existenciaPrestamo;

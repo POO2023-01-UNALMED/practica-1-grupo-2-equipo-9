@@ -10,14 +10,15 @@ import gestorAplicación.externo.Divisas;
 import java.time.Instant;
 
 public abstract class Cuenta extends Banco{
+	//Atributos
 	private static final long serialVersionUID = 4L;
 	public static final String nombreD = "Cuentas";
-
 	private Usuario titular;
 	private int clave;
 	private int clave_din;
 	protected Divisas divisa;
 	protected String nombre;
+	protected double saldo = 0.0d;
 	protected int id;
 	protected Banco banco;
 	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
@@ -84,7 +85,7 @@ public abstract class Cuenta extends Banco{
 		}
 	}
 
-	//REVISAR
+	//Eliminar cuentas
 	public static void eliminarCuenta(Cuenta cuenta, Usuario user) {
 		Scanner sc = new Scanner(System.in);
 		if (cuenta.saldo != 0.0d) {
@@ -167,7 +168,6 @@ public abstract class Cuenta extends Banco{
 	public static void setCuentasTotales(ArrayList<Cuenta> cuentasTotales){
 		Cuenta.cuentasTotales = cuentasTotales;
 	}
-	
 	public Usuario getTitular() {
 		return titular;
 	}
@@ -181,28 +181,24 @@ public abstract class Cuenta extends Banco{
 	public void setClave_din(int clave_din) {
 		this.clave_din = clave_din;
 	}
-	
 	public Divisas getDivisa() {
 		return divisa;
 	}
 	public void setDivisa(Divisas divisa) {
 		this.divisa = divisa;
 	}
-	
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 	public Banco getBanco() {
 		return banco;
 	}
@@ -216,7 +212,12 @@ public abstract class Cuenta extends Banco{
 	public void setClave(int clave) {
 		this.clave = clave;
 	}
-	
+	public double getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
 	public String toString() {
 		return "Cuenta: " + this.nombre +
 				"\n# " + this.id +

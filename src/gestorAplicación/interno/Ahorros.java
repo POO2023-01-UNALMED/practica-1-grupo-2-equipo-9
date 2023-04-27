@@ -4,11 +4,9 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 
 public class Ahorros extends Cuenta{
+	//Atributos
 	private static final long serialVersionUID = 7L;
 	public static final String nombreD = "Ahorros";
-	
-	//Atributos
-	private Double saldo = 0.0d;
 
 	//Constructores
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre, Double saldo) {
@@ -55,7 +53,7 @@ public class Ahorros extends Cuenta{
 				"\nSaldo: " + this.saldo + " " + this.divisa;
 	}
 	
-	public Double getSaldo() {
+	public double getSaldo() {
 		return saldo;
 	}
 	public void setSaldo(Double saldo) {
