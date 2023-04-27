@@ -3,6 +3,7 @@ package gestorAplicación.externo;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
+import java.
 
 import gestorAplicación.interno.Categoria;
 import gestorAplicación.interno.Corriente;
@@ -25,6 +26,11 @@ public class Banco extends Estado {
 	private boolean asociado = false;
 	private ArrayList<String> dic = new ArrayList<String>();
 	private ArrayList<Double> cionario = new ArrayList<Double>();
+	
+	//Funcionalidad Compra de Cartera
+	private double desc_suscripcion = 0.2;
+	private double desc_movimientos_porcentaje = 0.2;
+	private int desc_movimientos_cantidad = 5;
 	
 	//Constructor
 	
@@ -186,25 +192,38 @@ public static Integer retornoPortafolio(int riesgo, double invertir, String plaz
 	
 	public static Double verificarTasasdeInteres(Suscripcion suscripcion, Corriente cuenta){
 		Double interes = 0.0;
-		ArrayList<Double> multiplicadores_interes = cuenta.getBanco().retornarMultiplicadores(cuenta.getTitular().getMovimientosAsociadas(), cuenta);
+		double descuento_movimientos = cuenta.getBanco().retornarDescuentosMovimientos(cuenta);
+		double[] descuento_suscripcion = cuenta.getBanco().retornarDescuentosSuscripcion();
+		double[] descuento_total = Banco.descuentoTotal(descuento_movimientos, descuento_suscripcion);
 		switch(suscripcion) {
 			case DIAMANTE:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(3);
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[3];
 			case ORO:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(2);
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[2];
 			case PLATA:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(1);
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[1];
 			case BRONCE:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() * multiplicadores_interes.get(0);
+				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[0];
 		}
 		return interes;
 	}
 	
-	private ArrayList<Double> retornarMultiplicadores(ArrayList<Movimientos> movimientosAsociados, Corriente cuenta) {
-		ArrayList<Movimientos> movimientosOriginariosCuenta = Movimientos.verificarOrigenMovimientos(movimientosAsociados, cuenta);
-		
-		return null;
+	private double[] retornarDescuentosSuscripcion() {
+		double[] descuento;
+		for(int i = 1; i < 5; i++) {
+			descuento[i] = this.desc_suscripcion * i;
+		}
+		return descuento;
 	}
+	
+	//Método para recibir el descuento ocasionado por la cantidad de movimientos
+	private double retornarDescuentosMovimientos(Corriente cuenta) {
+		//Atributo que almacena todos los movimientos que están asociados del usuario con un Banco
+		ArrayList<Movimientos> movimientosOriginariosconBanco = Movimientos.verificarMovimientosUsuario_Banco(cuenta.getTitular(), cuenta.getBanco());
+		double descuento = Math.floorDiv(movimientosOriginariosconBanco.size(), this.desc_movimientos_cantidad) * this.desc_movimientos_porcentaje;
+		return descuento;
+	}
+	
 	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Corriente> cuentas){
 		ArrayList<Double> tasasdeInteres = new ArrayList<Double>();
 		Suscripcion suscripcion = usuario.getSuscripcion();
@@ -213,6 +232,14 @@ public static Integer retornoPortafolio(int riesgo, double invertir, String plaz
 			tasasdeInteres.add(interes);
 		}
 		return tasasdeInteres;
+	}
+	
+	public static double[] descuentoTotal(double movimientos, double[] suscripcion) {
+		double[] descuento_total = suscripcion;
+		for (double descuento: descuento_total) {
+			descuento = descuento + movimientos;
+		}
+		return descuento_total;
 	}
 	
 	//Gets

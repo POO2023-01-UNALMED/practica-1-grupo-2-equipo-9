@@ -264,6 +264,7 @@ public class Movimientos implements Serializable{
 	}
 	
 	//Funcionalidad Compra de Cartera
+	//Método que retorna un arreglo con los movimientos que salgan de una cuenta específica
 	public static ArrayList<Movimientos> verificarOrigenMovimientos(ArrayList<Movimientos> movimientosAsociados, Cuenta cuenta){
 		ArrayList<Movimientos> movimientosOriginariosCuenta = new ArrayList<Movimientos>();
 		for (Movimientos movimiento: movimientosAsociados) {
@@ -274,6 +275,7 @@ public class Movimientos implements Serializable{
 		return movimientosOriginariosCuenta;
 	}
 	
+	//Método que retorna un arreglo con los movimientos que entren a una cuenta específica
 	public static ArrayList<Movimientos> verificarDestinoMovimientos(ArrayList<Movimientos> movimientosAsociados, Cuenta cuenta){
 		ArrayList<Movimientos> movimientosDestinoCuenta = new ArrayList<Movimientos>();
 		for (Movimientos movimiento: movimientosAsociados) {
@@ -282,6 +284,26 @@ public class Movimientos implements Serializable{
 			}
 		}
 		return movimientosDestinoCuenta;
+	}
+	
+	public static ArrayList<Movimientos> verificarMovimientosUsuario_Banco(Usuario usuario, Banco banco){
+		ArrayList<Movimientos> movimientosAsociados = usuario.getMovimientosAsociadas();
+		ArrayList<Cuenta> cuentasAsociadas = usuario.getCuentasAsociadas();
+		ArrayList<Cuenta> cuentasAsociadasaBanco = new ArrayList<Cuenta>();
+		ArrayList<Movimientos> movimientosUsuario_Banco = new ArrayList<Movimientos>();
+		for(Cuenta cuenta: cuentasAsociadas) {
+			if(cuenta.getBanco() == banco) {
+				cuentasAsociadasaBanco.add(cuenta);
+			}
+		}
+		for(Cuenta cuenta: cuentasAsociadasaBanco) {
+			ArrayList<Movimientos> movimientosAux = Movimientos.verificarOrigenMovimientos(movimientosAsociados, cuenta);
+			for (Movimientos movimiento: movimientosAux) {
+				movimientosUsuario_Banco.add(movimiento);
+			}
+		}
+		return movimientosUsuario_Banco;
+		
 	}
 
 	//	GETS
