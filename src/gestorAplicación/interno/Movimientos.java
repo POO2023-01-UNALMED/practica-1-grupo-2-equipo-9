@@ -123,7 +123,7 @@ public class Movimientos {
 			//		Creamos instancia de la clase deuda
 			Deuda deuda = new Deuda(cantidad,cuenta,titular,banco);
 //		agrega el dinero a la cuenta
-			cuenta.setSaldo(cuenta.setSaldo+cantidad);
+			cuenta.setSaldo(cuenta.setSaldo()+cantidad);
 			return true;
 		}
 

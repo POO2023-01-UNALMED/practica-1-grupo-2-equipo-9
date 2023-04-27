@@ -11,7 +11,6 @@ import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
-import gestorAplicación.interno.Tipo;
 import gestorAplicación.interno.Usuario;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -570,7 +569,7 @@ public final class Main {
 
 						Banco banco = new Banco("Banco ilegal", 0, Estado.getEstadosTotales().get(0));
 						Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
-						Cuenta gota = new Cuenta(banco, Tipo.AHORROS, 1234, Divisas.COP, "Gota");
+						Cuenta gota = new Cuenta(banco, 1234, Divisas.COP, "Gota");
 						gotaGota.asociarCuenta(gota);
 						gota.setSaldo(100000000000000.0);
 
@@ -739,21 +738,25 @@ public final class Main {
 			}
 			switch(seleccion_periodicidad) {
 				case 1:
-					//eleccion_periodicidad = cuotas.1 
+					eleccion_periodicidad = Cuotas.C1; 
 					break;
 				case 2:
-					//eleccion_periodicidad = cuotas.2
+					eleccion_periodicidad = Cuotas.C6;
 					break;
 				case 3:
-					//eleccion_periodicidad = cuotas.3
+					eleccion_periodicidad = Cuotas.C12;
 					break;
 				case 4:
+					eleccion_periodicidad = Cuotas.C18;
 					break;
 				case 5:
+					eleccion_periodicidad = Cuotas.C24;
 					break;
 				case 6:
+					eleccion_periodicidad = Cuotas.C36;
 					break;
 				case 7:
+					eleccion_periodicidad = Cuotas.C48;
 					break;
 			}
 		}
@@ -1151,12 +1154,11 @@ public final class Main {
 			Banco banco_cuenta = Banco.getBancosTotales().get(banco_op - 1);
 			user.asociarBanco(banco_cuenta);
 
-			System.out.println("Cuál es el tipo que quiere seleccionar para su cuenta? La lista de Tipos disponibles son: ");
-			for(int i = 1; i < Tipo.getTipos().size() + 1; i++) {
-				System.out.println(i + ". " + Tipo.getTipos().get(i - 1));
-			}
+			System.out.println("Cuál es el tipo que quiere seleccionar para su cuenta? La lista de Tipos disponibles son: "
+					+ "\n1. Cuenta de Ahorros"
+					+ "\n2. Cuenta Corriente");
+			
 			int tipo_op = Integer.parseInt(sc.nextLine());
-			Tipo tipo_cuenta = Tipo.getTipos().get(tipo_op - 1);
 
 			System.out.print("Clave de la cuenta (Recuerde que será una combinación de 4 números): ");
 			int clave_cuenta = Integer.parseInt(sc.nextLine());
@@ -1178,7 +1180,8 @@ public final class Main {
 			System.out.print("Inserte el nombre de la cuenta: ");
 			String nombre_cuenta = sc.nextLine();
 			
-			System.out.println(user.asociarCuenta(new Cuenta(banco_cuenta, tipo_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
+			//Revisión, según tipo se va a cambiar como se crea el objeto
+			System.out.println(user.asociarCuenta(new Cuenta(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
 			System.out.println("Cuenta creada con éxito");
 		}
 	}

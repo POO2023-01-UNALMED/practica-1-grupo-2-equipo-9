@@ -9,25 +9,21 @@ import gestorAplicación.externo.Divisas;
 
 import java.time.Instant;
 
-public class Cuenta extends Banco{
+public abstract class Cuenta extends Banco{
 	private static final long serialVersionUID = 4L;
 	public static final String nombreD = "Cuentas";
 
 	private Usuario titular;
-	private Tipo tipo;
-	private Double saldo = 0.0d;
 	private int clave;
 	private int clave_din;
-	private Divisas divisa;
-	private String nombre;
-	private int id;
-	private Banco banco;
-	private boolean existenciaPrestamo;
+	protected Divisas divisa;
+	protected String nombre;
+	protected int id;
+	protected Banco banco;
 	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
 	
 	//Constructores
-	public Cuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
-		this.tipo = tipo;
+	protected Cuenta(Banco banco, int clave, Divisas divisa, String nombre) {
 		this.clave = clave;
 		this.divisa = divisa;
 		this.nombre = nombre;
@@ -35,8 +31,7 @@ public class Cuenta extends Banco{
 		cuentasTotales.add(this);
 	}	
 	
-	public Cuenta(Banco banco, Tipo tipo, int clave, String nombre) {;
-		this.setTipo(tipo);
+	protected Cuenta(Banco banco, int clave, String nombre) {;
 		this.clave = clave;
 		//Acceder a la divisa definida como predeterminada por el banco
 		this.divisa = banco.getEstadoAsociado().getDivisa();
@@ -45,18 +40,14 @@ public class Cuenta extends Banco{
 		cuentasTotales.add(this);
 	}
 	
-	public Cuenta() {
+	protected Cuenta() {
 		cuentasTotales.add(this);
 	}
 	
 	//Métodos
-	public static Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, Divisas divisa, String nombre) {
-		return(new Cuenta(banco, tipo, clave, divisa, nombre));
-	}
+	public abstract Cuenta crearCuenta(Banco banco, int clave, Divisas divisa, String nombre);
 	
-	public static Cuenta crearCuenta(Banco banco, Tipo tipo, int clave, String nombre) {
-		return(new Cuenta(banco, tipo, clave, nombre));
-	}
+	public abstract Cuenta crearCuenta(Banco banco, int clave, String nombre);
 	
 	//Funcionalidad de Suscripciones de Usuarios
 	public Object invertirSaldo() {
@@ -168,10 +159,6 @@ public class Cuenta extends Banco{
 	protected void finalize() {
 		System.out.println("La cuenta con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 	}
-		
-	public void crearTransaccion() {
-		//Similar al método de movimientos. Preguntar validez y claridad
-	}
 
 	//Gets && Sets
 	public static ArrayList<Cuenta> getCuentasTotales(){
@@ -186,20 +173,6 @@ public class Cuenta extends Banco{
 	}
 	public void setTitular(Usuario titular) {
 		this.titular = titular;
-	}
-	
-	public Tipo getTipo() {
-		return tipo;
-	}
-	public void setTipo(Tipo tipo) {
-		this.tipo = tipo;
-	}
-	
-	public Double getSaldo() {
-		return saldo;
-	}
-	public void setSaldo(Double saldo) {
-		this.saldo = saldo;
 	}
 	
 	public int getClave_din() {
@@ -236,13 +209,6 @@ public class Cuenta extends Banco{
 	public void setBanco(Banco banco) {
 		this.banco = banco;
 	}
-	
-	public boolean getExistenciaPrestamo() {
-		return existenciaPrestamo;
-	}
-	public void setExistenciaPrestamo(boolean existenciaPrestamo) {
-		this.existenciaPrestamo = existenciaPrestamo;
-	}
 
 	public int getClave() {
 		return clave;
@@ -253,9 +219,8 @@ public class Cuenta extends Banco{
 	
 	public String toString() {
 		return "Cuenta: " + this.nombre +
-				"\nCuenta de " + this.tipo + " # " + this.id +
+				"\n# " + this.id +
 				"\nBanco: " + this.banco +
-				"\nDivisa: " + this.divisa +
-				"\nSaldo: " + this.saldo + " " + this.divisa;
+				"\nDivisa: " + this.divisa;
 	}
 }

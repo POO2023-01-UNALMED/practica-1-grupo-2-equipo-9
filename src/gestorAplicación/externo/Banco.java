@@ -7,7 +7,6 @@ import java.util.Date;
 import gestorAplicación.interno.Categoria;
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Movimientos;
-import gestorAplicación.interno.Tipo;
 import gestorAplicación.interno.Usuario;
 
 public class Banco extends Estado {
