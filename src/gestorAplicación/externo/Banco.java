@@ -95,24 +95,24 @@ public class Banco extends Estado {
 	}
 	
 	// Método funcionalidad Asesoramiento de inversiones
-public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
+	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
 
-	double interes = Math.random() + riesgo;
-	if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
-		Ahorros cuenta = new Ahorros(user.getBancosAsociados().get(riesgo - 1), 1234, Divisas.COP, "Ahorros", 10.0);
-
-		double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-		double cobro = x * interes - x;
-		Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAhorrosAsociadas().get(0), cobro,
-				Categoria.OTROS, Date.from(Instant.now()));
-
-		if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
-			int n = (int) Math.round(interes);
-			return n;
-		} else {
-			int n = (int) Math.round(interes - 2);
-			return n;
-		}
+		double interes = Math.random() + riesgo;
+		if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+			Ahorros cuenta = new Ahorros(user.getBancosAsociados().get(riesgo - 1), 1234, Divisas.COP, "Ahorros", 10.0);
+	
+			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
+			double cobro = x * interes - x;
+			Movimientos movimiento = new Movimientos(cuenta, user.getCuentasAhorrosAsociadas().get(0), cobro,
+					Categoria.OTROS, Date.from(Instant.now()));
+	
+			if (user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+				int n = (int) Math.round(interes);
+				return n;
+			} else {
+				int n = (int) Math.round(interes - 2);
+				return n;
+			}
 
 	}
 
