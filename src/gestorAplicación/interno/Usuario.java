@@ -1,10 +1,11 @@
 package gestorAplicación.interno;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
 
-public class Usuario extends Banco {
+public class Usuario implements Serializable {
 	//Atributos
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
