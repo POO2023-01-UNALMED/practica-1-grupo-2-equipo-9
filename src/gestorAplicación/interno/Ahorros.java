@@ -3,13 +3,14 @@ package gestorAplicación.interno;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 
 public class Ahorros extends Cuenta{
 	//Atributos
 	private static final long serialVersionUID = 7L;
 	public static final String nombreD = "Ahorros";
 	private static ArrayList<Ahorros> cuentasAhorroTotales = new ArrayList<Ahorros>();;
-	
 	protected double saldo = 0.0d;
 
 	//Constructores
@@ -49,6 +50,18 @@ public class Ahorros extends Cuenta{
 		return (new Ahorros(banco, clave, nombre));
 	}
 	
+	//Funcionalidad de Suscripciones de Usuarios
+	public Object invertirSaldo() {
+		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
+		double rand = (double)((Math.random()) + probabilidad);
+		if(rand >= 1){
+			this.getTitular().setContadorMovimientos(this.getTitular().getContadorMovimientos() + 1);
+			return (Movimientos.crearMovimiento(this, this.getSaldo() + this.getSaldo() * probabilidad, Categoria.FINANZAS, new Date()));
+		}else {
+			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
+		}
+	}
+	
 	public String toString() {
 		return "Cuenta: " + super.nombre +
 				"\nCuenta de Ahorros # " + this.id +
@@ -72,7 +85,6 @@ public class Ahorros extends Cuenta{
 	public static void setCuentasAhorroTotales(ArrayList<Ahorros> cuentasAhorroTotales) {
 		Ahorros.cuentasAhorroTotales = cuentasAhorroTotales;
 	}
-
 
 	//	Funcionalidad Prestamo
 	public static ArrayList<?> comprobarPrestamo(ArrayList<Ahorros> cuentas){

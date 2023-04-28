@@ -15,6 +15,8 @@ import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
 
+import static gestorAplicación.interno.Cuenta.cuentasTotales;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -703,12 +705,15 @@ public final class Main {
 			funcionalidad = 0;
 		}
 	}
-
+	
+	static void compraCartera(Corriente cuenta) {
+		
+	}
+	
 	// FUNCIONALIDAD COMPRA DE CARTERA
-	static void compraCartera(Usuario usuario) {
+	static void compraCartera(Corriente cuenta, Usuario usuario) {
 		//Arreglo que almacena las cuentas con deuda alguna 
 		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
-		
 		//Comprobación de existencia de Deudas por parte del Usuario
 		if (cuentasEnDeuda.size() == 0) {
 			System.out.println("El usuario " + usuario.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
@@ -777,8 +782,7 @@ public final class Main {
 					}
 				}
 				
-			}
-			else {
+			}else {
 				System.out.println("Entrada no válida");
 			}
 			
@@ -1332,11 +1336,81 @@ public final class Main {
 			}
 			if (tipo_op == 2) {
 				System.out.println(user.asociarCuenta(new Corriente(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
+				System.out.println("Cuenta creada con éxito");
 			}
 			
 		}
 	}
 	
+	//ELIMINAR CUENTA, SE REALIZA COMPROBACIÓN ENTRE CORRIENTE Y AHORROS
+	static void eliminarCuentaComprobacion(Cuenta cuenta, Usuario user) {
+		if(cuenta instanceof Ahorros) {
+			if (((Ahorros) cuenta).getSaldo() != 0.0d) {
+				System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
+				System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
+				System.out.println("1. Cuenta externa");
+				System.out.println("2. Cuenta propia");
+				int decision_saldo = Integer.parseInt(sc.nextLine());
+				switch(decision_saldo) {
+					case 1:
+						System.out.println("Ingrese los datos de la cuenta a la cual desea transferir su saldo. Recuerde que debe ser una cuenta de ahorros.");
+						System.out.print("Nombre de la cuenta destino: ");
+						String destino = sc.nextLine();
+						for(Cuenta dest : Cuenta.getCuentasTotales()) {
+							if(destino == dest.getNombre() && dest instanceof Ahorros) {
+								System.out.println(Movimientos.crearMovimiento(cuenta, dest, ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date()));
+								break;
+							}else {
+								System.out.print("Inténtelo de nuevo. Recuerde que debe escoger una cuenta de ahorros: ");
+								destino = sc.nextLine();
+									
+								}
+							}
+					case 2:
+						System.out.println("A cual de sus cuentas desea transferir su saldo:");
+						ArrayList<Cuenta> cuentas = cuenta.getTitular().getCuentasAsociadas();
+						for (int i = 1; i == cuentas.size() + 1; i++) {
+							System.out.println(i + ". " + cuentas.get(i - 1).getNombre());
+						}
+						int decision_cuenta = Integer.parseInt(sc.nextLine());
+						Movimientos.crearMovimiento(cuenta, cuentas.get(decision_cuenta - 1), ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date());
+					default:
+						System.out.println("Opción no válida. Inténtelo de nuevo");
+						System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
+						System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
+						System.out.println("1. Cuenta externa");
+						System.out.println("2. Cuenta propia");
+						decision_saldo = Integer.parseInt(sc.nextLine());
+				}
+		
+			
+			}else {
+				Cuenta.getCuentasTotales().remove(cuenta);
+				user.getCuentasAsociadas().remove(cuenta);
+				cuenta = null;
+			}
+		}else {
+			if(((Corriente) cuenta).getDisponible().compareTo(((Corriente) cuenta).getCupo()) != 0){
+				System.out.print("Tienes deudas pendientes. ¿Deseas pagarlas? (Y/N): ");
+				String confirmacion = sc.nextLine();
+				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+					Main.compraCartera(((Corriente) cuenta));
+					Cuenta.getCuentasTotales().remove(cuenta);
+					user.getCuentasAsociadas().remove(cuenta);
+					cuenta = null;	
+				}else {
+					System.out.println("Debes pagar las deudas para eliminar la cuenta.");
+				}
+				
+			}else {
+				Cuenta.getCuentasTotales().remove(cuenta);
+				user.getCuentasAsociadas().remove(cuenta);
+				cuenta = null;	
+			}
+		}
+	}
+	
+	//ELIMINAR CUENTA
 	// ELIMINAR CUENTA EN EL MAIN
 	static void eliminarCuenta() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
@@ -1352,14 +1426,14 @@ public final class Main {
 				if(cuentaOp < 1 || cuentaOp > user.getCuentasAsociadas().size()) {
 					System.out.print("Inténtelo de nuevo. Inserte el numero de la cuenta que desea eliminar: ");
 					cuentaOp = Integer.parseInt(sc.nextLine());
+					continue;
 				}else {
 					for(int i = 0; i < user.getCuentasAsociadas().size(); i++) {
 						if(user.getCuentasAsociadas().get(cuentaOp - 1) == user.getCuentasAsociadas().get(i)) {
-							Cuenta.eliminarCuenta(user.getCuentasAsociadas().get(i), user);
+							Main.eliminarCuentaComprobacion(user.getCuentasAsociadas().get(i), user);
 							System.gc();
-							break;
-						}
-					}	
+						}	
+					} break;
 				}
 			}
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	

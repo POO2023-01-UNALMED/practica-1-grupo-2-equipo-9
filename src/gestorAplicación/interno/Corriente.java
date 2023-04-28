@@ -10,7 +10,7 @@ public class Corriente extends Cuenta{
 	private static final long serialVersionUID = 8L;
 	public static final String nombreD = "Corriente";
 	private double cupo;
-	private double disponible = cupo;
+	private double disponible;
 	private boolean existenciaPrestamo;
 	private Cuotas plazo_Pago;
 	//Tasa efectiva anual
@@ -22,6 +22,8 @@ public class Corriente extends Cuenta{
 	//Hacer chequeo, cupo viene por defecto según suscripción y banco asociado.
 	public Corriente(Banco banco, int clave, Divisas divisa, String nombre) {
 		super(banco, clave, divisa, nombre);
+		this.setCupo(0.0d);
+		this.setDisponible(0.0d);
 	}	
 	
 	public Corriente(Banco banco, int clave, String nombre) {

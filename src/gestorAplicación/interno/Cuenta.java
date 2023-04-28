@@ -3,11 +3,9 @@ package gestorAplicación.interno;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
-
 import java.time.Instant;
 
 public abstract class Cuenta extends Banco{
@@ -49,69 +47,6 @@ public abstract class Cuenta extends Banco{
 	public abstract Cuenta crearCuenta(Banco banco, int clave, Divisas divisa, String nombre);
 	
 	public abstract Cuenta crearCuenta(Banco banco, int clave, String nombre);
-	
-	//Funcionalidad de Suscripciones de Usuarios
-	public Object invertirSaldo() {
-		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
-		double rand = (double)((Math.random()) + probabilidad);
-		if(rand >= 1){
-			this.getTitular().setContadorMovimientos(this.getTitular().getContadorMovimientos() + 1);
-			return (Movimientos.crearMovimiento(this, this.getSaldo() + this.getSaldo() * probabilidad, Categoria.FINANZAS, new Date()));
-		}else {
-			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");
-		}
-	}
-
-
-
-	//Eliminar cuentas
-	public static void eliminarCuenta(Cuenta cuenta, Usuario user) {
-		Scanner sc = new Scanner(System.in);
-		if (cuenta.saldo != 0.0d) {
-			System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
-			System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
-			System.out.println("1. Cuenta externa");
-			System.out.println("2. Cuenta propia");
-			int decision_saldo = sc.nextInt();
-			//Lectura de la opción con variable decision_saldo
-			
-			while(true) {
-				if (decision_saldo == 1) {
-					System.out.println("Ingrese los datos de la cuenta a la cual desea transferir su saldo:");
-					//Lectura datos, posible modificación según método crearMovimiento: Cuenta destino, int id,double cantidad,Categoria categoria, Date fecha)
-					System.out.print("Nombre de la cuenta destino: ");
-					String destino = sc.nextLine();
-					for(Cuenta dest : Cuenta.getCuentasTotales()) {
-						if(destino == dest.getNombre()) {
-							System.out.println(Movimientos.crearMovimiento(cuenta, dest, cuenta.getSaldo(), Categoria.OTROS, new Date()));
-							break;
-						}
-					}
-				} else if (decision_saldo == 2) {
-					System.out.println("A cual de sus cuentas desea transferir su saldo:");
-					ArrayList<Cuenta> cuentas = cuenta.getTitular().getCuentasAsociadas();
-					for (int i = 1; i == cuentas.size() + 1; i++) {
-						System.out.println(i + ". " + cuentas.get(i - 1).getNombre());
-					}
-					int decision_cuenta = sc.nextInt();
-					//Lectura de la opcion con decision_cuenta
-					Movimientos.crearMovimiento(cuenta, cuentas.get(decision_cuenta - 1), cuenta.getSaldo(), Categoria.OTROS, new Date());
-					break;
-				} else {
-					System.out.println("Opción no válida. Inténtelo de nuevo");
-					System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
-					System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
-					System.out.println("1. Cuenta externa");
-					System.out.println("2. Cuenta propia");
-					decision_saldo = sc.nextInt();
-				}
-			}
-		}
-		cuentasTotales.remove(cuenta);
-		user.getCuentasAsociadas().remove(cuenta);
-		cuenta = null;
-		sc.close();
-	}
 	
 	// Funcionalidad Asesor de Inversiones
 	public static Ahorros gotaGota(Double cantidadPrestamo, Usuario user, Ahorros gota) {

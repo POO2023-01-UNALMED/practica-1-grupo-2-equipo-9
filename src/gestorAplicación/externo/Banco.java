@@ -243,7 +243,7 @@ public class Banco extends Estado {
 	}
 	
 	public static Double verificarTasasdeInteres(Suscripcion suscripcion, Corriente cuenta){
-		Double interes = 0.0;
+		double interes = 0.0d;
 		double descuento_movimientos = cuenta.getBanco().retornarDescuentosMovimientos(cuenta);
 		double[] descuento_suscripcion = cuenta.getBanco().retornarDescuentosSuscripcion();
 		double[] descuento_total = Banco.descuentoTotal(descuento_movimientos, descuento_suscripcion);
@@ -288,7 +288,7 @@ public class Banco extends Estado {
 	
 	public static double[] descuentoTotal(double movimientos, double[] suscripcion) {
 		double[] descuento_total = suscripcion;
-		for (double descuento: descuento_total) {
+		for (double descuento : descuento_total) {
 			descuento = descuento + movimientos;
 		}
 		return descuento_total;

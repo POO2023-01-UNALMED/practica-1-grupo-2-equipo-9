@@ -15,7 +15,7 @@ public class Usuario extends Banco {
 	private int contadorMovimientos;
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
-	
+
 	private Suscripcion suscripcion;
 	private String nombre;
 	private String correo;
@@ -214,8 +214,10 @@ public class Usuario extends Banco {
 	public ArrayList<Corriente> retornarDeudas(){
 		ArrayList<Corriente> cuentasConDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentasAsociadas) {
-			if (((Corriente) cuenta).getExistenciaPrestamo()) {
-				cuentasConDeuda.add((Corriente) cuenta);
+			if(cuenta instanceof Corriente) {
+				if (((Corriente) cuenta).getExistenciaPrestamo()) {
+					cuentasConDeuda.add((Corriente) cuenta);
+				}
 			}
 		}
 		return cuentasConDeuda;
@@ -227,7 +229,7 @@ public class Usuario extends Banco {
 		ArrayList<Corriente> cuentasCapacesDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentas) {
 			if (cuenta instanceof Corriente) {
-				if (((Corriente) cuenta).getCupo() >= deuda) {
+				if (((Corriente) cuenta).getDisponible() >= deuda) {
 					cuentasCapacesDeuda.add((Corriente) cuenta);
 				}
 			}
