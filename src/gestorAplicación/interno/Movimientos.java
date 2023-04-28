@@ -5,6 +5,7 @@ import java.io.Serializable;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
+import java.time.Instant;
 
 public class Movimientos implements Serializable{
 	//	Atributos
@@ -22,6 +23,7 @@ public class Movimientos implements Serializable{
 	private Usuario owner;
 	public static String nombreCategoria;
 	public static double cantidadCategoria;
+	public static String recomendarFecha;
 
 	//	Constructores
 	public Movimientos(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
@@ -147,8 +149,9 @@ public class Movimientos implements Serializable{
 		}
 	}
 	
+	
 	// METODOS PARA LA FUNCIONALIDAD DE ASESORAMIENTO DE INVERSION
-	public static String analizarCategoria(Usuario u) {
+	public static void analizarCategoria(Usuario u, String plazo) {
 		int transporte = 0;
 		int comida = 0;
 		int educacion = 0;
@@ -156,7 +159,10 @@ public class Movimientos implements Serializable{
 		int otros = 0;
 		int regalos = 0;
 		int salud = 0;
-
+		int big = 0;
+		int posicion = 0;
+		ArrayList<Integer> mayor = new ArrayList<Integer>();
+		
 		// Buscar la categoría en la que más dinero ha gastado el usuario
 		for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
 			Categoria categoria = u.getMovimientosAsociadas().get(i).getCategoria();
@@ -176,11 +182,7 @@ public class Movimientos implements Serializable{
 				otros++;
 			}
 		}
-
-		int big = 0;
-		int posicion = 0;
-		ArrayList<Integer> mayor = new ArrayList<Integer>();
-
+		
 		mayor.add(transporte);
 		mayor.add(comida);
 		mayor.add(educacion);
@@ -259,8 +261,58 @@ public class Movimientos implements Serializable{
 			}
 
 		}
-		return "La categoría en la que más dinero ha gastado es en: " + nombreCategoria + " que suma un total de "
-				+ cantidadCategoria + ".";
+		
+		// Recomendadar fecha
+		if (plazo == "Corto") {
+			if (u.getMovimientosAsociadas().get(u.getMovimientosAsociadas().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+				recomendarFecha = "01/01/2024";
+			}
+			else{
+				recomendarFecha = "01/06/2025";
+			}
+		}
+		else if (plazo == "Mediano") {
+			if (u.getMovimientosAsociadas().get(u.getMovimientosAsociadas().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+				recomendarFecha = "01/01/2026";
+			}
+			else{
+				recomendarFecha = "01/06/2027";
+			}
+		}
+		else if (plazo == "Largo") {
+			if (u.getMovimientosAsociadas().get(u.getMovimientosAsociadas().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+				recomendarFecha = "01/01/2028";
+			}
+			else{
+				recomendarFecha = "01/06/2029";
+			}
+		}
+		else {
+			recomendarFecha = null;
+		}
+	}
+	
+	public boolean impuestosMovimineto(double interes) {
+
+		// Los movimientos aparecen sin uso, pero en realidad el uso que se les da es la
+		// transacción, porque modifica el saldo de las cuentas y luego ese saldo es
+		// usado como condicion para otro método
+
+		if (this.getOrigen().getBanco() == this.getDestino().getBanco()) {
+			Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+			Movimientos movimiento1 = new Movimientos(this.getOrigen(), impuestosBanco, interes, Categoria.OTROS,
+					Date.from(Instant.now()));
+			Movimientos movimiento2 = new Movimientos(this.getDestino(), impuestosBanco, interes, Categoria.OTROS,
+					Date.from(Instant.now()));
+			return true;
+		} else {
+			Corriente impuestosEstado = new Corriente(this.getOrigen().getBanco(), 1234, Divisas.COP, "Corriente");
+			Movimientos movimiento1 = new Movimientos(this.getOrigen(), impuestosEstado, interes, Categoria.OTROS,
+					Date.from(Instant.now()));
+			Movimientos movimiento2 = new Movimientos(this.getDestino(), impuestosEstado, interes, Categoria.OTROS,
+					Date.from(Instant.now()));
+			return false;
+		}
 	}
 	
 	//Funcionalidad Compra de Cartera
