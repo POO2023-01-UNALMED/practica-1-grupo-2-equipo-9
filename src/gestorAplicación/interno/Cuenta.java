@@ -6,9 +6,11 @@ import java.util.Scanner;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
+
+import java.io.Serializable;
 import java.time.Instant;
 
-public abstract class Cuenta extends Banco{
+public abstract class Cuenta implements Serializable{
 	//Atributos
 	private static final long serialVersionUID = 4L;
 	public static final String nombreD = "Cuentas";
