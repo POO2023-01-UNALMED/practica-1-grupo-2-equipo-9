@@ -28,17 +28,16 @@ public final class Main {
 	
 	// FUNCIONALIDADES 
 
-	private static int funcionalidadPrestamo(Usuario usu){
-		int seccion = 0;
+	private static void funcionalidadPrestamo(Usuario usu){
 		System.out.println("Bienvenido a Prestamos");
 		ArrayList prestamo = usu.comprobarConfiabilidad(usu);
-		if(prestamo.get(0) instanceof Cuenta){
+		if(prestamo.get(0) instanceof Ahorros){
 			// Si tiene cuentas entonces vamos a comprar cuanto dieron prestan los bancos de las cuentas y mostrale al usuario
-			prestamo = Cuenta.comprobarPrestamo(prestamo);
-			if(prestamo.get(0) instanceof Cuenta){
+			prestamo = Ahorros.comprobarPrestamo(prestamo);
+			if(prestamo.get(0) instanceof Ahorros){
 				System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
 				for(int i=0;i<prestamo.size();i++){
-					Cuenta cuenta = (Cuenta) prestamo.get(i);
+					Ahorros cuenta = (Ahorros) prestamo.get(i);
 					System.out.println(i+"-Cuenta: "+ cuenta.getNombre()+" Maximo a prestar:"+cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getPorcentajePrestamo());
 				}
 				System.out.println(prestamo.size()+"-Salir al Menú");
@@ -49,10 +48,10 @@ public final class Main {
 
 //				En caso de que desee salir se sale,
 				if(opcion==prestamo.size()){
-					seccion =0;
+					return;
 				}else{
 //					encaso de que seleccione una de las cuentas
-					Cuenta cuenta = (Cuenta) prestamo.get(opcion);
+					Ahorros cuenta = (Ahorros) prestamo.get(opcion);
 					double maxPrestamo = cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getLimiteCuentas();
 					System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $"+maxPrestamo);
 					maxPrestamo = Double.parseDouble(sc.nextLine());
@@ -68,13 +67,13 @@ public final class Main {
 
 			}else{
 				System.out.println("|----------------------------------|\n\nLos bancos de sus cuentas no realizan prestamos\n\n|----------------------------------|\n\n");
-				seccion=0;
+				return;
 			}
 		}else{
 			for(int i = 0;i<prestamo.size();i++){
 				System.out.println(prestamo.get(i));
 			}
-			seccion=0;
+			return ;
 		}
 	}
 		

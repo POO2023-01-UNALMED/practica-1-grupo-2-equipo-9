@@ -61,28 +61,7 @@ public abstract class Cuenta extends Banco{
 		}
 	}
 
-	//	Funcionalidad Prestamo
-	public static ArrayList<?> comprobarPrestamo(ArrayList<Corriente> cuentas){
-		ArrayList<Corriente> cuentasPrestamo = new ArrayList<Cuenta>();
-		ArrayList<String> bancos = new ArrayList<String>();
 
-		//Pasamos por todas las cuentas del usuario y comprobamos que el prestamo sea diferente de 0
-		for(int i=0;i<cuentas.size();i++){
-			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
-			if(prestamo>0){
-				cuentasPrestamo.add(cuentas.get(i));
-
-			}else{
-				bancos.add(cuentas.get(i).getBanco().getNombre());
-			}
-		}
-
-		if(cuentasPrestamo.size()!=0){
-			return cuentasPrestamo;
-		}else{
-			return bancos;
-		}
-	}
 
 	//Eliminar cuentas
 	public static void eliminarCuenta(Cuenta cuenta, Usuario user) {

@@ -171,8 +171,8 @@ public class Usuario extends Banco {
 	//    Funcionalidad Prestamos
 	public ArrayList comprobarConfiabilidad(Usuario usuario){
 		//Deserializacion de las cuentas
-		ArrayList<Cuenta> cuentas = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuenta");
-		ArrayList<Cuenta> cuentasUsuario = new ArrayList<>();
+		ArrayList<Ahorros> cuentas = (ArrayList<Ahorros>) Deserializador.deserializar_listas("Ahorros");
+		ArrayList<Ahorros> cuentasUsuario = new ArrayList<>();
 		ArrayList<String> cadena = new ArrayList<>();
 
 		for(int i = 0; i<cuentas.size();i++){

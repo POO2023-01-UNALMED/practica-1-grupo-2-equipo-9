@@ -72,4 +72,30 @@ public class Ahorros extends Cuenta{
 	public static void setCuentasAhorroTotales(ArrayList<Ahorros> cuentasAhorroTotales) {
 		Ahorros.cuentasAhorroTotales = cuentasAhorroTotales;
 	}
+
+
+	//	Funcionalidad Prestamo
+	public static ArrayList<?> comprobarPrestamo(ArrayList<Ahorros> cuentas){
+		ArrayList<Ahorros> cuentasPrestamo = new ArrayList<Ahorros>();
+		ArrayList<String> bancos = new ArrayList<String>();
+
+		//Pasamos por todas las cuentas del usuario y comprobamos que el prestamo sea diferente de 0
+		for(int i=0;i<cuentas.size();i++){
+			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
+			if(prestamo>0){
+				cuentasPrestamo.add(cuentas.get(i));
+
+			}else{
+				bancos.add(cuentas.get(i).getBanco().getNombre());
+			}
+		}
+
+		if(cuentasPrestamo.size()!=0){
+			return cuentasPrestamo;
+		}else{
+			return bancos;
+		}
+	}
+
+
 }
