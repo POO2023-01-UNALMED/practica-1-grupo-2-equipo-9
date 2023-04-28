@@ -22,16 +22,17 @@ public class Corriente extends Cuenta{
 	//Hacer chequeo, cupo viene por defecto según suscripción y banco asociado.
 	public Corriente(Banco banco, int clave, Divisas divisa, String nombre) {
 		super(banco, clave, divisa, nombre);
-		this.setCupo(0.0d);
-		this.setDisponible(0.0d);
+		cuentasCorrienteTotales.add(this);
 	}	
 	
 	public Corriente(Banco banco, int clave, String nombre) {
 		super(banco, clave, nombre);
+		cuentasCorrienteTotales.add(this);
 	}
 	
 	public Corriente() {
 		super();
+		cuentasCorrienteTotales.add(this);
 	}
 	
 	//Métodos

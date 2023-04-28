@@ -50,7 +50,7 @@ public class Movimientos implements Serializable{
 	
 	//Métodos
 	//Funcionalidad de Suscripciones de Usuarios
-	public static Object crearMovimiento(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+	public static Object crearMovimiento(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)){
 			if (origen.getSaldo() < cantidad) {
 				return("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
@@ -62,7 +62,7 @@ public class Movimientos implements Serializable{
 		}
 	}
 	
-	public static Object crearMovimiento(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+	public static Object crearMovimiento(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
 			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
 		}else {
@@ -94,7 +94,7 @@ public class Movimientos implements Serializable{
 	}
 	
 	//Funcionalidad de Suscripciones de Usuarios
-	public static Object modificarSaldo(Cuenta origen, Cuenta destino, double cantidad, Usuario usuario, Categoria categoria) {
+	public static Object modificarSaldo(Ahorros origen, Ahorros destino, double cantidad, Usuario usuario, Categoria categoria) {
 		if (usuario.getCuentasAsociadas().contains(origen) && usuario.getCuentasAsociadas().contains(destino)) {
 			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
 			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));

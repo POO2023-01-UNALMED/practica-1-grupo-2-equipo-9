@@ -93,7 +93,11 @@ public class Usuario extends Banco {
 		if(Cuenta.getCuentasTotales().contains(cuenta) && !cuentasAsociadas.contains(cuenta) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
 			cuenta.setTitular(this);
 			this.getCuentasAsociadas().add(cuenta);
-			return("La cuenta " + cuenta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
+			if(cuenta instanceof Ahorros) {
+				return(this.asociarCuentaAhorros((Ahorros) cuenta));
+			}else {
+				return(this.asociarCuentaCorriente((Corriente) cuenta));
+			}
 		}else {
 			return("No se encuentra tu cuenta, debes verificar que la cuenta que quieres asociar no haya sido asociada antes ó debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario: " + this.getLimiteCuentas());
 		}
@@ -123,9 +127,9 @@ public class Usuario extends Banco {
 		if(Corriente.getCuentasCorrienteTotales().contains(corriente)) {
 			corriente.setTitular(this);
 			this.getCuentasCorrienteAsociadas().add(corriente);
-			return("La cuenta corriente ha sido asociada correctamente al usuario " + this.getNombre());
+			return("La cuenta corriente " + corriente.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra el la cuenta corriente. Por favor asegurese de que exista" );
+			return("No se encuentra la cuenta corriente. Por favor asegurese de que exista" );
 		}
 	}
 	
@@ -133,9 +137,9 @@ public class Usuario extends Banco {
 		if(Ahorros.getCuentasAhorroTotales().contains(ahorros)) {
 			ahorros.setTitular(this);
 			this.getCuentasAhorrosAsociadas().add(ahorros);
-			return("La cuenta de ahorros ha sido asociada correctamente al usuario " + this.getNombre());
+			return("La cuenta de ahorros " + ahorros.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra el la cuenta de ahorros. Por favor asegurese de que exista");
+			return("No se encuentra la cuenta de ahorros. Por favor asegurese de que exista");
 		}
 	}
 	

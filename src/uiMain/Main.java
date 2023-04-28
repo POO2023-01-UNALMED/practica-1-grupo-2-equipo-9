@@ -978,26 +978,26 @@ public final class Main {
 	
 	//INVERTIR SALDO DE CUENTA EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
 	static void invertirSaldoUsuario(Usuario user) {
-		if(user.getCuentasAsociadas().size() == 0) {
-			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
+		if(user.getCuentasAhorrosAsociadas().size() == 0) {
+			System.out.println("Primero debes asociar cuentas de ahorro. Volviendo al menú anterior");
 			seccion = 1;
 		}else {
 			System.out.println("");
-			Main.verCuentasAsociadas();
-			System.out.print("Seleccione el número de cuenta asociada al usuario para realizar la inversión de saldo: ");
+			Main.verCuentasAhorroAsociadas();
+			System.out.print("Seleccione el número de cuenta de ahorro asociada al usuario para realizar la inversión de saldo: ");
 			int opcion_cuenta = Integer.parseInt(sc.nextLine());
 			while(true) {
-				if(opcion_cuenta < 1 && opcion_cuenta > user.getCuentasAsociadas().size()) {
+				if(opcion_cuenta < 1 && opcion_cuenta > user.getCuentasAhorrosAsociadas().size()) {
 					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo:");
 					opcion_cuenta = Integer.parseInt(sc.nextLine());
-				}else if(user.getCuentasAsociadas().get(opcion_cuenta - 1).getSaldo() <= 0){
-					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
+				}else if(user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1).getSaldo() <= 0){
+					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					System.out.println("Para invertir saldo debemos comprobar que el saldo de la cuenta sea diferente de cero." + "El saldo para la cuenta " + c.getNombre() + " es de " + c.getSaldo());
 					System.out.println("Volviendo al menú anterior.");
 					break;	
 				}else {
 					System.out.println("");
-					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
+					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
 						System.out.println("La inversión de saldo ha sido exitosa: ");
@@ -1016,21 +1016,21 @@ public final class Main {
 	
 	//CONSIGNAR COMO USUARIO EN SALDO DE CUENTA EN EL MAIN
 	static void consignarSaldoCuenta(Usuario user) {
-		if(user.getCuentasAsociadas().size() == 0) {
-			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
+		if(user.getCuentasAhorrosAsociadas().size() == 0) {
+			System.out.println("Primero debes asociar cuentas de ahorro. Volviendo al menú anterior");
 			seccion = 1;
 		}else {
 			System.out.println("");
-			Main.verCuentasAsociadas();
-			System.out.print("Seleccione el número de cuenta asociada al usuario para realizar la consignación de saldo: ");
+			Main.verCuentasAhorroAsociadas();
+			System.out.print("Seleccione el número de cuenta de ahorro asociada al usuario para realizar la consignación de saldo: ");
 			int opcion_cuenta = Integer.parseInt(sc.nextLine());
 			while(true) {
-				if(opcion_cuenta < 1 && opcion_cuenta > user.getCuentasAsociadas().size()) {
+				if(opcion_cuenta < 1 && opcion_cuenta > user.getCuentasAhorrosAsociadas().size()) {
 					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo:");
 					opcion_cuenta = Integer.parseInt(sc.nextLine());
 				}else {
 					System.out.println("");
-					Cuenta c = user.getCuentasAsociadas().get(opcion_cuenta - 1);
+					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					System.out.print("Ingrese el monto de su consignación de saldo(En formato double): ");
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
 					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
@@ -1057,32 +1057,43 @@ public final class Main {
 	
 	//TRANSFERIR SALDO ENTRE CUENTAS POR USUARIO EN EL MAIN
 	static void transferirSaldoCuentasUsuario(Usuario user) {
-		if(user.getCuentasAsociadas().size() == 0) {
-			System.out.println("Primero debes asociar cuentas. Volviendo al menú anterior");
+		if(user.getCuentasAhorrosAsociadas().size() < 2) {
+			System.out.println("Debes asociar más de una cuenta de ahorros. Volviendo al menú anterior");
 			seccion = 1;
 		}else {
 			System.out.println("");
-			Main.verCuentasAsociadas();
+			Main.verCuentasAhorroAsociadas();
 			System.out.print("Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
 			int opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
 			while(true) {
-				if(opcion_cuenta_origen < 1 && opcion_cuenta_origen > user.getCuentasAsociadas().size()) {
-					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo:");
+				if(opcion_cuenta_origen < 1 || opcion_cuenta_origen > user.getCuentasAhorrosAsociadas().size()) {
+					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo: ");
 					opcion_cuenta_origen = Integer.parseInt(sc.nextLine());	
+				}else if(user.getCuentasAhorrosAsociadas().get(opcion_cuenta_origen - 1).getSaldo() == 0) {
+					System.out.println("La cuenta seleccionada tiene saldo cero");
+					System.out.print("¿Desea volver al menú anterior? (Y/N): ");
+					String confirmacion = sc.nextLine();
+					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+						System.out.println("Volviendo al menú anterior");
+						seccion = 1;
+						break;
+					}else {
+						System.out.print("Inténtelo de nuevo: ");
+						opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+					}
 				}else {
 					System.out.println("");
-					Cuenta c_origen = user.getCuentasAsociadas().get(opcion_cuenta_origen - 1);
-					
-					Main.verCuentasTotales();
+					Ahorros c_origen = user.getCuentasAhorrosAsociadas().get(opcion_cuenta_origen - 1);
+					Main.verCuentasAhorroTotales();
 					System.out.print("Seleccione el número de cuenta destino donde deseas transferir saldo: ");
 					int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
-					Cuenta c_destino = null;
+					Ahorros c_destino = null;
 					while(true) {
-						if(opcion_cuenta_destino < 1 || opcion_cuenta_destino > user.getCuentasAsociadas().size()) {
+						if(opcion_cuenta_destino < 1 || opcion_cuenta_destino > user.getCuentasAhorrosAsociadas().size()) {
 							System.out.print("Inténtelo de nuevo. Seleccione el número de cuenta destino donde deseas transferir saldo: ");
 							opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
 						}else {
-							c_destino = Cuenta.getCuentasTotales().get(opcion_cuenta_destino - 1);
+							c_destino = Ahorros.getCuentasAhorroTotales().get(opcion_cuenta_destino - 1);
 							break;
 							}
 						}
@@ -1092,12 +1103,13 @@ public final class Main {
 						System.out.println("");
 						System.out.print("Inserte el monto de la transferencia(En formato double): ");
 						double monto_transferencia = Double.parseDouble(sc.nextLine());
+						
 						Main.verCategorias();
-							
 						System.out.println("");
 						System.out.print("Seleccione el número de categoría para la transferencia: ");
 						int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
 						Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
+						
 						Object modificar_saldo = Movimientos.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
 						if(modificar_saldo instanceof Movimientos) {
 							System.out.println((Movimientos) modificar_saldo);
@@ -1358,7 +1370,7 @@ public final class Main {
 						String destino = sc.nextLine();
 						for(Cuenta dest : Cuenta.getCuentasTotales()) {
 							if(destino == dest.getNombre() && dest instanceof Ahorros) {
-								System.out.println(Movimientos.crearMovimiento(cuenta, dest, ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date()));
+								System.out.println(Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) dest, ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date()));
 								break;
 							}else {
 								System.out.print("Inténtelo de nuevo. Recuerde que debe escoger una cuenta de ahorros: ");
@@ -1373,7 +1385,7 @@ public final class Main {
 							System.out.println(i + ". " + cuentas.get(i - 1).getNombre());
 						}
 						int decision_cuenta = Integer.parseInt(sc.nextLine());
-						Movimientos.crearMovimiento(cuenta, cuentas.get(decision_cuenta - 1), ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date());
+						Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) cuentas.get(decision_cuenta - 1), ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date());
 					default:
 						System.out.println("Opción no válida. Inténtelo de nuevo");
 						System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -1450,7 +1462,34 @@ public final class Main {
 		}
 	}
 	
+	//VER CUENTAS DE AHORRO DEL USUARIO EN EL MAIN
 	// VER CUENTAS ASOCIADAS AL USUARIO EN EL MAIN
+	static void verCuentasAhorroAsociadas() {
+		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
+		if(user.getCuentasAsociadas().size() > 0) {
+			System.out.println("La lista de Cuentas de ahorro creadas por el Usuario " + user.getNombre() + " son: ");
+			int i = 1;
+			for(Cuenta cuenta : user.getCuentasAsociadas()) {
+				if(cuenta instanceof Ahorros) {
+					System.out.println(i + ". " + cuenta.getNombre());
+					i++;
+				}
+			}
+			
+			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
+		}else {
+			System.out.print("No hay cuentas creadas para este usuario. ¿Deseas crear una? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				Main.crearCuenta();
+			}else {
+				System.out.println("Volviendo al menú anterior");
+				seccion = 1;
+			}	
+		}
+	}
+	
+	//VER CUENTAS DE AHORRO Y CORRIENTES DEL USUARIO EN EL MAIN
 	static void verCuentasAsociadas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -1472,6 +1511,7 @@ public final class Main {
 		}
 	}
 	
+	//VER BANCOS DEL USUARIO EN EL MAIN
 	// VER BANCOS ASOCIADOS AL USUARIO EN EL MAIN
 	static void verBancosAsociados() {
 		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
@@ -1512,6 +1552,7 @@ public final class Main {
 		}
 	}
 	
+	//VER USUARIOS TOTALES EN EL MAIN
 	// VER USUARIOS TOTALES EN EL MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
@@ -1536,6 +1577,7 @@ public final class Main {
 		}
 	}
 	
+	//MODIFICAR SUSCRIPCIÓN DEL USUARIO EN EL MAIN
 	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
 	static void modificarSuscripcionUsuario(Usuario user) {
 		if(user.getBancosAsociados().size() == 0) {
@@ -1582,6 +1624,7 @@ public final class Main {
 		}
 	}
 	
+	//VER BANCOS TOTALES EN EL MAIN
 	// VER BANCOS TOTALES EN EL MAIN
 	static void verBancosTotales() {
 		//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
@@ -1605,6 +1648,53 @@ public final class Main {
 		}
 	}
 	
+	// VER CUENTAS CORRIENTES TOTALES EN EL MAIN
+	static void verCuentasCorrientesTotales() {
+		//SE VERIFICA QUE EXISTAN CUENTAS CORRIENTES CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CORRIENTES CREADAS
+		if(Corriente.getCuentasCorrienteTotales().size() > 0) {
+			System.out.println("La lista de Cuentas Corrientes totales en el sistema son: ");
+			for(int i = 1; i < Corriente.getCuentasCorrienteTotales().size() + 1; i++) {
+				System.out.println(i + ". " + Corriente.getCuentasCorrienteTotales().get(i - 1).getNombre());
+			}
+						
+		//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
+		}else {
+			System.out.print("No hay cuentas creadas. ¿Deseas crear una? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				Main.crearCuenta();
+			}else {
+				System.out.println("Volviendo al menú anterior");
+				opcion = 0;
+				seccion = 1;
+			}	
+		}
+	}	
+	
+	// VER CUENTAS DE AHORRO TOTALES EN EL MAIN
+	static void verCuentasAhorroTotales() {
+		//SE VERIFICA QUE EXISTAN CUENTAS DE AHORRO CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS DE AHORRO CREADAS
+		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
+			System.out.println("La lista de Cuentas de Ahorro totales en el sistema son: ");
+			for(int i = 1; i < Ahorros.getCuentasAhorroTotales().size() + 1; i++) {
+				System.out.println(i + ". " + Ahorros.getCuentasAhorroTotales().get(i - 1).getNombre());
+			}
+					
+		//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
+		}else {
+			System.out.print("No hay cuentas creadas. ¿Deseas crear una? (Y/N): ");
+			String confirmacion = sc.nextLine();
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				Main.crearCuenta();
+			}else {
+				System.out.println("Volviendo al menú anterior");
+				opcion = 0;
+				seccion = 1;
+			}	
+		}
+	}	
+	
+	//VER CUENTAS TOTALES EN EL MAIN
 	// VER CUENTAS TOTALES EN EL MAIN
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
@@ -1628,6 +1718,7 @@ public final class Main {
 		}
 	}
 	
+	//VER MOVIMIENTOS TOTALES EN EL MAIN
 	// VER MOVIMIENTOS TOTALES EN EL MAIN
 	static void verMovimientosTotales() {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
@@ -1651,6 +1742,7 @@ public final class Main {
 		}
 	}
 		
+	//VER METAS TOTALES EN EL MAIN
 	// VER METAS TOTALES EN EL MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
@@ -1674,6 +1766,7 @@ public final class Main {
 		}
 	}
 	
+	//VER ESTAOS TOTALES EN EL MAIN
 	// VER ESTADOS TOTALES EN EL MAIN
 	static void verEstadosTotales() {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
@@ -1697,6 +1790,7 @@ public final class Main {
 		}
 	}		
 	
+	//GUARDAR OBJETOS INDIVIDUALES EN EL MAIN
 	// GUARDAR OBJETOS EN EL MAIN
 	static void guardarObjetosIndividuales() throws ParseException {
 		//Guardar objetos individuales
@@ -1803,6 +1897,7 @@ public final class Main {
 		}
 	}
 	
+	//GUARDAR OBJETOS EN EL MAIN
 	//Guardar Objetos
 	static void guardarObjetos() throws ParseException{
 		System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
@@ -1829,6 +1924,7 @@ public final class Main {
 		}
 	}
 	
+	//CARGAR OBJETOS EN EL MAIN
 	//Cargar Objetos en el main
 	
 	static void cargarObjetos() throws ParseException{
@@ -1886,6 +1982,7 @@ public final class Main {
 			}
 	}
 	
+	//CARGAR OBJETOS INDIVIDUALES EN EL MAIN
 	// CARGAR OBJETOS EN EL MAIN
 	static void cargarObjetosIndividuales() throws ParseException {
 		//Cargar objetos individuales
@@ -1998,11 +2095,13 @@ public final class Main {
 		}
 	}
 	
+	//ASOCIAR CUENTA A USUARIO EN EL MAIN
 	// ASOCIAR CUENTA CON USUARIO EN EL MAIN
 	static void asociarCuentaUsuario(Cuenta cuenta) {
 		System.out.println(user.asociarCuenta(cuenta));
 	}
 	
+	//MÉTODO DE INICIO DE PROGRAMA
 	// INTERFAZ DE BIENVENIDA EN EL MAIN
 	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
@@ -2096,10 +2195,9 @@ public final class Main {
 					System.out.println("");
 					System.out.println("Bienvenido a tus productos, ¿en que te podemos ayudar?"
 							+ "\n1. Crear una cuenta"
-							+ "\n2. Asociar una cuenta"
-							+ "\n3. Eliminar una cuenta"
-							+ "\n4. Ver mis cuentas"
-							+ "\n5. Salir al menú principal");
+							+ "\n2. Eliminar una cuenta"
+							+ "\n3. Ver mis cuentas"
+							+ "\n4. Salir al menú principal");
 						
 					opcion = Integer.parseInt(sc.nextLine());
 					
@@ -2108,42 +2206,42 @@ public final class Main {
 						Main.crearCuenta();
 					}
 					// Asociar una cuenta
-					else if(opcion == 2) {
-						if(Cuenta.getCuentasTotales().size() == 0) {
-							System.out.println("Primero debes crear cuentas. Volviendo al menú anterior");
-							seccion = 1;
-						} else {
-							System.out.println("");
-							Main.verCuentasTotales();
-							System.out.print("Seleccione el número de cuenta para asociarla al usuario: ");
-							int opcion_cuenta = Integer.parseInt(sc.nextLine());
-							while(true) {
-								if(opcion_cuenta < 1 || opcion_cuenta > Cuenta.getCuentasTotales().size()) {
-									System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
-									opcion_cuenta = Integer.parseInt(sc.nextLine());
-								}else {
-									System.out.println("");
-									Cuenta cuenta = Cuenta.getCuentasTotales().get(opcion_cuenta - 1);
-									Main.asociarCuentaUsuario(cuenta);
-									break;
-								}
-							} 
-						}	
-					}
+//					else if(opcion == 2) {
+//						if(Cuenta.getCuentasTotales().size() == 0) {
+//							System.out.println("Primero debes crear cuentas. Volviendo al menú anterior");
+//							seccion = 1;
+//						} else {
+//							System.out.println("");
+//							Main.verCuentasTotales();
+//							System.out.print("Seleccione el número de cuenta para asociarla al usuario: ");
+//							int opcion_cuenta = Integer.parseInt(sc.nextLine());
+//							while(true) {
+//								if(opcion_cuenta < 1 || opcion_cuenta > Cuenta.getCuentasTotales().size()) {
+//									System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
+//									opcion_cuenta = Integer.parseInt(sc.nextLine());
+//								}else {
+//									System.out.println("");
+//									Cuenta cuenta = Cuenta.getCuentasTotales().get(opcion_cuenta - 1);
+//									Main.asociarCuentaUsuario(cuenta);
+//									break;
+//								}
+//							} 
+//						}	
+//					}
 					// Eliminar una cuenta
-					else if(opcion == 3) {
+					else if(opcion == 2) {
 						Main.eliminarCuenta();
 					}
 					// Ver mis cuentas
-					else if(opcion == 4) {
+					else if(opcion == 3) {
 						Main.verCuentasAsociadas();
 					}
 					// Salir al menú principal
-					else if (opcion == 5) {
+					else if (opcion == 4) {
 						seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
-					else if (opcion < 1 || opcion > 5) {
+					else if (opcion < 1 || opcion > 4) {
 						System.out.println("Entrada no valida");
 						continue;
 					}

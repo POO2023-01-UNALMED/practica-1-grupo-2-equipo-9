@@ -83,7 +83,7 @@ public abstract class Cuenta extends Banco{
 
 	@Override	
 	protected void finalize() {
-		System.out.println("La cuenta con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
+		System.out.println("La cuenta " + this.getClass() + " con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 	}
 
 	//Gets && Sets
