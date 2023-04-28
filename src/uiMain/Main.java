@@ -14,12 +14,7 @@ import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
-
-import static gestorAplicación.interno.Cuenta.cuentasTotales;
-
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,8 +23,7 @@ import java.time.Instant;
 
 public final class Main {
 	
-	// FUNCIONALIDADES 
-
+	// FUNCIONALIDAD DE PRESTAMO 
 	private static void funcionalidadPrestamo(Usuario usu){
 		System.out.println("Bienvenido a Prestamos");
 		ArrayList prestamo = usu.comprobarConfiabilidad(usu);
@@ -78,7 +72,8 @@ public final class Main {
 			return ;
 		}
 	}
-		
+	
+	// CREAR UNA META EN EL MAIN	
 	static void crearMeta() throws ParseException {
 
 		int opcionMetas = 1;
@@ -1905,8 +1900,8 @@ public final class Main {
 		while(true){
 			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 				System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));
-				System.out.println(Serializador.serializar(Usuario.getBancosTotales(), "Bancos"));
-				System.out.println(Serializador.serializar(Usuario.getEstadosTotales(), "Estados"));
+				System.out.println(Serializador.serializar(Banco.getBancosTotales(), "Bancos"));
+				System.out.println(Serializador.serializar(Estado.getEstadosTotales(), "Estados"));
 				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));
 				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));
 				System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));

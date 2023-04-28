@@ -55,7 +55,7 @@ public class Movimientos implements Serializable{
 			if (origen.getSaldo() < cantidad) {
 				return("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + origen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
 			} else {
-				return(new Movimientos(origen, destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
+				return(new Movimientos(origen, destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria, fecha));
 			}
 		}else {
 			return("Debes verificar que las cuentas origen y/o destino existan");
@@ -64,7 +64,7 @@ public class Movimientos implements Serializable{
 	
 	public static Object crearMovimiento(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
-			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getComision()), categoria, fecha));
+			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria, fecha));
 		}else {
 			return("Debes verificar que la cuenta de destino exista");
 		}

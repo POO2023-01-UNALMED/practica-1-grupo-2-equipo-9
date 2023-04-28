@@ -3,7 +3,6 @@ package gestorAplicación.externo;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
-
 import gestorAplicación.interno.Categoria;
 import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
@@ -11,7 +10,6 @@ import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
 import gestorAplicación.interno.Ahorros;
-import gestorAplicación.interno.Corriente;
 
 public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;

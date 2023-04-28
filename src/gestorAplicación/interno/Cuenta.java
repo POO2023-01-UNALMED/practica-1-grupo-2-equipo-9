@@ -6,7 +6,6 @@ import java.util.Scanner;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
-
 import java.io.Serializable;
 import java.time.Instant;
 

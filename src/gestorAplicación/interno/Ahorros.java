@@ -4,7 +4,6 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 
 public class Ahorros extends Cuenta{
 	//Atributos
