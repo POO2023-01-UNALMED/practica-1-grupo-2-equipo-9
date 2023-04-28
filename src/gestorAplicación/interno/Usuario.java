@@ -1,26 +1,27 @@
 package gestorAplicación.interno;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
 
-public class Usuario extends Banco {
+public class Usuario implements Serializable {
 	//Atributos
 	//Funcionalidad de Suscripciones de Usuarios
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
 	
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
-	
+
 	private Suscripcion suscripcion;
 	private String nombre;
 	private String correo;
 	private String contrasena;
 	private int id;
-	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	
 	//REVISAR
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
@@ -93,7 +94,11 @@ public class Usuario extends Banco {
 		if(Cuenta.getCuentasTotales().contains(cuenta) && !cuentasAsociadas.contains(cuenta) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
 			cuenta.setTitular(this);
 			this.getCuentasAsociadas().add(cuenta);
-			return("La cuenta " + cuenta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
+			if(cuenta instanceof Ahorros) {
+				return(this.asociarCuentaAhorros((Ahorros) cuenta));
+			}else {
+				return(this.asociarCuentaCorriente((Corriente) cuenta));
+			}
 		}else {
 			return("No se encuentra tu cuenta, debes verificar que la cuenta que quieres asociar no haya sido asociada antes ó debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario: " + this.getLimiteCuentas());
 		}
@@ -123,9 +128,9 @@ public class Usuario extends Banco {
 		if(Corriente.getCuentasCorrienteTotales().contains(corriente)) {
 			corriente.setTitular(this);
 			this.getCuentasCorrienteAsociadas().add(corriente);
-			return("La cuenta corriente ha sido asociada correctamente al usuario " + this.getNombre());
+			return("La cuenta corriente " + corriente.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra el la cuenta corriente. Por favor asegurese de que exista" );
+			return("No se encuentra la cuenta corriente. Por favor asegurese de que exista" );
 		}
 	}
 	
@@ -133,9 +138,9 @@ public class Usuario extends Banco {
 		if(Ahorros.getCuentasAhorroTotales().contains(ahorros)) {
 			ahorros.setTitular(this);
 			this.getCuentasAhorrosAsociadas().add(ahorros);
-			return("La cuenta de ahorros ha sido asociada correctamente al usuario " + this.getNombre());
+			return("La cuenta de ahorros " + ahorros.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra el la cuenta de ahorros. Por favor asegurese de que exista");
+			return("No se encuentra la cuenta de ahorros. Por favor asegurese de que exista");
 		}
 	}
 	
@@ -171,8 +176,8 @@ public class Usuario extends Banco {
 	//    Funcionalidad Prestamos
 	public ArrayList comprobarConfiabilidad(Usuario usuario){
 		//Deserializacion de las cuentas
-		ArrayList<Cuenta> cuentas = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuenta");
-		ArrayList<Cuenta> cuentasUsuario = new ArrayList<>();
+		ArrayList<Ahorros> cuentas = (ArrayList<Ahorros>) Deserializador.deserializar_listas("Ahorros");
+		ArrayList<Ahorros> cuentasUsuario = new ArrayList<>();
 		ArrayList<String> cadena = new ArrayList<>();
 
 		for(int i = 0; i<cuentas.size();i++){
@@ -214,8 +219,10 @@ public class Usuario extends Banco {
 	public ArrayList<Corriente> retornarDeudas(){
 		ArrayList<Corriente> cuentasConDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentasAsociadas) {
-			if (((Corriente) cuenta).getExistenciaPrestamo()) {
-				cuentasConDeuda.add((Corriente) cuenta);
+			if(cuenta instanceof Corriente) {
+				if (((Corriente) cuenta).getExistenciaPrestamo()) {
+					cuentasConDeuda.add((Corriente) cuenta);
+				}
 			}
 		}
 		return cuentasConDeuda;
@@ -227,7 +234,7 @@ public class Usuario extends Banco {
 		ArrayList<Corriente> cuentasCapacesDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentas) {
 			if (cuenta instanceof Corriente) {
-				if (((Corriente) cuenta).getCupo() >= deuda) {
+				if (((Corriente) cuenta).getDisponible() >= deuda) {
 					cuentasCapacesDeuda.add((Corriente) cuenta);
 				}
 			}

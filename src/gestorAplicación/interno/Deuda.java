@@ -9,13 +9,13 @@ public class Deuda {
     private static final long serialVersionUID = 6L;
     private int id;
     private double cantidad;
-    private Corriente cuenta;
+    private Ahorros cuenta;
     private Usuario titular;
     private Banco banco;
     private static ArrayList<Deuda> deudasTotales = new ArrayList<>();
 
 //    Constructor
-    public Deuda(double cantidad,Corriente cuenta,Usuario titular, Banco banco){
+    public Deuda(double cantidad,Ahorros cuenta,Usuario titular, Banco banco){
         id = deudasTotales.size();
         this.cantidad = cantidad;
         this.cuenta = cuenta;
@@ -55,11 +55,11 @@ public class Deuda {
         this.banco = banco;
     }
 
-    public Corriente getCuenta() {
+    public Ahorros getCuenta() {
         return cuenta;
     }
 
-    public void setCuenta(Corriente cuenta) {
+    public void setCuenta(Ahorros cuenta) {
         this.cuenta = cuenta;
     }
 

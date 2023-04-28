@@ -59,16 +59,17 @@ public class Metas implements Serializable {
 	}
 
 	// Metodos de la funcionalidad asesoramiento de inversion.
-	public static void revisionMetas(Usuario u) {
+	public static Metas revisionMetas(Usuario u) {
 		
 		Date proximaFecha = u.getMetasAsociadas().get(0).getFecha();
+		Metas proximaMeta = u.getMetasAsociadas().get(0);
 		
 		if (u.getMetasAsociadas().size() == 1) {
 			if (u.getMetasAsociadas().get(0).getFecha() == null) {
 				proximaFecha = Date.from(Instant.now());
-				metaProxima = null;
+				proximaMeta = null;
 			}
-			metaProxima = u.getMetasAsociadas().get(0);
+			return u.getMetasAsociadas().get(0);
 		}
 
 		// Debemos comparar cada fecha con todas las otras fechas, por eso hay dos
@@ -88,7 +89,7 @@ public class Metas implements Serializable {
 
 						if (t < 0) {
 							proximaFecha = u.getMetasAsociadas().get(e).getFecha();
-							metaProxima = u.getMetasAsociadas().get(e);
+							proximaMeta = u.getMetasAsociadas().get(e);
 						}
 
 						else {
@@ -102,16 +103,18 @@ public class Metas implements Serializable {
 
 			}
 		}
+		return proximaMeta;
 	}
 
-	public static void cambioFecha(Metas metaMe, String Fecha) {
+	public static Metas cambioFecha(Metas meta, String Fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			Date nuevaFecha = sdf.parse(Fecha);
-			metaMe.setFecha(nuevaFecha);
+			meta.setFecha(nuevaFecha);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		return meta;
 	}
 
 	public static void determinarPlazo(Metas me1) throws ParseException {
