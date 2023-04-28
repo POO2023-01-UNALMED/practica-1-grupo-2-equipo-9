@@ -1712,6 +1712,7 @@ public final class Main {
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
 			String confirmacion = sc.nextLine();
+			boolean existencia = false;
 			while(true){
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 //					for (int i=0 ; i < listaObjetos.size(); i++) {
@@ -1722,31 +1723,40 @@ public final class Main {
 					if (fUsuario.exists() ) {
 						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
 						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+						existencia = true;
 					}
 					File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
 					if (fEstado.exists()) {
 						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
 						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+						existencia = true;
 					}
 					File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
 					if (fBanco.exists()) {
 						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
 						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+						existencia = true;
 					}
 					File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
 					if (fMovimientos.exists()) {
 						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
 						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+						existencia = true;
 					}
 					File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");;
 					if (fMetas.exists()) {
 						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
 						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+						existencia = true;
 					}
 					File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 					if (fCuenta.exists()) {
 						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
 						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+						existencia = true;
+					}
+					if (!existencia) {
+						System.out.println("No existe un estado previo del sistema guardado");
 					}
 					
 					
