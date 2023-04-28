@@ -104,7 +104,6 @@ public class Movimientos implements Serializable{
 		}
 	}
 
-	
 	public String toString() {
 		if(this.getOrigen() == null) {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
@@ -114,7 +113,6 @@ public class Movimientos implements Serializable{
 					getCantidad() + "\nCategoria: " + getCategoria().name());
 		}
 	}
-
 
 	//	Funcionalidad Prestamos
 	public static Boolean realizarPrestamo(Ahorros cuenta,double cantidad){
