@@ -26,7 +26,7 @@ public class Movimientos implements Serializable{
 	public static String recomendarFecha;
 
 	//	Constructores
-	public Movimientos(Cuenta origen, Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+	public Movimientos(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
 		this.setCategoria(categoria);
@@ -38,7 +38,7 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
-	public Movimientos(Cuenta destino, double cantidad, Categoria categoria, Date fecha) {
+	public Movimientos(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		this.setCantidad(cantidad);
 		this.setCategoria(categoria);
 		this.setFecha(fecha);

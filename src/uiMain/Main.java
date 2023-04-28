@@ -781,6 +781,7 @@ public final class Main {
 			else {
 				System.out.println("Entrada no válida");
 			}
+			
 		}
 		
 		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
@@ -831,11 +832,11 @@ public final class Main {
 		if (Periodicidad == 1) {
 			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago());
 		}
+		//Atributo de la periodicidad
+		Cuotas eleccion_periodicidad = null;
 		if (Periodicidad == 2) {
 			//Atributo de validacion de la seleccion de periodicidad
 			boolean validacion_Seleccion_Periodicidad = true;
-			//Atributo de la periodicidad
-			Cuotas eleccion_periodicidad = null;
 			int seleccion_periodicidad = 0;
 			
 			while (validacion_Seleccion_Periodicidad) {
@@ -880,7 +881,35 @@ public final class Main {
 			}
 		}
 		
-		
+		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
+		String vistaPrevia = Cuenta.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
+															cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible(), 
+															tasacionCuentas.get(Cuenta_Destino - 1));
+		System.out.println(vistaPrevia);
+		//Atributo de validacion de la entrada confirmacion Movimiento
+		boolean validacion_vistaPrevia = true;
+		//Atributo auxiliar para almacenar la confirmación del movimiento
+		int confirmacionMovimiento = 0;
+		while (validacion_vistaPrevia) {
+			System.out.println("¿Desea confirmar la realización del movimiento?"
+					+ "\n1. Sí"
+					+ "\n2. No");
+			confirmacionMovimiento = Integer.parseInt(sc.nextLine());
+			if (confirmacionMovimiento == 1 || confirmacionMovimiento == 2) {
+				validacion_vistaPrevia = false;
+			} else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		if (confirmacionMovimiento == 1) {
+			//Efectuación del movimiento...
+			
+			return;
+		}
+		if (confirmacionMovimiento == 2) {
+			System.out.println("Movimiento cancelado.");
+			return;
+		}
 	}
 	
 	// CREAR USUARIO DENTRO EN EL MAIN

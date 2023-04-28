@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 
 import java.time.Instant;
@@ -133,6 +134,16 @@ public abstract class Cuenta extends Banco{
 	public static void vaciarCuenta(Ahorros cuenta, Ahorros gota) {
 		Movimientos movimiento = new Movimientos(cuenta, gota, cuenta.getSaldo(), Categoria.OTROS,
 				Date.from(Instant.now()));
+	}
+	
+	//Funcionalidad Compra de Cartera
+	public static String vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) {
+		Corriente cuenta_aux = cuenta;
+		cuenta_aux.setDisponible(cuenta.getDisponible() - Deuda_previa);
+		cuenta_aux.setIntereses(interes);
+		cuenta_aux.setPlazo_Pago(plazo);
+		double[] cuota = cuenta_aux.retornoCuotaMensual(cuenta_aux.getDisponible());
+		return "";
 	}
 
 	@Override	
