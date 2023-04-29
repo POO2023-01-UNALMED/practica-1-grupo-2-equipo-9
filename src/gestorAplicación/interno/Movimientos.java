@@ -26,7 +26,7 @@ public class Movimientos implements Serializable{
 	public static String recomendarFecha;
 
 	//	Constructores
-	//Movimiento entre dos cuentas de ahorros
+	//	Movimiento entre dos cuentas de ahorros
 	public Movimientos(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -39,7 +39,7 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
-	//Movimiento a una cuenta de ahorros
+	//	Movimiento a una cuenta de ahorros
 	public Movimientos(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -51,7 +51,7 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
-	//Movimiento entre dos cuentas corrientes
+	//	Movimiento entre dos cuentas corrientes
 	public Movimientos(Corriente origen, Corriente destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -64,7 +64,7 @@ public class Movimientos implements Serializable{
 		destino.setDisponible(destino.getDisponible() + cantidad);
 	}
 	
-	//Movimiento a una cuenta corriente
+	//	Movimiento a una cuenta corriente
 	public Movimientos(Corriente destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -76,7 +76,7 @@ public class Movimientos implements Serializable{
 		destino.setDisponible(destino.getDisponible() + cantidad);
 	}
 	
-	//Movimiento de una cuenta de ahorros a una cuenta corriente
+	//	Movimiento de una cuenta de ahorros a una cuenta corriente
 	public Movimientos(Ahorros origen, Corriente destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -89,7 +89,7 @@ public class Movimientos implements Serializable{
 		destino.setDisponible(destino.getDisponible() + cantidad);
 	}
 	
-	//Movimiento de una cuenta corriente a una cuenta de ahorros
+	//	Movimiento de una cuenta corriente a una cuenta de ahorros
 	public Movimientos(Corriente origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -102,8 +102,8 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
-	//Métodos
-	//Funcionalidad de Suscripciones de Usuarios
+	//	MÉTODOS
+	//	Funcionalidad de Suscripciones de Usuarios
 	public static Object crearMovimiento(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)){
 			if (origen.getSaldo() < cantidad) {
@@ -125,25 +125,69 @@ public class Movimientos implements Serializable{
 	}
 
 	public static Object crearMovimiento(int origen, int destino, double cantidad, Categoria categoria, Date fecha) {
-		Ahorros cuentaOrigen = null;
-		Ahorros cuentaDestino = null;
+		Cuenta cuentaOrigen = null;
+		Cuenta cuentaDestino = null;
 		ArrayList<Cuenta> cuentasTotales = Cuenta.getCuentasTotales();
-		for(int i =0;i<cuentasTotales.size();i++){
+		for(int i = 0; i < cuentasTotales.size(); i++){
 			if(cuentasTotales.get(i).getId() == origen){
-				cuentaOrigen = (Ahorros) cuentasTotales.get(i);
+				cuentaOrigen = cuentasTotales.get(i);
 			}else if(cuentasTotales.get(i).getId() == destino){
-				cuentaDestino = (Ahorros) cuentasTotales.get(i);
+				cuentaDestino = cuentasTotales.get(i);
 			}
 		}
-
 		if(cuentaOrigen != null && cuentaDestino != null){
-			if (cuentaOrigen.getSaldo() < cantidad) {
-				return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + cuentaOrigen.getSaldo() + " por lo tanto no es posible realizar el movimiento");
-			} else {
-				return (new Movimientos(cuentaOrigen, cuentaDestino, cantidad, categoria, fecha));
+			if (cuentaOrigen instanceof Ahorros) {
+				if (((Ahorros) cuentaOrigen).getSaldo() < cantidad) {
+					return ("¡Saldo Insuficiente! Su cuenta origen tiene un saldo de: " + ((Ahorros) cuentaOrigen).getSaldo() + " por lo tanto no es posible realizar el movimiento");
+				} 
+				else {
+					if (cuentaDestino instanceof Ahorros) {
+						return (new Movimientos((Ahorros) cuentaOrigen, (Ahorros) cuentaDestino, cantidad, categoria, fecha));
+					}
+					else {//cuentaDestino será instancia de Corriente
+						return (new Movimientos((Ahorros) cuentaOrigen, (Corriente) cuentaDestino, cantidad, categoria, fecha));
+					}
+				}
 			}
-		}else {
+			else {//cuentaOrigen será instancia de Corriente
+				if (((Corriente) cuentaOrigen).getDisponible() < cantidad) {
+					return ("¡Cupo Insuficiente! Su cuenta origen tiene un cupo disponible de: " + ((Corriente) cuentaOrigen).getDisponible() + " por lo tanto no es posible realizar el movimiento");
+				} 
+				else {
+					if (cuentaDestino instanceof Ahorros) {
+						return (new Movimientos((Corriente) cuentaOrigen, (Ahorros) cuentaDestino, cantidad, categoria, fecha));
+					}
+					else {
+						return (new Movimientos((Corriente) cuentaOrigen, (Corriente) cuentaDestino, cantidad, categoria, fecha));
+					}
+				}	
+			}
+		}
+		else {
 			return("Debes verificar que las cuentas origen y/o destino existan");
+		}
+	}
+	
+	public static Object crearMovimiento(Corriente origen, Corriente destino, double cantidad, Categoria categoria, Date fecha) {
+		if(Cuenta.getCuentasTotales().contains(origen) && Cuenta.getCuentasTotales().contains(destino)) {
+			if(origen.getDisponible() < cantidad) {
+				return("¡Cupo Insuficiente! Su cuenta origen tiene un cupo disponible de: " + origen.getDisponible() + " por lo tanto no es posible realizar el movimiento");
+			}
+			else {
+				return(new Movimientos(origen, destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() + destino.getBanco().getComision()), categoria, fecha));
+			}
+		}
+		else {
+			return("Debes verificar que las cuentas origen y/o destino existan");
+		}
+	}
+	
+	public static Object crearMovimiento(Corriente destino, double cantidad, Categoria categoria, Date fecha) {
+		if(Cuenta.getCuentasTotales().contains(destino)) {
+			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() + destino.getBanco().getComision()), categoria, fecha));
+		}
+		else {
+			return("Debes verificar que la cuenta de destino exista");
 		}
 	}
 	
@@ -344,7 +388,7 @@ public class Movimientos implements Serializable{
 		}
 	}
 	
-	public boolean impuestosMovimineto(double interes) {
+	public boolean impuestosMovimiento(double interes) {
 
 		// Los movimientos aparecen sin uso, pero en realidad el uso que se les da es la
 		// transacción, porque modifica el saldo de las cuentas y luego ese saldo es

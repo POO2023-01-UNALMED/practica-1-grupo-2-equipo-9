@@ -106,22 +106,22 @@ public class Banco extends Estado {
 			Movimientos movimiento = new Movimientos(cuentaAhorros, user.getCuentasAhorrosAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
-			if (movimiento.impuestosMovimineto(interes)
+			if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
 				return 1;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
 				return 2;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes)
+			else if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
 				return 3;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
 				return 4;
 			}
@@ -135,22 +135,22 @@ public class Banco extends Estado {
 			Movimientos movimiento = new Movimientos(cuentaAhorros, user.getCuentasAhorrosAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
-			if (movimiento.impuestosMovimineto(interes)
+			if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
 				return 5;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
 				return 6;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes)
+			else if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
 				return 7;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
 				return 8;
 			}
@@ -164,22 +164,22 @@ public class Banco extends Estado {
 			Movimientos movimiento = new Movimientos(cuentaCorriente, user.getCuentasCorrienteAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
-			if (movimiento.impuestosMovimineto(interes)
+			if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
 				return 1;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
 				return 2;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes)
+			else if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() > invertir) {
 				return 3;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
 				return 4;
 			}
@@ -192,22 +192,22 @@ public class Banco extends Estado {
 			Movimientos movimiento = new Movimientos(cuentaCorriente, user.getCuentasCorrienteAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
-			if (movimiento.impuestosMovimineto(interes)
+			if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
 				return 5;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() < invertir) {
 				return 6;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes)
+			else if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() > invertir) {
 				return 7;
 			}
 
-			else if (movimiento.impuestosMovimineto(interes) == false
+			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getCupo() > invertir) {
 				return 8;
 			}
