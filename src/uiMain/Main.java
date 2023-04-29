@@ -706,7 +706,7 @@ public final class Main {
 	}
 	
 	// FUNCIONALIDAD COMPRA DE CARTERA
-	static void compraCartera(Corriente cuenta, Usuario usuario) {
+	static void compraCartera(Usuario usuario) {
 		//Arreglo que almacena las cuentas con deuda alguna 
 		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
 		//Comprobación de existencia de Deudas por parte del Usuario

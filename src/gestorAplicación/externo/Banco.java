@@ -247,19 +247,39 @@ public class Banco extends Estado {
 		double[] descuento_total = Banco.descuentoTotal(descuento_movimientos, descuento_suscripcion);
 		switch(suscripcion) {
 			case DIAMANTE:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[3];
+				if (cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[3]) {
+					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[3];
+				}
+				else {
+					interes = 0.0;
+				}
 			case ORO:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[2];
+				if (cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[2]) {
+					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[2];
+				}
+				else {
+					interes = 0.0;
+				}
 			case PLATA:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[1];
+				if(cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[1]) {
+					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[1];
+				}
+				else {
+					interes = 0.0;
+				}
 			case BRONCE:
-				interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[0];
+				if(cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[0]) {
+					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[0];
+				}
+				else {
+					interes = 0.0;
+				}
 		}
 		return interes;
 	}
 	
 	private double[] retornarDescuentosSuscripcion() {
-		double[] descuento = null;
+		double[] descuento = new double[4];
 		for(int i = 1; i < 5; i++) {
 			descuento[i - 1] = this.desc_suscripcion * i;
 		}

@@ -11,7 +11,6 @@ public class Corriente extends Cuenta{
 	public static final String nombreD = "Corriente";
 	private double cupo;
 	private double disponible;
-	private boolean existenciaPrestamo;
 	private Cuotas plazo_Pago;
 	//Tasa efectiva anual
 	private double intereses;
@@ -45,7 +44,7 @@ public class Corriente extends Cuenta{
 	}
 	
 	public double[] retornoCuotaMensual(double DeudaActual) {
-		double[] CuotaMensual = null;
+		double[] CuotaMensual = new double[3];
 		double interes_nominal_mensual = this.calculoInteresNominalMensual(this.getIntereses());
 		double interes = DeudaActual * (interes_nominal_mensual / 100);
 		CuotaMensual[0] = interes;
@@ -67,14 +66,6 @@ public class Corriente extends Cuenta{
 	
 	public void setCupo(Double cupo) {
 		this.cupo = cupo;
-	}
-	
-	public boolean getExistenciaPrestamo() {
-		return existenciaPrestamo;
-	}
-	
-	public void setExistenciaPrestamo(boolean existenciaPrestamo) {
-		this.existenciaPrestamo = existenciaPrestamo;
 	}
 	
 	public Cuotas getPlazo_Pago() {

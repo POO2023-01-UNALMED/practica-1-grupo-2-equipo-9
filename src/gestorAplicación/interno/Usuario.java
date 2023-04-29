@@ -220,7 +220,7 @@ public class Usuario implements Serializable {
 		ArrayList<Corriente> cuentasConDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentasAsociadas) {
 			if(cuenta instanceof Corriente) {
-				if (((Corriente) cuenta).getExistenciaPrestamo()) {
+				if (((Corriente) cuenta).getCupo() != ((Corriente) cuenta).getDisponible()) {
 					cuentasConDeuda.add((Corriente) cuenta);
 				}
 			}
