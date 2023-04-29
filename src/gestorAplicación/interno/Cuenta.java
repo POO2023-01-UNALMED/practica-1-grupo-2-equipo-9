@@ -61,7 +61,7 @@ public abstract class Cuenta implements Serializable{
 				contador = i;
 			}
 
-			Movimientos movimiento = new Movimientos(gota, user.getCuentasAsociadas().get(contador), cantidadPrestamo,
+			Movimientos movimiento = new Movimientos(gota, user.getCuentasAhorrosAsociadas().get(contador), cantidadPrestamo,
 					Categoria.OTROS, Date.from(Instant.now()));
 		}
 		return user.getCuentasAhorrosAsociadas().get(contador);
