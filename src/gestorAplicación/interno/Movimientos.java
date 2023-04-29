@@ -26,6 +26,7 @@ public class Movimientos implements Serializable{
 	public static String recomendarFecha;
 
 	//	Constructores
+	//Movimiento entre dos cuentas de ahorros
 	public Movimientos(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
@@ -38,13 +39,66 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
+	//Movimiento a una cuenta de ahorros
 	public Movimientos(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
 		this.setCantidad(cantidad);
 		this.setCategoria(categoria);
 		this.setFecha(fecha);
 		this.setId(Movimientos.getMovimientosTotales().size());
 		this.setDestino(destino);
 		this.setOrigen(null);
+		destino.setSaldo(destino.getSaldo() + cantidad);
+	}
+	
+	//Movimiento entre dos cuentas corrientes
+	public Movimientos(Corriente origen, Corriente destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
+		this.setDestino(destino);
+		this.setOrigen(origen);
+		origen.setDisponible(origen.getDisponible() - cantidad);
+		destino.setDisponible(destino.getDisponible() + cantidad);
+	}
+	
+	//Movimiento a una cuenta corriente
+	public Movimientos(Corriente destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
+		this.setDestino(destino);
+		this.setOrigen(null);
+		destino.setDisponible(destino.getDisponible() + cantidad);
+	}
+	
+	//Movimiento de una cuenta de ahorros a una cuenta corriente
+	public Movimientos(Ahorros origen, Corriente destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
+		this.setDestino(destino);
+		this.setOrigen(origen);
+		origen.setSaldo(origen.getSaldo() - cantidad);
+		destino.setDisponible(destino.getDisponible() + cantidad);
+	}
+	
+	//Movimiento de una cuenta corriente a una cuenta de ahorros
+	public Movimientos(Corriente origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
+		Movimientos.movimientosTotales.add(this);
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
+		this.setDestino(destino);
+		this.setOrigen(origen);
+		origen.setDisponible(origen.getDisponible() - cantidad);
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
@@ -71,14 +125,14 @@ public class Movimientos implements Serializable{
 	}
 
 	public static Object crearMovimiento(int origen, int destino, double cantidad, Categoria categoria, Date fecha) {
-		Cuenta cuentaOrigen = null;
-		Cuenta cuentaDestino = null;
+		Ahorros cuentaOrigen = null;
+		Ahorros cuentaDestino = null;
 		ArrayList<Cuenta> cuentasTotales = Cuenta.getCuentasTotales();
 		for(int i =0;i<cuentasTotales.size();i++){
 			if(cuentasTotales.get(i).getId() == origen){
-				cuentaOrigen = cuentasTotales.get(i);
+				cuentaOrigen = (Ahorros) cuentasTotales.get(i);
 			}else if(cuentasTotales.get(i).getId() == destino){
-				cuentaDestino = cuentasTotales.get(i);
+				cuentaDestino = (Ahorros) cuentasTotales.get(i);
 			}
 		}
 
