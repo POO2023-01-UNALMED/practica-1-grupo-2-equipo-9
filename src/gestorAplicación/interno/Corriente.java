@@ -47,10 +47,10 @@ public class Corriente extends Cuenta{
 	
 	public double[] retornoCuotaMensual(double DeudaActual) {
 		double[] cuotaMensual = new double[3];
-		double interes_nominal_mensual = this.calculoInteresNominalMensual(this.getIntereses());
+		double interes_nominal_mensual = Corriente.calculoInteresNominalMensual(this.getIntereses());
 		double interes = DeudaActual * (interes_nominal_mensual / 100);
 		cuotaMensual[0] = interes;
-		double abono_capital = this.disponible / this.getPlazo_Pago().getCantidad_Cuotas();
+		double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
 		cuotaMensual[1] = abono_capital;
 		double cuotaMensualFinal = interes + abono_capital;
 		cuotaMensual[2] = cuotaMensualFinal;
@@ -63,7 +63,7 @@ public class Corriente extends Cuenta{
 				"\nAbono a capital: " + cuotaMensual[0];
 	}
 	
-	public double calculoInteresNominalMensual(double interesEfectivoAnual) {
+	public static double calculoInteresNominalMensual(double interesEfectivoAnual) {
 		double interes = Math.pow((1 + interesEfectivoAnual), (30 / 360)) - 1;
 		return interes;
 	}
@@ -83,6 +83,82 @@ public class Corriente extends Cuenta{
 		cuenta_aux.setIntereses(interes);
 		cuenta_aux.setPlazo_Pago(plazo);
 		return cuenta_aux;
+	}
+	
+	//Método creado como calculadora de cuotas mensuales para pago de un préstamo
+		//El atributo interes hace referencia a la tasa efectiva anual
+	public static double[][] calculadoraCuotas(Cuotas cuotas, double deuda, double intereses) {
+		int cuotasTotales = cuotas.getCantidad_Cuotas();
+		double[][] cuota = new double[cuotasTotales][3];
+		double interesMensual = Corriente.calculoInteresNominalMensual(intereses);
+		double deudaActual = deuda;
+		
+		double abono_capital = deuda / cuotasTotales;
+		
+		for (int i = 0; i <= cuotasTotales; i++) {
+			double[] cuotaMes = new double[3];
+			double interes = deudaActual * (interesMensual / 100);
+			cuotaMes[0] = interes;
+			double cuota_pagar = interes + abono_capital;
+			cuotaMes[1] = cuota_pagar;
+			double deudaTotal = deudaActual - (cuota_pagar - interes);
+			cuotaMes[2] = deudaTotal;
+			cuota[i] = cuotaMes;
+			
+			deudaActual = deudaTotal;
+		}
+		
+		return cuota;
+	}
+	
+	public static double[][] calculadoraCuotas(Cuotas cuotas, double deuda, double intereses, boolean auxiliar){
+		int cuotasTotales = cuotas.getCantidad_Cuotas();
+		double[][] cuota = new double[cuotasTotales][3];
+		double interesMensual = Corriente.calculoInteresNominalMensual(intereses);
+		double deudaActual = deuda;
+		
+		double abono_capital = deuda / cuotasTotales;
+		
+		double interesMes1 = deudaActual * (interesMensual / 100);
+		double[] cuotaMes1 = new double[3];
+		cuotaMes1[0] = 0;
+		cuotaMes1[1] = abono_capital;
+		cuotaMes1[2] = deudaActual - abono_capital;
+		cuota[0] = cuotaMes1;
+		
+		deudaActual = deudaActual - abono_capital;
+		
+		for (int i = 1; i <= cuotasTotales; i++) {
+			double[] cuotaMes = new double[3];
+			double interes = deudaActual * (interesMensual / 100);
+			cuotaMes[0] = interes;
+			double cuota_pagar = interes + abono_capital + interesMes1;
+			cuotaMes[1] = cuota_pagar;
+			double deudaTotal = deudaActual - (cuota_pagar - interes);
+			cuotaMes[2] = deudaTotal;
+			cuota[i] = cuotaMes;
+			
+			interesMes1 = 0;
+			deudaActual = deudaTotal;
+		}
+		
+		return cuota;
+	}
+	
+	public static double[] informacionAdicionalCalculadora (double[][] cuota, double deuda) {
+		double[] infoAdicional = new double[2];
+		double totalPagado = 0;
+		
+		for (int i = 0; i <= cuota.length; i++) {
+			totalPagado += cuota[i][1];
+		}
+		
+		double interesesPagados = totalPagado - deuda;
+		
+		infoAdicional[0] = totalPagado;
+		infoAdicional[1] = interesesPagados;
+		
+		return infoAdicional;
 	}
 	
 	public Double getCupo() {
