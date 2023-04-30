@@ -699,7 +699,7 @@ public final class Main {
 		}
 	}
 	
-	// Sobrecarga funcionalidad
+	// Sobrecarga funcionalidad para chequeo en eliminación de cuenta
 	static boolean compraCartera(Corriente cuenta) {
 		Usuario usuario = cuenta.getTitular();
 		
@@ -713,7 +713,7 @@ public final class Main {
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
-		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
+		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta a eliminar son: ");
 		for (int i = 0; i <= cuentasCapacesDeuda.size(); i++) {
 			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
 					+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
@@ -780,25 +780,32 @@ public final class Main {
 			}
 			switch(seleccion_periodicidad) {
 				case 1:
-					eleccion_periodicidad = Cuotas.C1; 
+					eleccion_periodicidad = Cuotas.C1;
+					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas());
 					break;
 				case 2:
 					eleccion_periodicidad = Cuotas.C6;
+					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas());
 					break;
 				case 3:
 					eleccion_periodicidad = Cuotas.C12;
+					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas());
 					break;
 				case 4:
 					eleccion_periodicidad = Cuotas.C18;
+					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas());
 					break;
 				case 5:
 					eleccion_periodicidad = Cuotas.C24;
+					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas());
 					break;
 				case 6:
 					eleccion_periodicidad = Cuotas.C36;
+					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas());
 					break;
 				case 7:
 					eleccion_periodicidad = Cuotas.C48;
+					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas());
 					break;
 			}
 		}
@@ -992,25 +999,32 @@ public final class Main {
 			}
 			switch(seleccion_periodicidad) {
 				case 1:
-					eleccion_periodicidad = Cuotas.C1; 
+					eleccion_periodicidad = Cuotas.C1;
+					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas());
 					break;
 				case 2:
 					eleccion_periodicidad = Cuotas.C6;
+					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas());
 					break;
 				case 3:
 					eleccion_periodicidad = Cuotas.C12;
+					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas());
 					break;
 				case 4:
 					eleccion_periodicidad = Cuotas.C18;
+					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas());
 					break;
 				case 5:
 					eleccion_periodicidad = Cuotas.C24;
+					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas());
 					break;
 				case 6:
 					eleccion_periodicidad = Cuotas.C36;
+					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas());
 					break;
 				case 7:
 					eleccion_periodicidad = Cuotas.C48;
+					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas());
 					break;
 			}
 		}
@@ -1542,10 +1556,16 @@ public final class Main {
 				System.out.print("Tienes deudas pendientes. ¿Deseas pagarlas? (Y/N): ");
 				String confirmacion = sc.nextLine();
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-					Main.compraCartera(((Corriente) cuenta));
-					Cuenta.getCuentasTotales().remove(cuenta);
-					user.getCuentasAsociadas().remove(cuenta);
-					cuenta = null;	
+					boolean validacion = Main.compraCartera(((Corriente) cuenta));
+					if (validacion) {
+						Cuenta.getCuentasTotales().remove(cuenta);
+						user.getCuentasAsociadas().remove(cuenta);
+						cuenta = null;
+					}
+					else {
+						System.out.println("Debes pagar las deudas para eliminar la cuenta.");
+					}
+						
 				}else {
 					System.out.println("Debes pagar las deudas para eliminar la cuenta.");
 				}
