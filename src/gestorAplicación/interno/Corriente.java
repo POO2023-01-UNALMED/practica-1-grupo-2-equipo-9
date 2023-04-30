@@ -46,15 +46,21 @@ public class Corriente extends Cuenta{
 	}
 	
 	public double[] retornoCuotaMensual(double DeudaActual) {
-		double[] CuotaMensual = new double[3];
+		double[] cuotaMensual = new double[3];
 		double interes_nominal_mensual = this.calculoInteresNominalMensual(this.getIntereses());
 		double interes = DeudaActual * (interes_nominal_mensual / 100);
-		CuotaMensual[0] = interes;
+		cuotaMensual[0] = interes;
 		double abono_capital = this.disponible / this.getPlazo_Pago().getCantidad_Cuotas();
-		CuotaMensual[1] = abono_capital;
-		double cuotaMensual = interes + abono_capital;
-		CuotaMensual[2] = cuotaMensual;
-		return CuotaMensual;
+		cuotaMensual[1] = abono_capital;
+		double cuotaMensualFinal = interes + abono_capital;
+		cuotaMensual[2] = cuotaMensualFinal;
+		return cuotaMensual;
+	}
+	
+	public static String imprimirCuotaMensual(double[] cuotaMensual) {
+		return "Cuota: " + cuotaMensual[2] +
+				"\nIntereses: " + cuotaMensual[1] +
+				"\nAbono a capital: " + cuotaMensual[0];
 	}
 	
 	public double calculoInteresNominalMensual(double interesEfectivoAnual) {
@@ -68,6 +74,15 @@ public class Corriente extends Cuenta{
 		Movimientos movimiento = new Movimientos(this, gota, this.getDisponible(), Categoria.OTROS,
 				Date.from(Instant.now()));
 		this.getTitular().asociarMovimiento(movimiento);
+	}
+	
+	//Funcionalidad Compra de Cartera
+	public static Corriente vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) {
+		Corriente cuenta_aux = cuenta;
+		cuenta_aux.setDisponible(cuenta.getDisponible() - Deuda_previa);
+		cuenta_aux.setIntereses(interes);
+		cuenta_aux.setPlazo_Pago(plazo);
+		return cuenta_aux;
 	}
 	
 	public Double getCupo() {

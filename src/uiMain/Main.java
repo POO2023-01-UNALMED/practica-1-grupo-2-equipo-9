@@ -699,9 +699,145 @@ public final class Main {
 		}
 	}
 	
-	//Sobrecarga funcionalidad
-	static void compraCartera(Corriente cuenta) {
+	// Sobrecarga funcionalidad
+	static boolean compraCartera(Corriente cuenta) {
+		Usuario usuario = cuenta.getTitular();
 		
+		//Arreglo que almacena las cuentas asociadas a un usuario
+		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		
+		cuentasAux.remove(cuenta);
+		
+		//Arreglo que almacena las cuentas capaces de recibir la deuda
+		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuenta);
+		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
+		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
+		
+		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
+		for (int i = 0; i <= cuentasCapacesDeuda.size(); i++) {
+			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
+					+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
+			System.out.println("");
+		}
+		
+		//Atributo de validacion de la entrada Cuenta_Destino
+		boolean validacion_Cuenta_Destino = true;
+		//Atributo auxiliar que almacenará la cuenta destino de la deuda
+		int Cuenta_Destino = 0;
+		while (validacion_Cuenta_Destino) {
+			System.out.println("Por favor escoga la cuenta destino de la deuda:");
+			Cuenta_Destino = Integer.parseInt(sc.nextLine());
+			if (Cuenta_Destino >= 1 && Cuenta_Destino <= cuentasCapacesDeuda.size()) {
+				validacion_Cuenta_Destino = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		//Atributo de validacion de la entrada Periodicidad
+		boolean validacion_Periodicidad = true;
+		//Atributo auxiliar para almacenar decision de periodicidad
+		int Periodicidad = 0;
+		while (validacion_Periodicidad) {
+			System.out.println("¿Desea mantener la periodicidad del pago de la deuda?"
+					+ "\n1. Sí"
+					+ "\n2. No");
+			Periodicidad = Integer.parseInt(sc.nextLine());
+			if (Periodicidad == 1 || Periodicidad == 2) {
+				validacion_Periodicidad = false;
+			} else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		if (Periodicidad == 1) {
+			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago());
+		}
+		//Atributo de la periodicidad
+		Cuotas eleccion_periodicidad = null;
+		if (Periodicidad == 2) {
+			//Atributo de validacion de la seleccion de periodicidad
+			boolean validacion_Seleccion_Periodicidad = true;
+			int seleccion_periodicidad = 0;
+			
+			while (validacion_Seleccion_Periodicidad) {
+				System.out.println("Por favor seleccione la nueva periodicidad de la Deuda: "
+						+ "\n1. 1 Cuota"
+						+ "\n2. 6 Cuotas"
+						+ "\n3. 12 Cuotas"
+						+ "\n4. 18 Cuotas"
+						+ "\n5. 24 Cuotas"
+						+ "\n6. 36 Cuotas"
+						+ "\n7. 48 Cuotas");
+				seleccion_periodicidad = Integer.parseInt(sc.nextLine());
+				if (seleccion_periodicidad < 1 || seleccion_periodicidad > 7) {
+					System.out.println("Entrada no válida, intente de nuevo");
+				}
+				else {
+					validacion_Seleccion_Periodicidad = false;
+				}
+			}
+			switch(seleccion_periodicidad) {
+				case 1:
+					eleccion_periodicidad = Cuotas.C1; 
+					break;
+				case 2:
+					eleccion_periodicidad = Cuotas.C6;
+					break;
+				case 3:
+					eleccion_periodicidad = Cuotas.C12;
+					break;
+				case 4:
+					eleccion_periodicidad = Cuotas.C18;
+					break;
+				case 5:
+					eleccion_periodicidad = Cuotas.C24;
+					break;
+				case 6:
+					eleccion_periodicidad = Cuotas.C36;
+					break;
+				case 7:
+					eleccion_periodicidad = Cuotas.C48;
+					break;
+			}
+		}
+		
+		//Vista Previa de los resultados del cambio
+		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
+		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
+															cuenta.getDisponible(), 
+															tasacionCuentas.get(Cuenta_Destino - 1));
+		double[] cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
+		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
+		System.out.println(vistaPrevia);
+		System.out.println("Pago de cuota: ");
+		System.out.println(cuotaMensual);
+		
+		//Atributo de validacion de la entrada confirmacion Movimiento
+		boolean validacion_vistaPrevia = true;
+		//Atributo auxiliar para almacenar la confirmación del movimiento
+		int confirmacionMovimiento = 0;
+		while (validacion_vistaPrevia) {
+			System.out.println("¿Desea confirmar la realización del movimiento?"
+					+ "\n1. Sí"
+					+ "\n2. No");
+			confirmacionMovimiento = Integer.parseInt(sc.nextLine());
+			if (confirmacionMovimiento == 1 || confirmacionMovimiento == 2) {
+				validacion_vistaPrevia = false;
+			} else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		if (confirmacionMovimiento == 1) {
+			//Efectuación del movimiento...
+			
+			return true;
+		}
+		else{
+			System.out.println("Movimiento cancelado.");
+			return false;
+		}
 	}
 	
 	//FUNCIONALIDAD COMPRA DE CARTERA
@@ -881,10 +1017,15 @@ public final class Main {
 		
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
-		Corriente vistaPrevia = Cuenta.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
+		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
 															cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible(), 
 															tasacionCuentas.get(Cuenta_Destino - 1));
+		double[] cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
+		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 		System.out.println(vistaPrevia);
+		System.out.println("Pago de cuota: ");
+		System.out.println(cuotaMensual);
+		
 		//Atributo de validacion de la entrada confirmacion Movimiento
 		boolean validacion_vistaPrevia = true;
 		//Atributo auxiliar para almacenar la confirmación del movimiento
