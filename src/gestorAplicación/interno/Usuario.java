@@ -91,7 +91,7 @@ public class Usuario implements Serializable {
 	}
 	
 	public String asociarCuenta(Cuenta cuenta) {
-		if(Cuenta.getCuentasTotales().contains(cuenta) && !cuentasAsociadas.contains(cuenta) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
+		if(!cuentasAsociadas.contains(cuenta) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
 			cuenta.setTitular(this);
 			this.getCuentasAsociadas().add(cuenta);
 			if(cuenta instanceof Ahorros) {
@@ -100,7 +100,7 @@ public class Usuario implements Serializable {
 				return(this.asociarCuentaCorriente((Corriente) cuenta));
 			}
 		}else {
-			return("No se encuentra tu cuenta, debes verificar que la cuenta que quieres asociar no haya sido asociada antes ó debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario: " + this.getLimiteCuentas());
+			return("Debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario. El máximo de cuentas que puede asociar el usuario " + this.getNombre()  + " es " + this.getLimiteCuentas() + " y la cantidad de cuentas asociadas es " + this.getCuentasAsociadas().size());
 		}
 	}
 	
@@ -125,22 +125,20 @@ public class Usuario implements Serializable {
 	}
 	
 	public String asociarCuentaCorriente(Corriente corriente) {
-		if(Corriente.getCuentasCorrienteTotales().contains(corriente)) {
-			corriente.setTitular(this);
+		if(!this.getCuentasCorrienteAsociadas().contains(corriente)) {
 			this.getCuentasCorrienteAsociadas().add(corriente);
 			return("La cuenta corriente " + corriente.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra la cuenta corriente. Por favor asegurese de que exista" );
+			return("Debes verificar que la cuenta no haya sido asociada antes");
 		}
 	}
 	
 	public String asociarCuentaAhorros(Ahorros ahorros) {
-		if(Ahorros.getCuentasAhorroTotales().contains(ahorros)) {
-			ahorros.setTitular(this);
+		if(!this.getCuentasAhorrosAsociadas().contains(ahorros)) {
 			this.getCuentasAhorrosAsociadas().add(ahorros);
 			return("La cuenta de ahorros " + ahorros.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra la cuenta de ahorros. Por favor asegurese de que exista");
+			return("Debes verificar que la cuenta no haya sido asociada antes");
 		}
 	}
 	

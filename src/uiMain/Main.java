@@ -1120,7 +1120,7 @@ public final class Main {
 			seguir = 0;
 			user = (Usuario) u;
 		} else {
-			System.out.println("Las credenciales son incorrectas.");
+			System.out.println("No se encuentra un usuario con estos datos. Inténtalo de nuevo.");
 			seguir = 0;
 			Main.bienvenidaApp();
 		}
@@ -1491,7 +1491,6 @@ public final class Main {
 			System.out.print("Inserte el nombre de la cuenta: ");
 			String nombre_cuenta = sc.nextLine();
 			
-			//Revisión, según tipo se va a cambiar como se crea el objeto
 			if (tipo_op == 1) {
 				System.out.println(user.asociarCuenta(new Ahorros(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
 				System.out.println("Cuenta creada con éxito");
@@ -2276,7 +2275,6 @@ public final class Main {
 					
 				if (opcionUsuario == 1) {
 					Main.ingresarUsuario();
-					System.out.println("");
 
 				} else if(opcionUsuario == 2) {
 					Main.crearUsuario();
