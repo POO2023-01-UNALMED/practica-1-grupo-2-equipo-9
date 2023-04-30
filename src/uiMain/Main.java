@@ -23,7 +23,7 @@ import java.time.Instant;
 
 public final class Main {
 	
-	// FUNCIONALIDAD DE PRESTAMO 
+	//FUNCIONALIDAD DE PRESTAMO 
 	private static void funcionalidadPrestamo(Usuario usu){
 		System.out.println("Bienvenido a Prestamos");
 		ArrayList prestamo = usu.comprobarConfiabilidad(usu);
@@ -73,7 +73,7 @@ public final class Main {
 		}
 	}
 	
-	// CREAR UNA META EN EL MAIN	
+	//CREAR UNA META EN EL MAIN	
 	static void crearMeta() throws ParseException {
 
 		int opcionMetas = 1;
@@ -393,7 +393,7 @@ public final class Main {
 		}
 	}
 
-	// ELIMINAR UNA META EN EL MAIN
+	//ELIMINAR UNA META EN EL MAIN
 	static void eliminarMeta() {
 		int opcionEliminarMeta = 1;
 		while (opcionEliminarMeta == 1) {
@@ -435,7 +435,7 @@ public final class Main {
 		}
 	}
 
-	// VER MIS METAS EN EL MAIN
+	//VER MIS METAS EN EL MAIN
 	static void verMetas() {
 		for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
 			String name = user.getMetasAsociadas().get(i).getNombre();
@@ -465,7 +465,7 @@ public final class Main {
 		}
 	}
 
-	// CREAR MOVIMIENTO EN EL MAIN
+	//CREAR MOVIMIENTO EN EL MAIN
 	static void crearMovimiento() {
 		System.out.println("Para realizar un MOVIMIENTO por favor ingresar los siguientes datos:");
 		System.out.println("Ingrese el id de la cuenta origen:");
@@ -483,7 +483,7 @@ public final class Main {
 		System.out.println(Movimientos.crearMovimiento(origen, destino, cantidad, categoria, Date.from(Instant.now())));
 	}
 
-	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
+	//FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
 	static void asesorInversiones() throws ParseException {
 		int funcionalidad = 1;
 		while (funcionalidad == 1) {
@@ -699,12 +699,12 @@ public final class Main {
 		}
 	}
 	
-	// Sobrecarga funcionalidad
+	//Sobrecarga funcionalidad
 	static void compraCartera(Corriente cuenta) {
 		
 	}
 	
-	// FUNCIONALIDAD COMPRA DE CARTERA
+	//FUNCIONALIDAD COMPRA DE CARTERA
 	static void compraCartera(Usuario usuario) {
 		//Arreglo que almacena las cuentas con deuda alguna 
 		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
@@ -911,7 +911,7 @@ public final class Main {
 		}
 	}
 	
-	// CREAR USUARIO DENTRO EN EL MAIN
+	//CREAR USUARIO DENTRO EN EL MAIN
 	static void crearUsuario() {
 		//Creación de un Usuario
 		System.out.println("Para crear un usuario nuevo, por favor diligencie los siguiente datos: ");
@@ -951,7 +951,7 @@ public final class Main {
 		user = new Usuario(nombreUsuario, correoElectronico, contrasena);
 	}
 	
-	// INGRESAR USUARIO DENTRO EN EL MAIN
+	//INGRESAR USUARIO DENTRO EN EL MAIN
 	static void ingresarUsuario() throws ParseException {
 		System.out.print("Ingrese nombre de usuario o correo electrónico: ");
 		String usuario = sc.nextLine();
@@ -1120,7 +1120,7 @@ public final class Main {
 		}
 	}	
 	
-	// CREAR BANCO DENTRO EN EL MAIN
+	//CREAR BANCO DENTRO EN EL MAIN
 	static void crearBanco() {
 		System.out.println("");
 		//Creación de un Banco
@@ -1153,7 +1153,7 @@ public final class Main {
 		}
 	}
 	
-	// CREAR ESTADO DENTRO EN EL MAIN
+	//CREAR ESTADO DENTRO EN EL MAIN
 	static void crearEstado() {
 		System.out.println("");
 		//Creación de un Estado
@@ -1176,7 +1176,7 @@ public final class Main {
 		System.out.println("Estado creado con éxito");
 	}	
 
-	// ACCESO ADMINISTRATIVO EN EL MAIN
+	//ACCESO ADMINISTRATIVO EN EL MAIN
 	static void accesoAdministrativo() {
 		if(contrasena_admin.equals("admin")) {
 			for(Usuario u : Usuario.getUsuariosTotales()) {
@@ -1294,7 +1294,7 @@ public final class Main {
 		}
 	}	
 	
-	// CREAR CUENTA EN EL MAIN
+	//CREAR CUENTA EN EL MAIN
 	static void crearCuenta() {
 		//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
 		//LA INFORMACIÓN SOLICITADA SE DE ENTER
@@ -1417,8 +1417,7 @@ public final class Main {
 		}
 	}
 	
-	//ELIMINAR CUENTA
-	// ELIMINAR CUENTA EN EL MAIN
+	//ELIMINAR CUENTA EN EL MAIN
 	static void eliminarCuenta() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -1458,7 +1457,6 @@ public final class Main {
 	}
 	
 	//VER CUENTAS DE AHORRO DEL USUARIO EN EL MAIN
-	// VER CUENTAS ASOCIADAS AL USUARIO EN EL MAIN
 	static void verCuentasAhorroAsociadas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -1506,8 +1504,7 @@ public final class Main {
 		}
 	}
 	
-	//VER BANCOS DEL USUARIO EN EL MAIN
-	// VER BANCOS ASOCIADOS AL USUARIO EN EL MAIN
+	//VER BANCOS ASOCIADOS AL USUARIO EN EL MAIN
 	static void verBancosAsociados() {
 		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
 		if(user.getBancosAsociados().size() > 0) {
@@ -1548,7 +1545,6 @@ public final class Main {
 	}
 	
 	//VER USUARIOS TOTALES EN EL MAIN
-	// VER USUARIOS TOTALES EN EL MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
 		if(Usuario.getUsuariosTotales().size() > 0) {
@@ -1572,8 +1568,7 @@ public final class Main {
 		}
 	}
 	
-	//MODIFICAR SUSCRIPCIÓN DEL USUARIO EN EL MAIN
-	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
+	//COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
 	static void modificarSuscripcionUsuario(Usuario user) {
 		if(user.getBancosAsociados().size() == 0) {
 			System.out.println("Primero debes asociar bancos. Volviendo al menú anterior");
@@ -1620,7 +1615,6 @@ public final class Main {
 	}
 	
 	//VER BANCOS TOTALES EN EL MAIN
-	// VER BANCOS TOTALES EN EL MAIN
 	static void verBancosTotales() {
 		//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
 		if(Banco.getBancosTotales().size() > 0) {
@@ -1643,7 +1637,7 @@ public final class Main {
 		}
 	}
 	
-	// VER CUENTAS CORRIENTES TOTALES EN EL MAIN
+	//VER CUENTAS CORRIENTES TOTALES EN EL MAIN
 	static void verCuentasCorrientesTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CORRIENTES CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CORRIENTES CREADAS
 		if(Corriente.getCuentasCorrienteTotales().size() > 0) {
@@ -1666,7 +1660,7 @@ public final class Main {
 		}
 	}	
 	
-	// VER CUENTAS DE AHORRO TOTALES EN EL MAIN
+	//VER CUENTAS DE AHORRO TOTALES EN EL MAIN
 	static void verCuentasAhorroTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS DE AHORRO CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS DE AHORRO CREADAS
 		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
@@ -1690,7 +1684,6 @@ public final class Main {
 	}	
 	
 	//VER CUENTAS TOTALES EN EL MAIN
-	// VER CUENTAS TOTALES EN EL MAIN
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
 		if(Cuenta.getCuentasTotales().size() > 0) {
@@ -1714,7 +1707,6 @@ public final class Main {
 	}
 	
 	//VER MOVIMIENTOS TOTALES EN EL MAIN
-	// VER MOVIMIENTOS TOTALES EN EL MAIN
 	static void verMovimientosTotales() {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
 		if(Movimientos.getMovimientosTotales().size() > 0) {
@@ -1738,7 +1730,6 @@ public final class Main {
 	}
 		
 	//VER METAS TOTALES EN EL MAIN
-	// VER METAS TOTALES EN EL MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
 		if(Metas.getMetasTotales().size() > 0) {
@@ -1762,7 +1753,6 @@ public final class Main {
 	}
 	
 	//VER ESTAOS TOTALES EN EL MAIN
-	// VER ESTADOS TOTALES EN EL MAIN
 	static void verEstadosTotales() {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
 		if(Estado.getEstadosTotales().size() > 0) {
@@ -1786,7 +1776,6 @@ public final class Main {
 	}		
 	
 	//GUARDAR OBJETOS INDIVIDUALES EN EL MAIN
-	// GUARDAR OBJETOS EN EL MAIN
 	static void guardarObjetosIndividuales() throws ParseException {
 		//Guardar objetos individuales
 		while(true) {
@@ -1893,7 +1882,6 @@ public final class Main {
 	}
 	
 	//GUARDAR OBJETOS EN EL MAIN
-	//Guardar Objetos
 	static void guardarObjetos() throws ParseException{
 		System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
 		String confirmacion = sc.nextLine();
@@ -1919,9 +1907,7 @@ public final class Main {
 		}
 	}
 	
-	//CARGAR OBJETOS EN EL MAIN
-	//Cargar Objetos en el main
-	
+	//CARGAR OBJETOS EN EL MAIN	
 	static void cargarObjetos() throws ParseException{
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
@@ -1988,7 +1974,6 @@ public final class Main {
 	}
 	
 	//CARGAR OBJETOS INDIVIDUALES EN EL MAIN
-	// CARGAR OBJETOS EN EL MAIN
 	static void cargarObjetosIndividuales() throws ParseException {
 		//Cargar objetos individuales
 		while(true) {
@@ -2101,13 +2086,11 @@ public final class Main {
 	}
 	
 	//ASOCIAR CUENTA A USUARIO EN EL MAIN
-	// ASOCIAR CUENTA CON USUARIO EN EL MAIN
 	static void asociarCuentaUsuario(Cuenta cuenta) {
 		System.out.println(user.asociarCuenta(cuenta));
 	}
 	
-	//MÉTODO DE INICIO DE PROGRAMA
-	// INTERFAZ DE BIENVENIDA EN EL MAIN
+	//INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
