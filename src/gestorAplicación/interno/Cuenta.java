@@ -80,16 +80,17 @@ public abstract class Cuenta implements Serializable{
 		}
 	}
 
+	//Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota); 
 	
 	//Funcionalidad Compra de Cartera
-	public static String vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) {
+	public static Corriente vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) {
 		Corriente cuenta_aux = cuenta;
 		cuenta_aux.setDisponible(cuenta.getDisponible() - Deuda_previa);
 		cuenta_aux.setIntereses(interes);
 		cuenta_aux.setPlazo_Pago(plazo);
 		double[] cuota = cuenta_aux.retornoCuotaMensual(cuenta_aux.getDisponible());
-		return "";
+		return cuenta_aux;
 	}
 
 	@Override	

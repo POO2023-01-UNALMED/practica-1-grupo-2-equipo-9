@@ -699,6 +699,7 @@ public final class Main {
 		}
 	}
 	
+	// Sobrecarga funcionalidad
 	static void compraCartera(Corriente cuenta) {
 		
 	}
@@ -878,8 +879,9 @@ public final class Main {
 			}
 		}
 		
+		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
-		String vistaPrevia = Cuenta.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
+		Corriente vistaPrevia = Cuenta.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
 															cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible(), 
 															tasacionCuentas.get(Cuenta_Destino - 1));
 		System.out.println(vistaPrevia);
