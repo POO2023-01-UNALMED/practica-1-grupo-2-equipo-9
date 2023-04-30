@@ -4,6 +4,7 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.Instant;
 
 public class Ahorros extends Cuenta{
 	//Atributos
@@ -67,6 +68,14 @@ public class Ahorros extends Cuenta{
 		}
 	}
 	
+	// Funcionalidad asesor inversiones
+	@Override
+	public void vaciarCuenta(Ahorros gota) {
+		Movimientos movimiento = new Movimientos(this, gota, this.getSaldo(), Categoria.OTROS,
+				Date.from(Instant.now()));
+		this.getTitular().asociarMovimiento(movimiento);
+	}
+	
 	public String toString() {
 		return "Cuenta: " + super.nombre +
 				"\nCuenta de Ahorros # " + this.id +
@@ -113,6 +122,5 @@ public class Ahorros extends Cuenta{
 			return bancos;
 		}
 	}
-
 
 }

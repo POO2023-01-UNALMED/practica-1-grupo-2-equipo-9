@@ -2,7 +2,6 @@ package gestorAplicación.interno;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Scanner;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
@@ -50,27 +49,38 @@ public abstract class Cuenta implements Serializable{
 	public abstract Cuenta crearCuenta(Banco banco, int clave, String nombre);
 	
 	// Funcionalidad Asesor de Inversiones
-	public static Ahorros gotaGota(Double cantidadPrestamo, Usuario user, Ahorros gota) {
+	public static Cuenta gotaGota(double cantidadPrestamo, Usuario user, Ahorros gota) {
 
 		double mayor = 0;
 		int contador = 0;
+		if (user.getCuentasCorrienteAsociadas().size() == 0) {
+			for (int i = 0; i < user.getCuentasAhorrosAsociadas().size(); i++) {
+				if (user.getCuentasAhorrosAsociadas().get(i).getSaldo() > mayor) {
+					mayor = user.getCuentasAhorrosAsociadas().get(i).getSaldo();
+					contador = i;
+				}
 
-		for (int i = 0; i < user.getCuentasAhorrosAsociadas().size(); i++) {
-			if (user.getCuentasAhorrosAsociadas().get(i).getSaldo() > mayor) {
-				mayor = user.getCuentasAhorrosAsociadas().get(i).getSaldo();
-				contador = i;
+				Movimientos movimiento = new Movimientos(gota, user.getCuentasAhorrosAsociadas().get(contador),
+						cantidadPrestamo, Categoria.OTROS, Date.from(Instant.now()));
+				user.asociarMovimiento(movimiento);
 			}
+			return user.getCuentasAhorrosAsociadas().get(contador);
+		} else {
+			for (int i = 0; i < user.getCuentasCorrienteAsociadas().size(); i++) {
+				if (user.getCuentasCorrienteAsociadas().get(i).getCupo() > mayor) {
+					mayor = user.getCuentasCorrienteAsociadas().get(i).getCupo();
+					contador = i;
+				}
 
-			Movimientos movimiento = new Movimientos(gota, user.getCuentasAhorrosAsociadas().get(contador), cantidadPrestamo,
-					Categoria.OTROS, Date.from(Instant.now()));
+				Movimientos movimiento = new Movimientos(gota, user.getCuentasCorrienteAsociadas().get(contador),
+						cantidadPrestamo, Categoria.OTROS, Date.from(Instant.now()));
+				user.asociarMovimiento(movimiento);
+			}
+			return user.getCuentasCorrienteAsociadas().get(contador);
 		}
-		return user.getCuentasAhorrosAsociadas().get(contador);
 	}
 
-	public static void vaciarCuenta(Ahorros cuenta, Ahorros gota) {
-		Movimientos movimiento = new Movimientos(cuenta, gota, cuenta.getSaldo(), Categoria.OTROS,
-				Date.from(Instant.now()));
-	}
+	public abstract void vaciarCuenta(Ahorros gota); 
 	
 	//Funcionalidad Compra de Cartera
 	public static String vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) {

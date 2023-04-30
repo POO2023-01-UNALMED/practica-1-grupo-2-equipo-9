@@ -4,6 +4,8 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
+import java.util.Date;
+import java.time.Instant;
 
 public class Corriente extends Cuenta{
 	//Atributos
@@ -58,6 +60,14 @@ public class Corriente extends Cuenta{
 	public double calculoInteresNominalMensual(double interesEfectivoAnual) {
 		double interes = Math.pow((1 + interesEfectivoAnual), (30 / 360)) - 1;
 		return interes;
+	}
+	
+	// Funcionalidad asesor inversiones
+	@Override
+	public void vaciarCuenta(Ahorros gota) {
+		Movimientos movimiento = new Movimientos(this, gota, this.getCupo(), Categoria.OTROS,
+				Date.from(Instant.now()));
+		this.getTitular().asociarMovimiento(movimiento);
 	}
 	
 	public Double getCupo() {

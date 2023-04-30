@@ -393,20 +393,54 @@ public class Movimientos implements Serializable{
 		// Los movimientos aparecen sin uso, pero en realidad el uso que se les da es la
 		// transacción, porque modifica el saldo de las cuentas y luego ese saldo es
 		// usado como condicion para otro método
-
+		
 		if (this.getOrigen().getBanco() == this.getDestino().getBanco()) {
-			Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
-			Movimientos movimiento1 = new Movimientos(this.getOrigen(), impuestosBanco, interes, Categoria.OTROS,
-					Date.from(Instant.now()));
-			Movimientos movimiento2 = new Movimientos(this.getDestino(), impuestosBanco, interes, Categoria.OTROS,
-					Date.from(Instant.now()));
+			if (this.getOrigen() instanceof Corriente) {
+				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+				Movimientos movimiento1 = new Movimientos( (Corriente) this.getOrigen(), impuestosBanco, interes, Categoria.OTROS,
+						Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos( (Corriente) this.getDestino(), impuestosBanco, interes, Categoria.OTROS,
+						Date.from(Instant.now()));
+				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
+				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
+				this.getDestino().getTitular().asociarMovimiento(movimiento1);
+				this.getDestino().getTitular().asociarMovimiento(movimiento2);
+			}
+			else if (this.getOrigen() instanceof Ahorros) {
+				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+				Movimientos movimiento1 = new Movimientos( (Ahorros) this.getOrigen(), impuestosBanco, interes, Categoria.OTROS,
+						Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos( (Ahorros) this.getDestino(), impuestosBanco, interes, Categoria.OTROS,
+						Date.from(Instant.now()));
+				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
+				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
+				this.getDestino().getTitular().asociarMovimiento(movimiento1);
+				this.getDestino().getTitular().asociarMovimiento(movimiento2);
+			}
 			return true;
 		} else {
-			Corriente impuestosEstado = new Corriente(this.getOrigen().getBanco(), 1234, Divisas.COP, "Corriente");
-			Movimientos movimiento1 = new Movimientos(this.getOrigen(), impuestosEstado, interes, Categoria.OTROS,
-					Date.from(Instant.now()));
-			Movimientos movimiento2 = new Movimientos(this.getDestino(), impuestosEstado, interes, Categoria.OTROS,
-					Date.from(Instant.now()));
+			if (this.getOrigen() instanceof Corriente) {
+				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+				Movimientos movimiento1 = new Movimientos( (Corriente) this.getOrigen(), impuestosBanco, interes + 1, Categoria.OTROS,
+						Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos( (Corriente) this.getDestino(), impuestosBanco, interes + 1, Categoria.OTROS,
+						Date.from(Instant.now()));
+				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
+				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
+				this.getDestino().getTitular().asociarMovimiento(movimiento1);
+				this.getDestino().getTitular().asociarMovimiento(movimiento2);
+			}
+			else if (this.getOrigen() instanceof Ahorros) {
+				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+				Movimientos movimiento1 = new Movimientos( (Ahorros) this.getOrigen(), impuestosBanco, interes + 1, Categoria.OTROS,
+						Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos( (Ahorros) this.getDestino(), impuestosBanco, interes + 1, Categoria.OTROS,
+						Date.from(Instant.now()));
+				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
+				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
+				this.getDestino().getTitular().asociarMovimiento(movimiento1);
+				this.getDestino().getTitular().asociarMovimiento(movimiento2);
+			}
 			return false;
 		}
 	}

@@ -497,7 +497,7 @@ public final class Main {
 				System.out.println("Primero debes estar asociado a un banco para acceder a esta funcionalidad");
 			}
 
-			else if (user.getCuentasAsociadas().size() == 0) {
+			else if (user.getCuentasAhorrosAsociadas().size() == 0 && user.getCuentasCorrienteAsociadas().size() == 0) {
 				System.out.println(
 						"Primero debes crear una cuenta asociada a tu usuario para acceder a esta funcionalidad");
 			}
@@ -558,7 +558,7 @@ public final class Main {
 					}
 
 					System.out.println("Con el fin de aumentar la inversión inicial y hacer una buena "
-							+ "recomendación, analizaremos sus movimientos para encontrar la categoría "
+							+ "recomendación, analizaremos " + "\nsus movimientos para encontrar la categoría "
 							+ "en la que más dinero ha gastado.");
 					System.out.println("");
 
@@ -569,7 +569,8 @@ public final class Main {
 							"La categoría en la que más dinero ha gastado es en: " + Movimientos.nombreCategoria
 									+ " que suma un total de " + Movimientos.cantidadCategoria + ".");
 					System.out.println("Le sugerimos crear una meta con el fin de ahorrar la misma "
-							+ "cantidad que ha gastado en esta categoría. Si desea crear la meta escriba “y”. En caso contrario escriba “n”.");
+							+ "cantidad que ha gastado en esta categoría. "
+							+ "\nSi desea crear la meta escriba “y”. En caso contrario escriba “n”.");
 					String nuevaMeta = sc.nextLine();
 					System.out.println("");
 
@@ -588,10 +589,9 @@ public final class Main {
 								"La meta ha sido creada satisfactoriamente y será puesta como prioridad en tu lista de metas");
 						Metas.prioridadMetas(user, metaCategoria);
 						verMetas();
+						System.out.println("");
 
-					} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {
-						continue;
-					}
+					} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {}
 
 					else {
 						System.out.println("Entrada no valida");
@@ -599,11 +599,8 @@ public final class Main {
 					}
 
 					String bancoPortafolio = "El banco asociado al portafolio es: "
-							+ Banco.bancoPortafolio(Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user), user)
-									.getNombre()
-							+ ". Con una tasa de interes del: " + Banco.interesesPortafolio(Banco.bancoPortafolio(
-									Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user), user), user)
-							+ "%";
+							+ Banco.bancoPortafolio(user).getNombre() + ". Con una tasa de interes del: "
+							+ Banco.interesesPortafolio(Banco.bancoPortafolio(user), user) + "%";
 
 					if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 1) {
 						System.out.println("Deberías invertir tu dinero en: " + "\nServicios de comunicación"
@@ -642,19 +639,19 @@ public final class Main {
 					}
 					// Portafolio 8
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 8) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nCompañías de inteligencia artificial\r\n"
+						System.out.println(
+								"Deberías invertir tu dinero en: " + "\nCompañías de inteligencia artificial\r\n"
 										+ "Bonos gubernamentales a largo plazo\r\n" + "Productos básicos de consumo\r\n"
 										+ "\n" + bancoPortafolio);
 					}
 
 					else {
 						System.out.println("No tenemos portafolios para recomendarte");
-						break;
 					}
 
 					System.out.println("");
 					System.out.println("Finalmente, para mejorar aún más tu inversión, te recomendamos "
-							+ "hacer un préstamo con nuestra funcionalidad “Pedir un préstamo”. "
+							+ "hacer un préstamo con nuestra funcionalidad " + "\n“Pedir un préstamo”. "
 							+ "\n¿Deseas hacer el préstamo? (Y/N)");
 
 					String prestamo = sc.nextLine();
@@ -670,7 +667,7 @@ public final class Main {
 						String prestamoI = sc.nextLine();
 						if (prestamoI.equals("y") || prestamoI.equals("Y")) {
 							System.out.println("Tenemos la solución para ti, aunque no sea la más correcta…"
-									+ " Vas a hacer un prestamo con el usuario gota a gota"
+									+ " Vas a hacer un prestamo con el usuario " + "\ngota a gota"
 									+ "\nIngrese el monto que desea solicitar prestado: ");
 
 							// Parte del gota a gota
@@ -678,10 +675,11 @@ public final class Main {
 							Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
 							Ahorros gota = new Ahorros(banco, 1234, Divisas.COP, "Gota", 1000000000.0);
 							gotaGota.asociarCuentaAhorros(gota);
+							gota.setTitular(gotaGota);
 							double cantidadPrestamo = Double.parseDouble(sc.nextLine());
 
 							// Métodos
-							Cuenta.vaciarCuenta(Cuenta.gotaGota(cantidadPrestamo, user, gota), gota);
+							Cuenta.gotaGota(cantidadPrestamo, user, gota).vaciarCuenta(gota);
 							System.out.println("Era una trampa, ahora el usuario gota a gota vacio tu cuenta");
 						}
 					}
@@ -2376,7 +2374,7 @@ public final class Main {
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{
-
+		
 		listaObjetos.add(Estado.nombreD);
 		listaObjetos.add(Cuenta.nombreD);
 		listaObjetos.add(Usuario.nombreD);

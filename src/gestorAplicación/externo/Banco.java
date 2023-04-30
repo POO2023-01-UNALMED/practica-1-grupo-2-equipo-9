@@ -96,7 +96,10 @@ public class Banco extends Estado {
 
 		Ahorros cuentaAhorros = new Ahorros(user.getBancosAsociados().get(0), 1234, Divisas.COP, "Ahorros", 1.0);
 		Corriente cuentaCorriente = new Corriente(user.getBancosAsociados().get(0), 1234, Divisas.COP, "Corriente");
-
+		Usuario pepitoMaster1234 = new Usuario("pepito", "pepito", "pepito");
+		cuentaAhorros.setTitular(pepitoMaster1234);
+		cuentaCorriente.setTitular(pepitoMaster1234);
+		
 		double interes = Math.random() + riesgo;
 		if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
@@ -216,21 +219,24 @@ public class Banco extends Estado {
 		return 0;
 	}
 
-	public static Banco bancoPortafolio(int num, Usuario user) {
+	public static Banco bancoPortafolio(Usuario user) {
 		Banco banco = null;
-		for (int i = 0; i < num; i++) {
-			if (user.getBancosAsociados().get(i) != null) {
-				banco = user.getBancosAsociados().get(i);
-			} else {
-				continue;
+		if (user.getBancosAsociados().size() == 1) {
+			banco = user.getBancosAsociados().get(0);
+		} else {
+			for (int i = 1; i <= user.getBancosAsociados().size(); i++) {
+				if (user.getBancosAsociados().get(i - 1) != user.getBancosAsociados().get(i)) {
+					banco = user.getBancosAsociados().get(i);
+				} else {
+					continue;
+				}
 			}
 		}
-
 		return banco;
 	}
 
-	public static Double interesesPortafolio(Banco banco, Usuario user) {
-		Double interes = 0.0;
+	public static double interesesPortafolio(Banco banco, Usuario user) {
+		double interes = 0.0;
 
 		for (int i = 0; i < user.getBancosAsociados().size(); i++) {
 			if (user.getBancosAsociados().get(i) == banco) {
