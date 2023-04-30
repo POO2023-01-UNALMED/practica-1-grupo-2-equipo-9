@@ -142,23 +142,17 @@ public class Metas implements Serializable {
 		Date date = this.getFecha();
 		if (date == null) {
 			System.out.print("La meta con nombre " + this.getNombre()
-//				+ "y cantidad" + this.getCantidad()
 					+ " fue eliminada satisfactoriamente del sistema.");
 		} else if (amount == 0) {
 			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
 					+ " fue eliminada satisfactoriamente del sistema.");
 		} else if (name == null) {
 			System.out.print("La meta para la fecha " + this.getFechaNormal()
-//				+ "y cantidad" + this.getCantidad()
 					+ " fue eliminada satisfactoriamente del sistema.");
 		} else {
 			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
-//				+ "y cantidad" + this.getCantidad()
 					+ " fue eliminada satisfactoriamente del sistema.");
 		}
-
-		// el getCantidad no funciona por ser double. No encontre la manera de
-		// solucionarlo
 	}
 
 	// GETTER Y SETTER
