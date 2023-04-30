@@ -65,7 +65,7 @@ public class Corriente extends Cuenta{
 	// Funcionalidad asesor inversiones
 	@Override
 	public void vaciarCuenta(Ahorros gota) {
-		Movimientos movimiento = new Movimientos(this, gota, this.getCupo(), Categoria.OTROS,
+		Movimientos movimiento = new Movimientos(this, gota, this.getDisponible(), Categoria.OTROS,
 				Date.from(Instant.now()));
 		this.getTitular().asociarMovimiento(movimiento);
 	}
