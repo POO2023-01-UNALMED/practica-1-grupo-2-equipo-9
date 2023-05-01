@@ -16,35 +16,35 @@ public class Ahorros extends Cuenta{
 	//Constructores
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre, Double saldo) {
 		super(banco, clave, divisa, nombre);
-		getCuentasAhorroTotales().add(this);
+		Ahorros.getCuentasAhorroTotales().add(this);
 		this.saldo = saldo;
 	}
 	
 	public Ahorros(Banco banco, int clave, String nombre, Double saldo) {
 		super(banco, clave, nombre);
-		getCuentasAhorroTotales().add(this);
+		Ahorros.getCuentasAhorroTotales().add(this);
 		this.saldo = saldo;
 	}
 	
 	public Ahorros(Double saldo) {
 		super();
-		getCuentasAhorroTotales().add(this);
+		Ahorros.getCuentasAhorroTotales().add(this);
 		this.saldo = saldo;
 	}
 	
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre) {
 		super(banco, clave, divisa, nombre);
-		getCuentasAhorroTotales().add(this);
+		Ahorros.getCuentasAhorroTotales().add(this);
 	}	
 	
 	public Ahorros(Banco banco, int clave, String nombre) {
 		super(banco, clave, nombre);
-		getCuentasAhorroTotales().add(this);
+		Ahorros.getCuentasAhorroTotales().add(this);
 	}
 	
 	public Ahorros() {
 		super();
-		getCuentasAhorroTotales().add(this);
+		Ahorros.getCuentasAhorroTotales().add(this);
 	}
 	
 	//Métodos
@@ -69,7 +69,6 @@ public class Ahorros extends Cuenta{
 	}
 	
 	// Funcionalidad asesor inversiones
-	@Override
 	public void vaciarCuenta(Ahorros gota) {
 		Movimientos movimiento = new Movimientos(this, gota, this.getSaldo(), Categoria.OTROS,
 				Date.from(Instant.now()));
