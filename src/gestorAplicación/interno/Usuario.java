@@ -27,7 +27,6 @@ public class Usuario implements Serializable {
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
 	private ArrayList<Corriente> CuentasCorrienteAsociadas = new ArrayList<Corriente>();
 	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
-	private double comisionUsuario;
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
 
 	
@@ -267,8 +266,6 @@ public class Usuario implements Serializable {
 	public void setLimiteCuentas(int limiteCuentas) { this.limiteCuentas = limiteCuentas; }
 	public ArrayList<Banco> getBancosAsociados() { return bancosAsociados; }
 	public void setBancosAsociados(ArrayList<Banco> bancosAsociados) { this.bancosAsociados = bancosAsociados; }
-	public double getComisionUsuario() { return comisionUsuario; }
-	public void setComisionUsuario(double comisionUsuario) { this.comisionUsuario = comisionUsuario; }
 	public int getContadorMovimientos() { return contadorMovimientos; }
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
 	public ArrayList<Metas> getMetasAsociadas() {return metasAsociadas;}
