@@ -23,11 +23,10 @@ public class Usuario implements Serializable {
 	private String contrasena;
 	private int id;
 	
-	//REVISAR
+	//Funcionalidad Asesor inversiones
 	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
 	private ArrayList<Corriente> CuentasCorrienteAsociadas = new ArrayList<Corriente>();
 	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
-	private double comisionUsuario;
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
 
 	
@@ -110,7 +109,7 @@ public class Usuario implements Serializable {
 			this.getMetasAsociadas().add(meta);
 			return("La meta " + meta.getNombre() + " se ha asociado con éxito al usuario " + this.getNombre());
 		}else {
-			return("No se encuentra tu meta ó debes verificar que la meta que quieres asociar exista" );
+			return("No se encuentra tu meta, debes verificar que la meta que quieres asociar exista" );
 		}
 	}
 	
@@ -125,7 +124,7 @@ public class Usuario implements Serializable {
 	}
 	
 	public String asociarCuentaCorriente(Corriente corriente) {
-		if(!this.getCuentasCorrienteAsociadas().contains(corriente)) {
+		if(Corriente.getCuentasCorrienteTotales().contains(corriente)) {
 			this.getCuentasCorrienteAsociadas().add(corriente);
 			return("La cuenta corriente " + corriente.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
@@ -134,7 +133,7 @@ public class Usuario implements Serializable {
 	}
 	
 	public String asociarCuentaAhorros(Ahorros ahorros) {
-		if(!this.getCuentasAhorrosAsociadas().contains(ahorros)) {
+		if(Ahorros.getCuentasAhorroTotales().contains(ahorros)) {
 			this.getCuentasAhorrosAsociadas().add(ahorros);
 			return("La cuenta de ahorros " + ahorros.getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
@@ -267,8 +266,6 @@ public class Usuario implements Serializable {
 	public void setLimiteCuentas(int limiteCuentas) { this.limiteCuentas = limiteCuentas; }
 	public ArrayList<Banco> getBancosAsociados() { return bancosAsociados; }
 	public void setBancosAsociados(ArrayList<Banco> bancosAsociados) { this.bancosAsociados = bancosAsociados; }
-	public double getComisionUsuario() { return comisionUsuario; }
-	public void setComisionUsuario(double comisionUsuario) { this.comisionUsuario = comisionUsuario; }
 	public int getContadorMovimientos() { return contadorMovimientos; }
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
 	public ArrayList<Metas> getMetasAsociadas() {return metasAsociadas;}
