@@ -2057,7 +2057,6 @@ public final class Main {
 				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));
 				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));
 				System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));
-				System.out.println();
 			}
 			else if(confirmacion.equals("N") || confirmacion.equals("n")) {
 				break;
@@ -2080,18 +2079,14 @@ public final class Main {
 		Serializador.serializar(Metas.getMetasTotales(), "Metas");
 	}
 	
-private void formWindowClosing(java.awt.event.WindowEvent evt) {
+	private void formWindowClosing(java.awt.event.WindowEvent evt) {
 		if (!existencia) {
 			guardadoAutomatico();
 		}
 	}
 	
 	// CARGAR OBJETOS EN EL MAIN	
-	static boolean existencia = false;
-
-	// CARGAR OBJETOS EN EL MAIN	
-
-	// CARGAR OBJETOS EN EL MAIN	
+	static boolean existencia = false;	
 
 	static void cargarObjetos() throws ParseException{
 			System.out.println("Bienvenido a la Base de Datos...");
@@ -2315,6 +2310,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {
 					System.out.println("");
 
 				} else if(opcionUsuario == 6){
+					Main.guardarObjetos();
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 					seguir = 0;
 					interfaz = 0;	
@@ -2527,7 +2523,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {
 	}
 		
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
-	static ArrayList<String> listaObjetos = new ArrayList<String>();
+	static ArrayList<Object> listaObjetos = new ArrayList<Object>();
 	static Usuario user = null;
 	static int seguir = 1;
 	static int opcionUsuario = 0;
@@ -2541,12 +2537,12 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {
 	
 	public static void main(String[] args) throws ParseException{
 		
-		listaObjetos.add(Estado.nombreD);
-		listaObjetos.add(Cuenta.nombreD);
-		listaObjetos.add(Usuario.nombreD);
-		listaObjetos.add(Banco.nombreD);
-		listaObjetos.add(Movimientos.nombreD);
-		listaObjetos.add(Metas.nombreD);
+		listaObjetos.add(Estado.class);
+		listaObjetos.add(Cuenta.class);
+		listaObjetos.add(Usuario.class);
+		listaObjetos.add(Banco.class);
+		listaObjetos.add(Movimientos.class);
+		listaObjetos.add(Metas.class);
 		
 		Main.bienvenidaApp();
 
