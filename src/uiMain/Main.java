@@ -502,8 +502,8 @@ public final class Main {
 						"Primero debes crear una cuenta asociada a tu usuario para acceder a esta funcionalidad");
 			}
 
-			else if (user.getMovimientosAsociadas().size() == 0) {
-				System.out.println("Primero debes asociarte a un banco para acceder a esta funcionalidad");
+			else if (user.getMovimientosAsociados().size() == 0) {
+				System.out.println("Primero debes realizar un movimiento para acceder a esta funcionalidad");
 			}
 
 			else {
@@ -511,22 +511,23 @@ public final class Main {
 				int riesgo = Integer.parseInt(sc.nextLine());
 				System.out.println("");
 
-				System.out.println("¿Qué cantidad piensa invertir?: ");
-				int invertir = Integer.parseInt(sc.nextLine());
-				System.out.println("");
-
 				// Revisar que las entradas sean correctas
-				if (riesgo != 1 && riesgo != 2 && riesgo != 3) {
+				if (riesgo < 1 || riesgo > 3) {
 					System.out.println("Alguna de las entradas no es válida");
 					break;
 				}
 
-				if (Metas.revisionMetas(user) == null) {
+				else if (Metas.revisionMetas(user) == null) {
 					System.out.println("Primero debes crear una meta con fecha para acceder a esta funcionalidad");
 					break;
 				}
 
 				else {
+					
+					System.out.println("¿Qué cantidad piensa invertir?: ");
+					int invertir = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+					
 					System.out.println("Tienes una meta para una fecha muy próxima: "
 							+ Metas.revisionMetas(user).getNombre() + ", " + Metas.revisionMetas(user).getCantidad()
 							+ ", " + Metas.revisionMetas(user).getFechaNormal()
@@ -680,7 +681,7 @@ public final class Main {
 
 							// Métodos
 							Cuenta.gotaGota(cantidadPrestamo, user, gota).vaciarCuenta(gota);
-							System.out.println("Era una trampa, ahora el usuario gota a gota vacio tu cuenta");
+							System.out.println("Era una trampa, ahora el usuario gota a gota vació tu cuenta");
 						}
 					}
 
@@ -1142,7 +1143,7 @@ public final class Main {
 					opcion_cuenta = Integer.parseInt(sc.nextLine());
 				}else if(user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1).getSaldo() <= 0){
 					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
-					System.out.println("Para invertir saldo debemos comprobar que el saldo de la cuenta sea diferente de cero." + "El saldo para la cuenta " + c.getNombre() + " es de " + c.getSaldo());
+					System.out.println("Para invertir saldo debemos comprobar que el saldo de la cuenta sea diferente de cero." + " El saldo para la cuenta " + c.getNombre() + " es de " + c.getSaldo());
 					System.out.println("Volviendo al menú anterior.");
 					break;	
 				}else {
@@ -1150,6 +1151,7 @@ public final class Main {
 					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
+						user.getMovimientosAsociados().add((Movimientos) inversion);
 						System.out.println("La inversión de saldo ha sido exitosa: ");
 						System.out.println(inversion);
 						System.out.println("");
@@ -1184,8 +1186,10 @@ public final class Main {
 					System.out.print("Ingrese el monto de su consignación de saldo(En formato double): ");
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
 					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
+					
 					if(saldo_movimiento instanceof Movimientos) {
 						System.out.println("");
+						user.getMovimientosAsociados().add((Movimientos) saldo_movimiento);
 						System.out.println("La consignación de saldo ha sido exitosa: ");
 						System.out.println(saldo_movimiento);
 						break;

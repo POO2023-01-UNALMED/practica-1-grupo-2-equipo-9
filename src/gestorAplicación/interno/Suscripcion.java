@@ -3,7 +3,7 @@ package gestorAplicación.interno;
 import java.util.ArrayList;
 
 public enum Suscripcion{
-	DIAMANTE(5,0.80F, 4, 2f),
+	DIAMANTE(5, 0.80F, 4, 2f),
 	ORO(4, 0.60F, 3, 1.5f),
 	PLATA(3, 0.40F, 2, 1f),
 	BRONCE(2, 0.20F, 2, 0.5f);

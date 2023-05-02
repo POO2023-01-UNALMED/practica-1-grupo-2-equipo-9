@@ -92,12 +92,15 @@ public abstract class Cuenta implements Serializable{
 	public static ArrayList<Cuenta> getCuentasTotales(){
 		return Cuenta.cuentasTotales;
 	}
+	
 	public static void setCuentasTotales(ArrayList<Cuenta> cuentasTotales){
 		Cuenta.cuentasTotales = cuentasTotales;
 	}
+	
 	public Usuario getTitular() {
 		return titular;
 	}
+	
 	public void setTitular(Usuario titular) {
 		this.titular = titular;
 	}
@@ -105,30 +108,39 @@ public abstract class Cuenta implements Serializable{
 	public int getClave_din() {
 		return clave_din;
 	}
+	
 	public void setClave_din(int clave_din) {
 		this.clave_din = clave_din;
 	}
+	
 	public Divisas getDivisa() {
 		return divisa;
 	}
+	
 	public void setDivisa(Divisas divisa) {
 		this.divisa = divisa;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public Banco getBanco() {
 		return banco;
 	}
+	
 	public void setBanco(Banco banco) {
 		this.banco = banco;
 	}
@@ -136,6 +148,7 @@ public abstract class Cuenta implements Serializable{
 	public int getClave() {
 		return clave;
 	}
+	
 	public void setClave(int clave) {
 		this.clave = clave;
 	}

@@ -244,8 +244,7 @@ public class Movimientos implements Serializable{
 			}
 		}
 	}
-	
-	
+
 	// METODOS PARA LA FUNCIONALIDAD DE ASESORAMIENTO DE INVERSION
 	public static void analizarCategoria(Usuario u, String plazo) {
 		int transporte = 0;
@@ -260,8 +259,8 @@ public class Movimientos implements Serializable{
 		ArrayList<Integer> mayor = new ArrayList<Integer>();
 		
 		// Buscar la categoría en la que más dinero ha gastado el usuario
-		for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-			Categoria categoria = u.getMovimientosAsociadas().get(i).getCategoria();
+		for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+			Categoria categoria = u.getMovimientosAsociados().get(i).getCategoria();
 			if (categoria == Categoria.TRANSPORTE) {
 				transporte++;
 			} else if (categoria == Categoria.COMIDA) {
@@ -296,63 +295,63 @@ public class Movimientos implements Serializable{
 
 		if (posicion == 0) {
 			nombreCategoria = "Transporte";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.TRANSPORTE == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.TRANSPORTE == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 		}
 
 		else if (posicion == 1) {
 			nombreCategoria = "Comida";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.COMIDA == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.COMIDA == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 		}
 
 		else if (posicion == 2) {
 			nombreCategoria = "Educacion";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.EDUCACION == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.EDUCACION == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 		}
 
 		else if (posicion == 3) {
 			nombreCategoria = "Salud";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.SALUD == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.SALUD == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 		}
 
 		else if (posicion == 4) {
 			nombreCategoria = "Regalos";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.REGALOS == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.REGALOS == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 		}
 
 		else if (posicion == 5) {
 			nombreCategoria = "Finanzas";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.FINANZAS == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.FINANZAS == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 		}
 
 		else if (posicion == 6) {
 			nombreCategoria = "Otros";
-			for (int i = 0; i < u.getMovimientosAsociadas().size(); i++) {
-				if (Categoria.OTROS == u.getMovimientosAsociadas().get(i).getCategoria()) {
-					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociadas().get(i).getCantidad();
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.OTROS == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
 				}
 			}
 
@@ -360,7 +359,7 @@ public class Movimientos implements Serializable{
 		
 		// Recomendadar fecha
 		if (plazo == "Corto") {
-			if (u.getMovimientosAsociadas().get(u.getMovimientosAsociadas().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
 				recomendarFecha = "01/01/2024";
 			}
 			else{
@@ -368,7 +367,7 @@ public class Movimientos implements Serializable{
 			}
 		}
 		else if (plazo == "Mediano") {
-			if (u.getMovimientosAsociadas().get(u.getMovimientosAsociadas().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
 				recomendarFecha = "01/01/2026";
 			}
 			else{
@@ -376,7 +375,7 @@ public class Movimientos implements Serializable{
 			}
 		}
 		else if (plazo == "Largo") {
-			if (u.getMovimientosAsociadas().get(u.getMovimientosAsociadas().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
 				recomendarFecha = "01/01/2028";
 			}
 			else{
@@ -469,7 +468,7 @@ public class Movimientos implements Serializable{
 	}
 	
 	public static ArrayList<Movimientos> verificarMovimientosUsuario_Banco(Usuario usuario, Banco banco){
-		ArrayList<Movimientos> movimientosAsociados = usuario.getMovimientosAsociadas();
+		ArrayList<Movimientos> movimientosAsociados = usuario.getMovimientosAsociados();
 		ArrayList<Cuenta> cuentasAsociadas = usuario.getCuentasAsociadas();
 		ArrayList<Cuenta> cuentasAsociadasaBanco = new ArrayList<Cuenta>();
 		ArrayList<Movimientos> movimientosUsuario_Banco = new ArrayList<Movimientos>();

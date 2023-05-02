@@ -24,7 +24,7 @@ public class Usuario implements Serializable {
 	private int id;
 	
 	//Funcionalidad Asesor inversiones
-	private ArrayList<Movimientos> movimientosAsociadas = new ArrayList<Movimientos>();
+	private ArrayList<Movimientos> movimientosAsociados = new ArrayList<Movimientos>();
 	private ArrayList<Corriente> CuentasCorrienteAsociadas = new ArrayList<Corriente>();
 	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
@@ -116,7 +116,7 @@ public class Usuario implements Serializable {
 	public String asociarMovimiento(Movimientos movimiento) {
 		if(Movimientos.getMovimientosTotales().contains(movimiento)) {
 			movimiento.setOwner(this);
-			this.getMovimientosAsociadas().add(movimiento);
+			this.getMovimientosAsociados().add(movimiento);
 			return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 		}else {
 			return("No se encuentra el movimiento. Por favor asegurese de que el movimiento se haya realizado con éxito" );
@@ -270,8 +270,8 @@ public class Usuario implements Serializable {
 	public void setContadorMovimientos(int contadorMovimientos) { this.contadorMovimientos = contadorMovimientos; }
 	public ArrayList<Metas> getMetasAsociadas() {return metasAsociadas;}
 	public void setMetasAsociadas(ArrayList<Metas> metasAsociadas) {this.metasAsociadas = metasAsociadas;}
-	public ArrayList<Movimientos> getMovimientosAsociadas() {return movimientosAsociadas;}
-	public void setMovimientosAsociadas(ArrayList<Movimientos> movimientosAsociadas) {this.movimientosAsociadas = movimientosAsociadas;}
+	public ArrayList<Movimientos> getMovimientosAsociados() {return movimientosAsociados;}
+	public void setMovimientosAsociados(ArrayList<Movimientos> movimientosAsociados) {this.movimientosAsociados = movimientosAsociados;}
 	public ArrayList<Corriente> getCuentasCorrienteAsociadas() {return CuentasCorrienteAsociadas;}
 	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
 	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}

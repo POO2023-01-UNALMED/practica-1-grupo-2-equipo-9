@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Deuda {
 //  Atributos
-    public static final String nombreD = "Deuda";
+    public static final String nombreD = "Deudas";
     private static final long serialVersionUID = 6L;
     private int id;
     private double cantidad;
@@ -14,9 +14,9 @@ public class Deuda {
     private Banco banco;
     private static ArrayList<Deuda> deudasTotales = new ArrayList<>();
 
-//    Constructor
-    public Deuda(double cantidad,Ahorros cuenta,Usuario titular, Banco banco){
-        id = deudasTotales.size();
+    //	Constructor
+    public Deuda(double cantidad, Ahorros cuenta, Usuario titular, Banco banco){
+        this.id = deudasTotales.size();
         this.cantidad = cantidad;
         this.cuenta = cuenta;
         this.titular = titular;
