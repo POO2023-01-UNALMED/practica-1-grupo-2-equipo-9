@@ -2080,21 +2080,19 @@ public final class Main {
 		}
 	}
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
-=======
+
 	// CARGAR OBJETOS EN EL MAIN	
->>>>>>> fcfce2d26eb12f2c837284874c7fc3616c8714fa
-=======
+
 	// CARGAR OBJETOS EN EL MAIN	
->>>>>>> fcfce2d26eb12f2c837284874c7fc3616c8714fa
+
 	static void cargarObjetos() throws ParseException{
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
 			String confirmacion = sc.nextLine();
-		//	boolean existencia = false;
+
 			while(true){
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 					File f = new File("");
