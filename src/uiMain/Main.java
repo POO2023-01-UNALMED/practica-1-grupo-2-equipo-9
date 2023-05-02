@@ -73,7 +73,7 @@ public final class Main {
 		}
 	}
 	
-	// CREAR UNA META EN EL MAIN	
+	// CREAR UNA META EN EL MAIN
 	static void crearMeta() throws ParseException {
 
 		int opcionMetas = 1;
@@ -523,11 +523,11 @@ public final class Main {
 				}
 
 				else {
-					
+
 					System.out.println("¿Qué cantidad piensa invertir?: ");
 					int invertir = Integer.parseInt(sc.nextLine());
 					System.out.println("");
-					
+
 					System.out.println("Tienes una meta para una fecha muy próxima: "
 							+ Metas.revisionMetas(user).getNombre() + ", " + Metas.revisionMetas(user).getCantidad()
 							+ ", " + Metas.revisionMetas(user).getFechaNormal()
@@ -592,7 +592,8 @@ public final class Main {
 						verMetas();
 						System.out.println("");
 
-					} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {}
+					} else if (nuevaMeta.equals("n") || nuevaMeta.equals("N")) {
+					}
 
 					else {
 						System.out.println("Entrada no valida");
