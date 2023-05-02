@@ -2081,9 +2081,8 @@ public final class Main {
 
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
-
 	static void cargarObjetos() throws ParseException{
-			System.out.println("Bienvenido a la Base de Datos...");
+			System.out.println("Comenzando ejecución del programa....");	
 			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
 			String confirmacion = sc.nextLine();
 
@@ -2129,7 +2128,7 @@ public final class Main {
 					if (!existencia) {
 						System.out.println("No existe un estado previo del sistema guardado");
 					}
-					
+					break;
 					
 				}
 				else if(confirmacion.equals("N") || confirmacion.equals("n")) {
@@ -2140,8 +2139,9 @@ public final class Main {
 					System.out.println("NOTA: Solo se recibe como respuesta Y o N");
 					System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
 					confirmacion = sc.nextLine();
-				}
+				}		
 			}
+			System.out.println("");
 	}
 	
 	// CARGAR OBJETOS INDIVIDUALES EN EL MAIN
@@ -2263,6 +2263,8 @@ public final class Main {
 	
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException {
+		Main.cargarObjetos();
+		
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
 			* ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
