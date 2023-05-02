@@ -2051,31 +2051,26 @@ public final class Main {
 		String confirmacion = sc.nextLine();
 		while(true){
 			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-				if (Usuario.getUsuariosTotales().size()!=0) {
-					System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));}
-				if (Banco.getBancosTotales().size()!=0) {
+				if (Usuario.getUsuariosTotales().size() != 0) {
+					System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuarios"));}
+				if (Banco.getBancosTotales().size() !=0 ) {
 					System.out.println(Serializador.serializar(Banco.getBancosTotales(), "Bancos"));}
-				if (Estado.getEstadosTotales().size()!=0) {
+				if (Estado.getEstadosTotales().size() !=0 ) {
 					System.out.println(Serializador.serializar(Estado.getEstadosTotales(), "Estados"));}
 				if (Cuenta.getCuentasTotales().size()!=0) {
 					System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));}
 				if (Movimientos.getMovimientosTotales().size()!=0) {
 					System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));}
 				if (Metas.getMetasTotales().size()!=0) {
-					System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));}
+					System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));} 
+				if(Metas.getMetasTotales().size() == 0 && Movimientos.getMovimientosTotales().size() == 0 && Cuenta.getCuentasTotales().size() == 0 && Banco.getBancosTotales().size() == 0 && Usuario.getUsuariosTotales().size() == 0){
+					System.out.println("Primero debes crear objetos para poder guardarlos.");
+				}
 				System.out.println();
-				System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));
-				System.out.println(Serializador.serializar(Banco.getBancosTotales(), "Bancos"));
-				System.out.println(Serializador.serializar(Estado.getEstadosTotales(), "Estados"));
-				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));
-				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));
-				System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));
-
-			}
-			else if(confirmacion.equals("N") || confirmacion.equals("n")) {
 				break;
-			}
-			else {
+			}else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+				break;
+			}else {
 				System.out.println("Opción no válida");
 				System.out.println("NOTA: Solo se recibe como respuesta Y o N");
 				System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
@@ -2083,33 +2078,9 @@ public final class Main {
 			}
 		}
 	}
-	
-	static void guardadoAutomatico(){
-		if (Usuario.getUsuariosTotales().size()!=0) {
-			Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario");}
-		if (Banco.getBancosTotales().size()!=0) {
-			Serializador.serializar(Banco.getBancosTotales(), "Bancos");}
-		if (Estado.getEstadosTotales().size()!=0) {
-			Serializador.serializar(Estado.getEstadosTotales(), "Estados");}
-		if (Cuenta.getCuentasTotales().size()!=0) {
-			Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas");}
-		if (Movimientos.getMovimientosTotales().size()!=0) {
-			Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos");}
-		if (Metas.getMetasTotales().size()!=0) {
-			Serializador.serializar(Metas.getMetasTotales(), "Metas");}
-	}
-	
-	private void formWindowClosing(java.awt.event.WindowEvent evt) {
-		if (!existencia) {
-			guardadoAutomatico();
-		}
-	}
-	
-
 
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
-
 
 	static void cargarObjetos() throws ParseException{
 			System.out.println("Bienvenido a la Base de Datos...");
@@ -2335,7 +2306,6 @@ public final class Main {
 				} else if(opcionUsuario == 6){
 					Main.guardarObjetos();
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
-					Main.guardadoAutomatico();
 					seguir = 0;
 					interfaz = 0;	
 					
