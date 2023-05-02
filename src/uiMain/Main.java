@@ -2081,8 +2081,12 @@ public final class Main {
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
+=======
+	// CARGAR OBJETOS EN EL MAIN	
+>>>>>>> fcfce2d26eb12f2c837284874c7fc3616c8714fa
 =======
 	// CARGAR OBJETOS EN EL MAIN	
 >>>>>>> fcfce2d26eb12f2c837284874c7fc3616c8714fa
