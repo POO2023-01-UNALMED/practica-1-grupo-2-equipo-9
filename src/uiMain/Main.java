@@ -2070,18 +2070,35 @@ public final class Main {
 			}
 		}
 	}
+	static void guardadoAutomatico(){
+		Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario");
+		Serializador.serializar(Banco.getBancosTotales(), "Bancos");
+		Serializador.serializar(Estado.getEstadosTotales(), "Estados");
+		Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas");
+		Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos");
+		Serializador.serializar(Metas.getMetasTotales(), "Metas");
+	}
+	private void formWindowClosing(java.awt.event.WindowEvent evt) {
+		if (!existencia) {
+			guardadoAutomatico();
+		}
+	}
 	
+
+	//CARGAR OBJETOS EN EL MAIN	
+	static boolean existencia = false;
+
 	// CARGAR OBJETOS EN EL MAIN	
+
+	// CARGAR OBJETOS EN EL MAIN	
+
 	static void cargarObjetos() throws ParseException{
 			System.out.println("Bienvenido a la Base de Datos...");
 			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
 			String confirmacion = sc.nextLine();
-			boolean existencia = false;
+
 			while(true){
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-//					for (int i=0 ; i < listaObjetos.size(); i++) {
-//						
-//					}
 					File f = new File("");
 					File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
 					if (fUsuario.exists() ) {
