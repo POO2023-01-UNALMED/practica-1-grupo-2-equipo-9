@@ -605,44 +605,44 @@ public final class Main {
 							+ Banco.interesesPortafolio(Banco.bancoPortafolio(user), user) + "%";
 
 					if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 1) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nServicios de comunicación"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nServicios de comunicación"
 								+ "\nconsumo discrecional" + "\nBienes raíces" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 2
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 2) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nProductos básicos de consumo\r\n"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nProductos básicos de consumo\r\n"
 								+ "Energía\r\n" + "Compañías de inteligencia artificial\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 3
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 3) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nFinanzas\r\n"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nFinanzas\r\n"
 								+ "Cuidado de la salud\r\n" + "Servicios de comunicación\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 4
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 4) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nOro\r\n"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nOro\r\n"
 								+ "Acciones industriales\r\n" + "Información tecnológica\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 5
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 5) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nMateriales de construcción\r\n"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nMateriales de construcción\r\n"
 								+ "Bienes raíces\r\n" + "Finanzas\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 6
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 6) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nCuidado de la salud\r\n"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nCuidado de la salud\r\n"
 								+ "Utilidades\r\n" + "Comodidades\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 7
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 7) {
-						System.out.println("Deberías invertir tu dinero en: " + "\nOro\r\n"
+						System.out.println("Deberías invertir tu dinero en estos sectores: " + "\nOro\r\n"
 								+ "Bonos gubernamentales a mediano plazo\r\n" + "Información tecnológica\r\n" + "\n"
 								+ bancoPortafolio);
 					}
 					// Portafolio 8
 					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 8) {
 						System.out.println(
-								"Deberías invertir tu dinero en: " + "\nCompañías de inteligencia artificial\r\n"
+								"Deberías invertir tu dinero en estos sectores: " + "\nCompañías de inteligencia artificial\r\n"
 										+ "Bonos gubernamentales a largo plazo\r\n" + "Productos básicos de consumo\r\n"
 										+ "\n" + bancoPortafolio);
 					}
