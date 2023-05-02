@@ -60,10 +60,10 @@ public class Metas implements Serializable {
 
 	// Metodos de la funcionalidad asesoramiento de inversion.
 	public static Metas revisionMetas(Usuario u) {
-		
+
 		Date proximaFecha = u.getMetasAsociadas().get(0).getFecha();
 		Metas proximaMeta = u.getMetasAsociadas().get(0);
-		
+
 		if (u.getMetasAsociadas().size() == 1) {
 			if (u.getMetasAsociadas().get(0).getFecha() == null) {
 				proximaFecha = Date.from(Instant.now());
@@ -141,8 +141,8 @@ public class Metas implements Serializable {
 		double amount = this.getCantidad();
 		Date date = this.getFecha();
 		if (date == null) {
-			System.out.print("La meta con nombre " + this.getNombre()
-					+ " fue eliminada satisfactoriamente del sistema.");
+			System.out
+					.print("La meta con nombre " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 		} else if (amount == 0) {
 			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
 					+ " fue eliminada satisfactoriamente del sistema.");

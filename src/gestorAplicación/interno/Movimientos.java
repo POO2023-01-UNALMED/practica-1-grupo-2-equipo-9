@@ -246,7 +246,7 @@ public class Movimientos implements Serializable{
 		}
 	}
 
-	// METODOS PARA LA FUNCIONALIDAD DE ASESORAMIENTO DE INVERSION
+	// Funcionalidad asesoramiento de inversión
 	public static void analizarCategoria(Usuario u, String plazo) {
 		int transporte = 0;
 		int comida = 0;
@@ -258,7 +258,7 @@ public class Movimientos implements Serializable{
 		int big = 0;
 		int posicion = 0;
 		ArrayList<Integer> mayor = new ArrayList<Integer>();
-		
+
 		// Buscar la categoría en la que más dinero ha gastado el usuario
 		for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 			Categoria categoria = u.getMovimientosAsociados().get(i).getCategoria();
@@ -278,7 +278,7 @@ public class Movimientos implements Serializable{
 				otros++;
 			}
 		}
-		
+
 		mayor.add(transporte);
 		mayor.add(comida);
 		mayor.add(educacion);
@@ -357,61 +357,57 @@ public class Movimientos implements Serializable{
 			}
 
 		}
-		
+
 		// Recomendadar fecha
 		if (plazo == "Corto") {
-			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha()
+					.compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
 				recomendarFecha = "01/01/2024";
-			}
-			else{
+			} else {
 				recomendarFecha = "01/06/2025";
 			}
-		}
-		else if (plazo == "Mediano") {
-			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+		} else if (plazo == "Mediano") {
+			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha()
+					.compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
 				recomendarFecha = "01/01/2026";
-			}
-			else{
+			} else {
 				recomendarFecha = "01/06/2027";
 			}
-		}
-		else if (plazo == "Largo") {
-			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size()-1).getFecha().compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
+		} else if (plazo == "Largo") {
+			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha()
+					.compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
 				recomendarFecha = "01/01/2028";
-			}
-			else{
+			} else {
 				recomendarFecha = "01/06/2029";
 			}
-		}
-		else {
+		} else {
 			recomendarFecha = null;
 		}
 	}
-	
+
 	public boolean impuestosMovimiento(double interes) {
 
 		// Los movimientos aparecen sin uso, pero en realidad el uso que se les da es la
 		// transacción, porque modifica el saldo de las cuentas y luego ese saldo es
 		// usado como condicion para otro método
-		
+
 		if (this.getOrigen().getBanco() == this.getDestino().getBanco()) {
 			if (this.getOrigen() instanceof Corriente) {
 				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
-				Movimientos movimiento1 = new Movimientos( (Corriente) this.getOrigen(), impuestosBanco, interes, Categoria.OTROS,
-						Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos( (Corriente) this.getDestino(), impuestosBanco, interes, Categoria.OTROS,
-						Date.from(Instant.now()));
+				Movimientos movimiento1 = new Movimientos((Corriente) this.getOrigen(), impuestosBanco, interes,
+						Categoria.OTROS, Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos((Corriente) this.getDestino(), impuestosBanco, interes,
+						Categoria.OTROS, Date.from(Instant.now()));
 				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
 				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
 				this.getDestino().getTitular().asociarMovimiento(movimiento1);
 				this.getDestino().getTitular().asociarMovimiento(movimiento2);
-			}
-			else if (this.getOrigen() instanceof Ahorros) {
+			} else if (this.getOrigen() instanceof Ahorros) {
 				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
-				Movimientos movimiento1 = new Movimientos( (Ahorros) this.getOrigen(), impuestosBanco, interes, Categoria.OTROS,
-						Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos( (Ahorros) this.getDestino(), impuestosBanco, interes, Categoria.OTROS,
-						Date.from(Instant.now()));
+				Movimientos movimiento1 = new Movimientos((Ahorros) this.getOrigen(), impuestosBanco, interes,
+						Categoria.OTROS, Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos((Ahorros) this.getDestino(), impuestosBanco, interes,
+						Categoria.OTROS, Date.from(Instant.now()));
 				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
 				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
 				this.getDestino().getTitular().asociarMovimiento(movimiento1);
@@ -421,21 +417,20 @@ public class Movimientos implements Serializable{
 		} else {
 			if (this.getOrigen() instanceof Corriente) {
 				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
-				Movimientos movimiento1 = new Movimientos( (Corriente) this.getOrigen(), impuestosBanco, interes + 1, Categoria.OTROS,
-						Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos( (Corriente) this.getDestino(), impuestosBanco, interes + 1, Categoria.OTROS,
-						Date.from(Instant.now()));
+				Movimientos movimiento1 = new Movimientos((Corriente) this.getOrigen(), impuestosBanco, interes + 1,
+						Categoria.OTROS, Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos((Corriente) this.getDestino(), impuestosBanco, interes + 1,
+						Categoria.OTROS, Date.from(Instant.now()));
 				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
 				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
 				this.getDestino().getTitular().asociarMovimiento(movimiento1);
 				this.getDestino().getTitular().asociarMovimiento(movimiento2);
-			}
-			else if (this.getOrigen() instanceof Ahorros) {
+			} else if (this.getOrigen() instanceof Ahorros) {
 				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
-				Movimientos movimiento1 = new Movimientos( (Ahorros) this.getOrigen(), impuestosBanco, interes + 1, Categoria.OTROS,
-						Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos( (Ahorros) this.getDestino(), impuestosBanco, interes + 1, Categoria.OTROS,
-						Date.from(Instant.now()));
+				Movimientos movimiento1 = new Movimientos((Ahorros) this.getOrigen(), impuestosBanco, interes + 1,
+						Categoria.OTROS, Date.from(Instant.now()));
+				Movimientos movimiento2 = new Movimientos((Ahorros) this.getDestino(), impuestosBanco, interes + 1,
+						Categoria.OTROS, Date.from(Instant.now()));
 				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
 				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
 				this.getDestino().getTitular().asociarMovimiento(movimiento1);

@@ -80,8 +80,8 @@ public abstract class Cuenta implements Serializable{
 		}
 	}
 
-	//Implementación métodos abstracto a redefinir
-	public abstract void vaciarCuenta(Ahorros gota); 
+	// Implementación métodos abstracto a redefinir
+	public abstract void vaciarCuenta(Ahorros gota);
 
 	@Override	
 	protected void finalize() {

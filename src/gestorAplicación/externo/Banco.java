@@ -99,7 +99,7 @@ public class Banco extends Estado {
 		Usuario pepitoMaster1234 = new Usuario("pepito", "pepito", "pepito");
 		cuentaAhorros.setTitular(pepitoMaster1234);
 		cuentaCorriente.setTitular(pepitoMaster1234);
-		
+
 		double interes = Math.random() + riesgo;
 		if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
