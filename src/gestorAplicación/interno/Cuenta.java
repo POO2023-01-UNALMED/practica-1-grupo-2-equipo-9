@@ -88,6 +88,13 @@ public abstract class Cuenta implements Serializable{
 		System.out.println("La cuenta " + this.getClass() + " con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 	}
 
+	public String toString() {
+		return "Cuenta: " + this.nombre +
+				"\n# " + this.id +
+				"\nBanco: " + this.banco +
+				"\nDivisa: " + this.divisa;
+	}
+	
 	//Gets && Sets
 	public static ArrayList<Cuenta> getCuentasTotales(){
 		return Cuenta.cuentasTotales;
@@ -151,12 +158,5 @@ public abstract class Cuenta implements Serializable{
 	
 	public void setClave(int clave) {
 		this.clave = clave;
-	}
-
-	public String toString() {
-		return "Cuenta: " + this.nombre +
-				"\n# " + this.id +
-				"\nBanco: " + this.banco +
-				"\nDivisa: " + this.divisa;
 	}
 }

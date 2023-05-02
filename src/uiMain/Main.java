@@ -2051,6 +2051,7 @@ public final class Main {
 		String confirmacion = sc.nextLine();
 		while(true){
 			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+<<<<<<< HEAD
 				if (Usuario.getUsuariosTotales().size()!=0) {
 					System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));}
 				if (Banco.getBancosTotales().size()!=0) {
@@ -2064,6 +2065,14 @@ public final class Main {
 				if (Metas.getMetasTotales().size()!=0) {
 					System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));}
 				System.out.println();
+=======
+				System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario"));
+				System.out.println(Serializador.serializar(Banco.getBancosTotales(), "Bancos"));
+				System.out.println(Serializador.serializar(Estado.getEstadosTotales(), "Estados"));
+				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));
+				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));
+				System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));
+>>>>>>> 27b9bbbb7794138cd73036c85bfc0732872e9f9d
 			}
 			else if(confirmacion.equals("N") || confirmacion.equals("n")) {
 				break;
@@ -2076,6 +2085,7 @@ public final class Main {
 			}
 		}
 	}
+	
 	static void guardadoAutomatico(){
 		if (Usuario.getUsuariosTotales().size()!=0) {
 			Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario");}
@@ -2090,16 +2100,22 @@ public final class Main {
 		if (Metas.getMetasTotales().size()!=0) {
 			Serializador.serializar(Metas.getMetasTotales(), "Metas");}
 	}
+	
 	private void formWindowClosing(java.awt.event.WindowEvent evt) {
 		if (!existencia) {
 			guardadoAutomatico();
 		}
 	}
 	
+<<<<<<< HEAD
 
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
 
+=======
+	// CARGAR OBJETOS EN EL MAIN	
+	static boolean existencia = false;	
+>>>>>>> 27b9bbbb7794138cd73036c85bfc0732872e9f9d
 
 	static void cargarObjetos() throws ParseException{
 			System.out.println("Bienvenido a la Base de Datos...");
@@ -2110,7 +2126,7 @@ public final class Main {
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 					File f = new File("");
 					File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
-					if (fUsuario.exists() ) {
+					if (fUsuario.exists()) {
 						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
 						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
 						existencia = true;
@@ -2323,6 +2339,7 @@ public final class Main {
 					System.out.println("");
 
 				} else if(opcionUsuario == 6){
+					Main.guardarObjetos();
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 					Main.guardadoAutomatico();
 					seguir = 0;
@@ -2536,7 +2553,7 @@ public final class Main {
 	}
 		
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
-	static ArrayList<String> listaObjetos = new ArrayList<String>();
+	static ArrayList<Object> listaObjetos = new ArrayList<Object>();
 	static Usuario user = null;
 	static int seguir = 1;
 	static int opcionUsuario = 0;
@@ -2550,12 +2567,12 @@ public final class Main {
 	
 	public static void main(String[] args) throws ParseException{
 		
-		listaObjetos.add(Estado.nombreD);
-		listaObjetos.add(Cuenta.nombreD);
-		listaObjetos.add(Usuario.nombreD);
-		listaObjetos.add(Banco.nombreD);
-		listaObjetos.add(Movimientos.nombreD);
-		listaObjetos.add(Metas.nombreD);
+		listaObjetos.add(Estado.class);
+		listaObjetos.add(Cuenta.class);
+		listaObjetos.add(Usuario.class);
+		listaObjetos.add(Banco.class);
+		listaObjetos.add(Movimientos.class);
+		listaObjetos.add(Metas.class);
 		
 		Main.bienvenidaApp();
 
