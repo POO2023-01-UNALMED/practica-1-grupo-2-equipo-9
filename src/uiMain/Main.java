@@ -2070,6 +2070,7 @@ public final class Main {
 			}
 		}
 	}
+	
 	static void guardadoAutomatico(){
 		Serializador.serializar(Usuario.getUsuariosTotales(), "Usuario");
 		Serializador.serializar(Banco.getBancosTotales(), "Bancos");
@@ -2078,14 +2079,14 @@ public final class Main {
 		Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos");
 		Serializador.serializar(Metas.getMetasTotales(), "Metas");
 	}
-	private void formWindowClosing(java.awt.event.WindowEvent evt) {
+	
+private void formWindowClosing(java.awt.event.WindowEvent evt) {
 		if (!existencia) {
 			guardadoAutomatico();
 		}
 	}
 	
-
-	//CARGAR OBJETOS EN EL MAIN	
+	// CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
 
 	// CARGAR OBJETOS EN EL MAIN	
@@ -2101,7 +2102,7 @@ public final class Main {
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 					File f = new File("");
 					File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
-					if (fUsuario.exists() ) {
+					if (fUsuario.exists()) {
 						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
 						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
 						existencia = true;
