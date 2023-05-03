@@ -1939,113 +1939,7 @@ public final class Main {
 			}	
 		}
 	}		
-	
-	// GUARDAR OBJETOS INDIVIDUALES EN EL MAIN
-	static void guardarObjetosIndividuales() throws ParseException {
-		//Guardar objetos individuales
-		while(true) {
-			System.out.println("Bienvenido a la Base de Datos...");
-			System.out.println("Seleccione el objeto que quiere guardar: ");
-			
-			for(int i = 1; i < listaObjetos.size() + 1; i++) {
-				System.out.println(i + ". " + listaObjetos.get(i-1));
-			}
-			
-			System.out.println("7. Volver al menú anterior");
-			
-			int objeto_op = Integer.parseInt(sc.nextLine());
-			if(objeto_op == 7){	
-				Main.bienvenidaApp();
-				break;
-			} else if (objeto_op < 1 || objeto_op > 7) {
-				System.out.println("Entrada no valida");
-				continue;				
-			}else {
-				System.out.println("");
-				System.out.println("Seleccione una de las opciones: ");
-				System.out.println("1. Guardar objetos individuales. "
-						+ "\n2. Guardar listas con objetos.");
-				int serializarOpcion = Integer.parseInt(sc.nextLine());
-				
-				String objeto_nombre = listaObjetos.get(objeto_op - 1);
-				
-				if(objeto_nombre.equals("Usuarios")) {
-					if(serializarOpcion == 1) {
-						Main.verUsuariosTotales();
-						System.out.print("Inserte el número del Usuario que desea guardar: ");
-						int opcionUsuario = Integer.parseInt(sc.nextLine());
-						Usuario usuarioGuardar = Usuario.getUsuariosTotales().get(opcionUsuario - 1);
-						System.out.println(Serializador.serializar(usuarioGuardar));
-						break;
-					}else {
-						System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), objeto_nombre));
-						break;
-					}
-				}else if(objeto_nombre.equals("Bancos")) {
-					if(serializarOpcion == 1) {
-						Main.verBancosTotales();
-						System.out.print("Inserte el número del Banco que desea guardar: ");
-						int opcionBanco = Integer.parseInt(sc.nextLine());
-						Banco bancoGuardar = Banco.getBancosTotales().get(opcionBanco - 1);
-						System.out.println(Serializador.serializar(bancoGuardar));
-						break;
-					}else {
-						System.out.println(Serializador.serializar(Banco.getBancosTotales(), objeto_nombre));
-						break;
-					}
-				}else if (objeto_nombre.equals("Movimientos")) {
-					if(serializarOpcion == 1) {
-						Main.verMovimientosTotales();
-						System.out.print("Inserte el número del Movimiento que desea guardar: ");
-						int opcionMovimiento = Integer.parseInt(sc.nextLine());
-						Movimientos movimientoGuardar = Movimientos.getMovimientosTotales().get(opcionMovimiento - 1);
-						System.out.println(Serializador.serializar(movimientoGuardar));
-						break;
-					}else {
-						System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), objeto_nombre));
-						break;
-					}
-				}else if (objeto_nombre.equals("Cuentas")) {
-					if(serializarOpcion == 1) {
-						Main.verCuentasTotales();
-						System.out.print("Inserte el número de la Cuenta que desea guardar: ");
-						int opcionCuenta = Integer.parseInt(sc.nextLine());
-						Cuenta cuentaGuardar = Cuenta.getCuentasTotales().get(opcionCuenta - 1);
-						System.out.println(Serializador.serializar(cuentaGuardar));
-						break;
-					}else {
-						System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), objeto_nombre));
-						break;
-					}
-				}else if (objeto_nombre.equals("Estados")) {
-					if(serializarOpcion == 1) {
-						Main.verEstadosTotales();
-						System.out.print("Inserte el número del Estado que desea guardar: ");
-						int opcionEstado = Integer.parseInt(sc.nextLine());
-						Estado estadoGuardar = Estado.getEstadosTotales().get(opcionEstado - 1);
-						System.out.println(Serializador.serializar(estadoGuardar));
-						break;
-					}else {
-						System.out.println(Serializador.serializar(Estado.getEstadosTotales(), objeto_nombre));
-						break;
-					}
-				}else if (objeto_nombre.equals("Metas")) {
-					if(serializarOpcion == 1) {
-						Main.verMetasTotales();
-						System.out.print("Inserte el número de la Meta que desea guardar: ");
-						int opcionMeta = Integer.parseInt(sc.nextLine());
-						Metas metaGuardar = Metas.getMetasTotales().get(opcionMeta - 1);
-						System.out.println(Serializador.serializar(metaGuardar));
-						break;
-					}else {
-						System.out.println(Serializador.serializar(Metas.getMetasTotales(), objeto_nombre));
-						break;
-					}
-				}
-			}
-		}
-	}
-	
+
 	// GUARDAR OBJETOS EN EL MAIN
 	static void guardarObjetos() throws ParseException{
 		System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
@@ -2083,10 +1977,11 @@ public final class Main {
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
 	static void cargarObjetos() throws ParseException{
-			System.out.println("Comenzando ejecución del programa....");	
-			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
-			String confirmacion = sc.nextLine();
+		System.out.println("Comenzando ejecución del programa....");	
+		System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+		String confirmacion = sc.nextLine();
 
+<<<<<<< HEAD
 			while(true){
 				File f = new File("");
 				File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
@@ -2157,129 +2052,66 @@ public final class Main {
 						}	
 					}
 					break;
+=======
+		while(true){
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				File f = new File("");
+				File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
+				if (fUsuario.exists()) {
+					ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
+					System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+					existencia = true;
 				}
-				else {
-					System.out.println("Opción no válida");
-					System.out.println("NOTA: Solo se recibe como respuesta Y o N");
-					System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
-					confirmacion = sc.nextLine();
-				}		
-			}
-			System.out.println("");
-	}
-	
-	// CARGAR OBJETOS INDIVIDUALES EN EL MAIN
-	static void cargarObjetosIndividuales() throws ParseException {
-		//Cargar objetos individuales
-		while(true) {
-			System.out.println("Bienvenido a la Base de Datos...");
-			System.out.println("Seleccione el objeto que quiere cargar: ");
-			
-			for(int i = 1; i < listaObjetos.size() + 1; i++) {
-				System.out.println(i + ". " + listaObjetos.get(i-1));
-			}
-			
-			System.out.println("7. Volver al menú anterior");
-			
-			int objeto_op = Integer.parseInt(sc.nextLine());
-			if(objeto_op == 7){	
-				Main.bienvenidaApp();
+				File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
+				if (fEstado.exists()) {
+					ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
+					System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
+				if (fBanco.exists()) {
+					ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
+					System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+					existencia = true;
+					}
+				File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
+				if (fMovimientos.exists()) {
+					ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
+					System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");;
+				if (fMetas.exists()) {
+					ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
+					System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
+				if (fCuenta.exists()) {
+					ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
+					System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				if (!existencia) {
+					System.out.println("No existe un estado previo del sistema guardado");
+>>>>>>> 260622ab10d8869fee90dd19860ac7a23e6a30d6
+				}
 				break;
-			} else if (objeto_op < 1 || objeto_op > 7) {
-				System.out.println("Entrada no valida");
-				continue;				
-			}else {
-				System.out.println("");
-				System.out.println("Seleccione una de las opciones: ");
-				System.out.println("1. Cargar objetos individuales. "
-						+ "\n2. Cargar listas con objetos.");
-				int serializarOpcion = Integer.parseInt(sc.nextLine());
-				
-				String objeto_nombre = listaObjetos.get(objeto_op - 1);
-				
-				if(objeto_nombre.equals("Usuarios")) {
-					if(serializarOpcion == 1) {
-						Usuario u = (Usuario) Deserializador.deserializar(objeto_nombre);
-						System.out.println("El Usuario con nombre " + u.getNombre() + " ha sido cargado con éxito en el sistema.");
-						break;
-					}else {
-						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas(objeto_nombre);
-						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
-						for(Usuario u : usuariosDeserializados) {
-							System.out.println("El Usuario con nombre " + u.getNombre() + " ha sido cargado con éxito en el sistema.");
-						}
-						break;
-					}
-				}else if(objeto_nombre.equals("Bancos")) {
-					if(serializarOpcion == 1) {
-						Banco b = (Banco) Deserializador.deserializar(objeto_nombre);
-						System.out.println("El Banco con nombre " + b.getNombre() + " ha sido cargado con éxito en el sistema.");
-						break;
-					}else {
-						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas(objeto_nombre);
-						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
-						for(Banco b : bancosDeserializados) {
-							System.out.println("El Banco con nombre " + b.getNombre() + " ha sido cargado con éxito en el sistema.");
-						}
-						break;
-					}
-				}else if (objeto_nombre.equals("Movimientos")) {
-					if(serializarOpcion == 1) {
-						Movimientos m = (Movimientos) Deserializador.deserializar(objeto_nombre);
-						System.out.println("El Movimiento con id " + m.getId() + " ha sido cargado con éxito en el sistema.");
-						break;
-					}else {
-						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas(objeto_nombre);
-						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
-						for(Movimientos m : movimientosDeserializados) {
-							System.out.println("El Movimiento con id " + m.getId() + " ha sido cargado con éxito en el sistema.");
-						}
-						break;
-					}
-				}else if (objeto_nombre.equals("Cuentas")) {
-					if(serializarOpcion == 1) {
-						Cuenta c = (Cuenta) Deserializador.deserializar(objeto_nombre);
-						System.out.println("La Cuenta con nombre " + c.getNombre() + " ha sido cargada con éxito en el sistema.");
-						break;
-					}else {
-						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas(objeto_nombre);
-						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
-						for(Cuenta c : cuentasDeserializados) {
-							System.out.println("La Cuenta con nombre " + c.getNombre() + " ha sido cargada con éxito en el sistema.");
-						}
-						break;
-					}
-				}else if (objeto_nombre.equals("Estados")) {
-					if(serializarOpcion == 1) {
-						Estado e = (Estado) Deserializador.deserializar(objeto_nombre);
-						System.out.println("El Estado con nombre " + e.getNombre() + " ha sido cargado con éxito en el sistema.");
-						break;
-					}else {
-						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas(objeto_nombre);
-						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
-						for(Estado e : estadosDeserializados) {
-							System.out.println("El Estado con nombre " + e.getNombre() + " ha sido cargado con éxito en el sistema.");
-						}
-						break;
-					}
-				}else if (objeto_nombre.equals("Metas")) {
-					if(serializarOpcion == 1) {
-						Metas m = (Metas) Deserializador.deserializar(objeto_nombre);
-						System.out.println("La Meta con nombre " + m.getNombre() + " ha sido cargado con éxito en el sistema.");
-						break;
-					}else {
-						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas(objeto_nombre);
-						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
-						for(Metas e : metasDeserializados) {
-							System.out.println("La Meta con nombre " + e.getNombre() + " ha sido cargado con éxito en el sistema.");
-						}
-						break;
-					}
-				}
+					
 			}
+			else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+				break;
+			}
+			else {
+				System.out.println("Opción no válida");
+				System.out.println("NOTA: Solo se recibe como respuesta Y o N");
+				System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+				confirmacion = sc.nextLine();
+			}		
 		}
+		System.out.println("");
 	}
-	
+
 	// ASOCIAR CUENTA A USUARIO EN EL MAIN
 	static void asociarCuentaUsuario(Cuenta cuenta) {
 		System.out.println(user.asociarCuenta(cuenta));
@@ -2300,9 +2132,7 @@ public final class Main {
 					+ "\n1. Ingresar Usuario"
 					+ "\n2. Crear Usuario"
 					+ "\n3. Acceso Administrativo"
-					+ "\n4. Guardar Objetos"
-					+ "\n5. Cargar Objetos"
-					+ "\n6. Cerrar Programa");
+					+ "\n4. Cerrar Programa");
 				
 			seguir = 1;
 			opcionUsuario = Integer.parseInt(sc.nextLine());
@@ -2320,16 +2150,8 @@ public final class Main {
 				} else if(opcionUsuario == 3){
 					Main.accesoAdministrativo();
 					System.out.println("");
-	
-				} else if(opcionUsuario == 4){
-					Main.guardarObjetos();
-					System.out.println("");
-	
-				} else if(opcionUsuario == 5){
-					Main.cargarObjetos();
-					System.out.println("");
 
-				} else if(opcionUsuario == 6){
+				} else if(opcionUsuario == 4){
 					Main.guardarObjetos();
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 					seguir = 0;
@@ -2342,9 +2164,7 @@ public final class Main {
 							+ "\n1. Ingresar Usuario"
 							+ "\n2. Crear Usuario"
 							+ "\n3. Acceso Administrativo"
-							+ "\n4. Guardar Objetos"
-							+ "\n5. Cargar Objetos"
-							+ "\n6. Cerrar Programa");
+							+ "\n4. Cerrar Programa");
 						
 					opcionUsuario = Integer.parseInt(sc.nextLine());
 				}
