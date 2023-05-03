@@ -238,7 +238,6 @@ public class Movimientos implements Serializable{
 //				Crear eliminar Deuda Ligadura Dinamica
 				Deuda.getDeudasTotales().remove(deuda);
 				deuda = null;
-				System.gc();
 				return "";
 			}else{
 				deuda.setCantidad(deuda.getCantidad()-cantidad);

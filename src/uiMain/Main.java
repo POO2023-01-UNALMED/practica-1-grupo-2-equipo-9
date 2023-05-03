@@ -33,7 +33,6 @@ public final class Main {
 		String c = sc.nextLine();
 		switch (c){
 			case "1":
-
 				ArrayList prestamo;
 				prestamo = usu.comprobarConfiabilidad();
 				if(prestamo.get(0) instanceof Ahorros){
@@ -55,7 +54,7 @@ public final class Main {
 						if(opcion==prestamo.size()){
 							return;
 						}else{
-//					encaso de que seleccione una de las cuentas
+//					en caso de que seleccione una de las cuentas
 							Ahorros cuenta = (Ahorros) prestamo.get(opcion);
 							double maxPrestamo = cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getLimiteCuentas();
 							System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $"+maxPrestamo);
@@ -106,7 +105,6 @@ public final class Main {
 		}
 
 	}
-
 	
 	// CREAR UNA META EN EL MAIN
 	static void crearMeta() throws ParseException {
@@ -2021,11 +2019,12 @@ public final class Main {
 
 			while(true){
 				File f = new File("");
-				File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
-				File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
+				File fUsuario = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
+				File fEstado = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
 				File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
 				File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
 				File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");
+				
 				File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 					if (fUsuario.exists()) {
@@ -2066,11 +2065,12 @@ public final class Main {
 				}
 				else if(confirmacion.equals("N") || confirmacion.equals("n")) {
 					System.out.println("Nota: tenga en cuenta que al hacerlo se borrarán los objetos que haya guardados");
-					System.out.print("Proseguir (Y/N):");
+					System.out.print("Proseguir (Y/N): ");
 					String reconfirmacion = sc.nextLine();
-					if(reconfirmacion.equals("Y") || confirmacion.equals("y")) {
+					if(reconfirmacion.equals("Y") || reconfirmacion.equals("y")) {
 						if (fUsuario.exists()) {
 							fUsuario.delete();
+							
 						}
 						if (fEstado.exists()) {
 							fEstado.delete();
