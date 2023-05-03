@@ -9,6 +9,7 @@ public enum Categoria {
     SALUD,
     REGALOS,
     FINANZAS,
+	PRESTAMO,
     OTROS;
 	
 	public static ArrayList<Categoria> getCategorias() {

@@ -3,23 +3,21 @@ import gestorAplicación.externo.Banco;
 
 import java.util.ArrayList;
 
-public class Deuda {
+public class Deuda extends Metas{
 //  Atributos
     public static final String nombreD = "Deudas";
     private static final long serialVersionUID = 6L;
     private int id;
     private double cantidad;
     private Ahorros cuenta;
-    private Usuario titular;
     private Banco banco;
     private static ArrayList<Deuda> deudasTotales = new ArrayList<>();
 
     //	Constructor
-    public Deuda(double cantidad, Ahorros cuenta, Usuario titular, Banco banco){
+    public Deuda(double cantidad, Ahorros cuenta, Usuario dueno, Banco banco){
+        super(cantidad,dueno);
         this.id = deudasTotales.size();
-        this.cantidad = cantidad;
         this.cuenta = cuenta;
-        this.titular = titular;
         this.banco = banco;
     }
 
@@ -64,11 +62,32 @@ public class Deuda {
     }
 
     public Usuario getTitular() {
-        return titular;
+        return dueno;
     }
 
     public void setTitular(Usuario titular) {
-        this.titular = titular;
+        this.dueno = titular;
+    }
+
+    //	Conseguir deudas
+    public static ArrayList<?> conseguirDeudas(Usuario usuario){
+        ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
+        ArrayList<Deuda> deudasUsuario = Deuda.getDeudasTotales();
+        for(int i =0; i<deudas.size();i++){
+            if(deudas.get(i).getTitular()==usuario){
+                deudasUsuario.add(deudas.get(i));
+            }
+        }
+        return deudasUsuario;
+    }
+
+    @Override
+    public void finalize(){
+        Cuenta cuenta = this.getCuenta();
+        Banco banco = this.getBanco();
+        int id = this.getId();
+        System.out.println("La deduda con id"+id+" de la cuenta"+cuenta+"realizada con el banco"+banco+
+                "ha sido PAGADA EXITOSAMENTE");
     }
 
 }

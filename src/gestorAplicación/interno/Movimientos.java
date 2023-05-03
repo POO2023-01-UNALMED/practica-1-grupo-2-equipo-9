@@ -225,8 +225,23 @@ public class Movimientos implements Serializable{
 			// Creamos instancia de la clase deuda
 			Deuda deuda = new Deuda(cantidad, cuenta, titular, banco);
 			// Agrega el dinero a la cuenta
-			cuenta.setSaldo(cuenta.getSaldo() + cantidad);
+			Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,Date.from(Instant.now()));
 			return true;
+		}
+	}
+
+	public static String pagarDeuda(Usuario usuario,Metas deuda,Double cantidad){
+		if(deuda.getCantidad()<cantidad){
+			return "¡Error! Seleccione una cantidad adecuada";
+		}else{
+			if (deuda.getCantidad()==cantidad){
+//				Crear eliminar Deuda Ligadura Dinamica
+				deuda.finalize();
+				return "";
+			}else{
+				deuda.setCantidad(deuda.getCantidad()-cantidad);
+				return "Su deuda se redujo EXITOSAMENTE";
+			}
 		}
 	}
 	

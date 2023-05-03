@@ -14,6 +14,7 @@ import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
+import gestorAplicación.interno.Deuda;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -26,52 +27,86 @@ public final class Main {
 	// FUNCIONALIDAD DE PRESTAMO 
 	private static void funcionalidadPrestamo(Usuario usu){
 		System.out.println("Bienvenido a Prestamos");
-		ArrayList prestamo = usu.comprobarConfiabilidad(usu);
-		if(prestamo.get(0) instanceof Ahorros){
-			// Si tiene cuentas entonces vamos a comprar cuanto dieron prestan los bancos de las cuentas y mostrale al usuario
-			prestamo = Ahorros.comprobarPrestamo(prestamo);
-			if(prestamo.get(0) instanceof Ahorros){
-				System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
-				for(int i=0;i<prestamo.size();i++){
-					Ahorros cuenta = (Ahorros) prestamo.get(i);
-					System.out.println(i+"-Cuenta: "+ cuenta.getNombre()+" Maximo a prestar:"+cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getPorcentajePrestamo());
-				}
-				System.out.println(prestamo.size()+"-Salir al Menú");
-				System.out.println("Seleccione una:");
+		System.out.println("1-Pedir Prestamo");
+		System.out.println("2-Pagar Prestamo");
+		System.out.println("3-Salir al menu");
+		String c = sc.nextLine();
+		switch (c){
+			case "1":
+
+				ArrayList prestamo;
+				prestamo = usu.comprobarConfiabilidad();
+				if(prestamo.get(0) instanceof Ahorros){
+					// Si tiene cuentas entonces vamos a comprar cuanto dieron prestan los bancos de las cuentas y mostrale al usuario
+					prestamo = Ahorros.comprobarPrestamo(prestamo);
+					if(prestamo.get(0) instanceof Ahorros){
+						System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
+						for(int i=0;i<prestamo.size();i++){
+							Ahorros cuenta = (Ahorros) prestamo.get(i);
+							System.out.println(i+"-Cuenta: "+ cuenta.getNombre()+" Maximo a prestar:"+cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getPorcentajePrestamo());
+						}
+						System.out.println(prestamo.size()+"-Salir al Menú");
+						System.out.println("Seleccione una:");
 //				recibe la opccion del usuario
-				int opcion = Integer.parseInt(sc.nextLine());
-				System.out.println("");
+						int opcion = Integer.parseInt(sc.nextLine());
+						System.out.println("");
 
 //				En caso de que desee salir se sale,
-				if(opcion==prestamo.size()){
-					return;
-				}else{
+						if(opcion==prestamo.size()){
+							return;
+						}else{
 //					encaso de que seleccione una de las cuentas
-					Ahorros cuenta = (Ahorros) prestamo.get(opcion);
-					double maxPrestamo = cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getLimiteCuentas();
-					System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $"+maxPrestamo);
-					maxPrestamo = Double.parseDouble(sc.nextLine());
-					Boolean exito = Movimientos.realizarPrestamo(cuenta,maxPrestamo);
-					if(exito){
-						System.out.println("|----------------------------------|\n\nPrestamo Realizado con Exito\n\n|----------------------------------|\n\n");
+							Ahorros cuenta = (Ahorros) prestamo.get(opcion);
+							double maxPrestamo = cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getLimiteCuentas();
+							System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $"+maxPrestamo);
+							maxPrestamo = Double.parseDouble(sc.nextLine());
+							Boolean exito = Movimientos.realizarPrestamo(cuenta,maxPrestamo);
+							if(exito){
+								System.out.println("|----------------------------------|\n\n    Prestamo Realizado con Exito\n\n|----------------------------------|\n\n");
+							}else{
+								System.out.println("Por favor seleccione una cantidad adecuada");
+								funcionalidadPrestamo(usu);
+							}
+						}
+
+
 					}else{
-						System.out.println("|----------------------------------|\n\nPor favor seleccione una cantidad adecuada\n\n|----------------------------------|\n\n");
-						funcionalidadPrestamo(usu);
+						System.out.println("Los bancos de sus cuentas no realizan prestamos");
+						return;
 					}
+				}else{
+					for(int i = 0;i<prestamo.size();i++){
+						System.out.println(prestamo.get(i));
+					}
+					return ;
 				}
+			//PAGAR PRESTAMO
+			case "2":
+				ArrayList<Deuda> deudas = (ArrayList<Deuda>) Deuda.conseguirDeudas(usu);
+				if(deudas.size()!=0){
+					for(int i=0;i<deudas.size();i++){
+						System.out.println(i+"-Deuda con id"+deudas.get(i).getId()+"efectuada por el banco"+deudas.get(i).getBanco()+" en la cuenta"+deudas.get(i).getCuenta()+"por una cantidad de"+deudas.get(i).getCantidad());
+					}
+					int seleccion = Integer.parseInt(sc.nextLine());
+					System.out.println("");
+					System.out.println("Ingresa la cantidad que desea pagar $:");
+					double cantidad = Double.parseDouble(sc.nextLine());
+					System.out.println("");
+					System.out.println(
+							Movimientos.pagarDeuda(usu,deudas.get(seleccion),cantidad)
+					);
 
-
-			}else{
-				System.out.println("|----------------------------------|\n\nLos bancos de sus cuentas no realizan prestamos\n\n|----------------------------------|\n\n");
+				}else{
+					System.out.println("Usted no tiene deudas por pagar");
+					return;
+				}
+			default:
 				return;
-			}
-		}else{
-			for(int i = 0;i<prestamo.size();i++){
-				System.out.println(prestamo.get(i));
-			}
-			return ;
+
 		}
+
 	}
+
 	
 	// CREAR UNA META EN EL MAIN
 	static void crearMeta() throws ParseException {

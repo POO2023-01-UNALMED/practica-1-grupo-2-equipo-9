@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
+import gestorAplicación.interno.Deuda;
 
 public class Usuario implements Serializable {
 	//Atributos
@@ -171,46 +172,38 @@ public class Usuario implements Serializable {
 	}
 
 	//    Funcionalidad Prestamos
-	public ArrayList comprobarConfiabilidad(Usuario usuario){
+	public ArrayList comprobarConfiabilidad(){
 		//Deserializacion de las cuentas
 		ArrayList<Ahorros> cuentas = (ArrayList<Ahorros>) Deserializador.deserializar_listas("Ahorros");
 		ArrayList<Ahorros> cuentasUsuario = new ArrayList<>();
 		ArrayList<String> cadena = new ArrayList<>();
 
 		for(int i = 0; i<cuentas.size();i++){
-			if(cuentas.get(i).getTitular()==usuario){
+			if(cuentas.get(i).getTitular()==this){
 				cuentasUsuario.add(cuentas.get(i));
 			}
 		}
 //		Conseguimos la suscripciones y miramos las deudas
 		Suscripcion suscripcion = getSuscripcion();
-		ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
 //		comprobamos y contamos las deudas que estan asociadas al usuario
-		int totalDeudas=0;
-		ArrayList<Deuda> deudasUsuario = new ArrayList<>();
-
-		for(int i=0;i<deudas.size();i++){
-			if(deudas.get(i).getTitular() == usuario){
-				totalDeudas++;
-				deudasUsuario.add(deudas.get(i));
-			}
-		}
+		ArrayList<Deuda> deudasUsuario = (ArrayList<Deuda>) Deuda.conseguirDeudas(this);
 //		returns
-		if(totalDeudas<suscripcion.getMaxDeudas()){
+		if(deudasUsuario.size()<suscripcion.getMaxDeudas()){
 			if(cuentasUsuario.size()!=0){
 				return cuentasUsuario;
 			}else{
 				cadena.add("¡Error! Usted no tiene ninguna cuenta Corriente creada");
 			}
 		}else{
-			cadena.add("¡Error! La suscripción"+usuario.getSuscripcion().name()+"solo permite realizar un total de"+usuario.getSuscripcion().getMaxDeudas()+". Usted tiene"+usuario.getSuscripcion().getMaxDeudas()+"/"+usuario.getSuscripcion().getMaxDeudas()+"Deudas");
+			cadena.add("¡Error! La suscripción"+this.getSuscripcion().name()+"solo permite realizar un total de"+this.getSuscripcion().getMaxDeudas()+". Usted tiene"+this.getSuscripcion().getMaxDeudas()+"/"+this.getSuscripcion().getMaxDeudas()+"Deudas");
 //			Agrega a cadena todas las cuentas del usuario para mostrarselas
 			for(int i =0;i<deudasUsuario.size();i++){
-				cadena.add("1-Deuda con id"+deudasUsuario.get(i).getId()+"efectuada por el banco"+deudasUsuario.get(i).getBanco()+" en la cuenta"+deudasUsuario.get(i).getCuenta()+"por una cantidad de"+deudasUsuario.get(i).getCantidad());
+				cadena.add(i+"-Deuda con id"+deudasUsuario.get(i).getId()+"efectuada por el banco"+deudasUsuario.get(i).getBanco()+" en la cuenta"+deudasUsuario.get(i).getCuenta()+"por una cantidad de"+deudasUsuario.get(i).getCantidad());
 			}
 		}
 		return cadena;
 	}
+
 
 	//Funcionalidad Compra Cartera
 	public ArrayList<Corriente> retornarDeudas(){

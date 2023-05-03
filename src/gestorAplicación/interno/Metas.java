@@ -13,13 +13,13 @@ public class Metas implements Serializable {
 	private static final long serialVersionUID = 5L;
 	public static final String nombreD = "Metas";
 	public String nombre;
-	private double cantidad;
+	protected double cantidad;
 	private Date fecha;
 	public int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 	private static ArrayList<Metas> metasTotales = new ArrayList<Metas>();
 	private ArrayList<Metas> metasTotalesAux = new ArrayList<Metas>();
-	private Usuario dueno;
+	protected Usuario dueno;
 
 	// FUNCIONALIDAD
 	public static Metas metaProxima;
@@ -35,6 +35,11 @@ public class Metas implements Serializable {
 		id++;
 	}
 
+	//	Este constructor es el que hereda deuda
+	public Metas(double cantidad,Usuario dueno){
+		this.cantidad = cantidad;
+		this.dueno = dueno;
+	}
 	public Metas(String nombre, double cantidad, int id) {
 		this.setId(id);
 		this.nombre = nombre;

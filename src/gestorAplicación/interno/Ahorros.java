@@ -109,7 +109,6 @@ public class Ahorros extends Cuenta{
 			Double prestamo = cuentas.get(i).getBanco().getPrestamo();
 			if(prestamo>0){
 				cuentasPrestamo.add(cuentas.get(i));
-
 			}else{
 				bancos.add(cuentas.get(i).getBanco().getNombre());
 			}
