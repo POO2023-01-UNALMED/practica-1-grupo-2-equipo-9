@@ -15,6 +15,7 @@ public class Banco extends Estado {
 	private static final long serialVersionUID = 2L;
 	private static ArrayList<Banco> bancosTotales = new ArrayList<Banco>();
 	public static final String nombreD = "Bancos";
+	private ArrayList<Banco> bancosTotalesAux = new ArrayList<Banco>();
 	private String nombre;
 	private double comision;
 	private Divisas divisa;
@@ -395,5 +396,13 @@ public class Banco extends Estado {
 	
 	public String toString() {
 		return this.nombre;
+	}
+
+	public ArrayList<Banco> getBancosTotalesAux() {
+		return bancosTotalesAux;
+	}
+
+	public void setBancosTotalesAux(ArrayList<Banco> bancosTotalesAux) {
+		this.bancosTotalesAux = bancosTotalesAux;
 	}
 }

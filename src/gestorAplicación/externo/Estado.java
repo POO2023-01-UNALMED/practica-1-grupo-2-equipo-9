@@ -3,10 +3,13 @@ package gestorAplicación.externo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import gestorAplicación.interno.Usuario;
+
 public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static final String nombreD = "Estados";
 	private static ArrayList<Estado> estadosTotales = new ArrayList<Estado>();
+	private ArrayList<Estado> estadostotalesAux = new ArrayList<Estado>();
 	private String nombre;
 	private int id;
 	private double tasa_impuestos;
@@ -85,5 +88,12 @@ public class Estado implements Serializable {
 	public void setTasas_usura(double tasas_usura) {
 			this.tasas_usura = tasas_usura;
 		}
+	public ArrayList<Estado> getEstadostotalesAux() {
+		return estadostotalesAux;
+	}
+	public void setEstadostotalesAux(ArrayList<Estado> estadostotalesAux) {
+		this.estadostotalesAux = estadostotalesAux;
+	}
+
 	
 }

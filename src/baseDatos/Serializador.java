@@ -106,6 +106,8 @@ public class Serializador{
 					return("La lista de Usuarios no pudo ser guardada en el sistema: " + ex);
 				}	
 			case "Bancos":
+				ArrayList<Banco> b = (ArrayList<Banco>) objetos;
+				b.get(0).setBancosTotalesAux(Banco.getBancosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
@@ -116,6 +118,8 @@ public class Serializador{
 					return("La lista de Bancos no pudo ser guardada en el sistema: " + ex);
 				}
 			case "Estados":
+				ArrayList<Estado> e = (ArrayList<Estado>) objetos;
+				e.get(0).setEstadostotalesAux(Estado.getEstadosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat")));
@@ -126,6 +130,8 @@ public class Serializador{
 					return("La lista de Estados no pudo ser guardada en el sistema: " + ex);
 				}				
 			case "Cuentas":
+				ArrayList<Cuenta> c = (ArrayList<Cuenta>) objetos;
+				c.get(0).setCuentasTotalesAux(Cuenta.getCuentasTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat")));
@@ -136,6 +142,8 @@ public class Serializador{
 					return("La lista de Cuentas no pudo ser guardada en el sistema: " + ex);
 				}			
 			case "Movimientos":
+				ArrayList<Movimientos> m = (ArrayList<Movimientos>) objetos;
+				m.get(0).setMovimientosTotalesAux(Movimientos.getMovimientosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat")));
@@ -146,6 +154,8 @@ public class Serializador{
 					return("La lista de Movimientos no pudo ser guardada en el sistema: " + ex);
 				}				
 			case "Metas":
+				ArrayList<Metas> me = (ArrayList<Metas>) objetos;
+				me.get(0).setMetasTotalesAux(Metas.getMetasTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat")));
