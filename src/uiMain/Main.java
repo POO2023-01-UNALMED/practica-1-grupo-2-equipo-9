@@ -1292,6 +1292,9 @@ public final class Main {
 		System.out.print("Comisión que va a cobrar el banco (En formato double): ");
 		Double comision = Double.parseDouble(sc.nextLine());
 		
+		System.out.print("Cantidad de dinero que puede prestar el banco (En formato double): ");
+		Double prestamo = Double.parseDouble(sc.nextLine());
+		
 		while(true) {
 			if(Estado.getEstadosTotales().size() == 0) {
 				System.out.println("No hay estados registrados en el sistema. Primero debes crear un estado.");
@@ -1306,7 +1309,7 @@ public final class Main {
 				Estado estado_banco = Estado.getEstadosTotales().get(estado_op - 1);
 		
 				seguir = 0;
-				new Banco(nombreBanco, comision, estado_banco);	
+				new Banco(nombreBanco, comision, estado_banco, prestamo);	
 				System.out.println("Banco creado con éxito");
 				break;
 			}
@@ -2074,8 +2077,6 @@ public final class Main {
 	
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException {
-		Main.cargarObjetos();
-		
 		while(interfaz == 1) {
 			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
 			* ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
@@ -2318,7 +2319,6 @@ public final class Main {
 	}
 		
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
-	static ArrayList<Object> listaObjetos = new ArrayList<Object>();
 	static Usuario user = null;
 	static int seguir = 1;
 	static int opcionUsuario = 0;
@@ -2331,14 +2331,7 @@ public final class Main {
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{
-		
-		listaObjetos.add(Estado.class);
-		listaObjetos.add(Cuenta.class);
-		listaObjetos.add(Usuario.class);
-		listaObjetos.add(Banco.class);
-		listaObjetos.add(Movimientos.class);
-		listaObjetos.add(Metas.class);
-		
+		Main.cargarObjetos();
 		Main.bienvenidaApp();
 
 	}	

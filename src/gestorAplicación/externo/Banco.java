@@ -37,6 +37,15 @@ public class Banco extends Estado {
 		this.comision = comision + this.getTasa_impuestos();
 		bancosTotales.add(this);
 	}
+	
+	public Banco(String nombre, double comision, Estado estado, double prestamo) {
+		this.nombre = nombre;
+		this.setEstadoAsociado(estado);
+		this.comision = comision + this.getTasa_impuestos();
+		this.setPrestamo(prestamo);
+		bancosTotales.add(this);
+	}
+	
 	public Banco() {}
 	
 	//Métodos
@@ -322,6 +331,7 @@ public class Banco extends Estado {
 	public double getComision() {
 		return comision;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -337,12 +347,15 @@ public class Banco extends Estado {
 	public double getPrestamo(){return prestamo;}
 	
 	public Divisas getDivisa() { return divisa; }
+	
 	public boolean isAsociado() {
 		return asociado;
 	}
+	
 	public ArrayList<String> getDic() {
 		return dic;
 	}
+	
 	public ArrayList<Double> getCionario() {
 		return cionario;
 	}
@@ -353,6 +366,7 @@ public class Banco extends Estado {
 	public void setComision(double comision) {
 		this.comision = comision;
 	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -370,9 +384,11 @@ public class Banco extends Estado {
 	public void setAsociado(boolean asociado) {
 		this.asociado = asociado;
 	}
+	
 	public void setDic(ArrayList<String> dic) {
 		this.dic = dic;
 	}
+	
 	public void setCionario(ArrayList<Double> cionario) {
 		this.cionario = cionario;
 	}

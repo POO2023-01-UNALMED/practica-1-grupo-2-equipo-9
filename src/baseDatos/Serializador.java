@@ -95,10 +95,11 @@ public class Serializador{
 		switch(clase) {
 			case "Usuarios":
 				ArrayList<Usuario> u = (ArrayList<Usuario>) objetos;
+				u.get(0).setUsuariosTotalesAux(Usuario.getUsuariosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(u);
+					streamSalida.writeObject(objetos);
 					streamSalida.close();
 					return("La lista de Usuarios fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {

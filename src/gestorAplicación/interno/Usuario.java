@@ -8,15 +8,15 @@ import gestorAplicación.externo.Banco;
 public class Usuario implements Serializable {
 	//Atributos
 	//Funcionalidad de Suscripciones de Usuarios
+	private static final long serialVersionUID = 3L;
+	public static final String nombreD = "Usuarios";
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
 	
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
-	private static final long serialVersionUID = 3L;
-	public static final String nombreD = "Usuarios";
-
+	private ArrayList<Usuario> usuariosTotalesAux = new ArrayList<Usuario>();
 	private Suscripcion suscripcion;
 	private String nombre;
 	private String correo;
@@ -276,4 +276,6 @@ public class Usuario implements Serializable {
 	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
 	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}
 	public void setCuentasAhorrosAsociadas(ArrayList<Ahorros> cuentasAhorrosAsociadas) {CuentasAhorrosAsociadas = cuentasAhorrosAsociadas;}
+	public ArrayList<Usuario> getUsuariosTotalesAux() { return usuariosTotalesAux; }
+	public void setUsuariosTotalesAux(ArrayList<Usuario> usuariosTotalesAux) { this.usuariosTotalesAux = usuariosTotalesAux; }
 }

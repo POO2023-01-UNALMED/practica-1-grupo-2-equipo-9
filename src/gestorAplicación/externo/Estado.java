@@ -32,6 +32,7 @@ public class Estado implements Serializable {
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public double getTasa_impuestos() {
 		return tasa_impuestos;
 	}
@@ -44,6 +45,7 @@ public class Estado implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
 	public void setTasa_impuestos(double tasa_impuestos) {
 		this.tasa_impuestos = tasa_impuestos;
 	}
@@ -55,6 +57,7 @@ public class Estado implements Serializable {
 	public static ArrayList<Estado> getEstadosTotales() {
 		return estadosTotales;
 	}
+	
 	public static void setEstadosTotales(ArrayList<Estado> estadosTotales) {
 		Estado.estadosTotales = estadosTotales;
 	}
@@ -62,6 +65,7 @@ public class Estado implements Serializable {
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -69,6 +73,7 @@ public class Estado implements Serializable {
 	public double getInteres_bancario_corriente() {
 		return interes_bancario_corriente;
 	}
+	
 	public void setInteres_bancario_corriente(double interes_bancario_corriente) {
 		this.interes_bancario_corriente = interes_bancario_corriente;
 	}
@@ -76,8 +81,9 @@ public class Estado implements Serializable {
 	public double getTasas_usura() {
 		return tasas_usura;
 	}
+	
 	public void setTasas_usura(double tasas_usura) {
-		this.tasas_usura = tasas_usura;
-	}
-
+			this.tasas_usura = tasas_usura;
+		}
+	
 }

@@ -111,6 +111,7 @@ public class Deserializador {
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
 					ArrayList<Usuario> u = (ArrayList<Usuario>) streamEntrada.readObject();
+					Usuario.setUsuariosTotales(u.get(0).getUsuariosTotalesAux());
 					streamEntrada.close();
 					return u;
 			

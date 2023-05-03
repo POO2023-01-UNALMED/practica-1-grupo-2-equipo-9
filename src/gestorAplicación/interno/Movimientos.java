@@ -213,21 +213,20 @@ public class Movimientos implements Serializable{
 	}
 
 	//	Funcionalidad Prestamos
-	public static Boolean realizarPrestamo(Ahorros cuenta,double cantidad){
+	public static Boolean realizarPrestamo(Ahorros cuenta, double cantidad){
 		Banco banco = cuenta.getBanco();
 		Usuario titular = cuenta.getTitular();
-		double maxCantidad = banco.getPrestamo()*titular.getSuscripcion().getPorcentajePrestamo();
+		double maxCantidad = banco.getPrestamo() * titular.getSuscripcion().getPorcentajePrestamo();
 		//	Comprueba que la cantidad si sea la adecuada
-		if(cantidad>maxCantidad){
+		if(cantidad > maxCantidad){
 			return false;
 		}else{
-			//		Creamos instancia de la clase deuda
-			Deuda deuda = new Deuda(cantidad,cuenta,titular,banco);
-//		agrega el dinero a la cuenta
-			cuenta.setSaldo(cuenta.getSaldo()+cantidad);
+			// Creamos instancia de la clase deuda
+			Deuda deuda = new Deuda(cantidad, cuenta, titular, banco);
+			// Agrega el dinero a la cuenta
+			cuenta.setSaldo(cuenta.getSaldo() + cantidad);
 			return true;
 		}
-
 	}
 	
 	//Métodos para funcionalidad cambio de divisa
