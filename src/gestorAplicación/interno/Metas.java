@@ -36,10 +36,11 @@ public class Metas implements Serializable {
 	}
 
 	//	Este constructor es el que hereda deuda
-	public Metas(double cantidad,Usuario dueno){
+	public Metas(double cantidad, Usuario dueno){
 		this.cantidad = cantidad;
 		this.dueno = dueno;
 	}
+	
 	public Metas(String nombre, double cantidad, int id) {
 		this.setId(id);
 		this.nombre = nombre;
@@ -147,8 +148,7 @@ public class Metas implements Serializable {
 		double amount = this.getCantidad();
 		Date date = this.getFecha();
 		if (date == null) {
-			System.out
-					.print("La meta con nombre " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
+			System.out.print("La meta con nombre " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 		} else if (amount == 0) {
 			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
 					+ " fue eliminada satisfactoriamente del sistema.");

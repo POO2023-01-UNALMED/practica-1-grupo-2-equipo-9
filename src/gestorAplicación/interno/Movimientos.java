@@ -230,13 +230,15 @@ public class Movimientos implements Serializable{
 		}
 	}
 
-	public static String pagarDeuda(Usuario usuario,Metas deuda,Double cantidad){
+	public static String pagarDeuda(Usuario usuario, Metas deuda, Double cantidad){
 		if(deuda.getCantidad()<cantidad){
 			return "¡Error! Seleccione una cantidad adecuada";
 		}else{
 			if (deuda.getCantidad()==cantidad){
 //				Crear eliminar Deuda Ligadura Dinamica
-				deuda.finalize();
+				Deuda.getDeudasTotales().remove(deuda);
+				deuda = null;
+				System.gc();
 				return "";
 			}else{
 				deuda.setCantidad(deuda.getCantidad()-cantidad);

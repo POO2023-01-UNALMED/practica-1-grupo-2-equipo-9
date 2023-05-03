@@ -92,9 +92,9 @@ public final class Main {
 					System.out.println("Ingresa la cantidad que desea pagar $:");
 					double cantidad = Double.parseDouble(sc.nextLine());
 					System.out.println("");
-					System.out.println(
-							Movimientos.pagarDeuda(usu,deudas.get(seleccion),cantidad)
-					);
+					System.out.println(Movimientos.pagarDeuda(usu,deudas.get(seleccion),cantidad));
+					deudas.remove(deudas.get(seleccion));
+					System.gc();
 
 				}else{
 					System.out.println("Usted no tiene deudas por pagar");

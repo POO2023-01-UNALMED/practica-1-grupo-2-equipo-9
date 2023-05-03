@@ -13,7 +13,6 @@ public class Usuario implements Serializable {
 	public static final String nombreD = "Usuarios";
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
-	
 	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
