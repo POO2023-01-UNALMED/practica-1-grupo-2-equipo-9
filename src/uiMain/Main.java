@@ -2083,66 +2083,66 @@ public final class Main {
 	//CARGAR OBJETOS EN EL MAIN	
 	static boolean existencia = false;
 	static void cargarObjetos() throws ParseException{
-			System.out.println("Comenzando ejecución del programa....");	
-			System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
-			String confirmacion = sc.nextLine();
+		System.out.println("Comenzando ejecución del programa....");	
+		System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+		String confirmacion = sc.nextLine();
 
-			while(true){
-				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-					File f = new File("");
-					File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
-					if (fUsuario.exists()) {
-						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
-						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
-						existencia = true;
+		while(true){
+			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+				File f = new File("");
+				File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
+				if (fUsuario.exists()) {
+					ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
+					System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
+				if (fEstado.exists()) {
+					ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
+					System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
+				if (fBanco.exists()) {
+					ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
+					System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+					existencia = true;
 					}
-					File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
-					if (fEstado.exists()) {
-						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
-						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
-						existencia = true;
-					}
-					File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
-					if (fBanco.exists()) {
-						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
-						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
-						existencia = true;
-					}
-					File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
-					if (fMovimientos.exists()) {
-						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
-						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
-						existencia = true;
-					}
-					File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");;
-					if (fMetas.exists()) {
-						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
-						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
-						existencia = true;
-					}
-					File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
-					if (fCuenta.exists()) {
-						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
-						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
-						existencia = true;
-					}
-					if (!existencia) {
-						System.out.println("No existe un estado previo del sistema guardado");
-					}
-					break;
+				File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
+				if (fMovimientos.exists()) {
+					ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
+					System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");;
+				if (fMetas.exists()) {
+					ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
+					System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
+				if (fCuenta.exists()) {
+					ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
+					System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+					existencia = true;
+				}
+				if (!existencia) {
+					System.out.println("No existe un estado previo del sistema guardado");
+				}
+				break;
 					
-				}
-				else if(confirmacion.equals("N") || confirmacion.equals("n")) {
-					break;
-				}
-				else {
-					System.out.println("Opción no válida");
-					System.out.println("NOTA: Solo se recibe como respuesta Y o N");
-					System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
-					confirmacion = sc.nextLine();
-				}		
 			}
-			System.out.println("");
+			else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+				break;
+			}
+			else {
+				System.out.println("Opción no válida");
+				System.out.println("NOTA: Solo se recibe como respuesta Y o N");
+				System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+				confirmacion = sc.nextLine();
+			}		
+		}
+		System.out.println("");
 	}
 	
 	// CARGAR OBJETOS INDIVIDUALES EN EL MAIN
@@ -2277,9 +2277,7 @@ public final class Main {
 					+ "\n1. Ingresar Usuario"
 					+ "\n2. Crear Usuario"
 					+ "\n3. Acceso Administrativo"
-					+ "\n4. Guardar Objetos"
-					+ "\n5. Cargar Objetos"
-					+ "\n6. Cerrar Programa");
+					+ "\n4. Cerrar Programa");
 				
 			seguir = 1;
 			opcionUsuario = Integer.parseInt(sc.nextLine());
@@ -2297,16 +2295,8 @@ public final class Main {
 				} else if(opcionUsuario == 3){
 					Main.accesoAdministrativo();
 					System.out.println("");
-	
-				} else if(opcionUsuario == 4){
-					Main.guardarObjetos();
-					System.out.println("");
-	
-				} else if(opcionUsuario == 5){
-					Main.cargarObjetos();
-					System.out.println("");
 
-				} else if(opcionUsuario == 6){
+				} else if(opcionUsuario == 4){
 					Main.guardarObjetos();
 					System.out.println("Finalizando programa. Esperamos verte de nuevo pronto");
 					seguir = 0;
@@ -2319,9 +2309,7 @@ public final class Main {
 							+ "\n1. Ingresar Usuario"
 							+ "\n2. Crear Usuario"
 							+ "\n3. Acceso Administrativo"
-							+ "\n4. Guardar Objetos"
-							+ "\n5. Cargar Objetos"
-							+ "\n6. Cerrar Programa");
+							+ "\n4. Cerrar Programa");
 						
 					opcionUsuario = Integer.parseInt(sc.nextLine());
 				}
