@@ -2088,39 +2088,39 @@ public final class Main {
 			String confirmacion = sc.nextLine();
 
 			while(true){
+				File f = new File("");
+				File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
+				File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
+				File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
+				File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
+				File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");
+				File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-					File f = new File("");
-					File fUsuario =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
 					if (fUsuario.exists()) {
 						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
 						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
 						existencia = true;
 					}
-					File fEstado =new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat");
 					if (fEstado.exists()) {
 						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
 						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
 						existencia = true;
 					}
-					File fBanco = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat");
 					if (fBanco.exists()) {
 						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
 						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
 						existencia = true;
 					}
-					File fMovimientos = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat");
 					if (fMovimientos.exists()) {
 						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
 						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
 						existencia = true;
 					}
-					File fMetas = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat");;
 					if (fMetas.exists()) {
 						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
 						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
 						existencia = true;
 					}
-					File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 					if (fCuenta.exists()) {
 						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
 						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
@@ -2133,6 +2133,29 @@ public final class Main {
 					
 				}
 				else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+					System.out.println("Nota: tenga en cuenta que al hacerlo se borrarán los objetos que haya guardados");
+					System.out.print("No cargar de todas formas (Y/N):");
+					String reconfirmacion = sc.nextLine();
+					if(reconfirmacion.equals("Y") || confirmacion.equals("y")) {
+						if (fUsuario.exists()) {
+							fUsuario.delete();
+						}
+						if (fEstado.exists()) {
+							fEstado.delete();
+						}
+						if (fBanco.exists()) {
+							fBanco.delete();
+						}
+						if (fMovimientos.exists()) {
+							fMovimientos.delete();
+						}
+						if (fMetas.exists()) {
+							fMetas.delete();
+						}
+						if (fCuenta.exists()) {
+							fCuenta.delete();
+						}	
+					}
 					break;
 				}
 				else {
