@@ -123,8 +123,10 @@ public class Deserializador {
 			case "Estados":
 				try{
 					File f = new File("");
-					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat")));
+					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat"));
+					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
 					ArrayList<Estado> e = (ArrayList<Estado>) streamEntrada.readObject();
+					Estado.setEstadosTotales(e.get(0).getEstadostotalesAux());
 					streamEntrada.close();
 					return e;
 				
@@ -136,8 +138,10 @@ public class Deserializador {
 			case "Bancos":
 				try{
 					File f = new File("");
-					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
+					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat"));
+					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
 					ArrayList<Banco> b = (ArrayList<Banco>) streamEntrada.readObject();
+					Banco.setBancosTotales(b.get(0).getBancosTotalesAux());
 					streamEntrada.close();
 					return b;
 				
@@ -149,8 +153,10 @@ public class Deserializador {
 			case "Cuentas":
 				try{
 					File f = new File("");
-					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat")));
+					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat"));
+					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
 					ArrayList<Cuenta> c = (ArrayList<Cuenta>) streamEntrada.readObject();
+					Cuenta.setCuentasTotales(c.get(0).getCuentasTotalesAux());
 					streamEntrada.close();
 					return c;
 				
@@ -162,8 +168,10 @@ public class Deserializador {
 			case "Movimientos":
 				try{
 					File f = new File("");
-					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD  + "_lista" + ".dat")));
+					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat"));
+					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
 					ArrayList<Movimientos> m = (ArrayList<Movimientos>) streamEntrada.readObject();
+					Movimientos.setMovimientosTotales(m.get(0).getMovimientosTotalesAux());
 					streamEntrada.close();
 					return m;
 				
@@ -175,8 +183,10 @@ public class Deserializador {
 			case "Metas":
 				try{
 					File f = new File("");
-					ObjectInputStream streamEntrada = new ObjectInputStream(new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD  + "_lista" + ".dat")));
+					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat"));
+					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
 					ArrayList<Metas> me = (ArrayList<Metas>) streamEntrada.readObject();
+					Metas.setMetasTotales(me.get(0).getMetasTotalesAux());
 					streamEntrada.close();
 					return me;
 				
