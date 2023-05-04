@@ -247,7 +247,7 @@ public class Movimientos implements Serializable{
 	}
 	
 	//Métodos para funcionalidad cambio de divisa
-	public void facilitarInformación(Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion) {
+	public ArrayList<Banco> facilitarInformación(Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion) {
 		for (int i = 0; i < titular.getBancosAsociados().size() ; i++) {
 			//int totalOrigen=0;
 			titular.getBancosAsociados().get(i).setAsociado(true);
@@ -260,6 +260,7 @@ public class Movimientos implements Serializable{
 					existeCambio.add(Banco.getBancosTotales().get(j));
 			}
 		}
+		return existeCambio;
 	}
 
 	// Funcionalidad asesoramiento de inversión

@@ -13,7 +13,8 @@ public class Usuario implements Serializable {
 	public static final String nombreD = "Usuarios";
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
-	private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	//private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
 	private ArrayList<Usuario> usuariosTotalesAux = new ArrayList<Usuario>();
