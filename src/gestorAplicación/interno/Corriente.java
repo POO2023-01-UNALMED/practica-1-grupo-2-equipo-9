@@ -16,6 +16,8 @@ public class Corriente extends Cuenta{
 	private Cuotas plazo_Pago;
 	//Tasa efectiva anual
 	private double intereses;
+	//Atributo que decide pago de interes en primer mes
+	private boolean primerMensualidad;
 	private static ArrayList<Corriente> cuentasCorrienteTotales = new ArrayList<Corriente>();;
 	
 	
@@ -54,6 +56,30 @@ public class Corriente extends Cuenta{
 		cuotaMensual[1] = abono_capital;
 		double cuotaMensualFinal = interes + abono_capital;
 		cuotaMensual[2] = cuotaMensualFinal;
+		return cuotaMensual;
+	}
+	
+	public double[] retornoCuotaMensual(double DeudaActual, int mes) {
+		double[] cuotaMensual = new double[3];
+		double interes_nominal_mensual = Corriente.calculoInteresNominalMensual(this.getIntereses());
+		if(mes == 1) {
+			cuotaMensual[0] = 0;
+			double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+			cuotaMensual[1] = abono_capital;
+			double cuotaMensualFinal = abono_capital;
+			cuotaMensual[2] = cuotaMensualFinal;
+		}
+		else if(mes == 2){
+			double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+			double interes_mes1 = (interes_nominal_mensual / 100) * (abono_capital + DeudaActual);
+			double interes_mes2 = DeudaActual * (interes_nominal_mensual / 100);
+			double interes = interes_mes1 + interes_mes2;
+			cuotaMensual[0] = interes;
+			cuotaMensual[1] = abono_capital;
+			double cuotaMensualFinal = interes + abono_capital;
+			cuotaMensual[2] = cuotaMensualFinal;
+		}
+		
 		return cuotaMensual;
 	}
 	
@@ -146,7 +172,7 @@ public class Corriente extends Cuenta{
 	}
 	
 	public static double[] informacionAdicionalCalculadora (double[][] cuota, double deuda) {
-		double[] infoAdicional = new double[2];
+		double[] infoAdicional = new double[3];
 		double totalPagado = 0;
 		
 		for (int i = 0; i <= cuota.length; i++) {
@@ -157,6 +183,7 @@ public class Corriente extends Cuenta{
 		
 		infoAdicional[0] = totalPagado;
 		infoAdicional[1] = interesesPagados;
+		infoAdicional[2] = deuda;
 		
 		return infoAdicional;
 	}
@@ -205,6 +232,14 @@ public class Corriente extends Cuenta{
 		this.intereses = intereses;
 	}
 
+	public boolean getPrimerMensualidad() {
+		return primerMensualidad;
+	}
+	
+	public void setPrimerMensualidad(boolean primerMensualidad) {
+		this.primerMensualidad = primerMensualidad;
+	}
+	
 	public String toString() { 
 		return "Cuenta: " + this.nombre +
 				"\nCuenta Corriente # " + this.id +

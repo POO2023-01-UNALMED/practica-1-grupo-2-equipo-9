@@ -18,6 +18,7 @@ import gestorAplicación.interno.Deuda;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Scanner;
 import java.time.Instant;
@@ -886,6 +887,7 @@ public final class Main {
 	static void compraCartera(Usuario usuario) {
 		//Arreglo que almacena las cuentas con deuda alguna 
 		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
+		Collections.sort(cuentasEnDeuda);
 		//Comprobación de existencia de Deudas por parte del Usuario
 		if (cuentasEnDeuda.size() == 0) {
 			System.out.println("El usuario " + usuario.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
@@ -1064,16 +1066,68 @@ public final class Main {
 			}
 		}
 		
+		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
+				cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
+		
+		boolean validacionPagoPrimerMes = true;
+		int pagoPrimerMes = 0;
+		while(validacionPagoPrimerMes) {
+			System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
+					+ "deberá pagar su valor correspondiente."
+				+ "\n1. Sí"
+				+ "\n2. No");
+			pagoPrimerMes = Integer.parseInt(sc.nextLine());
+			if (pagoPrimerMes == 1 || pagoPrimerMes == 2) {
+				validacionPagoPrimerMes = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		double[] cuota;
+		if (pagoPrimerMes == 1) {
+			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
+			vistaPrevia.setPrimerMensualidad(true);
+		}
+		else {
+			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible(), 1);
+		}
+		
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
-		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
-															cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible(), 
-															tasacionCuentas.get(Cuenta_Destino - 1));
-		double[] cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
+		
 		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 		System.out.println(vistaPrevia);
-		System.out.println("Pago de cuota: ");
+		System.out.println("Primer Cuota: ");
 		System.out.println(cuotaMensual);
+		
+		boolean validacionCalculadora = true;
+		int decisionCalculadora = 0;
+		while(validacionCalculadora) {
+			System.out.println("¿Desea un resumen completo de las deudas a pagar?"
+					+ "\n1. Sí"
+					+ "\n2. No");
+			decisionCalculadora = Integer.parseInt(sc.nextLine());
+			if (decisionCalculadora == 1 || decisionCalculadora == 2) {
+				validacionCalculadora = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		if(decisionCalculadora == 1) {
+			double[][] cuotaCalculadora;
+			if(vistaPrevia.getPrimerMensualidad()) {
+				cuotaCalculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses());
+			}
+			else {
+				cuotaCalculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses(), true);
+			}
+			double[] infoAdicional = Corriente.informacionAdicionalCalculadora(cuotaCalculadora, vistaPrevia.getCupo() - vistaPrevia.getDisponible());
+			Main.calculadoraCuotas(cuotaCalculadora, infoAdicional);
+		}
 		
 		//Atributo de validacion de la entrada confirmacion Movimiento
 		boolean validacion_vistaPrevia = true;
@@ -1091,13 +1145,37 @@ public final class Main {
 			}
 		}
 		if (confirmacionMovimiento == 1) {
-			//Efectuación del movimiento...
-			
+			cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
 			return;
 		}
 		if (confirmacionMovimiento == 2) {
 			System.out.println("Movimiento cancelado.");
 			return;
+		}
+	}
+	
+	// CALCULADORA DE CUOTAS
+	static void calculadoraCuotas() {
+		
+	}
+	
+	// SOBRECARGA CALCULADORA DE CUOTAS (IMPRESIÓN)
+	static void calculadoraCuotas(double[][] cuotaCalculadora, double[] infoAdicional) {
+		System.out.println("Total pagado: " + infoAdicional[0]);
+		System.out.println("Intereses pagados: " + infoAdicional[1]);
+		
+		System.out.println("Mes 1:");
+		System.out.println("\tDeuda: " + infoAdicional[2]);
+		System.out.println("\tIntereses: " + cuotaCalculadora[0][0]);
+		System.out.println("\tCuota a pagar: " + cuotaCalculadora[0][1]);
+		System.out.println("\tSaldo restante: " + cuotaCalculadora[0][2]);
+		
+		for (int i = 2; i <= cuotaCalculadora.length + 1; i++) {
+			System.out.println("Mes " + i + ":");
+			System.out.println("\tDeuda: " + cuotaCalculadora[i - 1][2]);
+			System.out.println("\tIntereses: " + cuotaCalculadora[i][0]);
+			System.out.println("\tCuota a pagar: " + cuotaCalculadora[i][1]);
+			System.out.println("\tSaldo restante: " + cuotaCalculadora[i][2]);
 		}
 	}
 	
