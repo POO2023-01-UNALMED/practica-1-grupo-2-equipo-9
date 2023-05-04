@@ -26,7 +26,7 @@ import java.time.Instant;
 public final class Main {
 	
 	// FUNCIONALIDAD DE PRESTAMO 
-	private static void funcionalidadPrestamo(Usuario usu){
+	private static void funcionalidadPrestamo(Usuario usu) throws ParseException{
 		System.out.println("Bienvenido a Prestamos");
 		System.out.println("1-Pedir Prestamo");
 		System.out.println("2-Pagar Prestamo");
@@ -34,7 +34,7 @@ public final class Main {
 		String c = sc.nextLine();
 		switch (c){
 			case "1":
-				ArrayList prestamo;
+				ArrayList<?> prestamo;
 				prestamo = usu.comprobarConfiabilidad();
 				if(prestamo.get(0) instanceof Ahorros){
 					// Si tiene cuentas entonces vamos a comprar cuanto dieron prestan los bancos de las cuentas y mostrale al usuario
@@ -53,7 +53,7 @@ public final class Main {
 
 //				En caso de que desee salir se sale,
 						if(opcion==prestamo.size()){
-							return;
+							Main.bienvenidaApp();
 						}else{
 //					en caso de que seleccione una de las cuentas
 							Ahorros cuenta = (Ahorros) prestamo.get(opcion);
@@ -72,13 +72,13 @@ public final class Main {
 
 					}else{
 						System.out.println("Los bancos de sus cuentas no realizan prestamos");
-						return;
+						Main.bienvenidaApp();
 					}
 				}else{
 					for(int i = 0;i<prestamo.size();i++){
 						System.out.println(prestamo.get(i));
 					}
-					return ;
+					Main.bienvenidaApp();
 				}
 			//PAGAR PRESTAMO
 			case "2":
@@ -98,10 +98,10 @@ public final class Main {
 
 				}else{
 					System.out.println("Usted no tiene deudas por pagar");
-					return;
+					Main.bienvenidaApp();
 				}
-			default:
-				return;
+			case "3":
+				Main.bienvenidaApp();
 
 		}
 
