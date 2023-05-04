@@ -171,17 +171,11 @@ public class Usuario implements Serializable {
 	}
 
 	//    Funcionalidad Prestamos
-	public ArrayList comprobarConfiabilidad(){
+	public ArrayList<?> comprobarConfiabilidad(){
 		//Deserializacion de las cuentas
-		ArrayList<Ahorros> cuentas = (ArrayList<Ahorros>) Deserializador.deserializar_listas("Ahorros");
-		ArrayList<Ahorros> cuentasUsuario = new ArrayList<>();
+		ArrayList<Ahorros> cuentasUsuario = this.getCuentasAhorrosAsociadas();
 		ArrayList<String> cadena = new ArrayList<>();
 
-		for(int i = 0; i<cuentas.size();i++){
-			if(cuentas.get(i).getTitular()==this){
-				cuentasUsuario.add(cuentas.get(i));
-			}
-		}
 //		Conseguimos la suscripciones y miramos las deudas
 		Suscripcion suscripcion = getSuscripcion();
 //		comprobamos y contamos las deudas que estan asociadas al usuario
