@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-
 import gestorAplicación.externo.Estado;
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
