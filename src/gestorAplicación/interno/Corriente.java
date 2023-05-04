@@ -161,6 +161,18 @@ public class Corriente extends Cuenta{
 		return infoAdicional;
 	}
 	
+	public int compareTo(Corriente cuenta) {
+		if(this.getDisponible() > cuenta.getDisponible()) {
+			return 1;
+		}
+		else if(this.getDisponible() < cuenta.getDisponible()) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
 	public Double getCupo() {
 		return cupo;
 	}

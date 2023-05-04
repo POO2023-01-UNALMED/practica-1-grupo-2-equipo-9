@@ -75,6 +75,18 @@ public class Ahorros extends Cuenta{
 		this.getTitular().asociarMovimiento(movimiento);
 	}
 	
+	public int CompareTo(Ahorros cuenta) {
+		if(this.getSaldo() > cuenta.getSaldo()) {
+			return 1;
+		}
+		else if(this.getSaldo() < cuenta.getSaldo()) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
 	public String toString() {
 		return "Cuenta: " + super.nombre +
 				"\nCuenta de Ahorros # " + this.id +

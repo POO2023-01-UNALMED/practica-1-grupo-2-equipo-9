@@ -3,12 +3,11 @@ package gestorAplicación.interno;
 import java.util.ArrayList;
 import java.util.Date;
 import gestorAplicación.externo.Banco;
-import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 import java.io.Serializable;
 import java.time.Instant;
 
-public abstract class Cuenta implements Serializable{
+public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	//Atributos
 	private static final long serialVersionUID = 4L;
 	public static final String nombreD = "Cuentas";
@@ -83,6 +82,20 @@ public abstract class Cuenta implements Serializable{
 
 	// Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota);
+	
+	//Implementación de la interfaz Comparable
+	public int compareTo(Cuenta cuenta) {
+		if (this.getId() > cuenta.getId()) {
+			return 1;
+		}
+		else if(this.getId() < cuenta.getId()) {
+			return -1;
+		}
+		else {
+			return 0;
+		}
+	}
+	//Para ordenar cualquier arreglo de tipo Cuenta, se ordenará según el id de la cuenta y se hará con Collections.sort(nombre_lista);
 
 	@Override	
 	protected void finalize() {
