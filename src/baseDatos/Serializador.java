@@ -11,6 +11,7 @@ import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Usuario;
 import gestorAplicación.externo.Banco;
+//import gestorAplicación.interno.Usuario;
 
 public class Serializador{	
 	//Serializar objetos individuales
@@ -166,5 +167,10 @@ public class Serializador{
 			default:
 				return("Error de guardado: El objeto debe estar definido en el sistema.");
 		}
+	}
+	//Serializar atributos estáticos
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	    out.writeObject(Usuario.getUsuariosTotales());
 	}
 }
