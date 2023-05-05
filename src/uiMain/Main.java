@@ -1038,31 +1038,31 @@ public final class Main {
 			switch(seleccion_periodicidad) {
 				case 1:
 					eleccion_periodicidad = Cuotas.C1;
-					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 2:
 					eleccion_periodicidad = Cuotas.C6;
-					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 3:
 					eleccion_periodicidad = Cuotas.C12;
-					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 4:
 					eleccion_periodicidad = Cuotas.C18;
-					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 5:
 					eleccion_periodicidad = Cuotas.C24;
-					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 6:
 					eleccion_periodicidad = Cuotas.C36;
-					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 7:
 					eleccion_periodicidad = Cuotas.C48;
-					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + "cuotas.");
 					break;
 			}
 		}
@@ -1097,9 +1097,9 @@ public final class Main {
 		
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
-		
-		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 		System.out.println(vistaPrevia);
+		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
+		
 		System.out.println("Primer Cuota: ");
 		System.out.println(cuotaMensual);
 		
@@ -1146,7 +1146,7 @@ public final class Main {
 			}
 		}
 		if (confirmacionMovimiento == 1) {
-			cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
+			//cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
 			return;
 		}
 		if (confirmacionMovimiento == 2) {
