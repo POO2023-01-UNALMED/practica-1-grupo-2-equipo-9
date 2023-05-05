@@ -104,19 +104,13 @@ public class Banco extends Estado {
 	// Método funcionalidad Asesoramiento de inversiones
 	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
 
-		Ahorros cuentaAhorros = new Ahorros(user.getBancosAsociados().get(0), 1234, Divisas.COP, "Ahorros", 1.0);
-		Corriente cuentaCorriente = new Corriente(user.getBancosAsociados().get(0), 1234, Divisas.COP, "Corriente");
-		Usuario pepitoMaster1234 = new Usuario("pepito", "pepito", "pepito");
-		cuentaAhorros.setTitular(pepitoMaster1234);
-		cuentaCorriente.setTitular(pepitoMaster1234);
-
 		double interes = Math.random() + riesgo;
 		if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
 
 			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuentaAhorros, user.getCuentasAhorrosAsociadas().get(0), cobro,
+			double cobro = x - (x/32);
+			Movimientos movimiento = new Movimientos(user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasAhorrosAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
 			if (movimiento.impuestosMovimiento(interes)
@@ -144,8 +138,8 @@ public class Banco extends Estado {
 		else if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
 			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuentaAhorros, user.getCuentasAhorrosAsociadas().get(0), cobro,
+			double cobro = x - (x/32);
+			Movimientos movimiento = new Movimientos(user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasAhorrosAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
 			if (movimiento.impuestosMovimiento(interes)
@@ -173,8 +167,8 @@ public class Banco extends Estado {
 				&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
 
 			double x = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuentaCorriente, user.getCuentasCorrienteAsociadas().get(0), cobro,
+			double cobro = x - (x/32);
+			Movimientos movimiento = new Movimientos(user.getCuentasCorrienteAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasCorrienteAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
 			if (movimiento.impuestosMovimiento(interes)
@@ -201,8 +195,8 @@ public class Banco extends Estado {
 
 		else {
 			double x = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
-			double cobro = x * interes - x;
-			Movimientos movimiento = new Movimientos(cuentaCorriente, user.getCuentasCorrienteAsociadas().get(0), cobro,
+			double cobro = x - (x/32);
+			Movimientos movimiento = new Movimientos(user.getCuentasCorrienteAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasCorrienteAsociadas().get(0), cobro,
 					Categoria.OTROS, Date.from(Instant.now()));
 
 			if (movimiento.impuestosMovimiento(interes)

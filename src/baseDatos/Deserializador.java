@@ -102,17 +102,16 @@ public class Deserializador {
 	
 	//Deserializar Arraylists con objetos
 	@SuppressWarnings("unchecked")
-	public static Object deserializar_listas(String clase) {		
+	public static String deserializar_listas(String clase) {		
 		switch(clase) {
 			case "Usuarios":
 				try{
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
-					ArrayList<Usuario> u = (ArrayList<Usuario>) streamEntrada.readObject();
-					Usuario.setUsuariosTotales(u.get(0).getUsuariosTotalesAux());
+					Deserializador.readObject(streamEntrada, clase);
 					streamEntrada.close();
-					return u;
+					return ("Lista con " + Usuario.getUsuariosTotales().size() + " cargada con éxito");
 			
 				}catch(IOException ex) {
 					return ("La lista de Usuarios no pudo ser deserializada en el sistema: " + ex);
@@ -197,5 +196,13 @@ public class Deserializador {
 			default:
 				return("Error de deserialización: El objeto debe estar definido en el sistema.");
 		}
+	}
+	
+	private static void readObject(ObjectInputStream in, String clase) throws IOException, ClassNotFoundException {
+	    switch(clase) {
+	    case "Usuarios":
+	    	Usuario.setUsuariosTotales((ArrayList<Usuario>) in.readObject());
+	    }
+		
 	}
 }

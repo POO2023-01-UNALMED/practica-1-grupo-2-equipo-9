@@ -98,6 +98,7 @@ public class Serializador{
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat")));
+					u.writeObject(streamSalida);
 					streamSalida.writeObject(objetos);
 					streamSalida.close();
 					return("La lista de Usuarios fue guardada satisfactoriamente en el sistema.");

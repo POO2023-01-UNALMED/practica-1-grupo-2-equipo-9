@@ -143,7 +143,7 @@ public class Metas implements Serializable {
 	}
 
 	@Override
-	public void finalize() {
+	protected void finalize() {
 		String name = this.getNombre();
 		double amount = this.getCantidad();
 		Date date = this.getFecha();

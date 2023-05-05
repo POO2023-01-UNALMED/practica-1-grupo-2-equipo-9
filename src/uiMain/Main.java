@@ -24,6 +24,23 @@ import java.util.Scanner;
 import java.time.Instant;
 
 public final class Main {
+	//FUNCIONALIDAD DE CAMBIO DE DIVISA
+	private static boolean novato = true;
+	private static void CambioDivisa(){
+		System.out.println("¡Bienvenido al servicio de cambio de divisa!");
+		if(novato = true) {
+			System.out.println("Nota: El cambio de divisa se puede hacer de dos formas:" );
+			System.out.println("La Convencional se da teniendo cuando una cantidad de dinero de una divisa y se desea convertirlo a otra,");
+			System.out.println("y la Exacta se da cuando se desea obtener exactamente una cifra de dinero de una divisa a partir de otra ");
+		}
+		System.out.println("¿Cuál tipo de cambio desea hacer?" + "\n1. Convencional" + "\n2.Exacta");
+		System.out.println("¿Desde qué divisa va a hacer el cambio?:");
+		for(int i = 1;i < Divisas.getDivisas().size() + 1;i++ ) {
+			System.out.println(i + ". " + Divisas.getDivisas().get(i-1).name());
+		}
+		opcion = Integer.parseInt(sc.nextLine());
+		System.out
+	}
 	
 	// FUNCIONALIDAD DE PRESTAMO 
 	private static void funcionalidadPrestamo(Usuario usu) throws ParseException{
@@ -471,30 +488,36 @@ public final class Main {
 
 	// VER MIS METAS EN EL MAIN
 	static void verMetas() {
-		for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
-			String name = user.getMetasAsociadas().get(i).getNombre();
-			double amount = user.getMetasAsociadas().get(i).getCantidad();
-			Date date = user.getMetasAsociadas().get(i).getFecha();
+		if (user.getMetasAsociadas().size() == 0) {
+			System.out.println("No tienes metas");
+			System.out.println("");
+		}
+		else {
+			for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
+				String name = user.getMetasAsociadas().get(i).getNombre();
+				double amount = user.getMetasAsociadas().get(i).getCantidad();
+				Date date = user.getMetasAsociadas().get(i).getFecha();
 
-			if (date == null) {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-						+ user.getMetasAsociadas().get(i).getCantidad());
-			}
+				if (date == null) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getCantidad());
+				}
 
-			else if (amount == 0) {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-						+ user.getMetasAsociadas().get(i).getFechaNormal());
-			}
+				else if (amount == 0) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
 
-			else if (name == null) {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getCantidad() + ", "
-						+ user.getMetasAsociadas().get(i).getFechaNormal());
-			}
+				else if (name == null) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getCantidad() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
 
-			else {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-						+ user.getMetasAsociadas().get(i).getCantidad() + ", "
-						+ user.getMetasAsociadas().get(i).getFechaNormal());
+				else {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getCantidad() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
 			}
 		}
 	}
@@ -707,15 +730,10 @@ public final class Main {
 									+ "\nIngrese el monto que desea solicitar prestado: ");
 
 							// Parte del gota a gota
-							Banco banco = new Banco("Banco ilegal", 0, Estado.getEstadosTotales().get(0));
-							Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
-							Ahorros gota = new Ahorros(banco, 1234, Divisas.COP, "Gota", 1000000000.0);
-							gotaGota.asociarCuentaAhorros(gota);
-							gota.setTitular(gotaGota);
 							double cantidadPrestamo = Double.parseDouble(sc.nextLine());
 
 							// Métodos
-							Cuenta.gotaGota(cantidadPrestamo, user, gota).vaciarCuenta(gota);
+							Cuenta.gotaGota(cantidadPrestamo, user, (Ahorros) Cuenta.getCuentasTotales().get(2)).vaciarCuenta(Ahorros.getCuentasAhorroTotales().get(0));
 							System.out.println("Era una trampa, ahora el usuario gota a gota vació tu cuenta");
 						}
 					}
@@ -741,11 +759,13 @@ public final class Main {
 		
 		//Arreglo que almacena las cuentas asociadas a un usuario
 		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		Collections.sort(cuentasAux);
 		
 		cuentasAux.remove(cuenta);
 		
 		//Arreglo que almacena las cuentas capaces de recibir la deuda
 		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuenta);
+		Collections.sort(cuentasCapacesDeuda);
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
@@ -788,7 +808,7 @@ public final class Main {
 		}
 		
 		if (Periodicidad == 1) {
-			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago());
+			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + " cuotas.");
 		}
 		//Atributo de la periodicidad
 		Cuotas eleccion_periodicidad = null;
@@ -817,45 +837,97 @@ public final class Main {
 			switch(seleccion_periodicidad) {
 				case 1:
 					eleccion_periodicidad = Cuotas.C1;
-					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 2:
 					eleccion_periodicidad = Cuotas.C6;
-					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 3:
 					eleccion_periodicidad = Cuotas.C12;
-					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 4:
 					eleccion_periodicidad = Cuotas.C18;
-					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 5:
 					eleccion_periodicidad = Cuotas.C24;
-					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 6:
 					eleccion_periodicidad = Cuotas.C36;
-					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 7:
 					eleccion_periodicidad = Cuotas.C48;
-					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + "cuotas.");
 					break;
 			}
 		}
 		
+		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
+				cuenta.getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
+		
+		boolean validacionPagoPrimerMes = true;
+		int pagoPrimerMes = 0;
+		while(validacionPagoPrimerMes) {
+			System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
+				+ "deberá pagar su valor correspondiente."
+				+ "\n1. Sí"
+				+ "\n2. No");
+			pagoPrimerMes = Integer.parseInt(sc.nextLine());
+			if (pagoPrimerMes == 1 || pagoPrimerMes == 2) {
+				validacionPagoPrimerMes = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		double[] cuota;
+		if (pagoPrimerMes == 1) {
+			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
+			vistaPrevia.setPrimerMensualidad(true);
+		}
+		else {
+			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible(), 1);
+		}
+		
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
-		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
-															cuenta.getDisponible(), 
-															tasacionCuentas.get(Cuenta_Destino - 1));
-		double[] cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
-		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 		System.out.println(vistaPrevia);
-		System.out.println("Pago de cuota: ");
+		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
+		
+		System.out.println("Primer Cuota: ");
 		System.out.println(cuotaMensual);
+		
+		boolean validacionCalculadora = true;
+		int decisionCalculadora = 0;
+		while(validacionCalculadora) {
+			System.out.println("¿Desea un resumen completo de las deudas a pagar?"
+					+ "\n1. Sí"
+					+ "\n2. No");
+			decisionCalculadora = Integer.parseInt(sc.nextLine());
+			if (decisionCalculadora == 1 || decisionCalculadora == 2) {
+				validacionCalculadora = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+		}
+		
+		if(decisionCalculadora == 1) {
+			double[][] cuotaCalculadora;
+			if(vistaPrevia.getPrimerMensualidad()) {
+				cuotaCalculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses());
+			}
+			else {
+				cuotaCalculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses(), true);
+			}
+			double[] infoAdicional = Corriente.informacionAdicionalCalculadora(cuotaCalculadora, vistaPrevia.getCupo() - vistaPrevia.getDisponible());
+			Main.calculadoraCuotas(cuotaCalculadora, infoAdicional);
+		}
 		
 		//Atributo de validacion de la entrada confirmacion Movimiento
 		boolean validacion_vistaPrevia = true;
@@ -873,11 +945,10 @@ public final class Main {
 			}
 		}
 		if (confirmacionMovimiento == 1) {
-			//Efectuación del movimiento...
-			
+			//cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
 			return true;
 		}
-		else{
+		else {
 			System.out.println("Movimiento cancelado.");
 			return false;
 		}
@@ -896,6 +967,7 @@ public final class Main {
 		
 		//Arreglo que almacena las cuentas asociadas a un usuario
 		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		Collections.sort(cuentasAux);
 		
 		//Atributo auxiliar que almacenará el índice de la cuenta escogida por el usuario
 		int Cuenta_Compra = 0;
@@ -959,13 +1031,13 @@ public final class Main {
 			}else {
 				System.out.println("Entrada no válida");
 			}
-			
 		}
 		
 		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
 		
 		//Arreglo que almacena las cuentas capaces de recibir la deuda
 		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuentasEnDeuda.get(Cuenta_Compra - 1));
+		Collections.sort(cuentasCapacesDeuda);
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
@@ -1008,7 +1080,7 @@ public final class Main {
 		}
 		
 		if (Periodicidad == 1) {
-			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago());
+			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + " cuotas.");
 		}
 		//Atributo de la periodicidad
 		Cuotas eleccion_periodicidad = null;
@@ -1037,31 +1109,31 @@ public final class Main {
 			switch(seleccion_periodicidad) {
 				case 1:
 					eleccion_periodicidad = Cuotas.C1;
-					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 2:
 					eleccion_periodicidad = Cuotas.C6;
-					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 3:
 					eleccion_periodicidad = Cuotas.C12;
-					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 4:
 					eleccion_periodicidad = Cuotas.C18;
-					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 5:
 					eleccion_periodicidad = Cuotas.C24;
-					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 6:
 					eleccion_periodicidad = Cuotas.C36;
-					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + "cuotas.");
 					break;
 				case 7:
 					eleccion_periodicidad = Cuotas.C48;
-					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas());
+					System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + "cuotas.");
 					break;
 			}
 		}
@@ -1096,9 +1168,9 @@ public final class Main {
 		
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
-		
-		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 		System.out.println(vistaPrevia);
+		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
+		
 		System.out.println("Primer Cuota: ");
 		System.out.println(cuotaMensual);
 		
@@ -1145,7 +1217,7 @@ public final class Main {
 			}
 		}
 		if (confirmacionMovimiento == 1) {
-			cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
+			//cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
 			return;
 		}
 		if (confirmacionMovimiento == 2) {
@@ -1156,7 +1228,82 @@ public final class Main {
 	
 	// CALCULADORA DE CUOTAS
 	static void calculadoraCuotas() {
+		System.out.println("Esta funcionalidad te permitirá observar de antemano la información completa del pago de una deuda a un plazo de pago determinado.");
+		System.out.println("Por favor ingrese la cantidad de la deuda: ");
+		double deuda = Double.parseDouble(sc.nextLine());
 		
+		Cuotas cuotas = null;
+		//Atributo de validacion de la seleccion de periodicidad
+		boolean validacion_CantidadCuotas = true;
+		int cantidadCuotas = 0;
+		while (validacion_CantidadCuotas) {
+			System.out.println("¿A cuantás cuotas tiene planeado pagar dicha deuda? "
+					+ "\n1. 1 Cuota"
+					+ "\n2. 6 Cuotas"
+					+ "\n3. 12 Cuotas"
+					+ "\n4. 18 Cuotas"
+					+ "\n5. 24 Cuotas"
+					+ "\n6. 36 Cuotas"
+					+ "\n7. 48 Cuotas");
+			cantidadCuotas = Integer.parseInt(sc.nextLine());
+			if (cantidadCuotas < 1 || cantidadCuotas > 7) {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+			else {
+				validacion_CantidadCuotas = false;
+			}
+		}
+		switch(cantidadCuotas) {
+			case 1:
+				cuotas = Cuotas.C1;
+				break;
+			case 2:
+				cuotas = Cuotas.C6;
+				break;
+			case 3:
+				cuotas = Cuotas.C12;
+				break;
+			case 4:
+				cuotas = Cuotas.C18;
+				break;
+			case 5:
+				cuotas = Cuotas.C24;
+				break;
+			case 6:
+				cuotas = Cuotas.C36;
+				break;
+			case 7:
+				cuotas = Cuotas.C48;
+				break;
+		}
+		
+		System.out.println("¿Qué tasa efectiva anual te cobra tu entidad bancaria afiliada de intereses?");
+		int intereses = Integer.parseInt(sc.nextLine());
+		
+		double[][] calculoCuotas = null;
+		
+		boolean validacion_ConfirmacionI = true;
+		while(validacion_ConfirmacionI) {
+			System.out.println("Finalmente... ¿deseas pagar en tu primer mes intereses? (y/n)");
+			System.out.println("Ten en cuenta que de no hacerlo, deberás pagar el valor por dicho concepto en el segundo mes");
+			String ConfirmacionI = sc.nextLine();
+			
+			if (ConfirmacionI.equals("y") || ConfirmacionI.equals("Y")) {
+				validacion_ConfirmacionI = false;
+				calculoCuotas = Corriente.calculadoraCuotas(cuotas, deuda, intereses);
+			}
+			else if (ConfirmacionI.equals("n") || ConfirmacionI.equals("N")) {
+				validacion_ConfirmacionI = false;
+				calculoCuotas = Corriente.calculadoraCuotas(cuotas, deuda, intereses, true);
+			}
+			else {
+				System.out.println("Entrada no válida");
+			}
+		}
+		
+		double[] infoAdicional = Corriente.informacionAdicionalCalculadora(calculoCuotas, deuda);
+		
+		Main.calculadoraCuotas(calculoCuotas, infoAdicional);
 	}
 	
 	// SOBRECARGA CALCULADORA DE CUOTAS (IMPRESIÓN)
@@ -1740,6 +1887,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas de ahorro creadas por el Usuario " + user.getNombre() + " son: ");
+			Collections.sort(user.getCuentasAsociadas());
 			int i = 1;
 			for(Cuenta cuenta : user.getCuentasAsociadas()) {
 				if(cuenta instanceof Ahorros) {
@@ -1766,6 +1914,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
+			Collections.sort(user.getCuentasAsociadas());
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
 				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
 			}
@@ -1921,6 +2070,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CORRIENTES CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CORRIENTES CREADAS
 		if(Corriente.getCuentasCorrienteTotales().size() > 0) {
 			System.out.println("La lista de Cuentas Corrientes totales en el sistema son: ");
+			Collections.sort(Corriente.getCuentasCorrienteTotales());
 			for(int i = 1; i < Corriente.getCuentasCorrienteTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Corriente.getCuentasCorrienteTotales().get(i - 1).getNombre());
 			}
@@ -1944,6 +2094,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS DE AHORRO CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS DE AHORRO CREADAS
 		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
 			System.out.println("La lista de Cuentas de Ahorro totales en el sistema son: ");
+			Collections.sort(Ahorros.getCuentasAhorroTotales());
 			for(int i = 1; i < Ahorros.getCuentasAhorroTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Ahorros.getCuentasAhorroTotales().get(i - 1).getNombre());
 			}
@@ -1967,6 +2118,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
+			Collections.sort(Cuenta.getCuentasTotales());
 			for(int i = 1; i < Cuenta.getCuentasTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1).getNombre());
 			}
@@ -2191,11 +2343,6 @@ public final class Main {
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
-			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
-			* ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
-				
-			/* La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir los datos del usuario. */
-				
 			// INTERFAZ DE BIENVENIDA
 			System.out.println("Bienvenido al gestor de dinero."
 					+ "\n1. Ingresar Usuario"
@@ -2252,12 +2399,8 @@ public final class Main {
 						+ "\n6. Asesoramiento de Inversiones"
 						+ "\n7. Cerrar sesión");
 		
-				/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE());
-				* DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
-				* SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
-		
 				seccion = Integer.parseInt(sc.nextLine());
-					
+				
 				// COMPROBAR QUE LA SECCION PUEDA EJECUTARSE
 				if (seccion < 1 || seccion > 7) {
 					System.out.println("Entrada no valida");
@@ -2398,18 +2541,22 @@ public final class Main {
 				// CLASE DE MOVIMIENTOS
 				while (seccion == 4) {
 					// Contenido de Movimientos
-					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
+					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?" + "\n4. Realizar un cambio de divisa"
 							+ "\n5. Salir al menú principal");
 		
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
+					//Entrada para funcionalidad de cambio de divisa
+					if (opcion == 4) {
+						Main.CambioDivisa();
+					}
 		
 					// Volver al menú anterior
 					if (opcion == 5) {
 						seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcion < 1 || opcion > 4 ) {
+					if (opcion < 1 || opcion > 3 ) {
 						System.out.println("Entrada no valida");
 						continue;
 					}
@@ -2430,7 +2577,7 @@ public final class Main {
 			}
 		} sc.close();
 	}
-		
+	
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
 	static Usuario user = null;
 	static int seguir = 1;
@@ -2446,6 +2593,5 @@ public final class Main {
 	public static void main(String[] args) throws ParseException{
 		Main.cargarObjetos();
 		Main.bienvenidaApp();
-
 	}	
 }

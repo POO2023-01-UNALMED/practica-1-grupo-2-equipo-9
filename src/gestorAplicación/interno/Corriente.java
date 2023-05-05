@@ -79,7 +79,14 @@ public class Corriente extends Cuenta{
 			double cuotaMensualFinal = interes + abono_capital;
 			cuotaMensual[2] = cuotaMensualFinal;
 		}
-		
+		else {
+			double interes = DeudaActual * (interes_nominal_mensual / 100);
+			cuotaMensual[0] = interes;
+			double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+			cuotaMensual[1] = abono_capital;
+			double cuotaMensualFinal = interes + abono_capital;
+			cuotaMensual[2] = cuotaMensualFinal;
+		}
 		return cuotaMensual;
 	}
 	

@@ -1,5 +1,7 @@
 package gestorAplicación.interno;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import baseDatos.Deserializador;
@@ -13,8 +15,8 @@ public class Usuario implements Serializable {
 	public static final String nombreD = "Usuarios";
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
-	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
-	//private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+//	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
 	private ArrayList<Usuario> usuariosTotalesAux = new ArrayList<Usuario>();
@@ -233,6 +235,12 @@ public class Usuario implements Serializable {
 	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
+
+	//Serializar atributos estáticos
+	public void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+	    out.writeObject(Usuario.getUsuariosTotales());
+	}
 	
 	//Métodos Get & Set
 	public static ArrayList<Usuario> getUsuariosTotales() { return usuariosTotales; }
