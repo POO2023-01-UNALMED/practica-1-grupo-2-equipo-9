@@ -1,4 +1,4 @@
-	package gestorAplicación.interno;
+package gestorAplicación.interno;
 
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;

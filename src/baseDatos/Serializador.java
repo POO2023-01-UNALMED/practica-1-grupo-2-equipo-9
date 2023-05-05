@@ -93,20 +93,16 @@ public class Serializador{
 	public static String serializar(Object objetos, String clase) {		
 		switch(clase) {
 			case "Usuarios":
-				ArrayList<Usuario> u = (ArrayList<Usuario>) objetos;
-				u.get(0).setUsuariosTotalesAux(Usuario.getUsuariosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(objetos);
+					Serializador.writeObject(streamSalida, clase);
 					streamSalida.close();
 					return("La lista de Usuarios fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
 					return("La lista de Usuarios no pudo ser guardada en el sistema: " + ex);
 				}	
 			case "Bancos":
-				ArrayList<Banco> b = (ArrayList<Banco>) objetos;
-				b.get(0).setBancosTotalesAux(Banco.getBancosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
@@ -168,9 +164,14 @@ public class Serializador{
 				return("Error de guardado: El objeto debe estar definido en el sistema.");
 		}
 	}
+	
 	//Serializar atributos estáticos
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.defaultWriteObject();
-	    out.writeObject(Usuario.getUsuariosTotales());
+	private static void writeObject(ObjectOutputStream out, String clase) throws IOException {
+	    switch(clase) {
+		    case "Usuarios":
+		    	out.writeObject(Usuario.getUsuariosTotales());
+		    case "Cuentas":
+		    	out.writeObject(Cuenta.getCuentasTotales());
+	    }
 	}
 }
