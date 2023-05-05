@@ -39,7 +39,7 @@ public final class Main {
 			System.out.println(i + ". " + Divisas.getDivisas().get(i-1).name());
 		}
 		opcion = Integer.parseInt(sc.nextLine());
-		System.out
+		System.out.println();
 	}
 	
 	// FUNCIONALIDAD DE PRESTAMO 

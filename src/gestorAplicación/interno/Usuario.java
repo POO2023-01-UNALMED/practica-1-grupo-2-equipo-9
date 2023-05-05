@@ -15,10 +15,6 @@ public class Usuario implements Serializable {
 	public static final String nombreD = "Usuarios";
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
-<<<<<<< HEAD
-//	private static ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
-=======
->>>>>>> 52d6547412fa75d335e6467a4ba96c94188c346c
 	private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
 	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
 	private int contadorMovimientos;
@@ -273,6 +269,4 @@ public class Usuario implements Serializable {
 	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
 	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}
 	public void setCuentasAhorrosAsociadas(ArrayList<Ahorros> cuentasAhorrosAsociadas) {CuentasAhorrosAsociadas = cuentasAhorrosAsociadas;}
-	public ArrayList<Usuario> getUsuariosTotalesAux() { return usuariosTotalesAux; }
-	public void setUsuariosTotalesAux(ArrayList<Usuario> usuariosTotalesAux) { this.usuariosTotalesAux = usuariosTotalesAux; }
 }
