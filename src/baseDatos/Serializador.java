@@ -106,7 +106,7 @@ public class Serializador{
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(objetos);
+					Serializador.writeObject(streamSalida, clase);
 					streamSalida.close();
 					return("La lista de Bancos fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
@@ -118,7 +118,7 @@ public class Serializador{
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(objetos);
+					Serializador.writeObject(streamSalida, clase);
 					streamSalida.close();
 					return("La lista de Estados fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
@@ -130,7 +130,7 @@ public class Serializador{
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(objetos);
+					Serializador.writeObject(streamSalida, clase);
 					streamSalida.close();
 					return("La lista de Cuentas fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
@@ -142,7 +142,7 @@ public class Serializador{
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(objetos);
+					Serializador.writeObject(streamSalida, clase);
 					streamSalida.close();
 					return("La lista de Movimientos fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
@@ -154,7 +154,7 @@ public class Serializador{
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat")));
-					streamSalida.writeObject(objetos);
+					Serializador.writeObject(streamSalida, clase);
 					streamSalida.close();
 					return("La lista de Metas fue guardada satisfactoriamente en el sistema.");
 				}catch(IOException ex) {
@@ -172,6 +172,14 @@ public class Serializador{
 		    	out.writeObject(Usuario.getUsuariosTotales());
 		    case "Cuentas":
 		    	out.writeObject(Cuenta.getCuentasTotales());
+		    case "Bancos":
+		    	out.writeObject(Banco.getBancosTotales());
+		    case "Estados":
+		    	out.writeObject(Estado.getEstadosTotales());
+		    case "Movimentos":
+		    	out.writeObject(Movimientos.getMovimientosTotales());
+		    case "Metas":
+		    	out.writeObject(Metas.getMetasTotales());
 	    }
 	}
 }

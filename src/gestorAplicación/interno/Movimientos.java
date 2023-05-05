@@ -11,8 +11,7 @@ public class Movimientos implements Serializable{
 	//	Atributos
 	public static final String nombreD = "Movimientos";
 	private static final long serialVersionUID = 5L;
-	private static ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
-	private ArrayList<Movimientos> movimientosTotalesAux = new ArrayList<Movimientos>();
+	private static transient ArrayList<Movimientos> movimientosTotales = new ArrayList<>();
 	private int id;
 	private double cantidad;
 	private Categoria categoria;
@@ -559,13 +558,5 @@ public class Movimientos implements Serializable{
 
 	public void setOwner(Usuario owner) {
 		this.owner = owner;
-	}
-
-	public ArrayList<Movimientos> getMovimientosTotalesAux() {
-		return movimientosTotalesAux;
-	}
-
-	public void setMovimientosTotalesAux(ArrayList<Movimientos> movimientosTotalesAux) {
-		this.movimientosTotalesAux = movimientosTotalesAux;
 	}
 }

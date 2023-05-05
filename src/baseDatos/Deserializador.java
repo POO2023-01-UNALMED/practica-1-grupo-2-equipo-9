@@ -123,10 +123,9 @@ public class Deserializador {
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
-					ArrayList<Estado> e = (ArrayList<Estado>) streamEntrada.readObject();
-					Estado.setEstadosTotales(e.get(0).getEstadostotalesAux());
+					Deserializador.readObject(streamEntrada, clase);
 					streamEntrada.close();
-					return e;
+					return ("Lista con " + Estado.getEstadosTotales().size() + " cargada con éxito");
 				
 				}catch(IOException ex) {
 					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
@@ -138,10 +137,9 @@ public class Deserializador {
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
-					ArrayList<Banco> b = (ArrayList<Banco>) streamEntrada.readObject();
-					Banco.setBancosTotales(b.get(0).getBancosTotalesAux());
+					Deserializador.readObject(streamEntrada, clase);
 					streamEntrada.close();
-					return b;
+					return("Lista con " + Banco.getBancosTotales().size() + " cargada con éxito");
 				
 				}catch(IOException ex) {
 					return ("La lista de Estados no pudo ser deserializada en el sistema: " + ex);
@@ -153,10 +151,9 @@ public class Deserializador {
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
-					ArrayList<Cuenta> c = (ArrayList<Cuenta>) streamEntrada.readObject();
-					Cuenta.setCuentasTotales(c.get(0).getCuentasTotalesAux());
+					Deserializador.readObject(streamEntrada, clase);
 					streamEntrada.close();
-					return c;
+					return ("Lista con " + Cuenta.getCuentasTotales().size() + " cargada con éxito");
 				
 				}catch(IOException ex) {
 					return ("La lista de Cuentas no pudo ser deserializada en el sistema: " + ex);
@@ -168,10 +165,9 @@ public class Deserializador {
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
-					ArrayList<Movimientos> m = (ArrayList<Movimientos>) streamEntrada.readObject();
-					Movimientos.setMovimientosTotales(m.get(0).getMovimientosTotalesAux());
+					Deserializador.readObject(streamEntrada, clase);
 					streamEntrada.close();
-					return m;
+					return ("Lista con " + Movimientos.getMovimientosTotales().size() + " cargada con éxito");
 				
 				}catch(IOException ex) {
 					return ("La lista de Movimientos no pudo ser deserializada en el sistema: " + ex);
@@ -183,10 +179,9 @@ public class Deserializador {
 					File f = new File("");
 					FileInputStream fe = new FileInputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + "_lista" + ".dat"));
 					ObjectInputStream streamEntrada = new ObjectInputStream(fe);
-					ArrayList<Metas> me = (ArrayList<Metas>) streamEntrada.readObject();
-					Metas.setMetasTotales(me.get(0).getMetasTotalesAux());
+					Deserializador.readObject(streamEntrada, clase);
 					streamEntrada.close();
-					return me;
+					return ("Lista con " + Metas.getMetasTotales().size() + " cargada con éxito");
 				
 				}catch(IOException ex) {
 					return ("La lista de Metas no pudo ser deserializada en el sistema: " + ex);
@@ -202,6 +197,16 @@ public class Deserializador {
 	    switch(clase) {
 	    case "Usuarios":
 	    	Usuario.setUsuariosTotales((ArrayList<Usuario>) in.readObject());
+	    case "Cuentas":
+	    	Cuenta.setCuentasTotales((ArrayList<Cuenta>) in.readObject());
+	    case "Bancos":
+	    	Banco.setBancosTotales((ArrayList<Banco>) in.readObject());
+	    case "Estados":
+	    	Estado.setEstadosTotales((ArrayList<Estado>) in.readObject());
+	    case "Movimentos":
+	    	Movimientos.setMovimientosTotales((ArrayList<Movimientos>) in.readObject());
+	    case "Metas":
+	    	Metas.setMetasTotales((ArrayList<Metas>) in.readObject());
 	    }
 		
 	}

@@ -18,8 +18,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	protected String nombre;
 	protected int id;
 	protected Banco banco;
-	private static ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
-	private ArrayList<Cuenta> cuentasTotalesAux = new ArrayList<Cuenta>();
+	private static transient ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
 	
 	//Constructores
 	protected Cuenta(Banco banco, int clave, Divisas divisa, String nombre) {
@@ -172,13 +171,5 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	
 	public void setClave(int clave) {
 		this.clave = clave;
-	}
-
-	public ArrayList<Cuenta> getCuentasTotalesAux() {
-		return cuentasTotalesAux;
-	}
-
-	public void setCuentasTotalesAux(ArrayList<Cuenta> cuentasTotalesAux) {
-		this.cuentasTotalesAux = cuentasTotalesAux;
 	}
 }

@@ -17,8 +17,7 @@ public class Metas implements Serializable {
 	private Date fecha;
 	public int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-	private static ArrayList<Metas> metasTotales = new ArrayList<Metas>();
-	private ArrayList<Metas> metasTotalesAux = new ArrayList<Metas>();
+	private static transient  ArrayList<Metas> metasTotales = new ArrayList<Metas>();
 	protected Usuario dueno;
 
 	// FUNCIONALIDAD
@@ -213,13 +212,5 @@ public class Metas implements Serializable {
 
 	public void setDueno(Usuario dueno) {
 		this.dueno = dueno;
-	}
-
-	public ArrayList<Metas> getMetasTotalesAux() {
-		return metasTotalesAux;
-	}
-
-	public void setMetasTotalesAux(ArrayList<Metas> metasTotalesAux) {
-		this.metasTotalesAux = metasTotalesAux;
 	}
 }
