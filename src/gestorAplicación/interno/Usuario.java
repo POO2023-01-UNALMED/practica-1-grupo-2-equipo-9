@@ -233,12 +233,6 @@ public class Usuario implements Serializable {
 	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
-
-	//Serializar atributos estáticos
-	public void writeObject(ObjectOutputStream out) throws IOException {
-		out.defaultWriteObject();
-	    out.writeObject(Usuario.getUsuariosTotales());
-	}
 	
 	//Métodos Get & Set
 	public static ArrayList<Usuario> getUsuariosTotales() { return usuariosTotales; }

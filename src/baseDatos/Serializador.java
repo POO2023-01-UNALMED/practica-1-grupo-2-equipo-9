@@ -93,8 +93,6 @@ public class Serializador{
 	public static String serializar(Object objetos, String clase) {		
 		switch(clase) {
 			case "Usuarios":
-				ArrayList<Usuario> u = (ArrayList<Usuario>) objetos;
-				u.get(0).setUsuariosTotalesAux(Usuario.getUsuariosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat")));
@@ -105,8 +103,6 @@ public class Serializador{
 					return("La lista de Usuarios no pudo ser guardada en el sistema: " + ex);
 				}	
 			case "Bancos":
-				ArrayList<Banco> b = (ArrayList<Banco>) objetos;
-				b.get(0).setBancosTotalesAux(Banco.getBancosTotales());
 				try{
 					File f = new File("");
 					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + "_lista" + ".dat")));
