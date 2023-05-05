@@ -404,10 +404,6 @@ public class Movimientos implements Serializable{
 
 	public boolean impuestosMovimiento(double interes) {
 
-		// Los movimientos aparecen sin uso, pero en realidad el uso que se les da es la
-		// transacción, porque modifica el saldo de las cuentas y luego ese saldo es
-		// usado como condicion para otro método
-
 		if (this.getOrigen().getBanco() == this.getDestino().getBanco()) {
 			if (this.getOrigen() instanceof Corriente) {
 				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);

@@ -471,30 +471,36 @@ public final class Main {
 
 	// VER MIS METAS EN EL MAIN
 	static void verMetas() {
-		for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
-			String name = user.getMetasAsociadas().get(i).getNombre();
-			double amount = user.getMetasAsociadas().get(i).getCantidad();
-			Date date = user.getMetasAsociadas().get(i).getFecha();
+		if (user.getMetasAsociadas().size() == 0) {
+			System.out.println("No tienes metas");
+			System.out.println("");
+		}
+		else {
+			for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
+				String name = user.getMetasAsociadas().get(i).getNombre();
+				double amount = user.getMetasAsociadas().get(i).getCantidad();
+				Date date = user.getMetasAsociadas().get(i).getFecha();
 
-			if (date == null) {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-						+ user.getMetasAsociadas().get(i).getCantidad());
-			}
+				if (date == null) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getCantidad());
+				}
 
-			else if (amount == 0) {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-						+ user.getMetasAsociadas().get(i).getFechaNormal());
-			}
+				else if (amount == 0) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
 
-			else if (name == null) {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getCantidad() + ", "
-						+ user.getMetasAsociadas().get(i).getFechaNormal());
-			}
+				else if (name == null) {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getCantidad() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
 
-			else {
-				System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-						+ user.getMetasAsociadas().get(i).getCantidad() + ", "
-						+ user.getMetasAsociadas().get(i).getFechaNormal());
+				else {
+					System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
+							+ user.getMetasAsociadas().get(i).getCantidad() + ", "
+							+ user.getMetasAsociadas().get(i).getFechaNormal());
+				}
 			}
 		}
 	}
@@ -707,15 +713,10 @@ public final class Main {
 									+ "\nIngrese el monto que desea solicitar prestado: ");
 
 							// Parte del gota a gota
-							Banco banco = new Banco("Banco ilegal", 0, Estado.getEstadosTotales().get(0));
-							Usuario gotaGota = new Usuario("gotaGota", "gotaGota", "gotaGota");
-							Ahorros gota = new Ahorros(banco, 1234, Divisas.COP, "Gota", 1000000000.0);
-							gotaGota.asociarCuentaAhorros(gota);
-							gota.setTitular(gotaGota);
 							double cantidadPrestamo = Double.parseDouble(sc.nextLine());
 
 							// Métodos
-							Cuenta.gotaGota(cantidadPrestamo, user, gota).vaciarCuenta(gota);
+							Cuenta.gotaGota(cantidadPrestamo, user, (Ahorros) Cuenta.getCuentasTotales().get(2)).vaciarCuenta(Ahorros.getCuentasAhorroTotales().get(0));
 							System.out.println("Era una trampa, ahora el usuario gota a gota vació tu cuenta");
 						}
 					}
@@ -2191,11 +2192,6 @@ public final class Main {
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException {
 		while(interfaz == 1) {
-			/* LA VARIABLE INTERFAZ SE USA PARA PODER TERMINAR EL PROGRAMA. POR EJEMPLO CUANDO VOY A SALIR DEL PROGRAMA LE ASIGNO EL VALOR DE 0 PARA QUE TERMINE. 
-			* ESTO MISMO SE USA DE DIFERENTES MANERAS PARA VARIAS PARTES DE LA INTERFAZ DEL USUARIO. */
-				
-			/* La variable sesioniniciada tiene una función análoga a la de seguir, en este caso será útil para volver a pedir los datos del usuario. */
-				
 			// INTERFAZ DE BIENVENIDA
 			System.out.println("Bienvenido al gestor de dinero."
 					+ "\n1. Ingresar Usuario"
@@ -2252,12 +2248,8 @@ public final class Main {
 						+ "\n6. Asesoramiento de Inversiones"
 						+ "\n7. Cerrar sesión");
 		
-				/* CADA VEZ QUE SE VAYA A LEER UN ENTERO POR CONSOLA DEBE PONERSE INTEGER.PARSEINT(SC.NEXTLINE());
-				* DE OTRO MODO SE EJECUTARÁ UN \n QUE DAÑARÁ EL CODIGO. LO MISMO PARA LOS DOUBLE. PARA LOS STRING 
-				* SI SE PUEDE REDACTAR DE MANERA USUAL USANDO SC.NEXTLINE();. */
-		
 				seccion = Integer.parseInt(sc.nextLine());
-					
+				
 				// COMPROBAR QUE LA SECCION PUEDA EJECUTARSE
 				if (seccion < 1 || seccion > 7) {
 					System.out.println("Entrada no valida");
@@ -2430,7 +2422,7 @@ public final class Main {
 			}
 		} sc.close();
 	}
-		
+	
 	//ATRIBUTOS DE CLASE PARA EL FUNCIONAMIENTO DE LA INTERFAZ
 	static Usuario user = null;
 	static int seguir = 1;
@@ -2446,6 +2438,5 @@ public final class Main {
 	public static void main(String[] args) throws ParseException{
 		Main.cargarObjetos();
 		Main.bienvenidaApp();
-
 	}	
 }
