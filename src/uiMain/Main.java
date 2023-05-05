@@ -742,11 +742,13 @@ public final class Main {
 		
 		//Arreglo que almacena las cuentas asociadas a un usuario
 		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		Collections.sort(cuentasAux);
 		
 		cuentasAux.remove(cuenta);
 		
 		//Arreglo que almacena las cuentas capaces de recibir la deuda
 		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuenta);
+		Collections.sort(cuentasCapacesDeuda);
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
@@ -948,6 +950,7 @@ public final class Main {
 		
 		//Arreglo que almacena las cuentas asociadas a un usuario
 		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		Collections.sort(cuentasAux);
 		
 		//Atributo auxiliar que almacenará el índice de la cuenta escogida por el usuario
 		int Cuenta_Compra = 0;
@@ -1017,6 +1020,7 @@ public final class Main {
 		
 		//Arreglo que almacena las cuentas capaces de recibir la deuda
 		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuentasEnDeuda.get(Cuenta_Compra - 1));
+		Collections.sort(cuentasCapacesDeuda);
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 		
@@ -1866,6 +1870,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas de ahorro creadas por el Usuario " + user.getNombre() + " son: ");
+			Collections.sort(user.getCuentasAsociadas());
 			int i = 1;
 			for(Cuenta cuenta : user.getCuentasAsociadas()) {
 				if(cuenta instanceof Ahorros) {
@@ -1892,6 +1897,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
+			Collections.sort(user.getCuentasAsociadas());
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
 				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
 			}
@@ -2047,6 +2053,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CORRIENTES CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CORRIENTES CREADAS
 		if(Corriente.getCuentasCorrienteTotales().size() > 0) {
 			System.out.println("La lista de Cuentas Corrientes totales en el sistema son: ");
+			Collections.sort(Corriente.getCuentasCorrienteTotales());
 			for(int i = 1; i < Corriente.getCuentasCorrienteTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Corriente.getCuentasCorrienteTotales().get(i - 1).getNombre());
 			}
@@ -2070,6 +2077,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS DE AHORRO CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS DE AHORRO CREADAS
 		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
 			System.out.println("La lista de Cuentas de Ahorro totales en el sistema son: ");
+			Collections.sort(Ahorros.getCuentasAhorroTotales());
 			for(int i = 1; i < Ahorros.getCuentasAhorroTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Ahorros.getCuentasAhorroTotales().get(i - 1).getNombre());
 			}
@@ -2093,6 +2101,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
+			Collections.sort(Cuenta.getCuentasTotales());
 			for(int i = 1; i < Cuenta.getCuentasTotales().size() + 1; i++) {
 				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1).getNombre());
 			}
