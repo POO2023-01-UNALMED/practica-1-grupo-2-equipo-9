@@ -1011,7 +1011,6 @@ public final class Main {
 			}else {
 				System.out.println("Entrada no válida");
 			}
-			
 		}
 		
 		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
@@ -1208,7 +1207,82 @@ public final class Main {
 	
 	// CALCULADORA DE CUOTAS
 	static void calculadoraCuotas() {
+		System.out.println("Esta funcionalidad te permitirá observar de antemano la información completa del pago de una deuda a un plazo de pago determinado.");
+		System.out.println("Por favor ingrese la cantidad de la deuda: ");
+		double deuda = Double.parseDouble(sc.nextLine());
 		
+		Cuotas cuotas = null;
+		//Atributo de validacion de la seleccion de periodicidad
+		boolean validacion_CantidadCuotas = true;
+		int cantidadCuotas = 0;
+		while (validacion_CantidadCuotas) {
+			System.out.println("¿A cuantás cuotas tiene planeado pagar dicha deuda? "
+					+ "\n1. 1 Cuota"
+					+ "\n2. 6 Cuotas"
+					+ "\n3. 12 Cuotas"
+					+ "\n4. 18 Cuotas"
+					+ "\n5. 24 Cuotas"
+					+ "\n6. 36 Cuotas"
+					+ "\n7. 48 Cuotas");
+			cantidadCuotas = Integer.parseInt(sc.nextLine());
+			if (cantidadCuotas < 1 || cantidadCuotas > 7) {
+				System.out.println("Entrada no válida, intente de nuevo");
+			}
+			else {
+				validacion_CantidadCuotas = false;
+			}
+		}
+		switch(cantidadCuotas) {
+			case 1:
+				cuotas = Cuotas.C1;
+				break;
+			case 2:
+				cuotas = Cuotas.C6;
+				break;
+			case 3:
+				cuotas = Cuotas.C12;
+				break;
+			case 4:
+				cuotas = Cuotas.C18;
+				break;
+			case 5:
+				cuotas = Cuotas.C24;
+				break;
+			case 6:
+				cuotas = Cuotas.C36;
+				break;
+			case 7:
+				cuotas = Cuotas.C48;
+				break;
+		}
+		
+		System.out.println("¿Qué tasa efectiva anual te cobra tu entidad bancaria afiliada de intereses?");
+		int intereses = Integer.parseInt(sc.nextLine());
+		
+		double[][] calculoCuotas = null;
+		
+		boolean validacion_ConfirmacionI = true;
+		while(validacion_ConfirmacionI) {
+			System.out.println("Finalmente... ¿deseas pagar en tu primer mes intereses? (y/n)");
+			System.out.println("Ten en cuenta que de no hacerlo, deberás pagar el valor por dicho concepto en el segundo mes");
+			String ConfirmacionI = sc.nextLine();
+			
+			if (ConfirmacionI.equals("y") || ConfirmacionI.equals("Y")) {
+				validacion_ConfirmacionI = false;
+				calculoCuotas = Corriente.calculadoraCuotas(cuotas, deuda, intereses);
+			}
+			else if (ConfirmacionI.equals("n") || ConfirmacionI.equals("N")) {
+				validacion_ConfirmacionI = false;
+				calculoCuotas = Corriente.calculadoraCuotas(cuotas, deuda, intereses, true);
+			}
+			else {
+				System.out.println("Entrada no válida");
+			}
+		}
+		
+		double[] infoAdicional = Corriente.informacionAdicionalCalculadora(calculoCuotas, deuda);
+		
+		Main.calculadoraCuotas(calculoCuotas, infoAdicional);
 	}
 	
 	// SOBRECARGA CALCULADORA DE CUOTAS (IMPRESIÓN)
