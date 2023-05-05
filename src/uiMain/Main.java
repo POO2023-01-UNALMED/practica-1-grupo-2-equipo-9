@@ -2258,33 +2258,40 @@ public final class Main {
 				File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 					if (fUsuario.exists()) {
-						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
-						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+						System.out.print(existencia);
+//						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
+//						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
+						System.out.println(Deserializador.deserializar_listas("Usuarios"));
 						existencia = true;
 					}
 					if (fEstado.exists()) {
-						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
-						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+//						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
+//						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
+						System.out.println(Deserializador.deserializar_listas("Usuarios"));						
 						existencia = true;
 					}
 					if (fBanco.exists()) {
-						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
-						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+//						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
+//						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
+						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
 						existencia = true;
 					}
 					if (fMovimientos.exists()) {
-						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
-						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+//						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
+//						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
+						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
 						existencia = true;
 					}
 					if (fMetas.exists()) {
-						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
-						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+//						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
+//						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
+						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
 						existencia = true;
 					}
 					if (fCuenta.exists()) {
-						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
-						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+//						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
+//						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
+						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
 						existencia = true;
 					}
 					if (!existencia) {
