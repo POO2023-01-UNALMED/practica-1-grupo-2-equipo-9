@@ -146,14 +146,14 @@ public class Usuario implements Serializable {
 		}
 	}
 	
-//	public Object mostrarCuentasAsociadas() {
-//		ArrayList<Cuenta> cuentas = this.getCuentasAsociadas();
-//		if(cuentas.size() != 0) {
-//			return cuentas;
-//		}else {
-//			return ("Primero debes asociar cuentas");
-//		}
-//	}
+	public Object mostrarCuentasAsociadas() {
+		ArrayList<Cuenta> cuentas = this.getCuentasAsociadas();
+		if(cuentas.size() != 0) {
+			return cuentas;
+		}else {
+			return ("Primero debes asociar cuentas");
+		}
+	}
 	
 	public static Object verificarCredenciales(String nombre, String contraseña) {
 		for (Usuario usuario: usuariosTotales) {

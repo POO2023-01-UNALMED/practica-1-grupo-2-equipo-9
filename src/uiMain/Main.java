@@ -1821,9 +1821,7 @@ public final class Main {
 				Cuenta.getCuentasTotales().remove(cuenta);
 				user.getCuentasAsociadas().remove(cuenta);
 				user.getCuentasAhorrosAsociadas().remove(cuenta);
-				Ahorros.getCuentasAhorroTotales().remove(cuenta);
-				cuenta = null;
-			}
+				Ahorros.getCuentasAhorroTotales().remove(cuenta);			}
 		}else {
 			if(((Corriente) cuenta).getDisponible().compareTo(((Corriente) cuenta).getCupo()) != 0){
 				System.out.print("Tienes deudas pendientes. ¿Deseas pagarlas? (Y/N): ");
@@ -1874,8 +1872,27 @@ public final class Main {
 				}else {
 					for(int i = 0; i < user.getCuentasAsociadas().size(); i++) {
 						if(user.getCuentasAsociadas().get(cuentaOp - 1) == user.getCuentasAsociadas().get(i)) {
-							Main.eliminarCuentaComprobacion(user.getCuentasAsociadas().get(i));
-							System.gc();
+							System.out.print("Inserte la contraseña de la cuenta: ");
+							int claveCuenta = Integer.parseInt(sc.nextLine());
+							while(true) {
+								if(user.getCuentasAsociadas().get(i).getClave() == claveCuenta) {
+									Main.eliminarCuentaComprobacion(user.getCuentasAsociadas().get(i));
+									System.gc();
+									break;
+								}else {
+									System.out.print("Contraseña errada. ¿Desea intentarlo de nuevo? (Y/N): ");
+									String confirmacion = sc.nextLine();
+									if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+										System.out.print("Inserte la contraseña de nuevo: ");
+										claveCuenta = Integer.parseInt(sc.nextLine());
+									}else {
+										System.out.println("Volviendo al menú anterior.");
+										break;
+									}
+
+									
+								}	
+							}
 						}	
 					} break;
 				}
@@ -2317,11 +2334,6 @@ public final class Main {
 					confirmacion = sc.nextLine();
 			}		
 		}System.out.println("");
-	}
-
-	// ASOCIAR CUENTA A USUARIO EN EL MAIN
-	static void asociarCuentaUsuario(Cuenta cuenta) {
-		System.out.println(user.asociarCuenta(cuenta));
 	}
 	
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA

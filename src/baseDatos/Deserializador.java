@@ -9,6 +9,7 @@ import gestorAplicación.externo.Estado;
 import gestorAplicación.interno.Ahorros;
 import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
+import gestorAplicación.interno.Deuda;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Usuario;
@@ -129,6 +130,11 @@ public class Deserializador {
 		    	Estado.setEstadosTotales((ArrayList<Estado>) in.readObject());
 		    case "Metas":
 		    	Metas.setMetasTotales((ArrayList<Metas>) in.readObject());
+		    	for(Metas m : Metas.getMetasTotales()) {
+		    		if(m instanceof Deuda) {
+		    			Deuda.getDeudasTotales().add((Deuda) m);
+		    		}
+		    	}
 		    case "Movimientos":
 		    	Movimientos.setMovimientosTotales((ArrayList<Movimientos>) in.readObject());
 		}		
