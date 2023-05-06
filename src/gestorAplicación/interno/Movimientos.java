@@ -495,6 +495,15 @@ public class Movimientos implements Serializable{
 		
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(this.getId() == ((Movimientos) o).getId()){
+			return true;
+		}else {
+			return false;
+		}	
+	}
+	
 	//	GETS
 	public static ArrayList<Movimientos> getMovimientosTotales() {
 		return Movimientos.movimientosTotales;

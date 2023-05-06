@@ -3,7 +3,6 @@ package baseDatos;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import gestorAplicación.externo.Estado;
 import java.io.IOException;
 import gestorAplicación.interno.Cuenta;
@@ -11,83 +10,8 @@ import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Usuario;
 import gestorAplicación.externo.Banco;
-//import gestorAplicación.interno.Usuario;
 
 public class Serializador{	
-	//Serializar objetos individuales
-	public static String serializar(Object objeto) {		
-		switch(objeto.getClass().getSimpleName()) {
-			case "Usuario":
-				Usuario u = (Usuario) objeto;
-				try{
-					File f = new File("");
-					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + ".dat")));
-					streamSalida.writeObject(u);
-					streamSalida.close();
-					return("El Usuario con id: " + u.getId() + " y nombre: " + u.getNombre() + " fue guardado satisfactoriamente en el sistema.");
-				}catch(IOException ex) {
-					return("El Usuario con id: " + u.getId() + " y nombre: " + u.getNombre() + " no pudo ser guardado en el sistema: " + ex);
-				}	
-			case "Estado":
-				Estado e = (Estado) objeto;
-				try{
-					File f = new File("");
-					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Estado.nombreD + ".dat")));
-					streamSalida.writeObject(e);
-					streamSalida.close();
-					return("El Estado con id: " + e.getId() + " y nombre: " + e.getNombre() + " fue guardado satisfactoriamente en el sistema.");
-				}catch(IOException ex) {
-					return("El Estado con id: " + e.getId() + " y nombre: " + e.getNombre() + " no pudo ser guardado en el sistema: " + ex);
-				}
-			case "Banco":
-				Estado b = (Banco) objeto;
-				try{
-					File f = new File("");
-					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Banco.nombreD + ".dat")));
-					streamSalida.writeObject(b);
-					streamSalida.close();
-					return("El Banco con id: " + b.getId() + " y nombre: " + b.getNombre() + " fue guardado satisfactoriamente en el sistema.");
-				}catch(IOException ex) {
-					return("El Banco con id: " + b.getId() + " y nombre: " + b.getNombre() + " no pudo ser guardado en el sistema: " + ex);
-				}
-			case "Cuenta":
-				Cuenta c = (Cuenta) objeto;
-				try{
-					File f = new File("");
-					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + ".dat")));
-					streamSalida.writeObject(c);
-					streamSalida.close();
-					return("La Cuenta con id: " + c.getId() + " y nombre: " + c.getNombre() + " fue guardado satisfactoriamente en el sistema.");
-				}catch(IOException ex) {
-					return("La Cuenta con id: " + c.getId() + " y nombre: " + c.getNombre() + " no pudo ser guardado en el sistema: " + ex);
-				}
-			case "Movimientos":
-				Movimientos m = (Movimientos) objeto;
-				try{
-					File f = new File("");
-					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Movimientos.nombreD + ".dat")));
-					streamSalida.writeObject(m);
-					streamSalida.close();
-					return("El Movimiento con id: " + m.getId() + " fue guardado satisfactoriamente en el sistema.");
-				}catch(IOException ex) {
-					return("El Movimiento con id: " + m.getId() + " no pudo ser guardado en el sistema: " + ex);
-				}	
-			case "Metas":
-				Metas me = (Metas) objeto;
-				try{
-					File f = new File("");
-					ObjectOutputStream streamSalida = new ObjectOutputStream(new FileOutputStream(new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Metas.nombreD + ".dat")));
-					streamSalida.writeObject(me);
-					streamSalida.close();
-					return("La Meta con id: " + me.getId() + " y nombre: " + me.getNombre() + " fue guardado satisfactoriamente en el sistema.");
-				}catch(IOException ex) {
-					return("La Meta con id: " + me.getId() + " y nombre: " + me.getNombre() + " no pudo ser guardado en el sistema: " + ex);
-				}	
-			default:
-				return("Error de guardado: El objeto debe estar definido en el sistema.");
-		}
-	}
-	
 	//Serializar ArrayLists con objetos
 	@SuppressWarnings("unchecked")
 	public static String serializar(Object objetos, String clase) {		
@@ -168,7 +92,7 @@ public class Serializador{
 		    	out.writeObject(Banco.getBancosTotales());
 		    case "Estados":
 		    	out.writeObject(Estado.getEstadosTotales());
-		    case "Movimentos":
+		    case "Movimientos":
 		    	out.writeObject(Movimientos.getMovimientosTotales());
 		    case "Metas":
 		    	out.writeObject(Metas.getMetasTotales());

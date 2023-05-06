@@ -1431,7 +1431,6 @@ public final class Main {
 			System.out.println("Primero debes asociar cuentas de ahorro. Volviendo al menú anterior");
 			seccion = 1;
 		}else {
-			System.out.println("");
 			Main.verCuentasAhorroAsociadas();
 			System.out.print("Seleccione el número de cuenta de ahorro asociada al usuario para realizar la consignación de saldo: ");
 			int opcion_cuenta = Integer.parseInt(sc.nextLine());
@@ -2246,7 +2245,6 @@ public final class Main {
 		System.out.println("Comenzando ejecución del programa....");	
 		System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
 		String confirmacion = sc.nextLine();
-
 			while(true){
 				File f = new File("");
 				File fUsuario = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Usuario.nombreD + "_lista" + ".dat");
@@ -2258,88 +2256,54 @@ public final class Main {
 				File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 					if (fUsuario.exists()) {
-						System.out.print(existencia);
-//						ArrayList<Usuario> usuariosDeserializados = (ArrayList<Usuario>) Deserializador.deserializar_listas("Usuarios");
-//						System.out.println("Una lista con " + usuariosDeserializados.size() + " usuarios ha sido cargada con éxito en el sistema.");
 						System.out.println(Deserializador.deserializar_listas("Usuarios"));
 						existencia = true;
-					}
-					if (fEstado.exists()) {
-//						ArrayList<Estado> estadosDeserializados = (ArrayList<Estado>) Deserializador.deserializar_listas("Estados");
-//						System.out.println("Una lista con " + estadosDeserializados.size() + " estados ha sido cargada con éxito en el sistema.");
-						System.out.println(Deserializador.deserializar_listas("Usuarios"));						
+					}if (fEstado.exists()) {
+						System.out.println(Deserializador.deserializar_listas("Estados"));
 						existencia = true;
-					}
-					if (fBanco.exists()) {
-//						ArrayList<Banco> bancosDeserializados = (ArrayList<Banco>) Deserializador.deserializar_listas("Bancos");
-//						System.out.println("Una lista con " + bancosDeserializados.size() + " bancos ha sido cargada con éxito en el sistema.");
-						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
+					}if (fBanco.exists()) {
+						System.out.println(Deserializador.deserializar_listas("Bancos"));
 						existencia = true;
-					}
-					if (fMovimientos.exists()) {
-//						ArrayList<Movimientos> movimientosDeserializados = (ArrayList<Movimientos>) Deserializador.deserializar_listas("Movimientos");
-//						System.out.println("Una lista con " + movimientosDeserializados.size() + " movimientos ha sido cargada con éxito en el sistema.");
-						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
+					}if (fMovimientos.exists()) {
+						System.out.println(Deserializador.deserializar_listas("Movimientos"));
 						existencia = true;
-					}
-					if (fMetas.exists()) {
-//						ArrayList<Metas> metasDeserializados = (ArrayList<Metas>) Deserializador.deserializar_listas("Metas");
-//						System.out.println("Una lista con " + metasDeserializados.size() + " metas ha sido cargada con éxito en el sistema.");
-						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
+					}if (fMetas.exists()) {
+						System.out.println(Deserializador.deserializar_listas("Movimientos"));
 						existencia = true;
-					}
-					if (fCuenta.exists()) {
-//						ArrayList<Cuenta> cuentasDeserializados = (ArrayList<Cuenta>) Deserializador.deserializar_listas("Cuentas");
-//						System.out.println("Una lista con " + cuentasDeserializados.size() + " cuentas ha sido cargada con éxito en el sistema.");
-						System.out.println(Deserializador.deserializar_listas("Usuarios"));	
+					}if (fCuenta.exists()) {
+						System.out.println(Deserializador.deserializar_listas("Cuentas"));
 						existencia = true;
-					}
-					if (!existencia) {
+					}if (!existencia) {
 						System.out.println("No existe un estado previo del sistema guardado");
-					}
-					break;
-					
-				}
-				else if(confirmacion.equals("N") || confirmacion.equals("n")) {
+					}break;	
+				}else if(confirmacion.equals("N") || confirmacion.equals("n")) {
 					System.out.println("Nota: tenga en cuenta que al hacerlo se borrarán los objetos que haya guardados");
 					System.out.print("Proseguir (Y/N): ");
 					String reconfirmacion = sc.nextLine();
 					if(reconfirmacion.equals("Y") || reconfirmacion.equals("y")) {
 						if (fUsuario.exists()) {
-							fUsuario.delete();
-							
-						}
-						if (fEstado.exists()) {
+							fUsuario.delete();	
+						}if (fEstado.exists()) {
 							fEstado.delete();
-						}
-						if (fBanco.exists()) {
+						}if (fBanco.exists()) {
 							fBanco.delete();
-						}
-						if (fMovimientos.exists()) {
+						}if (fMovimientos.exists()) {
 							fMovimientos.delete();
-						}
-						if (fMetas.exists()) {
+						}if (fMetas.exists()) {
 							fMetas.delete();
-						}
-						if (fCuenta.exists()) {
+						}if (fCuenta.exists()) {
 							fCuenta.delete();
-						}	
+						}break;
+					}else {
 						break;
 					}
-					else {
-						break;
-						}
-					}
-						
-					
-			else {
-				System.out.println("Opción no válida");
-				System.out.println("NOTA: Solo se recibe como respuesta Y o N");
-				System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
-				confirmacion = sc.nextLine();
+				}else {
+					System.out.println("Opción no válida");
+					System.out.println("NOTA: Solo se recibe como respuesta Y o N");
+					System.out.print("¿Desea cargar el estado previo del sistema? (Y/N): ");
+					confirmacion = sc.nextLine();
 			}		
-		}
-		System.out.println("");
+		}System.out.println("");
 	}
 
 	// ASOCIAR CUENTA A USUARIO EN EL MAIN

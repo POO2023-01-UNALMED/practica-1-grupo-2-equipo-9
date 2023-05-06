@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
+import gestorAplicación.externo.Estado;
+
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -19,6 +21,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	protected int id;
 	protected Banco banco;
 	private static transient ArrayList<Cuenta> cuentasTotales = new ArrayList<Cuenta>();
+
 	
 	//Constructores
 	protected Cuenta(Banco banco, int clave, Divisas divisa, String nombre) {
@@ -96,6 +99,15 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	}
 	//Para ordenar cualquier arreglo de tipo Cuenta, se ordenará según el id de la cuenta y se hará con Collections.sort(nombre_lista);
 
+	@Override
+	public boolean equals(Object o) {
+		if(this.getId() == ((Cuenta) o).getId()){
+			return true;
+		}else {
+			return false;
+		}	
+	}
+	
 	@Override	
 	protected void finalize() {
 		System.out.println("La cuenta " + this.getClass() + " con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");

@@ -3,6 +3,7 @@ package gestorAplicación.externo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Usuario;
 
 public class Estado implements Serializable {
@@ -29,6 +30,15 @@ public class Estado implements Serializable {
 		this.setId(Estado.getEstadosTotales().size());
 	}
 	public Estado(){}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this.getId() == ((Estado) o).getId()){
+			return true;
+		}else {
+			return false;
+		}	
+	}
 	
 	//Gets
 	public String getNombre() {

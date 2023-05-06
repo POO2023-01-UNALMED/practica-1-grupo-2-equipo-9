@@ -1,12 +1,8 @@
 package gestorAplicación.interno;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import baseDatos.Deserializador;
 import gestorAplicación.externo.Banco;
-import gestorAplicación.interno.Deuda;
 
 public class Usuario implements Serializable {
 	//Atributos
@@ -30,7 +26,6 @@ public class Usuario implements Serializable {
 	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
 
-	
 	//Constructor
 	public Usuario(String nombre, String correo, String contrasena, Suscripcion suscripcion) {
 		Usuario.getUsuariosTotales().add(this);
@@ -198,7 +193,6 @@ public class Usuario implements Serializable {
 		return cadena;
 	}
 
-
 	//Funcionalidad Compra Cartera
 	public ArrayList<Corriente> retornarDeudas(){
 		ArrayList<Corriente> cuentasConDeuda = new ArrayList<Corriente>();
@@ -233,6 +227,15 @@ public class Usuario implements Serializable {
 	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this.getId() == ((Usuario) o).getId()){
+			return true;
+		}else {
+			return false;
+		}	
+	}
 	
 	//Métodos Get & Set
 	public static ArrayList<Usuario> getUsuariosTotales() { return usuariosTotales; }
