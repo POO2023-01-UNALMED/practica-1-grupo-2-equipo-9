@@ -1817,8 +1817,6 @@ public final class Main {
 						System.out.println("2. Cuenta propia");
 						decision_saldo = Integer.parseInt(sc.nextLine());
 				}
-		
-			
 			}else {
 				Cuenta.getCuentasTotales().remove(cuenta);
 				user.getCuentasAsociadas().remove(cuenta);

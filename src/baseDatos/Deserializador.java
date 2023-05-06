@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import gestorAplicación.externo.Estado;
+import gestorAplicación.interno.Ahorros;
+import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
@@ -114,6 +116,13 @@ public class Deserializador {
 		    	}
 		    case "Cuentas":
 		    	Cuenta.setCuentasTotales((ArrayList<Cuenta>) in.readObject());
+		    	for(Cuenta c : Cuenta.getCuentasTotales()) {
+		    		if(c instanceof Ahorros) {
+		    			Ahorros.getCuentasAhorroTotales().add((Ahorros) c);
+		    		}else {
+		    			Corriente.getCuentasCorrienteTotales().add((Corriente) c);
+		    		}
+		    	}
 		    case "Bancos":
 		    	Banco.setBancosTotales((ArrayList<Banco>) in.readObject());
 		    case "Estados":
