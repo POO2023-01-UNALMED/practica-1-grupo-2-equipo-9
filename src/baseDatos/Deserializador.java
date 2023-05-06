@@ -10,6 +10,7 @@ import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Usuario;
+import uiMain.Main;
 import gestorAplicación.externo.Banco;
 
 public class Deserializador {
@@ -106,6 +107,11 @@ public class Deserializador {
 	    switch(clase) {
 		    case "Usuarios":
 		    	Usuario.setUsuariosTotales((ArrayList<Usuario>) in.readObject());
+		    	for(Usuario u : Usuario.getUsuariosTotales()) {
+		    		if(u.getNombre().equals("admin")) {
+		    			Main.setContraseñaAdmin("admin");
+		    		}	
+		    	}
 		    case "Cuentas":
 		    	Cuenta.setCuentasTotales((ArrayList<Cuenta>) in.readObject());
 		    case "Bancos":

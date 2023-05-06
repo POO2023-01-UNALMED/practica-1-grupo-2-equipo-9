@@ -86,7 +86,7 @@ public class Usuario implements Serializable {
 	}
 	
 	public String asociarCuenta(Cuenta cuenta) {
-		if(!cuentasAsociadas.contains(cuenta) && this.getCuentasAsociadas().size() < this.getLimiteCuentas()) {
+		if(!cuentasAsociadas.contains(cuenta)) {
 			cuenta.setTitular(this);
 			this.getCuentasAsociadas().add(cuenta);
 			if(cuenta instanceof Ahorros) {
@@ -95,7 +95,7 @@ public class Usuario implements Serializable {
 				return(this.asociarCuentaCorriente((Corriente) cuenta));
 			}
 		}else {
-			return("Debes verificar que no hayas alcanzado el máximo de cuentas que puede asociar el usuario. El máximo de cuentas que puede asociar el usuario " + this.getNombre()  + " es " + this.getLimiteCuentas() + " y la cantidad de cuentas asociadas es " + this.getCuentasAsociadas().size());
+			return("Debes comprobar que la cuenta no haya sido asociada con anterioridad.");
 		}
 	}
 	
@@ -235,6 +235,14 @@ public class Usuario implements Serializable {
 		}else {
 			return false;
 		}	
+	}
+	
+	public String toString() {
+		return "Usuario: " + this.getNombre() +
+				"\nCorreo: " + this.getCorreo() +
+				"\n#: " + this.getId() +
+				"\nCuentas Asociadas: " + this.getCuentasAsociadas() +
+				"\nSuscripción: " + this.getSuscripcion();
 	}
 	
 	//Métodos Get & Set

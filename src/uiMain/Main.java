@@ -1598,18 +1598,18 @@ public final class Main {
 
 	// ACCESO ADMINISTRATIVO EN EL MAIN
 	static void accesoAdministrativo() {
-		if(contrasena_admin.equals("admin")) {
+		if(contrasenaAdmin.equals("admin")) {
 			for(Usuario u : Usuario.getUsuariosTotales()) {
-				if(u.getNombre() == "admin") {
+				if(u.getNombre().equals("admin")) {
 					user = u;
 				}		
 			}
 		}else {
 			System.out.print("Inserta la contraseña de administrador (Es admin): ");
-			contrasena_admin = sc.nextLine();
-			while(!contrasena_admin.equals("admin")) {
+			contrasenaAdmin = sc.nextLine();
+			while(!contrasenaAdmin.equals("admin")) {
 				System.out.print("Contraseña errada. Inténtelo de nuevo: ");
-				contrasena_admin = sc.nextLine();	
+				contrasenaAdmin = sc.nextLine();	
 			}
 			System.out.println("");
 			System.out.print("Ingresando al sistema como administrador...");
@@ -1617,7 +1617,7 @@ public final class Main {
 			user = new Usuario("admin", "admin@admin.com", "admin", Suscripcion.DIAMANTE);
 		}
 		
-		while(contrasena_admin.equals("admin")) {
+		while(contrasenaAdmin.equals("admin")) {
 			System.out.println("¿Qué deseas hacer?."
 					+ "\n1. Crear Usuario"
 					+ "\n2. Crear Banco"
@@ -1722,6 +1722,10 @@ public final class Main {
 			System.out.println("Para crear una cuenta deben existir bancos. Volviendo al menú anterior");
 			opcion = 0;
 			seccion = 1;
+		}else if(user.getCuentasAsociadas().size() >= user.getLimiteCuentas()){
+			System.out.println("Debes verificar que no hayas alcanzado el máximo de cuentas que puede crear el usuario. El máximo de cuentas que puede asociar el usuario " + user.getNombre()  + " es " + user.getLimiteCuentas() + " y la cantidad de cuentas asociadas es " + user.getCuentasAsociadas().size());
+			opcion = 0;
+			seccion = 1;
 		}else {
 			System.out.println("Para crear una nueva cuenta, favor diligencie los siguientes datos: ");
 			System.out.println("¿A que Banco desea afiliar su cuenta?: ");
@@ -1758,18 +1762,14 @@ public final class Main {
 			
 			if (tipo_op == 1) {
 				System.out.println(user.asociarCuenta(new Ahorros(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
-				System.out.println("Cuenta creada con éxito");
-			}
-			if (tipo_op == 2) {
+			}else if (tipo_op == 2) {
 				System.out.println(user.asociarCuenta(new Corriente(banco_cuenta, clave_cuenta, divisas_cuenta, nombre_cuenta)));
-				System.out.println("Cuenta creada con éxito");
-			}
-			
+			}	
 		}
 	}
 	
 	// ELIMINAR CUENTA, SE REALIZA COMPROBACIÓN ENTRE CORRIENTE Y AHORROS
-	static void eliminarCuentaComprobacion(Cuenta cuenta, Usuario user) {
+	static void eliminarCuentaComprobacion(Cuenta cuenta) {
 		if(cuenta instanceof Ahorros) {
 			if (((Ahorros) cuenta).getSaldo() != 0.0d) {
 				System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -1785,6 +1785,10 @@ public final class Main {
 						for(Cuenta dest : Cuenta.getCuentasTotales()) {
 							if(destino == dest.getNombre() && dest instanceof Ahorros) {
 								System.out.println(Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) dest, ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date()));
+								Cuenta.getCuentasTotales().remove(cuenta);
+								user.getCuentasAsociadas().remove(cuenta);
+								Ahorros.getCuentasAhorroTotales().remove(cuenta);
+								cuenta = null;
 								break;
 							}else {
 								System.out.print("Inténtelo de nuevo. Recuerde que debe escoger una cuenta de ahorros: ");
@@ -1800,6 +1804,11 @@ public final class Main {
 						}
 						int decision_cuenta = Integer.parseInt(sc.nextLine());
 						Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) cuentas.get(decision_cuenta - 1), ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date());
+						Cuenta.getCuentasTotales().remove(cuenta);
+						user.getCuentasAsociadas().remove(cuenta);
+						user.getCuentasAhorrosAsociadas().remove(cuenta);
+						Ahorros.getCuentasAhorroTotales().remove(cuenta);
+						cuenta = null;
 					default:
 						System.out.println("Opción no válida. Inténtelo de nuevo");
 						System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -1813,6 +1822,8 @@ public final class Main {
 			}else {
 				Cuenta.getCuentasTotales().remove(cuenta);
 				user.getCuentasAsociadas().remove(cuenta);
+				user.getCuentasAhorrosAsociadas().remove(cuenta);
+				Ahorros.getCuentasAhorroTotales().remove(cuenta);
 				cuenta = null;
 			}
 		}else {
@@ -1824,6 +1835,8 @@ public final class Main {
 					if (validacion) {
 						Cuenta.getCuentasTotales().remove(cuenta);
 						user.getCuentasAsociadas().remove(cuenta);
+						user.getCuentasCorrienteAsociadas().remove(cuenta);
+						Corriente.getCuentasCorrienteTotales().remove(cuenta);
 						cuenta = null;
 					}
 					else {
@@ -1837,6 +1850,8 @@ public final class Main {
 			}else {
 				Cuenta.getCuentasTotales().remove(cuenta);
 				user.getCuentasAsociadas().remove(cuenta);
+				user.getCuentasCorrienteAsociadas().remove(cuenta);
+				Corriente.getCuentasCorrienteTotales().remove(cuenta);
 				cuenta = null;	
 			}
 		}
@@ -1861,7 +1876,7 @@ public final class Main {
 				}else {
 					for(int i = 0; i < user.getCuentasAsociadas().size(); i++) {
 						if(user.getCuentasAsociadas().get(cuentaOp - 1) == user.getCuentasAsociadas().get(i)) {
-							Main.eliminarCuentaComprobacion(user.getCuentasAsociadas().get(i), user);
+							Main.eliminarCuentaComprobacion(user.getCuentasAsociadas().get(i));
 							System.gc();
 						}	
 					} break;
@@ -2558,11 +2573,13 @@ public final class Main {
 	static int interfaz = 1;
 	static int seccion = 0;
 	static int opcion = 0;
-	static String contrasena_admin = "";
+	static String contrasenaAdmin = "";
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException{
 		Main.cargarObjetos();
 		Main.bienvenidaApp();
 	}	
+	
+	public static void setContraseñaAdmin(String contrasenaAdmin) { Main.contrasenaAdmin = contrasenaAdmin; }
 }

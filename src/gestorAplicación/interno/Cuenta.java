@@ -30,6 +30,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		this.nombre = nombre;
 		this.banco = banco;	
 		cuentasTotales.add(this);
+		this.setId(cuentasTotales.size());
 	}	
 	
 	protected Cuenta(Banco banco, int clave, String nombre) {;
@@ -39,10 +40,12 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		this.nombre = nombre;
 		this.banco = banco;
 		cuentasTotales.add(this);
+		this.setId(cuentasTotales.size());
 	}
 	
 	protected Cuenta() {
 		cuentasTotales.add(this);
+		this.setId(cuentasTotales.size());
 	}
 	
 	//Métodos
@@ -110,7 +113,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	
 	@Override	
 	protected void finalize() {
-		System.out.println("La cuenta " + this.getClass() + " con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
+		System.out.println("La cuenta " + this.getClass().getSimpleName() + " con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 	}
 
 	public String toString() {
