@@ -1782,35 +1782,55 @@ public final class Main {
 				switch(decision_saldo) {
 					case 1:
 						System.out.println("Ingrese los datos de la cuenta a la cual desea transferir su saldo. Recuerde que debe ser una cuenta de ahorros.");
-						System.out.print("Nombre de la cuenta destino: ");
-						String destino = sc.nextLine();
-						for(Cuenta dest : Cuenta.getCuentasTotales()) {
-							if(destino == dest.getNombre() && dest instanceof Ahorros) {
-								System.out.println(Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) dest, ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date()));
-								Cuenta.getCuentasTotales().remove(cuenta);
-								user.getCuentasAsociadas().remove(cuenta);
-								Ahorros.getCuentasAhorroTotales().remove(cuenta);
-								cuenta = null;
+						System.out.print("Id de la cuenta destino: ");
+						int destino = Integer.parseInt(sc.nextLine()); 
+						Cuenta dest = null;
+						while(true) {
+							for(int i = 0; i < Cuenta.getCuentasTotales().size(); i++) {
+								dest = Cuenta.getCuentasTotales().get(i);
+								if(dest.getId() == destino && dest instanceof Ahorros && dest.getId() != cuenta.getId()) {
+									System.out.println(new Movimientos((Ahorros) dest, ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date()));
+									Cuenta.getCuentasTotales().remove(cuenta);
+									user.getCuentasAsociadas().remove(cuenta);
+									user.getCuentasAhorrosAsociadas().remove(cuenta);
+									Ahorros.getCuentasAhorroTotales().remove(cuenta);
+									cuenta = null;
+									break;
+								}
+							} 
+							if(cuenta == null || dest == null) {
 								break;
 							}else {
-								System.out.print("Inténtelo de nuevo. Recuerde que debe escoger una cuenta de ahorros: ");
-								destino = sc.nextLine();
-									
+								if(dest.getId() == cuenta.getId()) {
+									System.out.println("Recuerde que la cuenta debe ser de ahorros debe ser diferente. Inténtelo de nuevo.");
+									System.out.print("Id de la cuenta destino: ");
+									destino = Integer.parseInt(sc.nextLine());
+								}else{
+									System.out.println("Recuerde que la cuenta debe ser de ahorros. Inténtelo de nuevo.");
+									System.out.print("Id de la cuenta destino: ");
+									destino = Integer.parseInt(sc.nextLine()); 
 								}
-							}
+							}	
+						}break;
 					case 2:
-						System.out.println("A cual de sus cuentas desea transferir su saldo:");
-						ArrayList<Cuenta> cuentas = cuenta.getTitular().getCuentasAsociadas();
-						for (int i = 1; i == cuentas.size() + 1; i++) {
-							System.out.println(i + ". " + cuentas.get(i - 1).getNombre());
+						if(cuenta.getTitular().getCuentasAhorrosAsociadas().size() < 2) {
+							System.out.println("Debe asociar más de una (1) cuenta de ahorros. Volviendo al menú anterior.");
+							break;
+						}else {
+							ArrayList<Ahorros> cuentas = cuenta.getTitular().getCuentasAhorrosAsociadas();
+							for (int i = 1; i == cuentas.size() + 1; i++) {
+								System.out.println(i + ". " + cuentas.get(i - 1).getNombre());
+							}
+							System.out.print("A cual de sus cuentas desea transferir su saldo:");
+							int decision_cuenta = Integer.parseInt(sc.nextLine());
+							Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) cuentas.get(decision_cuenta - 1), ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date());
+							Cuenta.getCuentasTotales().remove(cuenta);
+							user.getCuentasAsociadas().remove(cuenta);
+							user.getCuentasAhorrosAsociadas().remove(cuenta);
+							Ahorros.getCuentasAhorroTotales().remove(cuenta);
+							cuenta = null;	
 						}
-						int decision_cuenta = Integer.parseInt(sc.nextLine());
-						Movimientos.crearMovimiento((Ahorros) cuenta, (Ahorros) cuentas.get(decision_cuenta - 1), ((Ahorros) cuenta).getSaldo(), Categoria.OTROS, new Date());
-						Cuenta.getCuentasTotales().remove(cuenta);
-						user.getCuentasAsociadas().remove(cuenta);
-						user.getCuentasAhorrosAsociadas().remove(cuenta);
-						Ahorros.getCuentasAhorroTotales().remove(cuenta);
-						cuenta = null;
+						
 					default:
 						System.out.println("Opción no válida. Inténtelo de nuevo");
 						System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -1890,9 +1910,7 @@ public final class Main {
 									}else {
 										System.out.println("Volviendo al menú anterior.");
 										break;
-									}
-
-									
+									}	
 								}	
 							}
 						}	
@@ -1922,8 +1940,9 @@ public final class Main {
 			int i = 1;
 			for(Cuenta cuenta : user.getCuentasAsociadas()) {
 				if(cuenta instanceof Ahorros) {
-					System.out.println(i + ". " + cuenta.getNombre());
+					System.out.println(i + ". " + cuenta);
 					i++;
+					System.out.println("");
 				}
 			}
 			
@@ -1947,7 +1966,8 @@ public final class Main {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAsociadas());
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
-				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
+				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1));
+				System.out.println("");
 			}
 			
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -2103,7 +2123,8 @@ public final class Main {
 			System.out.println("La lista de Cuentas Corrientes totales en el sistema son: ");
 			Collections.sort(Corriente.getCuentasCorrienteTotales());
 			for(int i = 1; i < Corriente.getCuentasCorrienteTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Corriente.getCuentasCorrienteTotales().get(i - 1).getNombre());
+				System.out.println(i + ". " + Corriente.getCuentasCorrienteTotales().get(i - 1));
+				System.out.println("");
 			}
 						
 		//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -2127,7 +2148,8 @@ public final class Main {
 			System.out.println("La lista de Cuentas de Ahorro totales en el sistema son: ");
 			Collections.sort(Ahorros.getCuentasAhorroTotales());
 			for(int i = 1; i < Ahorros.getCuentasAhorroTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Ahorros.getCuentasAhorroTotales().get(i - 1).getNombre());
+				System.out.println(i + ". " + Ahorros.getCuentasAhorroTotales().get(i - 1));
+				System.out.println("");
 			}
 					
 		//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -2151,7 +2173,7 @@ public final class Main {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			Collections.sort(Cuenta.getCuentasTotales());
 			for(int i = 1; i < Cuenta.getCuentasTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1).getNombre());
+				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1));
 			}
 					
 		//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	

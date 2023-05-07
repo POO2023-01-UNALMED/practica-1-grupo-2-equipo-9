@@ -15,7 +15,6 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	public static final String nombreD = "Cuentas";
 	private Usuario titular;
 	private int clave;
-	private int clave_din;
 	protected Divisas divisa;
 	protected String nombre;
 	protected int id;
@@ -136,14 +135,6 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	
 	public void setTitular(Usuario titular) {
 		this.titular = titular;
-	}
-	
-	public int getClave_din() {
-		return clave_din;
-	}
-	
-	public void setClave_din(int clave_din) {
-		this.clave_din = clave_din;
 	}
 	
 	public Divisas getDivisa() {
