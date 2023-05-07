@@ -1445,8 +1445,7 @@ public final class Main {
 					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					System.out.print("Ingrese el monto de su consignación de saldo(En formato double): ");
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
-					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
-					
+					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());	
 					if(saldo_movimiento instanceof Movimientos) {
 						System.out.println("");
 						user.getMovimientosAsociados().add((Movimientos) saldo_movimiento);
@@ -1657,10 +1656,11 @@ public final class Main {
 					String confirmacion = sc.nextLine();
 					while(true) {
 						if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-							Banco banco = new Banco("Banco de Colombia", 0.3, Estado.getEstadosTotales().get(0));
+							Banco banco = new Banco("Banco de Colombia", 0.3, Estado.getEstadosTotales().get(0), 200.0);
 							System.out.println("El banco por defecto fue creado con éxito, éstos son sus datos: ");
 							System.out.println("Nombre: " + banco.getNombre());
 							System.out.println("Comisión: " + banco.getComision());
+							System.out.println("Prestamo: " + banco.getPrestamo());
 							System.out.println("Estado asociado: " + banco.getEstadoAsociado().getNombre());
 							System.out.println("");
 							break;
@@ -1794,6 +1794,13 @@ public final class Main {
 									user.getCuentasAsociadas().remove(cuenta);
 									user.getCuentasAhorrosAsociadas().remove(cuenta);
 									Ahorros.getCuentasAhorroTotales().remove(cuenta);
+									for(Movimientos m : Movimientos.getMovimientosTotales()) {
+										if(m.getOrigen() != null && m.getOrigen().equals(cuenta)) {
+											m.setOrigen(null);
+										} if(m.getDestino() != null && m.getDestino().equals(cuenta)) {
+											m.setDestino(null);
+										}
+									}
 									cuenta = null;
 									break;
 								}
@@ -1843,7 +1850,8 @@ public final class Main {
 				Cuenta.getCuentasTotales().remove(cuenta);
 				user.getCuentasAsociadas().remove(cuenta);
 				user.getCuentasAhorrosAsociadas().remove(cuenta);
-				Ahorros.getCuentasAhorroTotales().remove(cuenta);			}
+				Ahorros.getCuentasAhorroTotales().remove(cuenta);			
+				}
 		}else {
 			if(((Corriente) cuenta).getDisponible().compareTo(((Corriente) cuenta).getCupo()) != 0){
 				System.out.print("Tienes deudas pendientes. ¿Deseas pagarlas? (Y/N): ");

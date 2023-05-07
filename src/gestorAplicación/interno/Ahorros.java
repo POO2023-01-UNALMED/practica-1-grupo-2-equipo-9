@@ -16,20 +16,20 @@ public class Ahorros extends Cuenta{
 	//Constructores
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre, Double saldo) {
 		super(banco, clave, divisa, nombre);
-		Ahorros.getCuentasAhorroTotales().add(this);
 		this.saldo = saldo;
+		Ahorros.getCuentasAhorroTotales().add(this);
 	}
 	
 	public Ahorros(Banco banco, int clave, String nombre, Double saldo) {
 		super(banco, clave, nombre);
-		Ahorros.getCuentasAhorroTotales().add(this);
 		this.saldo = saldo;
+		Ahorros.getCuentasAhorroTotales().add(this);
 	}
 	
 	public Ahorros(Double saldo) {
 		super();
-		Ahorros.getCuentasAhorroTotales().add(this);
 		this.saldo = saldo;
+		Ahorros.getCuentasAhorroTotales().add(this);
 	}
 	
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre) {
