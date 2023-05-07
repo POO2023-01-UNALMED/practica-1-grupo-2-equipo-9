@@ -25,43 +25,40 @@ public class Metas implements Serializable {
 	public static String plazo;
 
 	// CONSTRUCTORES
-	public Metas(String nombre, double cantidad, String fecha, int id) throws ParseException {
-		this.setId(id);
+	public Metas(String nombre, double cantidad, String fecha) throws ParseException {
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
+		this.setId(Metas.getMetasTotales().size());
 		Metas.getMetasTotales().add(this);
-		id++;
+	}
+	
+	public Metas(String nombre, double cantidad) {
+		this.nombre = nombre;
+		this.cantidad = cantidad;
+		this.setId(Metas.getMetasTotales().size());
+		Metas.getMetasTotales().add(this);
 	}
 
+	public Metas(String nombre, String fecha) throws ParseException {
+		this.nombre = nombre;
+		this.fecha = DATE_FORMAT.parse(fecha);
+		this.setId(Metas.getMetasTotales().size());
+		Metas.getMetasTotales().add(this);
+	}
+
+	public Metas(double cantidad, String fecha) throws ParseException {
+		this.setId(id);
+		this.cantidad = cantidad;
+		this.fecha = DATE_FORMAT.parse(fecha);
+		this.setId(Metas.getMetasTotales().size());
+		Metas.getMetasTotales().add(this);
+	}
+	
 	//	Este constructor es el que hereda deuda
 	public Metas(double cantidad, Usuario dueno){
 		this.cantidad = cantidad;
 		this.dueno = dueno;
-	}
-	
-	public Metas(String nombre, double cantidad, int id) {
-		this.setId(id);
-		this.nombre = nombre;
-		this.cantidad = cantidad;
-		Metas.getMetasTotales().add(this);
-		id++;
-	}
-
-	public Metas(String nombre, String fecha, int id) throws ParseException {
-		this.setId(id);
-		this.nombre = nombre;
-		this.fecha = DATE_FORMAT.parse(fecha);
-		Metas.getMetasTotales().add(this);
-		id++;
-	}
-
-	public Metas(double cantidad, String fecha, int id) throws ParseException {
-		this.setId(id);
-		this.cantidad = cantidad;
-		this.fecha = DATE_FORMAT.parse(fecha);
-		Metas.getMetasTotales().add(this);
-		id++;
 	}
 
 	// Metodos de la funcionalidad asesoramiento de inversion.

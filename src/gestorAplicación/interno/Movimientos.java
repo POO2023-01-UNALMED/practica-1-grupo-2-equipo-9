@@ -402,52 +402,32 @@ public class Movimientos implements Serializable{
 	}
 
 	public boolean impuestosMovimiento(double interes) {
-
+		Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
 		if (this.getOrigen().getBanco() == this.getDestino().getBanco()) {
 			if (this.getOrigen() instanceof Corriente) {
-				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
 				Movimientos movimiento1 = new Movimientos((Corriente) this.getOrigen(), impuestosBanco, interes,
 						Categoria.OTROS, Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos((Corriente) this.getDestino(), impuestosBanco, interes,
-						Categoria.OTROS, Date.from(Instant.now()));
-				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
-				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
-				this.getDestino().getTitular().asociarMovimiento(movimiento1);
-				this.getDestino().getTitular().asociarMovimiento(movimiento2);
-			} else if (this.getOrigen() instanceof Ahorros) {
-				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+				Movimientos.getMovimientosTotales().remove(movimiento1);
+			} else {
 				Movimientos movimiento1 = new Movimientos((Ahorros) this.getOrigen(), impuestosBanco, interes,
 						Categoria.OTROS, Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos((Ahorros) this.getDestino(), impuestosBanco, interes,
-						Categoria.OTROS, Date.from(Instant.now()));
-				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
-				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
-				this.getDestino().getTitular().asociarMovimiento(movimiento1);
-				this.getDestino().getTitular().asociarMovimiento(movimiento2);
+				Movimientos.getMovimientosTotales().remove(movimiento1);
 			}
+			Ahorros.getCuentasAhorroTotales().remove(impuestosBanco);
+			Cuenta.getCuentasTotales().remove(impuestosBanco);
 			return true;
 		} else {
 			if (this.getOrigen() instanceof Corriente) {
-				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
 				Movimientos movimiento1 = new Movimientos((Corriente) this.getOrigen(), impuestosBanco, interes + 1,
 						Categoria.OTROS, Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos((Corriente) this.getDestino(), impuestosBanco, interes + 1,
-						Categoria.OTROS, Date.from(Instant.now()));
-				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
-				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
-				this.getDestino().getTitular().asociarMovimiento(movimiento1);
-				this.getDestino().getTitular().asociarMovimiento(movimiento2);
-			} else if (this.getOrigen() instanceof Ahorros) {
-				Ahorros impuestosBanco = new Ahorros(this.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0);
+				Movimientos.getMovimientosTotales().remove(movimiento1);
+			} else {;
 				Movimientos movimiento1 = new Movimientos((Ahorros) this.getOrigen(), impuestosBanco, interes + 1,
 						Categoria.OTROS, Date.from(Instant.now()));
-				Movimientos movimiento2 = new Movimientos((Ahorros) this.getDestino(), impuestosBanco, interes + 1,
-						Categoria.OTROS, Date.from(Instant.now()));
-				this.getOrigen().getTitular().asociarMovimiento(movimiento1);
-				this.getOrigen().getTitular().asociarMovimiento(movimiento2);
-				this.getDestino().getTitular().asociarMovimiento(movimiento1);
-				this.getDestino().getTitular().asociarMovimiento(movimiento2);
+				Movimientos.getMovimientosTotales().remove(movimiento1);
 			}
+			Ahorros.getCuentasAhorroTotales().remove(impuestosBanco);
+			Cuenta.getCuentasTotales().remove(impuestosBanco);
 			return false;
 		}
 	}

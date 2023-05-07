@@ -220,6 +220,27 @@ public class Usuario implements Serializable {
 		return cuentasCapacesDeuda;
 	}
 	
+	// Funcionalidad Asesor Inversiones
+	public static int hallarUsuariogotaGota() {
+		int contador = 0;
+		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
+			if (Usuario.getUsuariosTotales().get(i).getNombre() == "gotaGota") {
+				contador = i;
+			}
+		}
+		return contador;
+	}
+
+	public static int hallarUsuarioImpuestosPortafolio() {
+		int contador = 0;
+		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
+			if (Usuario.getUsuariosTotales().get(i).getNombre() == "Impuestos Portafolio") {
+				contador = i;
+			}
+		}
+		return contador;
+	}
+	
 	public void eliminarMetas(int n) {
 		this.getMetasAsociadas().remove(n);
 		Metas.getMetasTotales().remove(n);

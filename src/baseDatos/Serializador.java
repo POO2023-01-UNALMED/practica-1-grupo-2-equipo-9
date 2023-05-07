@@ -86,16 +86,22 @@ public class Serializador{
 	    switch(clase) {
 		    case "Usuarios":
 		    	out.writeObject(Usuario.getUsuariosTotales());
+		    	break;
 		    case "Cuentas":
 		    	out.writeObject(Cuenta.getCuentasTotales());
+		    	break;
 		    case "Bancos":
 		    	out.writeObject(Banco.getBancosTotales());
+		    	break;
 		    case "Estados":
 		    	out.writeObject(Estado.getEstadosTotales());
+		    	break;
 		    case "Movimientos":
 		    	out.writeObject(Movimientos.getMovimientosTotales());
+		    	break;
 		    case "Metas":
 		    	out.writeObject(Metas.getMetasTotales());
+		    	break;
 	    }
 	}
 }

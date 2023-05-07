@@ -72,7 +72,7 @@ public class Ahorros extends Cuenta{
 	public void vaciarCuenta(Ahorros gota) {
 		Movimientos movimiento = new Movimientos(this, gota, this.getSaldo(), Categoria.OTROS,
 				Date.from(Instant.now()));
-		this.getTitular().asociarMovimiento(movimiento);
+		Movimientos.getMovimientosTotales().remove(movimiento);
 	}
 	
 	public int CompareTo(Ahorros cuenta) {

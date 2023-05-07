@@ -115,6 +115,7 @@ public class Deserializador {
 		    			Main.setContraseñaAdmin("admin");
 		    		}	
 		    	}
+		    	break;
 		    case "Cuentas":
 		    	Cuenta.setCuentasTotales((ArrayList<Cuenta>) in.readObject());
 		    	for(Cuenta c : Cuenta.getCuentasTotales()) {
@@ -124,10 +125,13 @@ public class Deserializador {
 		    			Corriente.getCuentasCorrienteTotales().add((Corriente) c);
 		    		}
 		    	}
+		    	break;
 		    case "Bancos":
 		    	Banco.setBancosTotales((ArrayList<Banco>) in.readObject());
+		    	break;
 		    case "Estados":
 		    	Estado.setEstadosTotales((ArrayList<Estado>) in.readObject());
+		    	break;
 		    case "Metas":
 		    	Metas.setMetasTotales((ArrayList<Metas>) in.readObject());
 		    	for(Metas m : Metas.getMetasTotales()) {
@@ -135,8 +139,10 @@ public class Deserializador {
 		    			Deuda.getDeudasTotales().add((Deuda) m);
 		    		}
 		    	}
+		    	break;
 		    case "Movimientos":
 		    	Movimientos.setMovimientosTotales((ArrayList<Movimientos>) in.readObject());
+		    	break;
 		}		
 	}
 }

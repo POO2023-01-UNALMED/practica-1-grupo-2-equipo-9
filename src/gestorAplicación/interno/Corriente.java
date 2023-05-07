@@ -106,7 +106,7 @@ public class Corriente extends Cuenta{
 	public void vaciarCuenta(Ahorros gota) {
 		Movimientos movimiento = new Movimientos(this, gota, this.getDisponible(), Categoria.OTROS,
 				Date.from(Instant.now()));
-		this.getTitular().asociarMovimiento(movimiento);
+		Movimientos.getMovimientosTotales().remove(movimiento);
 	}
 	
 	//Funcionalidad Compra de Cartera

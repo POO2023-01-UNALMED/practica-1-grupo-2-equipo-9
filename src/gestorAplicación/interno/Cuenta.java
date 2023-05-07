@@ -64,10 +64,9 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 					mayor = user.getCuentasAhorrosAsociadas().get(i).getSaldo();
 					contador = i;
 				}
-
 				Movimientos movimiento = new Movimientos(gota, user.getCuentasAhorrosAsociadas().get(contador),
 						cantidadPrestamo, Categoria.OTROS, Date.from(Instant.now()));
-				user.asociarMovimiento(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimiento);
 			}
 			return user.getCuentasAhorrosAsociadas().get(contador);
 		} else {
@@ -76,10 +75,9 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 					mayor = user.getCuentasCorrienteAsociadas().get(i).getCupo();
 					contador = i;
 				}
-
 				Movimientos movimiento = new Movimientos(gota, user.getCuentasCorrienteAsociadas().get(contador),
 						cantidadPrestamo, Categoria.OTROS, Date.from(Instant.now()));
-				user.asociarMovimiento(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimiento);
 			}
 			return user.getCuentasCorrienteAsociadas().get(contador);
 		}

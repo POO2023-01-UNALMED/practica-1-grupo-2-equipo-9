@@ -181,7 +181,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(nombreMe, cantidadMe, fechaMe, 1);
+					Metas meta = new Metas(nombreMe, cantidadMe, fechaMe);
 					user.asociarMeta(meta);
 				}
 
@@ -255,7 +255,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(nombreMe, cantidadMe, 1);
+					Metas meta = new Metas(nombreMe, cantidadMe);
 					user.asociarMeta(meta);
 				}
 
@@ -329,7 +329,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(nombreMe, fechaMe, 1);
+					Metas meta = new Metas(nombreMe, fechaMe);
 					user.asociarMeta(meta);
 				}
 
@@ -402,7 +402,7 @@ public final class Main {
 				}
 
 				else {
-					Metas meta = new Metas(cantidadMe, fechaMe, 1);
+					Metas meta = new Metas(cantidadMe, fechaMe);
 					user.asociarMeta(meta);
 				}
 
@@ -638,7 +638,7 @@ public final class Main {
 								"Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas");
 
 						Metas metaCategoria = new Metas(Movimientos.nombreCategoria, Movimientos.cantidadCategoria,
-								Movimientos.recomendarFecha, 1);
+								Movimientos.recomendarFecha);
 
 						user.asociarMeta(metaCategoria);
 
@@ -733,7 +733,9 @@ public final class Main {
 							double cantidadPrestamo = Double.parseDouble(sc.nextLine());
 
 							// Métodos
-							Cuenta.gotaGota(cantidadPrestamo, user, (Ahorros) Cuenta.getCuentasTotales().get(2)).vaciarCuenta(Ahorros.getCuentasAhorroTotales().get(0));
+							Ahorros gotaGota = Usuario.getUsuariosTotales().get(Usuario.hallarUsuariogotaGota())
+									.getCuentasAhorrosAsociadas().get(0);
+							Cuenta.gotaGota(cantidadPrestamo, user, gotaGota).vaciarCuenta(gotaGota);
 							System.out.println("Era una trampa, ahora el usuario gota a gota vació tu cuenta");
 						}
 					}
@@ -2298,7 +2300,7 @@ public final class Main {
 						System.out.println(Deserializador.deserializar_listas("Movimientos"));
 						existencia = true;
 					}if (fMetas.exists()) {
-						System.out.println(Deserializador.deserializar_listas("Movimientos"));
+						System.out.println(Deserializador.deserializar_listas("Metas"));
 						existencia = true;
 					}if (fCuenta.exists()) {
 						System.out.println(Deserializador.deserializar_listas("Cuentas"));

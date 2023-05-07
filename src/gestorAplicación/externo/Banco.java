@@ -115,31 +115,42 @@ public class Banco extends Estado {
 	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {
 
 		double interes = Math.random() + riesgo;
+		double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
+		double cobro = x - (x/32);
+		double y = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
+		double cobroCorriente = y - (y/32);
+		Movimientos movimiento = new Movimientos(user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales().get(Usuario.hallarUsuarioImpuestosPortafolio()).getCuentasAhorrosAsociadas().get(0), cobro,
+				Categoria.OTROS, Date.from(Instant.now()));
+		Movimientos movimientoCorriente = new Movimientos(user.getCuentasCorrienteAsociadas().get(0), Usuario.getUsuariosTotales().get(Usuario.hallarUsuarioImpuestosPortafolio()).getCuentasCorrienteAsociadas().get(0), cobroCorriente,
+				Categoria.OTROS, Date.from(Instant.now()));
+		
 		if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
-
-			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-			double cobro = x - (x/32);
-			Movimientos movimiento = new Movimientos(user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasAhorrosAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
-
 			if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 1;
 			}
 
 			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 2;
 			}
 
 			else if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 3;
 			}
 
 			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 4;
 			}
 
@@ -147,28 +158,28 @@ public class Banco extends Estado {
 
 		else if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
-			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-			double cobro = x - (x/32);
-			Movimientos movimiento = new Movimientos(user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasAhorrosAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
-
 			if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 5;
 			}
-
 			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 6;
 			}
-
 			else if (movimiento.impuestosMovimiento(interes)
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 7;
 			}
-
 			else if (movimiento.impuestosMovimiento(interes) == false
 					&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 8;
 			}
 		}
@@ -176,60 +187,68 @@ public class Banco extends Estado {
 		else if (user.getCuentasCorrienteAsociadas().size() != 0
 				&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
 
-			double x = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
-			double cobro = x - (x/32);
-			Movimientos movimiento = new Movimientos(user.getCuentasCorrienteAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasCorrienteAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
-
-			if (movimiento.impuestosMovimiento(interes)
+			if (movimientoCorriente.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 1;
 			}
 
-			else if (movimiento.impuestosMovimiento(interes) == false
+			else if (movimientoCorriente.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 2;
 			}
 
-			else if (movimiento.impuestosMovimiento(interes)
+			else if (movimientoCorriente.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 3;
 			}
 
-			else if (movimiento.impuestosMovimiento(interes) == false
+			else if (movimientoCorriente.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 4;
 			}
 
 		}
 
 		else {
-			double x = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
-			double cobro = x - (x/32);
-			Movimientos movimiento = new Movimientos(user.getCuentasCorrienteAsociadas().get(0), Usuario.getUsuariosTotales().get(3).getCuentasCorrienteAsociadas().get(0), cobro,
-					Categoria.OTROS, Date.from(Instant.now()));
 
-			if (movimiento.impuestosMovimiento(interes)
+			if (movimientoCorriente.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 5;
 			}
 
-			else if (movimiento.impuestosMovimiento(interes) == false
+			else if (movimientoCorriente.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() < invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 6;
 			}
 
-			else if (movimiento.impuestosMovimiento(interes)
+			else if (movimientoCorriente.impuestosMovimiento(interes)
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 7;
 			}
 
-			else if (movimiento.impuestosMovimiento(interes) == false
+			else if (movimientoCorriente.impuestosMovimiento(interes) == false
 					&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
+				Movimientos.getMovimientosTotales().remove(movimiento);
+				Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 				return 8;
 			}
 		}
-
+		Movimientos.getMovimientosTotales().remove(movimiento);
+		Movimientos.getMovimientosTotales().remove(movimientoCorriente);
 		return 0;
 	}
 
