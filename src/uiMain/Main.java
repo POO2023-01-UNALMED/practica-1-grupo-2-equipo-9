@@ -987,6 +987,11 @@ public final class Main {
 				Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 				Corriente aux = cuentasCapacesDeuda.get(Cuenta_Destino - 1);
 				aux = null;
+				
+				//Cambios para la cuenta origen
+				cuenta.setDisponible(cuenta.getCupo());
+				cuenta.setPlazo_Pago(null);
+				
 				return true;
 			
 			case 2:
@@ -1279,12 +1284,18 @@ public final class Main {
 		}
 		switch(confirmacionMovimiento) {
 			case 1:
+				//Cambios para la cuenta destino
 				Cuenta.getCuentasTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 				usuario.getCuentasAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 				usuario.getCuentasCorrienteAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 				Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 				Corriente aux = cuentasCapacesDeuda.get(Cuenta_Destino - 1);
 				aux = null;
+				
+				//Cambios para la cuenta origen
+				cuentasEnDeuda.get(Cuenta_Compra - 1).setDisponible(cuentasEnDeuda.get(Cuenta_Compra - 1).getCupo());
+				cuentasEnDeuda.get(Cuenta_Compra - 1).setPlazo_Pago(null);
+				
 				return;
 				
 			case 2:
