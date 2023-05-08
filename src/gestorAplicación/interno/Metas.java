@@ -17,7 +17,7 @@ public class Metas implements Serializable {
 	private Date fecha;
 	public int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-	private static transient  ArrayList<Metas> metasTotales = new ArrayList<Metas>();
+	private static transient ArrayList<Metas> metasTotales = new ArrayList<Metas>();
 	protected Usuario dueno;
 
 	// FUNCIONALIDAD
@@ -32,7 +32,7 @@ public class Metas implements Serializable {
 		this.setId(Metas.getMetasTotales().size());
 		Metas.getMetasTotales().add(this);
 	}
-	
+
 	public Metas(String nombre, double cantidad) {
 		this.nombre = nombre;
 		this.cantidad = cantidad;
@@ -54,9 +54,9 @@ public class Metas implements Serializable {
 		this.setId(Metas.getMetasTotales().size());
 		Metas.getMetasTotales().add(this);
 	}
-	
-	//	Este constructor es el que hereda deuda
-	public Metas(double cantidad, Usuario dueno){
+
+	// Este constructor es el que hereda deuda
+	public Metas(double cantidad, Usuario dueno) {
 		this.cantidad = cantidad;
 		this.dueno = dueno;
 	}
@@ -64,49 +64,52 @@ public class Metas implements Serializable {
 	// Metodos de la funcionalidad asesoramiento de inversion.
 	public static Metas revisionMetas(Usuario u) {
 
-		Date proximaFecha = u.getMetasAsociadas().get(0).getFecha();
-		Metas proximaMeta = u.getMetasAsociadas().get(0);
+		Date proximaFecha = Date.from(Instant.now());
+		Metas proximaMeta = null;
 
 		if (u.getMetasAsociadas().size() == 1) {
 			if (u.getMetasAsociadas().get(0).getFecha() == null) {
-				proximaFecha = Date.from(Instant.now());
 				proximaMeta = null;
+				return proximaMeta;
+			} else {
+				return u.getMetasAsociadas().get(0);
 			}
-			return u.getMetasAsociadas().get(0);
-		}
-
-		// Debemos comparar cada fecha con todas las otras fechas, por eso hay dos
-		// loops.
-		for (int i = 0; i < u.getMetasAsociadas().size(); i++) {
-
-			for (int e = 0; e < u.getMetasAsociadas().size(); e++) {
-				if (u.getMetasAsociadas().get(e).getFecha() == null
-						|| u.getMetasAsociadas().get(i).getFecha() == null) {
-					continue;
+		} else {
+			for (int i = 0; i < u.getMetasAsociadas().size(); i++) {
+				if (u.getMetasAsociadas().get(i).getFecha() != null) {
+					proximaMeta = u.getMetasAsociadas().get(i);
+					break;
 				} else {
-					int r = u.getMetasAsociadas().get(e).getFecha().compareTo(u.getMetasAsociadas().get(i).getFecha());
-
-					if (r < 0) {
-
-						int t = u.getMetasAsociadas().get(e).getFecha().compareTo(proximaFecha);
-
-						if (t < 0) {
-							proximaFecha = u.getMetasAsociadas().get(e).getFecha();
-							proximaMeta = u.getMetasAsociadas().get(e);
-						}
-
-						else {
-							continue;
-						}
-					} else {
-						continue;
-
-					}
+					continue;
 				}
-
 			}
+			// Debemos comparar cada fecha con todas las otras fechas, por eso hay dos
+			// loops.
+			for (int i = 0; i < u.getMetasAsociadas().size(); i++) {
+
+				for (int e = 0; e < u.getMetasAsociadas().size(); e++) {
+					if (u.getMetasAsociadas().get(e).getFecha() == null
+							|| u.getMetasAsociadas().get(i).getFecha() == null) {
+						continue;
+					} else {
+						if (u.getMetasAsociadas().get(e).getFecha()
+								.compareTo(u.getMetasAsociadas().get(i).getFecha()) < 0) {
+							if (u.getMetasAsociadas().get(e).getFecha().compareTo(proximaFecha) < 0) {
+								proximaFecha = u.getMetasAsociadas().get(e).getFecha();
+								proximaMeta = u.getMetasAsociadas().get(e);
+							} else {
+								continue;
+							}
+						} else {
+							continue;
+
+						}
+					}
+
+				}
+			}
+			return proximaMeta;
 		}
-		return proximaMeta;
 	}
 
 	public static Metas cambioFecha(Metas meta, String Fecha) {
@@ -144,7 +147,8 @@ public class Metas implements Serializable {
 		double amount = this.getCantidad();
 		Date date = this.getFecha();
 		if (date == null) {
-			System.out.print("La meta con nombre " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
+			System.out
+					.print("La meta con nombre " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");
 		} else if (amount == 0) {
 			System.out.print("La meta con nombre " + this.getNombre() + "para la fecha " + this.getFechaNormal()
 					+ " fue eliminada satisfactoriamente del sistema.");

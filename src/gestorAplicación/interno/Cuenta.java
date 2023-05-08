@@ -57,7 +57,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 
 		double mayor = 0;
 		int contador = 0;
-		if (user.getCuentasCorrienteAsociadas().size() == 0) {
+		if (user.getCuentasAhorrosAsociadas().size() != 0) {
 			for (int i = 0; i < user.getCuentasAhorrosAsociadas().size(); i++) {
 				if (user.getCuentasAhorrosAsociadas().get(i).getSaldo() > mayor) {
 					mayor = user.getCuentasAhorrosAsociadas().get(i).getSaldo();

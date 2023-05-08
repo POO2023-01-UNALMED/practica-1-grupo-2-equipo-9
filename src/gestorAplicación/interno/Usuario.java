@@ -224,8 +224,10 @@ public class Usuario implements Serializable {
 	public static int hallarUsuariogotaGota() {
 		int contador = 0;
 		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
-			if (Usuario.getUsuariosTotales().get(i).getNombre() == "gotaGota") {
+			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("gotaGota")) {
 				contador = i;
+			} else {
+				continue;
 			}
 		}
 		return contador;
@@ -234,8 +236,10 @@ public class Usuario implements Serializable {
 	public static int hallarUsuarioImpuestosPortafolio() {
 		int contador = 0;
 		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
-			if (Usuario.getUsuariosTotales().get(i).getNombre() == "Impuestos Portafolio") {
+			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("Impuestos Portafolio")) {
 				contador = i;
+			} else {
+				continue;
 			}
 		}
 		return contador;
