@@ -1013,16 +1013,29 @@ public final class Main {
 		//Arreglo que almacena las cuentas con deuda alguna 
 		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
 		Collections.sort(cuentasEnDeuda);
+		
+		//Arreglo que almacena las cuentas asociadas a un usuario
+		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		Collections.sort(cuentasAux);
+		
+		ArrayList<Corriente> cuentasAux1 = usuario.getCuentasCorrienteAsociadas();
+		Collections.sort(cuentasAux1);
+		
+		//Comprobación de existencia de Cuentas Corriente por parte del Usuario
+		if(cuentasAux1.size() <= 1) {
+			System.out.println("El usuario " + usuario.getNombre() + " no alcanza la cantidad de cuentas Corriente necesarias para "
+					+ "desarrollar la funcionalidad, recuerda que para ejecutar una compra de cartera necesitas por lo menos dos cuentas "
+					+ "Corriente, una de ellas con una Deuda.");
+			return;
+		}
 		//Comprobación de existencia de Deudas por parte del Usuario
 		if (cuentasEnDeuda.size() == 0) {
 			System.out.println("El usuario " + usuario.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
 			return;
 		}
 		
-		//Arreglo que almacena las cuentas asociadas a un usuario
-		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
-		Collections.sort(cuentasAux);
 		
+
 		//Atributo auxiliar que almacenará el índice de la cuenta escogida por el usuario
 		int Cuenta_Compra = 0;
 		//Booleano usado para repetir el proceso de seleccion de cuenta
@@ -1252,7 +1265,7 @@ public final class Main {
 				cuotaCalculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses(), true);
 			}
 			double[] infoAdicional = Corriente.informacionAdicionalCalculadora(cuotaCalculadora, vistaPrevia.getCupo() - vistaPrevia.getDisponible());
-			Main.calculadoraCuotas(cuotaCalculadora, infoAdicional);
+			Main.calculadoraCuotas(cuotaCalculadora, infoAdicional, vistaPrevia.getDivisa());
 		}
 		
 		//Atributo de validacion de la entrada confirmacion Movimiento
@@ -1391,6 +1404,7 @@ public final class Main {
 		}
 	}
 	
+	// SOBRECARGA CALCULADORA DE CUOTAS (IMPRESIÓN CON DIVISA)
 	static void calculadoraCuotas(double[][] cuotaCalculadora, double[] infoAdicional, Divisas divisa) {
 		System.out.println("Total pagado: $" + Corriente.redondeoDecimal(infoAdicional[0], 2) + divisa);
 		System.out.println("Intereses pagados: $" + Corriente.redondeoDecimal(infoAdicional[1], 2) + divisa);
