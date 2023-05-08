@@ -1916,6 +1916,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
+			Collections.sort(user.getCuentasAsociadas());
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
 				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
 			}
@@ -2467,12 +2468,14 @@ public final class Main {
 						+ "\n4. Mis movimientos"
 						+ "\n5. Pedir Prestamo"
 						+ "\n6. Asesoramiento de Inversiones"
-						+ "\n7. Cerrar sesión");
+						+ "\n7. Compra de Cartera"
+						+ "\n8. Calculadora financiera"
+						+ "\n8. Cerrar sesión");
 		
 				seccion = Integer.parseInt(sc.nextLine());
 				
 				// COMPROBAR QUE LA SECCION PUEDA EJECUTARSE
-				if (seccion < 1 || seccion > 7) {
+				if (seccion < 1 || seccion > 8) {
 					System.out.println("Entrada no valida");
 					continue;
 				}
@@ -2635,11 +2638,24 @@ public final class Main {
 				while(seccion == 5){
 					seccion = Main.funcionalidadPrestamo(user);
 				}
+				
+				//ASESORAMIENTO DE INVERSIONES
 				if (seccion == 6){
 					Main.asesorInversiones();
 				}
+				
+				// COMPRA CARTERA
+				else if(seccion == 7){
+					Main.compraCartera(user);
+				}
+				
+				// CALCULADORA FINANCIERA (ADICIONAL)
+				else if(seccion == 8) {
+					Main.calculadoraCuotas();
+				}
+				
 				// CERRAR SESIÓN COMO USUARIO
-				else if (seccion == 7) {
+				else if (seccion == 8) {
 					System.out.println("¡Vuelve pronto " + user.getNombre() + "!");
 					System.out.println("");
 					sesioniniciada = 0;
