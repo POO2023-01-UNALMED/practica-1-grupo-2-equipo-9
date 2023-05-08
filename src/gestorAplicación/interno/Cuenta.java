@@ -85,6 +85,11 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	// Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota);
 	
+	public static double redondeoDecimal(double numero, int decimales) {
+		double numRedondeado = Math.round(numero * Math.pow(10.0, decimales)) / Math.pow(10.0, decimales);
+		return numRedondeado;
+	}
+	
 	//Implementación de la interfaz Comparable
 	public int compareTo(Cuenta cuenta) {
 		if (this.getId() > cuenta.getId()) {

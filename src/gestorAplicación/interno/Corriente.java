@@ -11,7 +11,7 @@ public class Corriente extends Cuenta implements Cloneable{
 	//Atributos
 	private static final long serialVersionUID = 8L;
 	public static final String nombreD = "Corriente";
-	private double cupo;
+	private double cupo = 0.0;
 	private double disponible;
 	private Cuotas plazo_Pago;
 	//Tasa efectiva anual
@@ -203,9 +203,12 @@ public class Corriente extends Cuenta implements Cloneable{
 		return infoAdicional;
 	}
 	
-	public static double redondeoDecimal(double numero, int decimales) {
-		double numRedondeado = Math.round(numero * Math.pow(10.0, decimales)) / Math.pow(10.0, decimales);
-		return numRedondeado;
+	public static void inicializarCupo(Corriente cuenta) {
+		Banco banco = cuenta.getBanco();
+		Suscripcion suscripcion = cuenta.getTitular().getSuscripcion();
+		double cupo = Banco.decisionCupo(suscripcion, banco);
+		cuenta.setCupo(cupo);
+		cuenta.setDisponible(cupo);
 	}
 	
 	public int compareTo(Corriente cuenta) {

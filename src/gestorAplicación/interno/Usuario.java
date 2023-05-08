@@ -58,17 +58,14 @@ public class Usuario implements Serializable {
 				case ORO:
 					this.setContadorMovimientos(0);
 					this.setSuscripcion(Suscripcion.DIAMANTE);
-					this.setLimiteCuentas(Suscripcion.DIAMANTE.getLimiteCuentas());
 					return("Felicidades, has sido promovido al nivel de DIAMANTE, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.DIAMANTE.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.DIAMANTE.getProbabilidad_Inversion());
 				case PLATA:
 					this.setContadorMovimientos(0);
 					this.setSuscripcion(Suscripcion.ORO);
-					this.setLimiteCuentas(Suscripcion.ORO.getLimiteCuentas());
 					return("Felicidades, has sido promovido al nivel de ORO, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.ORO.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.ORO.getProbabilidad_Inversion());
 				case BRONCE:
 					this.setContadorMovimientos(0);
 					this.setSuscripcion(Suscripcion.PLATA);
-					this.setLimiteCuentas(Suscripcion.PLATA.getLimiteCuentas());
 					return("Felicidades, has sido promovido al nivel de PLATA, estos son tus beneficios: " + "puedes asociar un máximo de " + Suscripcion.PLATA.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.PLATA.getProbabilidad_Inversion());
 				default:
 					return("");
@@ -95,6 +92,7 @@ public class Usuario implements Serializable {
 			if(cuenta instanceof Ahorros) {
 				return(this.asociarCuentaAhorros((Ahorros) cuenta));
 			}else {
+				Corriente.inicializarCupo((Corriente) cuenta);
 				return(this.asociarCuentaCorriente((Corriente) cuenta));
 			}
 		}else {

@@ -25,12 +25,27 @@ public class Banco extends Estado {
 	private ArrayList<String> dic = new ArrayList<String>();
 	private ArrayList<Double> cionario = new ArrayList<Double>();
 	
+	//Para la asignación del cupo de cada cuenta
+	private double cupo_base = 1000000;
+	private double multiplicador = 2;
+	
 	//Funcionalidad Compra de Cartera
 	private double desc_suscripcion = 0.2;
 	private double desc_movimientos_porcentaje = 0.2;
 	private int desc_movimientos_cantidad = 5;
 	
 	//Constructor
+	
+	public Banco(String nombre, double comision, Estado estado, double desc_suscripcion, double desc_movimientos_porcentaje, int desc_movimientos_cantidad) {
+		this.nombre = nombre;
+		this.setEstadoAsociado(estado);
+		this.comision = comision + this.getTasa_impuestos();
+		this.desc_suscripcion = desc_suscripcion;
+		this.desc_movimientos_porcentaje = desc_movimientos_porcentaje;
+		this.desc_movimientos_cantidad = desc_movimientos_cantidad;
+		bancosTotales.add(this);
+		this.setId(Banco.getBancosTotales().size());
+	}
 	
 	public Banco(String nombre, double comision, Estado estado) {
 		this.nombre = nombre;
@@ -344,6 +359,21 @@ public class Banco extends Estado {
 		return descuento_total;
 	}
 	
+	public static double decisionCupo(Suscripcion suscripcion, Banco banco) {
+		double cupo;
+		switch(suscripcion) {
+			case DIAMANTE:
+				cupo = banco.cupo_base * (banco.multiplicador * 3);
+			case ORO:
+				cupo = banco.cupo_base * (banco.multiplicador * 2);
+			case PLATA:
+				cupo = banco.cupo_base * (banco.multiplicador);
+			default:
+				cupo = banco.cupo_base;
+		}
+		return cupo;
+	}
+	
 	//Gets
 	public double getComision() {
 		return comision;
@@ -381,6 +411,46 @@ public class Banco extends Estado {
 	
 	public int getId() { return id; }
 	
+	public double getCupo_base() {
+		return cupo_base;
+	}
+
+	public void setCupo_base(double cupo_base) {
+		this.cupo_base = cupo_base;
+	}
+
+	public double getMultiplicador() {
+		return multiplicador;
+	}
+
+	public void setMultiplicador(double multiplicador) {
+		this.multiplicador = multiplicador;
+	}
+	
+	public double getDesc_suscripcion() {
+		return desc_suscripcion;
+	}
+
+	public void setDesc_suscripcion(double desc_suscripcion) {
+		this.desc_suscripcion = desc_suscripcion;
+	}
+
+	public double getDesc_movimientos_porcentaje() {
+		return desc_movimientos_porcentaje;
+	}
+
+	public void setDesc_movimientos_porcentaje(double desc_movimientos_porcentaje) {
+		this.desc_movimientos_porcentaje = desc_movimientos_porcentaje;
+	}
+	
+	public int getDesc_movimientos_cantidad() {
+		return desc_movimientos_cantidad;
+	}
+
+	public void setDesc_movimientos_cantidad(int desc_movimientos_cantidad) {
+		this.desc_movimientos_cantidad = desc_movimientos_cantidad;
+	}
+
 	//Sets
 	public void setDivisa(Divisas divisa) { this.divisa = divisa; }
 	

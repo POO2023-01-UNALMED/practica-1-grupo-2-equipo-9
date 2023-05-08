@@ -8,7 +8,6 @@ public enum Divisas {
 	YEN,
 	COP,
 	GBP,
-	MCF,
 	MXN;
 	
 	public static ArrayList<Divisas> getDivisas() {
