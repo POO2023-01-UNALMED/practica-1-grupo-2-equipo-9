@@ -197,7 +197,7 @@ public final class Main {
 
 				// Terminar o continuar
 				System.out.print(
-						"¿Desea crear otra meta? " + "\nEscriba “y” para sí o “n” para salir al menú de Metas: ");
+						"¿Desea crear otra meta? (Y/N): ");
 				String c = sc.nextLine();
 				System.out.println("");
 
@@ -465,7 +465,7 @@ public final class Main {
 
 			// Terminar o continuar
 			System.out
-					.print("¿Desea eliminar otra meta? " + "\nEscriba “y” para sí o “n” para salir al menú de Metas: ");
+					.print("¿Desea eliminar otra meta? (Y/N): ");
 			String c = sc.nextLine();
 			System.out.println("");
 
@@ -511,6 +511,7 @@ public final class Main {
 					break;
 				}
 			} else {
+				System.out.println("");
 				for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
 					String name = user.getMetasAsociadas().get(i).getNombre();
 					double amount = user.getMetasAsociadas().get(i).getCantidad();
@@ -621,7 +622,7 @@ public final class Main {
 					System.out.println("");
 
 					if (cambiarFecha.equals("y") || cambiarFecha.equals("Y")) {
-						System.out.print("¿Para que fecha desearías cambiar la meta? " + "(formato dd/MM/yyyy): ");
+						System.out.print("¿Para qué fecha desearías cambiar la meta? " + "(formato dd/MM/yyyy): ");
 						String nuevaFecha = sc.nextLine();
 						Metas.determinarPlazo(Metas.cambioFecha(Metas.revisionMetas(user), nuevaFecha));
 						System.out.println("");
@@ -652,7 +653,7 @@ public final class Main {
 							"La categoría en la que más dinero ha gastado es en: " + Movimientos.nombreCategoria
 									+ " que suma un total de " + Movimientos.cantidadCategoria + ".");
 					System.out.print("¿Deseas crear una meta con el fin de ahorrar la misma "
-							+ "cantidad que ha gastado en esta categoría. (Y/N): ");
+							+ "cantidad que has gastado en esta categoría? (Y/N): ");
 					String nuevaMeta = sc.nextLine();
 					System.out.println("");
 
@@ -679,7 +680,7 @@ public final class Main {
 						System.out.println("Entrada no valida");
 						break;
 					}
-					String bancoPortafolio = "Nota: Hay banco asociado al portafolio: "
+					String bancoPortafolio = "Nota: Hay un banco asociado al portafolio: "
 							+ Banco.bancoPortafolio(user).getNombre() + ", con una tasa de interes del: "
 							+ Banco.interesesPortafolio(Banco.bancoPortafolio(user), user) + "%";
 
@@ -745,24 +746,17 @@ public final class Main {
 					}
 
 					System.out.println("");
-					System.out.print("Finalmente, para mejorar aún más tu inversión, te recomendamos "
-							+ "hacer un préstamo con nuestra funcionalidad " + "\n“Pedir un préstamo”. "
-							+ "¿Deseas hacer el préstamo? (Y/N): ");
+					System.out.print("Finalmente, para mejorar aún más tu inversión te recomendamos "
+							+ "hacer un préstamo. ¿Deseas hacer el préstamo? (Y/N): ");
 					String prestamo = sc.nextLine();
 					System.out.println("");
 
-					if (prestamo.equals("y") || prestamo.equals("Y")) {
-
-						funcionalidadPrestamo(user);
-
-					}
-
-					else if (prestamo.equals("n") || prestamo.equals("N")) {
+					if (prestamo.equals("n") || prestamo.equals("N") || prestamo.equals("y") || prestamo.equals("Y")) {
 						System.out.print(
 								"¿Deseas hacer el préstamo pero los intereses de los bancos te parecen muy altos?(Y/N): ");
 						String prestamoI = sc.nextLine();
 						System.out.println("");
-						if (prestamoI.equals("y") || prestamoI.equals("Y")) {
+						if (prestamoI.equals("n") || prestamoI.equals("N") || prestamoI.equals("y") || prestamoI.equals("Y")) {
 							System.out.print("Tenemos la solución para ti, aunque no sea la más correcta…"
 									+ " Vas a hacer un prestamo con el usuario " + "\ngota a gota"
 									+ ". Ingrese el monto que desea solicitar prestado: ");
