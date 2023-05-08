@@ -24,6 +24,7 @@ import java.util.Scanner;
 import java.time.Instant;
 
 public final class Main {
+	
 	//FUNCIONALIDAD DE CAMBIO DE DIVISA
 	private static boolean novato = true;
 	private static void CambioDivisa(){
@@ -43,7 +44,7 @@ public final class Main {
 	}
 	
 	// FUNCIONALIDAD DE PRESTAMO 
-	private static int funcionalidadPrestamo(Usuario usu) throws ParseException {
+	private static void funcionalidadPrestamo(Usuario usu) throws ParseException, CloneNotSupportedException{
 		System.out.println("Bienvenido a Prestamos");
 		System.out.println("1-Pedir Prestamo");
 		System.out.println("2-Pagar Prestamo");
@@ -543,7 +544,7 @@ public final class Main {
 	}
 
 	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
-	static void asesorInversiones() throws ParseException {
+	static void asesorInversiones() throws ParseException, CloneNotSupportedException {
 		int funcionalidad = 1;
 		while (funcionalidad == 1) {
 			// Se confirman que hayan ciertos requeriminetos para el buen funcionamiento de
@@ -758,7 +759,7 @@ public final class Main {
 	}
 	
 	// Sobrecarga funcionalidad para chequeo en eliminación de cuenta
-	static boolean compraCartera(Corriente cuenta) {
+	static boolean compraCartera(Corriente cuenta) throws CloneNotSupportedException {
 		Usuario usuario = cuenta.getTitular();
 		
 		//Arreglo que almacena las cuentas asociadas a un usuario
@@ -948,18 +949,31 @@ public final class Main {
 				System.out.println("Entrada no válida, intente de nuevo");
 			}
 		}
-		if (confirmacionMovimiento == 1) {
-			//cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
-			return true;
+		switch(confirmacionMovimiento) {
+			case 1:
+				Cuenta.getCuentasTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				usuario.getCuentasAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				usuario.getCuentasCorrienteAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				Corriente aux = cuentasCapacesDeuda.get(Cuenta_Destino - 1);
+				aux = null;
+				return true;
+			
+			case 2:
+				Cuenta.getCuentasTotales().remove(vistaPrevia);
+				usuario.getCuentasAsociadas().remove(vistaPrevia);
+				usuario.getCuentasCorrienteAsociadas().remove(vistaPrevia);
+				Corriente.getCuentasCorrienteTotales().remove(vistaPrevia);
+				vistaPrevia = null;
+				System.out.println("Movimiento cancelado.");
+				return false;
 		}
-		else {
-			System.out.println("Movimiento cancelado.");
-			return false;
-		}
+		System.gc();
+		return false;
 	}
 	
 	// FUNCIONALIDAD COMPRA DE CARTERA
-	static void compraCartera(Usuario usuario) {
+	static void compraCartera(Usuario usuario) throws CloneNotSupportedException {
 		//Arreglo que almacena las cuentas con deuda alguna 
 		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
 		Collections.sort(cuentasEnDeuda);
@@ -1220,14 +1234,26 @@ public final class Main {
 				System.out.println("Entrada no válida, intente de nuevo");
 			}
 		}
-		if (confirmacionMovimiento == 1) {
-			//cuentasCapacesDeuda.set(Cuenta_Destino - 1, vistaPrevia);
-			return;
+		switch(confirmacionMovimiento) {
+			case 1:
+				Cuenta.getCuentasTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				usuario.getCuentasAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				usuario.getCuentasCorrienteAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+				Corriente aux = cuentasCapacesDeuda.get(Cuenta_Destino - 1);
+				aux = null;
+				return;
+				
+			case 2:
+				Cuenta.getCuentasTotales().remove(vistaPrevia);
+				usuario.getCuentasAsociadas().remove(vistaPrevia);
+				usuario.getCuentasCorrienteAsociadas().remove(vistaPrevia);
+				Corriente.getCuentasCorrienteTotales().remove(vistaPrevia);
+				vistaPrevia = null;
+				System.out.println("Movimiento cancelado.");
+				return;
 		}
-		if (confirmacionMovimiento == 2) {
-			System.out.println("Movimiento cancelado.");
-			return;
-		}
+		System.gc();
 	}
 	
 	// CALCULADORA DE CUOTAS
@@ -1371,7 +1397,7 @@ public final class Main {
 	}
 	
 	// INGRESAR USUARIO DENTRO EN EL MAIN
-	static void ingresarUsuario() throws ParseException {
+	static void ingresarUsuario() throws ParseException, CloneNotSupportedException {
 		System.out.print("Ingrese nombre de usuario o correo electrónico: ");
 		String usuario = sc.nextLine();
 		System.out.print("Ingrese su contraseña: ");
@@ -1773,7 +1799,7 @@ public final class Main {
 	}
 	
 	// ELIMINAR CUENTA, SE REALIZA COMPROBACIÓN ENTRE CORRIENTE Y AHORROS
-	static void eliminarCuentaComprobacion(Cuenta cuenta) {
+	static void eliminarCuentaComprobacion(Cuenta cuenta) throws CloneNotSupportedException {
 		if(cuenta instanceof Ahorros) {
 			if (((Ahorros) cuenta).getSaldo() != 0.0d) {
 				System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -1886,7 +1912,7 @@ public final class Main {
 	}
 	
 	// ELIMINAR CUENTA EN EL MAIN
-	static void eliminarCuenta() {
+	static void eliminarCuenta() throws CloneNotSupportedException {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
@@ -2385,7 +2411,7 @@ public final class Main {
 	
 	// MÉTODO DE INICIO DE PROGRAMA EN EL MAIN
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
-	static void bienvenidaApp() throws ParseException {
+	static void bienvenidaApp() throws ParseException, CloneNotSupportedException {
 		while(interfaz == 1) {
 			// INTERFAZ DE BIENVENIDA
 			System.out.println("Bienvenido al gestor de dinero."
@@ -2634,7 +2660,7 @@ public final class Main {
 	static String contrasenaAdmin = "";
 	static Scanner sc = new Scanner(System.in);
 	
-	public static void main(String[] args) throws ParseException{
+	public static void main(String[] args) throws ParseException, CloneNotSupportedException{
 		Main.cargarObjetos();
 		Main.bienvenidaApp();
 	}	

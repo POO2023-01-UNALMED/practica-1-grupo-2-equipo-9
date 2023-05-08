@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.time.Instant;
 
-public class Corriente extends Cuenta{
+public class Corriente extends Cuenta implements Cloneable{
 	//Atributos
 	private static final long serialVersionUID = 8L;
 	public static final String nombreD = "Corriente";
@@ -109,9 +109,11 @@ public class Corriente extends Cuenta{
 		Movimientos.getMovimientosTotales().remove(movimiento);
 	}
 	
+	//El throws CloneNotSupportedException es usado para evitar un error al clonar la cuenta
+	
 	//Funcionalidad Compra de Cartera
-	public static Corriente vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) {
-		Corriente cuenta_aux = cuenta;
+	public static Corriente vistaPreviaMovimiento(Corriente cuenta, Cuotas plazo, double Deuda_previa, double interes) throws CloneNotSupportedException {
+		Corriente cuenta_aux = cuenta.clone();
 		cuenta_aux.setDisponible(cuenta.getDisponible() - Deuda_previa);
 		cuenta_aux.setIntereses(interes);
 		cuenta_aux.setPlazo_Pago(plazo);
@@ -205,6 +207,23 @@ public class Corriente extends Cuenta{
 		else {
 			return 0;
 		}
+	}
+	
+	public Corriente clone() throws CloneNotSupportedException{
+		Corriente auxiliar = new Corriente();
+		
+		auxiliar.setCupo(this.getCupo());
+		auxiliar.setDisponible(this.getDisponible());
+		auxiliar.setPlazo_Pago(this.getPlazo_Pago());
+		auxiliar.setIntereses(this.getIntereses());
+		auxiliar.setPrimerMensualidad(this.getPrimerMensualidad());
+		auxiliar.setClave(this.getClave());
+		auxiliar.setDivisa(this.getDivisa());
+		auxiliar.setNombre(this.getNombre());
+		auxiliar.setId(this.getId());
+		auxiliar.setBanco(this.getBanco());
+		
+		return auxiliar;
 	}
 	
 	public Double getCupo() {
