@@ -44,7 +44,7 @@ public final class Main {
 	}
 	
 	// FUNCIONALIDAD DE PRESTAMO 
-	private static void funcionalidadPrestamo(Usuario usu) throws ParseException, CloneNotSupportedException{
+	private static int funcionalidadPrestamo(Usuario usu) throws ParseException, CloneNotSupportedException{
 		System.out.println("Bienvenido a Prestamos");
 		System.out.println("1-Pedir Prestamo");
 		System.out.println("2-Pagar Prestamo");
