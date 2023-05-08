@@ -2036,7 +2036,6 @@ public final class Main {
 	}
 	
 	// VER CUENTAS DE AHORRO ASOCIADAS AL USER EN EL MAIN
-	// VER CUENTAS DE AHORRO DEL USUARIO EN EL MAIN
 	static void verCuentasAhorroAsociadas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
@@ -2064,7 +2063,6 @@ public final class Main {
 		}
 	}
 	
-	// ELIMINAR CUENTA ASOCIADAS AL USER EN EL MAIN
 	// VER CUENTAS DE AHORRO Y CORRIENTES DEL USUARIO EN EL MAIN
 	static void verCuentasAsociadas() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
@@ -2090,7 +2088,6 @@ public final class Main {
 	}
 	
 	// VER BANCOS ASOCIADAS AL USER EN EL MAIN
-	// VER BANCOS ASOCIADOS AL USUARIO EN EL MAIN
 	static void verBancosAsociados() {
 		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
 		if(user.getBancosAsociados().size() > 0) {
@@ -2131,7 +2128,6 @@ public final class Main {
 	}
 	
 	// VER USUARIOS TOTALES EN EL MAIN
-	// VER USUARIOS TOTALES EN EL MAIN
 	static void verUsuariosTotales() {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
 		if(Usuario.getUsuariosTotales().size() > 0) {
@@ -2155,9 +2151,8 @@ public final class Main {
 		}
 	}
 	
-	// MODIFICAR SUSCRIPCION DEL USER EN EL MAIN
 	// COMPROBAR SUSCRIPCION DE USUARIO EN EL MAIN - FUNCIONALIDAD DE SUSCRIPCIONES DE USUARIOS
-	static void modificarSuscripcionUsuario(Usuario user) {
+	static void modificarSuscripcionUsuario() {
 		if(user.getBancosAsociados().size() == 0) {
 			System.out.println("Primero debes asociar bancos. Volviendo al menú anterior");
 			seccion = 2;
@@ -2191,6 +2186,7 @@ public final class Main {
 					}else {
 						System.out.println("");
 						user.setSuscripcion(Suscripcion.getNivelesSuscripcion().get(opcion_suscripcion - 1));
+						user.setLimiteCuentas(Suscripcion.getNivelesSuscripcion().get(opcion_suscripcion - 1).getLimiteCuentas());
 						System.out.println("El nivel de suscripción del usuario " + user.getNombre() + " se ha actualizado a " + user.getSuscripcion().name());
 						break;
 					}
@@ -2202,7 +2198,6 @@ public final class Main {
 		}
 	}
 	
-	// VER BANCOS TOTALES EN EL MAIN
 	// VER BANCOS TOTALES EN EL MAIN
 	static void verBancosTotales() {
 		//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
@@ -2226,7 +2221,6 @@ public final class Main {
 		}
 	}
 	
-	// VER CUENTAS CORRIENTES TOTALES EN EL MAIN
 	// VER CUENTAS CORRIENTES TOTALES EN EL MAIN
 	static void verCuentasCorrientesTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CORRIENTES CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CORRIENTES CREADAS
@@ -2253,7 +2247,6 @@ public final class Main {
 	}	
 	
 	// VER CUENTAS DE AHORROS TOTALES EN EL MAIN
-	// VER CUENTAS DE AHORRO TOTALES EN EL MAIN
 	static void verCuentasAhorroTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS DE AHORRO CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS DE AHORRO CREADAS
 		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
@@ -2278,7 +2271,6 @@ public final class Main {
 		}
 	}	
 	
-	// ELIMINAR CUENTAS TOTALES EN EL MAIN
 	// VER CUENTAS TOTALES EN EL MAIN
 	static void verCuentasTotales() {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS
@@ -2304,7 +2296,6 @@ public final class Main {
 	}
 	
 	// VER MOVIMIENTOS TOTALES EN EL MAIN
-	// VER MOVIMIENTOS TOTALES EN EL MAIN
 	static void verMovimientosTotales() {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
 		if(Movimientos.getMovimientosTotales().size() > 0) {
@@ -2327,7 +2318,6 @@ public final class Main {
 		}
 	}
 	
-	// VER METAS TOTALES EN EL MAIN
 	// VER METAS TOTALES EN EL MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
@@ -2352,7 +2342,6 @@ public final class Main {
 	}
 	
 	// VER ESTADOS TOTALES EN EL MAIN
-	// VER ESTAOS TOTALES EN EL MAIN
 	static void verEstadosTotales() {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
 		if(Estado.getEstadosTotales().size() > 0) {
@@ -2374,8 +2363,7 @@ public final class Main {
 			}	
 		}
 	}		
-	
-	// GUARDAR OBJETOS EN EL MAIN
+
 	// GUARDAR OBJETOS EN EL MAIN
 	static void guardarObjetos() throws ParseException{
 		System.out.print("¿Desea guardar el estado actual del sistema? (Y/N): ");
@@ -2477,7 +2465,6 @@ public final class Main {
 		}System.out.println("");
 	}
 	
-	// MÉTODO DE INICIO DE PROGRAMA EN EL MAIN
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException, CloneNotSupportedException {
 		while(interfaz == 1) {
@@ -2618,7 +2605,7 @@ public final class Main {
 					System.out.println("");
 						
 					if(opcion == 1) {
-						Main.modificarSuscripcionUsuario(user);
+						Main.modificarSuscripcionUsuario();
 							
 					} else if(opcion == 2) {
 						Main.invertirSaldoUsuario(user);
