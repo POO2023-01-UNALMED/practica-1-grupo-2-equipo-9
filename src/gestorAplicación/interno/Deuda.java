@@ -19,6 +19,7 @@ public class Deuda extends Metas{
         this.cuenta = cuenta;
         this.banco = banco;
         deudasTotales.add(this);
+        Metas.getMetasTotales().add(this);
     }
 
     public void setCantidad(double cantidad) {
@@ -88,6 +89,7 @@ public class Deuda extends Metas{
         int id = this.getId();
         System.out.println("La deduda con id: "+id+"\n"+cuenta+"\nrealizada con el banco"+banco+
                 "ha sido PAGADA EXITOSAMENTE");
+        return;
     }
     
     public String toString() {

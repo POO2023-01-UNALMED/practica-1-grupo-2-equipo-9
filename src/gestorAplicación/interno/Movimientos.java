@@ -239,15 +239,17 @@ public class Movimientos implements Serializable{
 		}else{
 			if (deuda.getCantidad()==cantidad){
 //				Crear eliminar Deuda Ligadura Dinamica
+				Ahorros cuenta =((Deuda) deuda).getCuenta();
+				cuenta.setSaldo(cuenta.getSaldo()-cantidad);
 				Deuda.getDeudasTotales().remove(deuda);
 				deuda = null;
-				return "";
+				return "\nSu deuda fue pagada con EXITO";
 			}else{
 				deuda.setCantidad(deuda.getCantidad()-cantidad);
 				Ahorros cuenta =((Deuda) deuda).getCuenta();
 				cuenta.setSaldo(cuenta.getSaldo()-cantidad);
 				
-				return "\nSu deuda se redujo EXITOSAMENTE";
+				return "\nSu deuda se redujo con EXITO";
 			}
 		}
 	}
