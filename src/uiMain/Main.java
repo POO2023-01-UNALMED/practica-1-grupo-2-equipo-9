@@ -1383,7 +1383,7 @@ public final class Main {
 		System.out.println("\tCuota a pagar: " + cuotaCalculadora[0][1]);
 		System.out.println("\tSaldo restante: " + cuotaCalculadora[0][2]);
 		
-		for (int i = 2; i <= cuotaCalculadora.length + 1; i++) {
+		for (int i = 2; i < cuotaCalculadora.length; i++) {
 			System.out.println("Mes " + i + ":");
 			System.out.println("\tDeuda: " + cuotaCalculadora[i - 1][2]);
 			System.out.println("\tIntereses: " + cuotaCalculadora[i][0]);
@@ -2506,12 +2506,12 @@ public final class Main {
 						+ "\n6. Asesoramiento de Inversiones"
 						+ "\n7. Compra de Cartera"
 						+ "\n8. Calculadora financiera"
-						+ "\n8. Cerrar sesión");
+						+ "\n9. Cerrar sesión");
 		
 				seccion = Integer.parseInt(sc.nextLine());
 				
 				// COMPROBAR QUE LA SECCION PUEDA EJECUTARSE
-				if (seccion < 1 || seccion > 8) {
+				if (seccion < 1 || seccion > 9) {
 					System.out.println("Entrada no valida");
 					continue;
 				}

@@ -97,7 +97,10 @@ public class Corriente extends Cuenta implements Cloneable{
 	}
 	
 	public static double calculoInteresNominalMensual(double interesEfectivoAnual) {
+		double auxiliar = 30 / 360;
 		double interes = Math.pow((1 + interesEfectivoAnual), (30 / 360)) - 1;
+		System.out.println(Math.pow((1 + interesEfectivoAnual), (30 / 360)));
+		System.out.println(auxiliar);
 		return interes;
 	}
 	
@@ -130,7 +133,7 @@ public class Corriente extends Cuenta implements Cloneable{
 		
 		double abono_capital = deuda / cuotasTotales;
 		
-		for (int i = 0; i <= cuotasTotales; i++) {
+		for (int i = 0; i < cuotasTotales; i++) {
 			double[] cuotaMes = new double[3];
 			double interes = deudaActual * (interesMensual / 100);
 			cuotaMes[0] = interes;
@@ -163,7 +166,7 @@ public class Corriente extends Cuenta implements Cloneable{
 		
 		deudaActual = deudaActual - abono_capital;
 		
-		for (int i = 1; i <= cuotasTotales; i++) {
+		for (int i = 1; i < cuotasTotales; i++) {
 			double[] cuotaMes = new double[3];
 			double interes = deudaActual * (interesMensual / 100);
 			cuotaMes[0] = interes;
@@ -184,7 +187,7 @@ public class Corriente extends Cuenta implements Cloneable{
 		double[] infoAdicional = new double[3];
 		double totalPagado = 0;
 		
-		for (int i = 0; i <= cuota.length; i++) {
+		for (int i = 0; i < cuota.length; i++) {
 			totalPagado += cuota[i][1];
 		}
 		
