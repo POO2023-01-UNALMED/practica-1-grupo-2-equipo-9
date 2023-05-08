@@ -118,7 +118,11 @@ public class Movimientos implements Serializable{
 	
 	public static Object crearMovimiento(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
-			return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria, fecha));
+			if(categoria == Categoria.PRESTAMO) {
+				return(new Movimientos(destino, cantidad  , categoria, fecha));
+			}else {
+				return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria, fecha));
+			}
 		}else {
 			return("Debes verificar que la cuenta de destino exista");
 		}
@@ -224,7 +228,7 @@ public class Movimientos implements Serializable{
 			// Creamos instancia de la clase deuda
 			Deuda deuda = new Deuda(cantidad, cuenta, titular, banco);
 			// Agrega el dinero a la cuenta
-			Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,Date.from(Instant.now()));
+			Movimientos.crearMovimiento(cuenta, cantidad, Categoria.PRESTAMO,Date.from(Instant.now()));
 			return true;
 		}
 	}
@@ -240,7 +244,10 @@ public class Movimientos implements Serializable{
 				return "";
 			}else{
 				deuda.setCantidad(deuda.getCantidad()-cantidad);
-				return "Su deuda se redujo EXITOSAMENTE";
+				Ahorros cuenta =((Deuda) deuda).getCuenta();
+				cuenta.setSaldo(cuenta.getSaldo()-cantidad);
+				
+				return "\nSu deuda se redujo EXITOSAMENTE";
 			}
 		}
 	}

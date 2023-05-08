@@ -8,7 +8,6 @@ public class Deuda extends Metas{
     public static final String nombreD = "Deudas";
     private static final long serialVersionUID = 6L;
     private int id;
-    private double cantidad;
     private Ahorros cuenta;
     private Banco banco;
     private static ArrayList<Deuda> deudasTotales = new ArrayList<>();
@@ -19,6 +18,7 @@ public class Deuda extends Metas{
         this.id = deudasTotales.size();
         this.cuenta = cuenta;
         this.banco = banco;
+        deudasTotales.add(this);
     }
 
     public void setCantidad(double cantidad) {
@@ -70,9 +70,9 @@ public class Deuda extends Metas{
     }
 
     //	Conseguir deudas
-    public static ArrayList<?> conseguirDeudas(Usuario usuario){
+    public static ArrayList<Deuda> conseguirDeudas(Usuario usuario){
         ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
-        ArrayList<Deuda> deudasUsuario = Deuda.getDeudasTotales();
+        ArrayList<Deuda> deudasUsuario = new ArrayList<>();
         for(int i =0; i<deudas.size();i++){
             if(deudas.get(i).getTitular()==usuario){
                 deudasUsuario.add(deudas.get(i));
@@ -86,8 +86,14 @@ public class Deuda extends Metas{
         Cuenta cuenta = this.getCuenta();
         Banco banco = this.getBanco();
         int id = this.getId();
-        System.out.println("La deduda con id"+id+" de la cuenta"+cuenta+"realizada con el banco"+banco+
+        System.out.println("La deduda con id: "+id+"\n"+cuenta+"\nrealizada con el banco"+banco+
                 "ha sido PAGADA EXITOSAMENTE");
     }
+    
+    public String toString() {
+		return "id: " + this.id +
+				"\nTitular " + this.dueno+
+				"\nCantidad: " + this.cantidad ;
+	}
 
 }

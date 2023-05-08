@@ -43,85 +43,87 @@ public final class Main {
 	}
 	
 	// FUNCIONALIDAD DE PRESTAMO 
-	private static void funcionalidadPrestamo(Usuario usu) throws ParseException{
+	private static int funcionalidadPrestamo(Usuario usu) throws ParseException {
 		System.out.println("Bienvenido a Prestamos");
 		System.out.println("1-Pedir Prestamo");
 		System.out.println("2-Pagar Prestamo");
 		System.out.println("3-Salir al menu");
 		String c = sc.nextLine();
-		switch (c){
+		switch (c) {
 			case "1":
 				ArrayList<?> prestamo;
 				prestamo = usu.comprobarConfiabilidad();
-				if(prestamo.get(0) instanceof Ahorros){
+				if (prestamo.get(0) instanceof Ahorros) {
 					// Si tiene cuentas entonces vamos a comprar cuanto dieron prestan los bancos de las cuentas y mostrale al usuario
 					prestamo = Ahorros.comprobarPrestamo(prestamo);
-					if(prestamo.get(0) instanceof Ahorros){
+					if (prestamo.get(0) instanceof Ahorros) {
 						System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
-						for(int i=0;i<prestamo.size();i++){
+						for (int i = 0; i < prestamo.size(); i++) {
 							Ahorros cuenta = (Ahorros) prestamo.get(i);
-							System.out.println(i+"-Cuenta: "+ cuenta.getNombre()+" Maximo a prestar:"+cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getPorcentajePrestamo());
+							System.out.println(i + "-Cuenta: " + cuenta.getNombre() + " Maximo a prestar:" + cuenta.getBanco().getPrestamo() * usu.getSuscripcion().getPorcentajePrestamo());
 						}
-						System.out.println(prestamo.size()+"-Salir al Menú");
+						System.out.println(prestamo.size() + "-Salir al Menú");
 						System.out.println("Seleccione una:");
 //				recibe la opccion del usuario
 						int opcion = Integer.parseInt(sc.nextLine());
 						System.out.println("");
 
 //				En caso de que desee salir se sale,
-						if(opcion==prestamo.size()){
-							Main.bienvenidaApp();
-						}else{
+						if (opcion == prestamo.size()) {
+							break;
+						} else {
 //					en caso de que seleccione una de las cuentas
 							Ahorros cuenta = (Ahorros) prestamo.get(opcion);
-							double maxPrestamo = cuenta.getBanco().getPrestamo()*usu.getSuscripcion().getLimiteCuentas();
-							System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $"+maxPrestamo);
+							double maxPrestamo = cuenta.getBanco().getPrestamo() * usu.getSuscripcion().getPorcentajePrestamo();
+							System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $" + maxPrestamo);
 							maxPrestamo = Double.parseDouble(sc.nextLine());
-							Boolean exito = Movimientos.realizarPrestamo(cuenta,maxPrestamo);
-							if(exito){
+							Boolean exito = Movimientos.realizarPrestamo(cuenta, maxPrestamo);
+							if (exito) {
 								System.out.println("|----------------------------------|\n\n    Prestamo Realizado con Exito\n\n|----------------------------------|\n\n");
-							}else{
+								break;
+							} else {
 								System.out.println("Por favor seleccione una cantidad adecuada");
 								funcionalidadPrestamo(usu);
 							}
 						}
 
 
-					}else{
+					} else {
 						System.out.println("Los bancos de sus cuentas no realizan prestamos");
-						Main.bienvenidaApp();
+						break;
 					}
-				}else{
-					for(int i = 0;i<prestamo.size();i++){
+				} else {
+					for (int i = 0; i < prestamo.size(); i++) {
 						System.out.println(prestamo.get(i));
 					}
-					Main.bienvenidaApp();
+					break;
 				}
-			//PAGAR PRESTAMO
+				//PAGAR PRESTAMO
 			case "2":
-				ArrayList<Deuda> deudas = (ArrayList<Deuda>) Deuda.conseguirDeudas(usu);
-				if(deudas.size()!=0){
-					for(int i=0;i<deudas.size();i++){
-						System.out.println(i+"-Deuda con id"+deudas.get(i).getId()+"efectuada por el banco"+deudas.get(i).getBanco()+" en la cuenta"+deudas.get(i).getCuenta()+"por una cantidad de"+deudas.get(i).getCantidad());
+				ArrayList<Deuda> deudas = Deuda.conseguirDeudas(usu);
+				if (deudas.size() != 0) {
+					for (int i = 0; i < deudas.size(); i++) {
+						System.out.println(i + "-Deuda con id " + deudas.get(i).getId()+":\n"+ deudas.get(i).getCuenta() + "\nDEUDA: " + deudas.get(i).getCantidad()+"\n\n");
 					}
 					int seleccion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
 					System.out.println("Ingresa la cantidad que desea pagar $:");
 					double cantidad = Double.parseDouble(sc.nextLine());
 					System.out.println("");
-					System.out.println(Movimientos.pagarDeuda(usu,deudas.get(seleccion),cantidad));
+					System.out.println(Movimientos.pagarDeuda(usu, deudas.get(seleccion), cantidad));
 					deudas.remove(deudas.get(seleccion));
 					System.gc();
+					break;
 
-				}else{
+				} else {
 					System.out.println("Usted no tiene deudas por pagar");
-					Main.bienvenidaApp();
+					break;
 				}
 			case "3":
-				Main.bienvenidaApp();
+				break;
 
 		}
-
+		return 0;
 	}
 	
 	// CREAR UNA META EN EL MAIN
@@ -2605,7 +2607,7 @@ public final class Main {
 				}
 				// PEDIR PRESTAMO
 				while(seccion == 5){
-					Main.funcionalidadPrestamo(user);
+					seccion = Main.funcionalidadPrestamo(user);
 				}
 				if (seccion == 6){
 					Main.asesorInversiones();
