@@ -1712,8 +1712,9 @@ public final class Main {
 					+ "\n1. Crear Usuario"
 					+ "\n2. Crear Banco"
 					+ "\n3. Crear Estado"
-					+ "\n4. Iniciar Sesión"
-					+ "\n5. Volver al menú anterior");
+					+ "\n4. Ver Bancos"
+					+ "\n5. Iniciar Sesión"
+					+ "\n6. Volver al menú anterior");
 			
 			int opcionAdmin = Integer.parseInt(sc.nextLine());
 					
@@ -1784,10 +1785,13 @@ public final class Main {
 					}	
 				}
 			}else if(opcionAdmin == 4) {
+				Main.verBancosTotales();
+			}
+			else if(opcionAdmin == 5) {
 				sesioniniciada = 1;
 				seguir = 0;
 				break;		
-			} else if(opcionAdmin == 5) {
+			} else if(opcionAdmin == 6) {
 				seguir = 0;
 				break;			
 			} else {
@@ -2198,7 +2202,7 @@ public final class Main {
 		if(Banco.getBancosTotales().size() > 0) {
 			System.out.println("La lista de Bancos son: ");
 			for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Banco.getBancosTotales().get(i - 1).getNombre());
+				System.out.println(i + ". " + Banco.getBancosTotales().get(i - 1));
 			}
 				
 		//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	

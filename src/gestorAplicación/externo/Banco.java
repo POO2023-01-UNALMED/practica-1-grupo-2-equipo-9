@@ -481,6 +481,15 @@ public class Banco extends Estado {
 	}
 	
 	public String toString() {
-		return this.nombre;
+		return "Nombre" + this.nombre +
+				"\nComision: " + this.comision +
+				"\nDivisa: " + this.divisa +
+				"\nId: " + this.id +
+				"\nEstadoAsociado: " + this.estadoAsociado.getNombre() +
+				"\nCupo base: " + this.cupo_base +
+				"\nMultiplicador: " + this.multiplicador +
+				"\nDescuento por suscripción: " + this.desc_suscripcion +
+				"\nDescuento por movimientos: " + this.desc_movimientos_porcentaje +
+				" cada " + this.desc_movimientos_cantidad + " movimientos.";
 	}
 }
