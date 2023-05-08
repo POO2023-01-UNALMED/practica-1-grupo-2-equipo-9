@@ -97,11 +97,10 @@ public class Corriente extends Cuenta implements Cloneable{
 	}
 	
 	public static double calculoInteresNominalMensual(double interesEfectivoAnual) {
-		double auxiliar = 30 / 360;
-		double interes = Math.pow((1 + interesEfectivoAnual), (30 / 360)) - 1;
-		System.out.println(Math.pow((1 + interesEfectivoAnual), (30 / 360)));
-		System.out.println(auxiliar);
-		return interes;
+		double interes = Math.pow((1 + (interesEfectivoAnual / 100)), (30.0 / 360.0)) - 1;
+		double interes_porcentaje = interes * 100;
+		double interes_porcentaje_redondeado = Corriente.redondeoDecimal(interes_porcentaje, 2);
+		return interes_porcentaje_redondeado;
 	}
 	
 	// Funcionalidad asesor inversiones
@@ -169,10 +168,10 @@ public class Corriente extends Cuenta implements Cloneable{
 		for (int i = 1; i < cuotasTotales; i++) {
 			double[] cuotaMes = new double[3];
 			double interes = deudaActual * (interesMensual / 100);
-			cuotaMes[0] = interes;
+			cuotaMes[0] = interes + interesMes1;
 			double cuota_pagar = interes + abono_capital + interesMes1;
 			cuotaMes[1] = cuota_pagar;
-			double deudaTotal = deudaActual - (cuota_pagar - interes);
+			double deudaTotal = deudaActual - (cuota_pagar - (interes + interesMes1));
 			cuotaMes[2] = deudaTotal;
 			cuota[i] = cuotaMes;
 			
@@ -193,11 +192,20 @@ public class Corriente extends Cuenta implements Cloneable{
 		
 		double interesesPagados = totalPagado - deuda;
 		
+		totalPagado = Corriente.redondeoDecimal(totalPagado, 2);
+		interesesPagados = Corriente.redondeoDecimal(interesesPagados, 2);
+		deuda = Corriente.redondeoDecimal(deuda, 2);
+		
 		infoAdicional[0] = totalPagado;
 		infoAdicional[1] = interesesPagados;
 		infoAdicional[2] = deuda;
 		
 		return infoAdicional;
+	}
+	
+	public static double redondeoDecimal(double numero, int decimales) {
+		double numRedondeado = Math.round(numero * Math.pow(10.0, decimales)) / Math.pow(10.0, decimales);
+		return numRedondeado;
 	}
 	
 	public int compareTo(Corriente cuenta) {

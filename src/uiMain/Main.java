@@ -1344,7 +1344,7 @@ public final class Main {
 		}
 		
 		System.out.println("¿Qué tasa efectiva anual te cobra tu entidad bancaria afiliada de intereses?");
-		int intereses = Integer.parseInt(sc.nextLine());
+		double intereses = Double.parseDouble(sc.nextLine());
 		
 		double[][] calculoCuotas = null;
 		
@@ -1374,21 +1374,38 @@ public final class Main {
 	
 	// SOBRECARGA CALCULADORA DE CUOTAS (IMPRESIÓN)
 	static void calculadoraCuotas(double[][] cuotaCalculadora, double[] infoAdicional) {
-		System.out.println("Total pagado: " + infoAdicional[0]);
-		System.out.println("Intereses pagados: " + infoAdicional[1]);
-		
+		System.out.println("Total pagado: $" + Corriente.redondeoDecimal(infoAdicional[0], 2));
+		System.out.println("Intereses pagados: $" + Corriente.redondeoDecimal(infoAdicional[1], 2));
 		System.out.println("Mes 1:");
-		System.out.println("\tDeuda: " + infoAdicional[2]);
-		System.out.println("\tIntereses: " + cuotaCalculadora[0][0]);
-		System.out.println("\tCuota a pagar: " + cuotaCalculadora[0][1]);
-		System.out.println("\tSaldo restante: " + cuotaCalculadora[0][2]);
+		System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(infoAdicional[2], 2));
+		System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][0], 2));
+		System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][1], 2));
+		System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][2], 2));
 		
-		for (int i = 2; i < cuotaCalculadora.length; i++) {
+		for (int i = 2; i <= cuotaCalculadora.length; i++) {
 			System.out.println("Mes " + i + ":");
-			System.out.println("\tDeuda: " + cuotaCalculadora[i - 1][2]);
-			System.out.println("\tIntereses: " + cuotaCalculadora[i][0]);
-			System.out.println("\tCuota a pagar: " + cuotaCalculadora[i][1]);
-			System.out.println("\tSaldo restante: " + cuotaCalculadora[i][2]);
+			System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 2][2], 2));
+			System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][0], 2));
+			System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][1], 2));
+			System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][2], 2));
+		}
+	}
+	
+	static void calculadoraCuotas(double[][] cuotaCalculadora, double[] infoAdicional, Divisas divisa) {
+		System.out.println("Total pagado: $" + Corriente.redondeoDecimal(infoAdicional[0], 2) + divisa);
+		System.out.println("Intereses pagados: $" + Corriente.redondeoDecimal(infoAdicional[1], 2) + divisa);
+		System.out.println("Mes 1:");
+		System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(infoAdicional[2], 2) + divisa);
+		System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][0], 2) + divisa);
+		System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][1], 2) + divisa);
+		System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][2], 2) + divisa);
+		
+		for (int i = 2; i <= cuotaCalculadora.length; i++) {
+			System.out.println("Mes " + i + ":");
+			System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 2][2], 2) + divisa);
+			System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][0], 2) + divisa);
+			System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][1], 2) + divisa);
+			System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][2], 2) + divisa);
 		}
 	}
 	

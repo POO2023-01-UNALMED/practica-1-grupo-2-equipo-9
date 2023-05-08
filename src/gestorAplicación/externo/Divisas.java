@@ -7,7 +7,7 @@ public enum Divisas {
 	USD,
 	YEN,
 	COP,
-	GPB,
+	GBP,
 	MCF,
 	MXN;
 	
@@ -17,7 +17,7 @@ public enum Divisas {
 		listaDivisas.add(USD);
 		listaDivisas.add(YEN);
 		listaDivisas.add(COP);
-		listaDivisas.add(GPB);
+		listaDivisas.add(GBP);
 		listaDivisas.add(MXN);
 		return(listaDivisas); 
 	}
