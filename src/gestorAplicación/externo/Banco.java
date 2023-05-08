@@ -133,8 +133,7 @@ public class Banco extends Estado {
 
 		if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() > invertir) {
-			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-			double cobro = x - (x / 32);
+			double cobro = user.getCuentasAhorrosAsociadas().get(0).getSaldo()/ 32;
 			Movimientos movimiento = new Movimientos(
 					user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales()
 							.get(Usuario.hallarUsuarioImpuestosPortafolio()).getCuentasAhorrosAsociadas().get(0),
@@ -167,8 +166,7 @@ public class Banco extends Estado {
 
 		else if (user.getCuentasAhorrosAsociadas().size() != 0
 				&& user.getCuentasAhorrosAsociadas().get(0).getSaldo() < invertir) {
-			double x = user.getCuentasAhorrosAsociadas().get(0).getSaldo();
-			double cobro = x - (x / 32);
+			double cobro = user.getCuentasAhorrosAsociadas().get(0).getSaldo()/ 32;
 			Movimientos movimiento = new Movimientos(
 					user.getCuentasAhorrosAsociadas().get(0), Usuario.getUsuariosTotales()
 							.get(Usuario.hallarUsuarioImpuestosPortafolio()).getCuentasAhorrosAsociadas().get(0),
@@ -194,8 +192,7 @@ public class Banco extends Estado {
 
 		else if (user.getCuentasCorrienteAsociadas().size() != 0
 				&& user.getCuentasCorrienteAsociadas().get(0).getDisponible() > invertir) {
-			double y = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
-			double cobroCorriente = y - (y / 32);
+			double cobroCorriente = user.getCuentasCorrienteAsociadas().get(0).getDisponible() / 32;
 			Movimientos movimientoCorriente = new Movimientos(user.getCuentasCorrienteAsociadas().get(0),
 					Usuario.getUsuariosTotales().get(Usuario.hallarUsuarioImpuestosPortafolio())
 							.getCuentasCorrienteAsociadas().get(0),
@@ -227,8 +224,7 @@ public class Banco extends Estado {
 		}
 
 		else {
-			double y = user.getCuentasCorrienteAsociadas().get(0).getDisponible();
-			double cobroCorriente = y - (y / 32);
+			double cobroCorriente = user.getCuentasCorrienteAsociadas().get(0).getDisponible() / 32;
 			Movimientos movimientoCorriente = new Movimientos(user.getCuentasCorrienteAsociadas().get(0),
 					Usuario.getUsuariosTotales().get(Usuario.hallarUsuarioImpuestosPortafolio())
 							.getCuentasCorrienteAsociadas().get(0),
