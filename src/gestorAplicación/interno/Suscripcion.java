@@ -34,13 +34,4 @@ public enum Suscripcion{
 	public float getPorcentajePrestamo(){
 		return porcentajePrestamo;
 	}
-
-	public static ArrayList<Suscripcion> getNivelesSuscripcion() {
-		ArrayList<Suscripcion> listaSuscripcion = new ArrayList<Suscripcion>();
-		listaSuscripcion.add(DIAMANTE);
-		listaSuscripcion.add(ORO);
-		listaSuscripcion.add(PLATA);
-		listaSuscripcion.add(BRONCE);	
-		return(listaSuscripcion); 
-	}
 }

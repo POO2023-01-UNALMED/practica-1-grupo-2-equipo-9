@@ -1795,7 +1795,9 @@ public final class Main {
 					}	
 				}
 			}else if(opcionAdmin == 4) {
+				System.out.println("");
 				Main.verBancosTotales();
+				System.out.println("");
 			}
 			else if(opcionAdmin == 5) {
 				sesioniniciada = 1;
@@ -2182,20 +2184,41 @@ public final class Main {
 			System.out.print("¿Desea cambiar su nivel de suscripción? (Y/N): ");
 			String confirmacion = sc.nextLine();
 			if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-				for(int i = 1; i < Suscripcion.getNivelesSuscripcion().size() + 1; i++) {
-					System.out.println(i + ". " + Suscripcion.getNivelesSuscripcion().get(i - 1).name());
+				ArrayList<Suscripcion> listaSuscripcion = new ArrayList<Suscripcion>();
+				listaSuscripcion.add(Suscripcion.DIAMANTE);
+				listaSuscripcion.add(Suscripcion.ORO);
+				listaSuscripcion.add(Suscripcion.PLATA);
+				listaSuscripcion.add(Suscripcion.BRONCE);	
+				int i = 1;
+				int j = 0;
+				Suscripcion s = null;
+				for(Suscripcion suscripcion : listaSuscripcion) {
+					if(suscripcion.equals(user.getSuscripcion())) {
+						j = listaSuscripcion.indexOf(suscripcion);
+						s = suscripcion;
+					}else {
+						System.out.println(i + ". " + suscripcion.name());
+						i++;
+					}
 				}
 				System.out.print("Seleccione el número de suscripción: ");
 				int opcion_suscripcion = Integer.parseInt(sc.nextLine());
 				while(true) {
-					if(opcion_suscripcion < 1 && opcion_suscripcion > Suscripcion.getNivelesSuscripcion().size()) {
+					if(opcion_suscripcion < 1 && opcion_suscripcion > listaSuscripcion.size() - 1) {
 						System.out.print("Debes seleccionar un nivel de suscripción válido. Inténtalo de nuevo:");
-						opcion_suscripcion = Integer.parseInt(sc.nextLine());
+						opcion_suscripcion = Integer.parseInt(sc.nextLine());						
 					}else {
+						listaSuscripcion.remove(j);
 						System.out.println("");
-						user.setSuscripcion(Suscripcion.getNivelesSuscripcion().get(opcion_suscripcion - 1));
-						user.setLimiteCuentas(Suscripcion.getNivelesSuscripcion().get(opcion_suscripcion - 1).getLimiteCuentas());
-						System.out.println("El nivel de suscripción del usuario " + user.getNombre() + " se ha actualizado a " + user.getSuscripcion().name());
+						if(listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() < user.getCuentasAsociadas().size()) {
+							System.out.println("El nivel de suscripción que escogiste tiene un limite de cuentas para asociar de " + listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() + " y el número de cuentas que tienes asociadas actualmente es de " + user.getCuentasAsociadas().size());
+							System.out.println("Debes eliminar cuentas para escoger este nivel de suscripción. Volviendo al menú anterior.");
+						}else {
+							user.setSuscripcion(listaSuscripcion.get(opcion_suscripcion - 1));
+							user.setLimiteCuentas(listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas());
+							System.out.println("El nivel de suscripción del usuario " + user.getNombre() + " se ha actualizado a " + user.getSuscripcion().name());
+						}	
+						listaSuscripcion.add(j, s);
 						break;
 					}
 				}
