@@ -2211,8 +2211,9 @@ public final class Main {
 						listaSuscripcion.remove(j);
 						System.out.println("");
 						if(listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() < user.getCuentasAsociadas().size()) {
-							System.out.println("El nivel de suscripción que escogiste tiene un limite de cuentas para asociar de " + listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() + " y el número de cuentas que tienes asociadas actualmente es de " + user.getCuentasAsociadas().size());
-							System.out.println("Debes eliminar cuentas para escoger este nivel de suscripción. Volviendo al menú anterior.");
+							System.out.println("El nivel de suscripción que escogiste tiene un limite de cuentas para asociar de " + listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() + " y el número de cuentas que tienes asociadas actualmente es de " + user.getCuentasAsociadas().size() + ".");
+							System.out.println("Debes eliminar cuentas para escoger este nivel de suscripción.");
+							System.out.println("Volviendo al menú anterior.");
 						}else {
 							user.setSuscripcion(listaSuscripcion.get(opcion_suscripcion - 1));
 							user.setLimiteCuentas(listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas());
