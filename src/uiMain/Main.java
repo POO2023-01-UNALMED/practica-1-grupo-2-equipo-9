@@ -1018,7 +1018,6 @@ public final class Main {
 		Collections.sort(cuentasAux);
 		
 		ArrayList<Corriente> cuentasAux1 = usuario.getCuentasCorrienteAsociadas();
-		Collections.sort(cuentasAux1);
 		
 		//Comprobación de existencia de Cuentas Corriente por parte del Usuario
 		if(cuentasAux1.size() <= 1) {
