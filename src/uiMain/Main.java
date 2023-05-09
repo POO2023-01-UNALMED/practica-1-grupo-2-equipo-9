@@ -1079,7 +1079,7 @@ public final class Main {
 				boolean validacion_ConfirmacionII = true;
 				while (validacion_ConfirmacionII) {
 					System.out.println("¿Qué desea hacer?"
-							+ "\n1. Reescoger cuenta."
+							+ "\n1. Reelegir cuenta."
 							+ "\n2. Salir de la funcionalidad.");
 					int ConfirmacionII = Integer.parseInt(sc.nextLine());
 					if (ConfirmacionII == 1) {
