@@ -217,40 +217,33 @@ public class Movimientos implements Serializable{
 	}
 
 	//	Funcionalidad Prestamos
-	public static Boolean realizarPrestamo(Ahorros cuenta, double cantidad){
+	public static Object realizarPrestamo(Ahorros cuenta, double cantidad){
 		Banco banco = cuenta.getBanco();
 		Usuario titular = cuenta.getTitular();
 		double maxCantidad = banco.getPrestamo() * titular.getSuscripcion().getPorcentajePrestamo();
 		//	Comprueba que la cantidad si sea la adecuada
 		if(cantidad > maxCantidad){
-			return false;
+			return null;
 		}else{
 			// Creamos instancia de la clase deuda
 			Deuda deuda = new Deuda(cantidad, cuenta, titular, banco);
 			// Agrega el dinero a la cuenta
-			Movimientos.crearMovimiento(cuenta, cantidad, Categoria.PRESTAMO,Date.from(Instant.now()));
-			return true;
+			return(Movimientos.crearMovimiento(cuenta, cantidad, Categoria.PRESTAMO,Date.from(Instant.now())));
 		}
 	}
 
-	public static String pagarDeuda(Usuario usuario, Metas deuda, Double cantidad){
-		if(deuda.getCantidad()<cantidad){
-			return "¡Error! Seleccione una cantidad adecuada";
+	public static Object pagarDeuda(Usuario usuario, Metas deuda, Double cantidad){
+		if (deuda.getCantidad() == cantidad){
+//			Crear eliminar Deuda Ligadura Dinamica
+			Ahorros cuenta = ((Deuda) deuda).getCuenta();
+			Deuda.getDeudasTotales().remove(deuda);
+			Metas.getMetasTotales().remove(deuda);
+			deuda.setCantidad(0);
+			return (Movimientos.crearMovimiento(cuenta, cuenta.getSaldo() - cantidad, Categoria.PRESTAMO, new Date()));
 		}else{
-			if (deuda.getCantidad()==cantidad){
-//				Crear eliminar Deuda Ligadura Dinamica
-				Ahorros cuenta =((Deuda) deuda).getCuenta();
-				cuenta.setSaldo(cuenta.getSaldo()-cantidad);
-				Deuda.getDeudasTotales().remove(deuda);
-				deuda = null;
-				return "\nSu deuda fue pagada con EXITO";
-			}else{
-				deuda.setCantidad(deuda.getCantidad()-cantidad);
-				Ahorros cuenta =((Deuda) deuda).getCuenta();
-				cuenta.setSaldo(cuenta.getSaldo()-cantidad);
-				
-				return "\nSu deuda se redujo con EXITO";
-			}
+			deuda.setCantidad(deuda.getCantidad() - cantidad);
+			Ahorros cuenta = ((Deuda) deuda).getCuenta();
+			return(Movimientos.crearMovimiento(cuenta, cuenta.getSaldo() - cantidad, Categoria.PRESTAMO, new Date()));
 		}
 	}
 	

@@ -73,9 +73,9 @@ public class Deuda extends Metas{
     //	Conseguir deudas
     public static ArrayList<Deuda> conseguirDeudas(Usuario usuario){
         ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
-        ArrayList<Deuda> deudasUsuario = new ArrayList<>();
-        for(int i =0; i<deudas.size();i++){
-            if(deudas.get(i).getTitular()==usuario){
+        ArrayList<Deuda> deudasUsuario = new ArrayList<Deuda>();
+        for(int i = 0; i < deudas.size(); i++){
+            if(deudas.get(i).getTitular() == usuario){
                 deudasUsuario.add(deudas.get(i));
             }
         }
@@ -84,12 +84,7 @@ public class Deuda extends Metas{
 
     @Override
     public void finalize(){
-        Cuenta cuenta = this.getCuenta();
-        Banco banco = this.getBanco();
-        int id = this.getId();
-        System.out.println("La deduda con id: "+id+"\n"+cuenta+"\nrealizada con el banco"+banco+
-                "ha sido PAGADA EXITOSAMENTE");
-        return;
+        System.out.println("La deuda con id " + this.getId() + " realizada con el banco " + this.getBanco().getNombre() + " ha sido PAGADA EXITOSAMENTE");
     }
     
     public String toString() {
