@@ -197,12 +197,13 @@ public class Movimientos implements Serializable{
 	
 	//Funcionalidad de Suscripciones de Usuarios
 	public static Object modificarSaldo(Ahorros origen, Ahorros destino, double cantidad, Usuario usuario, Categoria categoria) {
-		if (usuario.getCuentasAsociadas().contains(origen) && usuario.getCuentasAsociadas().contains(destino)) {
-			usuario.setContadorMovimientos(usuario.getContadorMovimientos() + 1);
-			return (crearMovimiento(origen, destino, cantidad, categoria, new Date()));
+		if (usuario.getCuentasAsociadas().contains(origen)) {
+			Movimientos m = (Movimientos) Movimientos.crearMovimiento(origen, destino, cantidad, categoria, new Date());
+			usuario.asociarMovimiento(m);
+			return (m);
 
 		} else {
-			return ("Las cuentas de origen y destino deben estar asociadas al usuario, por favor verifique");
+			return ("La cuenta de destino debe estar asociada al usuario. Inténtelo de nuevo.");
 		}
 	}
 

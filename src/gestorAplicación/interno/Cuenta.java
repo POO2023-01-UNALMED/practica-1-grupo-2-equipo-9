@@ -119,10 +119,11 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	}
 
 	public String toString() {
-		return "Cuenta: " + this.nombre +
-				"\n# " + this.id +
-				"\nBanco: " + this.banco +
-				"\nDivisa: " + this.divisa;
+		return "Cuenta: " + this.nombre 
+				+ "\n# " + this.id 
+				+ "\nTitular: " + this.getTitular().getNombre() 
+				+ "\nBanco: " + this.banco.getNombre() 
+				+ "\nDivisa: " + this.divisa;
 	}
 	
 	//Gets && Sets

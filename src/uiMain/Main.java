@@ -1541,7 +1541,7 @@ public final class Main {
 					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					Object inversion = c.invertirSaldo();
 					if(inversion instanceof Movimientos) {
-						user.getMovimientosAsociados().add((Movimientos) inversion);
+						user.asociarMovimiento((Movimientos) inversion);
 						System.out.println("La inversión de saldo ha sido exitosa: ");
 						System.out.println(inversion);
 						System.out.println("");
@@ -1574,12 +1574,14 @@ public final class Main {
 					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					System.out.print("Ingrese el monto de su consignación de saldo: ");
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
-					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());	
+					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
 					if(saldo_movimiento instanceof Movimientos) {
 						System.out.println("");
-						user.getMovimientosAsociados().add((Movimientos) saldo_movimiento);
+						user.asociarMovimiento((Movimientos) saldo_movimiento);
 						System.out.println("La consignación de saldo ha sido exitosa: ");
 						System.out.println(saldo_movimiento);
+						System.out.println("");
+						System.out.println(user.verificarContadorMovimientos());
 						break;
 					}else {
 						System.out.println(saldo_movimiento);
@@ -1598,61 +1600,62 @@ public final class Main {
 	}
 	
 	// TRANSFERIR SALDO ENTRE CUENTAS POR USUARIO EN EL MAIN
-	static void transferirSaldoCuentasUsuario(Usuario user) {
-		if(user.getCuentasAhorrosAsociadas().size() < 2) {
-			System.out.println("Debes asociar más de una cuenta de ahorros. Volviendo al menú anterior");
-			seccion = 1;
-		}else {
-			System.out.println("");
-			Main.verCuentasAhorroAsociadas();
-			System.out.print("Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
-			int opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
-			while(true) {
-				if(opcion_cuenta_origen < 1 || opcion_cuenta_origen > user.getCuentasAhorrosAsociadas().size()) {
-					System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo: ");
-					opcion_cuenta_origen = Integer.parseInt(sc.nextLine());	
-				}else if(user.getCuentasAhorrosAsociadas().get(opcion_cuenta_origen - 1).getSaldo() == 0) {
-					System.out.println("La cuenta seleccionada tiene saldo cero");
-					System.out.print("¿Desea volver al menú anterior? (Y/N): ");
-					String confirmacion = sc.nextLine();
-					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-						System.out.println("Volviendo al menú anterior");
-						seccion = 1;
-						break;
-					}else {
-						System.out.print("Inténtelo de nuevo: ");
-						opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
-					}
-				}else {
-					System.out.println("");
-					Ahorros c_origen = user.getCuentasAhorrosAsociadas().get(opcion_cuenta_origen - 1);
-					Main.verCuentasAhorroTotales();
-					System.out.print("Seleccione el número de cuenta destino donde deseas transferir saldo: ");
-					int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
-					Ahorros c_destino = null;
-					while(true) {
-						if(opcion_cuenta_destino < 1 || opcion_cuenta_destino > user.getCuentasAhorrosAsociadas().size()) {
-							System.out.print("Inténtelo de nuevo. Seleccione el número de cuenta destino donde deseas transferir saldo: ");
-							opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
-						}else {
-							c_destino = Ahorros.getCuentasAhorroTotales().get(opcion_cuenta_destino - 1);
+	static void transferirSaldoCuentasUsuario() {
+		System.out.println("Por favor, elija el destino de la transferencia: ");
+		System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
+		System.out.println("1. Cuenta externa");
+		System.out.println("2. Cuenta propia");
+		int decision_saldo = Integer.parseInt(sc.nextLine());
+		switch(decision_saldo) {
+			case 1:
+				System.out.println("");
+				Main.verCuentasAhorroAsociadas();
+				System.out.print("Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
+				int opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+				while(true) {
+					if(opcion_cuenta_origen < 1 || opcion_cuenta_origen > user.getCuentasAhorrosAsociadas().size()) {
+						System.out.print("Debes seleccionar una cuenta válida. Inténtalo de nuevo: ");
+						opcion_cuenta_origen = Integer.parseInt(sc.nextLine());	
+					}else if(user.getCuentasAhorrosAsociadas().get(opcion_cuenta_origen - 1).getSaldo() == 0) {
+						System.out.println("La cuenta seleccionada tiene saldo cero");
+						System.out.print("¿Desea volver al menú anterior? (Y/N): ");
+						String confirmacion = sc.nextLine();
+						if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+							System.out.println("Volviendo al menú anterior");
+							seccion = 1;
 							break;
-							}
+						}else {
+							System.out.print("Inténtelo de nuevo: ");
+							opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
 						}
-					if(c_destino == null) {
-						
 					}else {
 						System.out.println("");
-						System.out.print("Inserte el monto de la transferencia(En formato double): ");
+						Ahorros c_origen = user.getCuentasAhorrosAsociadas().get(opcion_cuenta_origen - 1);
+						Ahorros.getCuentasAhorroTotales().removeAll(user.getCuentasAhorrosAsociadas());
+						Main.verCuentasAhorroTotales();
+						System.out.print("Seleccione el número de cuenta destino donde deseas transferir saldo: ");
+						int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
+						Ahorros c_destino = null;
+						while(true) {
+							if(opcion_cuenta_destino < 1 || opcion_cuenta_destino > Ahorros.getCuentasAhorroTotales().size()) {
+								System.out.print("Inténtelo de nuevo. Seleccione el número de cuenta destino donde deseas transferir saldo: ");
+								opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
+							}else {
+								c_destino = Ahorros.getCuentasAhorroTotales().get(opcion_cuenta_destino - 1);
+								break;
+								}
+							}
+						System.out.println("");
+						System.out.print("Inserte el monto de la transferencia: ");
 						double monto_transferencia = Double.parseDouble(sc.nextLine());
-						
+						System.out.println("");
 						Main.verCategorias();
 						System.out.println("");
 						System.out.print("Seleccione el número de categoría para la transferencia: ");
 						int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
 						Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
-						
 						Object modificar_saldo = Movimientos.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
+						Ahorros.getCuentasAhorroTotales().addAll(user.getCuentasAhorrosAsociadas());
 						if(modificar_saldo instanceof Movimientos) {
 							System.out.println((Movimientos) modificar_saldo);
 							System.out.println(user.verificarContadorMovimientos());
@@ -1661,11 +1664,82 @@ public final class Main {
 							System.out.println(modificar_saldo);
 							break;	
 						}	
-					}	
+					}
+				}break;
+			case 2:
+				if(user.getCuentasAhorrosAsociadas().size() < 2) {
+					System.out.println("Debe asociar más de una (1) cuenta de ahorros. Volviendo al menú anterior.");
+					break;
+				}else {
+					System.out.println("");
+					Main.verCuentasAhorroAsociadas();
+					System.out.print("Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
+					opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+					ArrayList<Ahorros> cuentas = user.getCuentasAhorrosAsociadas();
+					Ahorros c_origen = cuentas.get(opcion_cuenta_origen - 1);
+					while(true) {
+						c_origen = cuentas.get(opcion_cuenta_origen - 1);
+						if(c_origen.getSaldo() == 0) {
+							System.out.println("La cuenta seleccionada tiene saldo cero");
+							System.out.print("¿Desea volver al menú anterior? (Y/N): ");
+							String confirmacion = sc.nextLine();
+							if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+								System.out.println("Volviendo al menú anterior");
+								seccion = 1;
+								break;
+							}else {
+								System.out.print("Inténtelo de nuevo: ");
+								opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+							}
+						} else {
+							cuentas.remove(opcion_cuenta_origen - 1);
+							for (int i = 1; i < cuentas.size() + 1; i++) {
+									System.out.println(i + ". " + cuentas.get(i - 1));
+							}
+							System.out.print("A cual de sus cuentas desea transferir su saldo: ");
+							int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
+							while(true) {
+								if(opcion_cuenta_destino < 1 || opcion_cuenta_destino > cuentas.size()) {
+									System.out.print("Inténtelo de nuevo. Seleccione el número de cuenta destino donde deseas transferir saldo: ");
+									opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
+								}else {
+									break;
+								}				
+							}
+							Ahorros c_destino = cuentas.get(opcion_cuenta_destino - 1);
+							System.out.println("");
+							System.out.print("Inserte el monto de la transferencia: ");
+							double monto_transferencia = Double.parseDouble(sc.nextLine());
+							System.out.println("");
+							Main.verCategorias();
+							System.out.println("");
+							System.out.print("Seleccione el número de categoría para la transferencia: ");
+							int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
+							Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
+							Object modificar_saldo = Movimientos.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);	
+							cuentas.add(opcion_cuenta_origen - 1, c_origen);
+							if(modificar_saldo instanceof Movimientos) {
+								System.out.println((Movimientos) modificar_saldo);
+								System.out.println(user.verificarContadorMovimientos());
+								break;
+							}else {
+								System.out.println(modificar_saldo);
+								break;	
+							}
+							
+						}
+					}break;
 				}
-			}		
+			default:
+				System.out.println("Opción no válida. Inténtelo de nuevo");
+				System.out.println("Por favor, elija el destino de la transferencia: ");
+				System.out.println("Recuerde que para el proceso debe ingresar sólo los numerales de las opciones que desee escoger.");
+				System.out.println("1. Cuenta externa");
+				System.out.println("2. Cuenta propia");
+				decision_saldo = Integer.parseInt(sc.nextLine());
 		}
-	}	
+			
+	}			
 	
 	// CREAR BANCO DENTRO EN EL MAIN
 	static void crearBanco() {
@@ -2082,12 +2156,10 @@ public final class Main {
 			System.out.println("La lista de Cuentas de ahorro creadas por el Usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAsociadas());
 			int i = 1;
-			for(Cuenta cuenta : user.getCuentasAsociadas()) {
-				if(cuenta instanceof Ahorros) {
-					System.out.println(i + ". " + cuenta);
-					i++;
-					System.out.println("");
-				}
+			for(Ahorros cuenta : user.getCuentasAhorrosAsociadas()) {
+				System.out.println(i + ". " + cuenta);
+				i++;
+				System.out.println("");
 			}
 			
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -2621,7 +2693,7 @@ public final class Main {
 					} 
 					
 					 else if(opcion == 4) {
-							Main.transferirSaldoCuentasUsuario(user);
+							Main.transferirSaldoCuentasUsuario();
 					}
 					// PEDIR PRESTAMO
 					 else if(opcion == 5){

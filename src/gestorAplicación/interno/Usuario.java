@@ -96,6 +96,7 @@ public class Usuario implements Serializable {
 	//Métodos de instancia
 	//Funcionalidad de Suscripciones de Usuarios
 	public String verificarContadorMovimientos() {
+		this.setContadorMovimientos(this.getMovimientosAsociados().size());
 		if(this.getContadorMovimientos() == 5) {
 			switch(this.getSuscripcion()) {
 				case DIAMANTE:

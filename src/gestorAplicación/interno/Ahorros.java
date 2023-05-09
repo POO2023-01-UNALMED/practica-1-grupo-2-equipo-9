@@ -91,6 +91,7 @@ public class Ahorros extends Cuenta{
 		return "Cuenta: " + super.nombre +
 				"\nCuenta de Ahorros # " + this.id +
 				"\nBanco: " + this.banco +
+				"\nTitular: " + this.getTitular().getNombre() +
 				"\nDivisa: " + this.divisa +
 				"\nSaldo: " + this.saldo + " " + this.divisa;
 	}
