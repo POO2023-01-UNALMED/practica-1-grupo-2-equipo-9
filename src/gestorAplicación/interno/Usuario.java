@@ -6,19 +6,24 @@ import gestorAplicación.externo.Banco;
 
 public class Usuario implements Serializable {
 	//Atributos
-	//Funcionalidad de Suscripciones de Usuarios
+	//Atributos para serializar
 	private static final long serialVersionUID = 3L;
 	public static final String nombreD = "Usuarios";
-	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
-	private int limiteCuentas;
-	private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
-	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
-	private int contadorMovimientos;
-	private Suscripcion suscripcion;
+	
+	//Atributos de instancia
 	private String nombre;
 	private String correo;
 	private String contrasena;
 	private int id;
+	private Suscripcion suscripcion;
+	private static transient ArrayList<Usuario> usuariosTotales = new ArrayList<Usuario>();
+	private ArrayList<Banco> bancosAsociados = new ArrayList<Banco>();
+	
+	//Funcionalidad de Suscripciones de Usuario
+	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
+	private int limiteCuentas;
+	private int contadorMovimientos;
+
 	
 	//Funcionalidad Asesor inversiones
 	private ArrayList<Movimientos> movimientosAsociados = new ArrayList<Movimientos>();
@@ -26,7 +31,7 @@ public class Usuario implements Serializable {
 	private ArrayList<Ahorros> CuentasAhorrosAsociadas = new ArrayList<Ahorros>();
 	private ArrayList<Metas> metasAsociadas = new ArrayList<Metas>();
 
-	//Constructor
+	//Constructores
 	public Usuario(String nombre, String correo, String contrasena, Suscripcion suscripcion) {
 		Usuario.getUsuariosTotales().add(this);
 		this.setSuscripcion(suscripcion);
@@ -45,6 +50,43 @@ public class Usuario implements Serializable {
 		this.setContrasena(contrasena);
 		this.setCorreo(correo);
 		this.setId(Usuario.getUsuariosTotales().size());
+	}
+	
+	//Métodos de clase
+	public static Object verificarCredenciales(String nombre, String contraseña) {
+		for (Usuario usuario: usuariosTotales) {
+			if (usuario.getNombre().equals(nombre) || usuario.getCorreo().equals(nombre)) {
+				if (usuario.getContrasena().equals(contraseña)) {
+					return usuario;
+				}
+			}
+		}
+		return null;
+	}
+	
+	// Funcionalidad Asesor Inversiones
+	public static int hallarUsuariogotaGota() {
+		int contador = 0;
+		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
+			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("gotaGota")) {
+				contador = i;
+			} else {
+				continue;
+			}
+		}
+		return contador;
+	}
+
+	public static int hallarUsuarioImpuestosPortafolio() {
+		int contador = 0;
+		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
+			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("Impuestos Portafolio")) {
+				contador = i;
+			} else {
+				continue;
+			}
+		}
+		return contador;
 	}
 	
 	//Métodos de instancia
@@ -156,17 +198,6 @@ public class Usuario implements Serializable {
 		}
 	}
 	
-	public static Object verificarCredenciales(String nombre, String contraseña) {
-		for (Usuario usuario: usuariosTotales) {
-			if (usuario.getNombre().equals(nombre) || usuario.getCorreo().equals(nombre)) {
-				if (usuario.getContrasena().equals(contraseña)) {
-					return usuario;
-				}
-			}
-		}
-		return null;
-	}
-
 	//    Funcionalidad Prestamos
 	public ArrayList<?> comprobarConfiabilidad(){
 		//Deserializacion de las cuentas
@@ -221,31 +252,7 @@ public class Usuario implements Serializable {
 		return cuentasCapacesDeuda;
 	}
 	
-	// Funcionalidad Asesor Inversiones
-	public static int hallarUsuariogotaGota() {
-		int contador = 0;
-		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
-			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("gotaGota")) {
-				contador = i;
-			} else {
-				continue;
-			}
-		}
-		return contador;
-	}
 
-	public static int hallarUsuarioImpuestosPortafolio() {
-		int contador = 0;
-		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
-			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("Impuestos Portafolio")) {
-				contador = i;
-			} else {
-				continue;
-			}
-		}
-		return contador;
-	}
-	
 	public void eliminarMetas(int n) {
 		this.getMetasAsociadas().remove(n);
 		Metas.getMetasTotales().remove(n);
