@@ -1733,10 +1733,10 @@ public final class Main {
 				String confirmacion = sc.nextLine();
 				while(true) {
 					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-						new Usuario("Pepe Morales", "PepeMorales@mail.com", "12345", Suscripcion.DIAMANTE);
+						Usuario u = new Usuario();
 						System.out.println("El usuario por defecto fue creado con éxito, éstas son las credenciales de ingreso: ");
-						System.out.println("Nombre: " + user.getNombre());
-						System.out.println("Contraseña: " + user.getContrasena());
+						System.out.println("Nombre: " + u.getNombre());
+						System.out.println("Contraseña: " + u.getContrasena());
 						System.out.println("");
 						break;
 					}else if(confirmacion.equals("N") || confirmacion.equals("n")){
@@ -1756,7 +1756,7 @@ public final class Main {
 					String confirmacion = sc.nextLine();
 					while(true) {
 						if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-							Banco banco = new Banco("Banco de Colombia", 0.3, Estado.getEstadosTotales().get(0), 200.0);
+							Banco banco = new Banco();
 							System.out.println("El banco por defecto fue creado con éxito, éstos son sus datos: ");
 							System.out.println("Nombre: " + banco.getNombre());
 							System.out.println("Comisión: " + banco.getComision());
@@ -1779,7 +1779,7 @@ public final class Main {
 				String confirmacion = sc.nextLine();
 				while(true) {
 					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-						Estado estado = new Estado("Colombia", 0.2, Divisas.COP);
+						Estado estado = new Estado();
 						System.out.println("El estado por defecto fue creado con éxito, éstos son sus datos: ");
 						System.out.println("Nombre: " + estado.getNombre());
 						System.out.println("Tasa de impuestos: " + estado.getTasa_impuestos());
@@ -1876,7 +1876,7 @@ public final class Main {
 	}
 	
 	// ELIMINAR CUENTA, SE REALIZA COMPROBACIÓN ENTRE CORRIENTE Y AHORROS
-	static void eliminarCuentaComprobacion(Cuenta cuenta) throws CloneNotSupportedException {
+	static void eliminarCuenta(Cuenta cuenta) throws CloneNotSupportedException {
 		if(cuenta instanceof Ahorros) {
 			if (((Ahorros) cuenta).getSaldo() != 0.0d) {
 				System.out.println("Por favor, elija el destino del saldo restante en la cuenta:");
@@ -2012,7 +2012,7 @@ public final class Main {
 							int claveCuenta = Integer.parseInt(sc.nextLine());
 							while(true) {
 								if(user.getCuentasAsociadas().get(i).getClave() == claveCuenta) {
-									Main.eliminarCuentaComprobacion(user.getCuentasAsociadas().get(i));
+									Main.eliminarCuenta(user.getCuentasAsociadas().get(i));
 									System.gc();
 									break;
 								}else {
@@ -2700,22 +2700,22 @@ public final class Main {
 				// CLASE DE MOVIMIENTOS
 				while (seccion == 4) {
 					// Contenido de Movimientos
-					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?" + "\n4. Realizar un cambio de divisa"
-							+ "\n5. Salir al menú principal");
+					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?" 
+							+ "\n1. Realizar un cambio de divisa"
+							+ "\n2. Salir al menú principal");
 		
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
 					//Entrada para funcionalidad de cambio de divisa
-					if (opcion == 4) {
+					if (opcion == 1) {
 						Main.CambioDivisa();
 					}
-		
 					// Volver al menú anterior
-					if (opcion == 5) {
+					else if (opcion == 2) {
 						seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcion < 1 || opcion > 3 ) {
+					if (opcion < 1 || opcion > 2 ) {
 						System.out.println("Entrada no valida");
 						continue;
 					}

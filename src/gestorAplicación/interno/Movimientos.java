@@ -25,7 +25,7 @@ public class Movimientos implements Serializable{
 	public static double cantidadCategoria;
 	public static String recomendarFecha;
 
-	//	Constructores
+	//	CONSTRUCTORES
 	//	Movimiento entre dos cuentas de ahorros
 	public Movimientos(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
@@ -522,7 +522,7 @@ public class Movimientos implements Serializable{
 		return destino;
 	}
 
-	//	Sets
+	//	SETS
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
@@ -542,6 +542,7 @@ public class Movimientos implements Serializable{
 	public void setDestino(Cuenta destino) {
 		this.destino = destino;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}

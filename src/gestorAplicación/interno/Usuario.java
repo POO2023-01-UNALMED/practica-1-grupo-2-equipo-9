@@ -52,6 +52,10 @@ public class Usuario implements Serializable {
 		this.setId(Usuario.getUsuariosTotales().size());
 	}
 	
+	public Usuario() {
+		this("Pepe Morales", "PepeMorales@mail.com", "12345", Suscripcion.DIAMANTE);
+	}
+
 	//Métodos de clase
 	public static Object verificarCredenciales(String nombre, String contraseña) {
 		for (Usuario usuario: usuariosTotales) {
@@ -252,7 +256,6 @@ public class Usuario implements Serializable {
 		return cuentasCapacesDeuda;
 	}
 	
-
 	public void eliminarMetas(int n) {
 		this.getMetasAsociadas().remove(n);
 		Metas.getMetasTotales().remove(n);
