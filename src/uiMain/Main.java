@@ -1574,6 +1574,14 @@ public final class Main {
 					Ahorros c = user.getCuentasAhorrosAsociadas().get(opcion_cuenta - 1);
 					System.out.print("Ingrese el monto de su consignación de saldo: ");
 					double saldo_consignar = Double.parseDouble(sc.nextLine()); 
+					while(true) {
+						if(saldo_consignar <= 0) {
+							System.out.print("El monto de su consignación de saldo debe ser mayor que cero. Inténtelo de nuevo: ");
+							saldo_consignar = Double.parseDouble(sc.nextLine()); 
+						}else {
+							break;
+						}
+					}
 					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
 					if(saldo_movimiento instanceof Movimientos) {
 						System.out.println("");
@@ -1653,6 +1661,14 @@ public final class Main {
 						System.out.println("");
 						System.out.print("Seleccione el número de categoría para la transferencia: ");
 						int categoria_transferencia_op = Integer.parseInt(sc.nextLine());
+						while(true) {
+							if(categoria_transferencia_op < 1 || categoria_transferencia_op > Categoria.getCategorias().size()) {
+								System.out.print("Inténtelo de nuevo. Seleccione el número de categoría para la transferencia: ");
+								categoria_transferencia_op = Integer.parseInt(sc.nextLine());
+							}else {
+								break;
+							}
+						}
 						Categoria categoria_transferencia = Categoria.getCategorias().get(categoria_transferencia_op - 1);
 						Object modificar_saldo = Movimientos.modificarSaldo(c_origen, c_destino, monto_transferencia, user, categoria_transferencia);
 						Ahorros.getCuentasAhorroTotales().addAll(user.getCuentasAhorrosAsociadas());
@@ -1675,12 +1691,23 @@ public final class Main {
 					Main.verCuentasAhorroAsociadas();
 					System.out.print("Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
 					opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+					while(true) {
+						if(opcion_cuenta_origen < 1 || opcion_cuenta_origen > user.getCuentasAhorrosAsociadas().size()) {
+							System.out.print("Inténtelo de nuevo. Seleccione el número de cuenta origen asociada al usuario desde donde deseas transferir saldo: ");
+							opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
+						}else {
+							break;
+						}
+					}
+					
 					ArrayList<Ahorros> cuentas = user.getCuentasAhorrosAsociadas();
 					Ahorros c_origen = cuentas.get(opcion_cuenta_origen - 1);
 					while(true) {
 						c_origen = cuentas.get(opcion_cuenta_origen - 1);
 						if(c_origen.getSaldo() == 0) {
+							System.out.println("");
 							System.out.println("La cuenta seleccionada tiene saldo cero");
+							System.out.println("");
 							System.out.print("¿Desea volver al menú anterior? (Y/N): ");
 							String confirmacion = sc.nextLine();
 							if(confirmacion.equals("Y") || confirmacion.equals("y")) {
@@ -1688,10 +1715,12 @@ public final class Main {
 								seccion = 1;
 								break;
 							}else {
+								System.out.println("");
 								System.out.print("Inténtelo de nuevo: ");
 								opcion_cuenta_origen = Integer.parseInt(sc.nextLine());
 							}
 						} else {
+							System.out.println("");
 							cuentas.remove(opcion_cuenta_origen - 1);
 							for (int i = 1; i < cuentas.size() + 1; i++) {
 									System.out.println(i + ". " + cuentas.get(i - 1));
@@ -2267,14 +2296,14 @@ public final class Main {
 	static void modificarSuscripcionUsuario() {
 		if(user.getBancosAsociados().size() == 0) {
 			System.out.println("Primero debes asociar bancos. Volviendo al menú anterior");
-			seccion = 2;
+			seccion = 1;
 		}else {
 			System.out.println("");
 			Main.verBancosAsociados();
 			System.out.print("Seleccione el número de banco asociado al usuario para comprobar suscripción: ");
 			int opcion_banco = Integer.parseInt(sc.nextLine());
 			while(true) {
-				if(opcion_banco < 1 && opcion_banco > Banco.getBancosTotales().size()) {
+				if(opcion_banco < 1 || opcion_banco > user.getBancosAsociados().size()) {
 					System.out.print("Debes seleccionar un banco válido. Inténtalo de nuevo:");
 					opcion_banco = Integer.parseInt(sc.nextLine());
 				}else {
@@ -2306,7 +2335,7 @@ public final class Main {
 				System.out.print("Seleccione el número de suscripción: ");
 				int opcion_suscripcion = Integer.parseInt(sc.nextLine());
 				while(true) {
-					if(opcion_suscripcion < 1 && opcion_suscripcion > listaSuscripcion.size() - 1) {
+					if(opcion_suscripcion < 1 || opcion_suscripcion > listaSuscripcion.size() - 1) {
 						System.out.print("Debes seleccionar un nivel de suscripción válido. Inténtalo de nuevo:");
 						opcion_suscripcion = Integer.parseInt(sc.nextLine());						
 					}else {
@@ -2327,7 +2356,7 @@ public final class Main {
 				}
 			}else {
 				System.out.println("Volviendo al menú anterior");
-				seccion = 2;
+				seccion = 1;
 			}	
 		}
 	}
