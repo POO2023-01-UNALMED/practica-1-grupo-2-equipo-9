@@ -90,7 +90,7 @@ public class Ahorros extends Cuenta{
 	public String toString() {
 		return "Cuenta: " + super.nombre +
 				"\nCuenta de Ahorros # " + this.id +
-				"\nBanco: " + this.banco +
+				"\nBanco: " + this.banco.getNombre() +
 				"\nTitular: " + this.getTitular().getNombre() +
 				"\nDivisa: " + this.divisa +
 				"\nSaldo: " + this.saldo + " " + this.divisa;
