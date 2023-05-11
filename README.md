@@ -7,4 +7,4 @@ Bienvenidos al sistema de gestión financiera "Mis finanzas" programado por:
 * Tomás Escobar Rivera.
 * Jorge Humberto García Botero. 
 
-Por favor seleccione en los enlaces para dirigirse a la ***[Memoria Escrita](https://docs.google.com/document/d/1Hve9AHZjIFVYdaPl5sDCgkcCTQtD3pI-JkqUceRX31U/edit?usp=sharing)*** ó a el ***[Diagrama de clases](https://lucid.app/lucidchart/69d9ce0d-e403-4fb3-ad48-54e99af089c0/edit?viewport_loc=-397%2C-1555%2C3328%2C3791%2CHWEp-vi-RSFO&invitationId=inv_fd22f25a-1d73-4007-8cee-92e4a37ada61)***.
+Por favor seleccione en los enlaces para dirigirse a la ***[memoria escrita](https://docs.google.com/document/d/1Hve9AHZjIFVYdaPl5sDCgkcCTQtD3pI-JkqUceRX31U/edit?usp=sharing)*** ó a el ***[diagrama de clases](https://lucid.app/lucidchart/69d9ce0d-e403-4fb3-ad48-54e99af089c0/edit?viewport_loc=-397%2C-1555%2C3328%2C3791%2CHWEp-vi-RSFO&invitationId=inv_fd22f25a-1d73-4007-8cee-92e4a37ada61)***.
