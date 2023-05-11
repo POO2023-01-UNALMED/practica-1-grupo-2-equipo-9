@@ -60,6 +60,7 @@ public class Banco extends Estado {
 		this.comision = comision + this.getTasa_impuestos();
 		this.setPrestamo(prestamo);
 		bancosTotales.add(this);
+		this.setDivisa(estado.getDivisa());
 		this.setId(Banco.getBancosTotales().size());
 	}
 	
@@ -482,11 +483,11 @@ public class Banco extends Estado {
 	}
 	
 	public String toString() {
-		return "Nombre" + this.nombre +
+		return "Nombre: " + this.nombre +
 				"\nComision: " + this.comision +
 				"\nDivisa: " + this.divisa +
 				"\nId: " + this.id +
-				"\nEstadoAsociado: " + this.estadoAsociado.getNombre() +
+				"\nEstado Asociado: " + this.estadoAsociado.getNombre() +
 				"\nCupo base: " + this.cupo_base +
 				"\nMultiplicador: " + this.multiplicador +
 				"\nDescuento por suscripción: " + this.desc_suscripcion +

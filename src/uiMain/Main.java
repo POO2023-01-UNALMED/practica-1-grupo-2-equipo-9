@@ -1503,7 +1503,6 @@ public final class Main {
 		String usuario = sc.nextLine();
 		System.out.print("Ingrese su contraseña: ");
 		String contraseña = sc.nextLine();
-		System.out.println("");
 
 		Object u = Usuario.verificarCredenciales(usuario, contraseña);
 		if (u instanceof Usuario) {
@@ -1856,8 +1855,9 @@ public final class Main {
 					+ "\n2. Crear Banco"
 					+ "\n3. Crear Estado"
 					+ "\n4. Ver Bancos"
-					+ "\n5. Iniciar Sesión"
-					+ "\n6. Volver al menú anterior");
+					+ "\n5. Ver Estados"
+					+ "\n6. Iniciar Sesión"
+					+ "\n7. Volver al menú anterior");
 			
 			int opcionAdmin = Integer.parseInt(sc.nextLine());
 					
@@ -1927,16 +1927,22 @@ public final class Main {
 						confirmacion = sc.nextLine();
 					}	
 				}
-			}else if(opcionAdmin == 4) {
+			}
+			else if(opcionAdmin == 4) {
 				System.out.println("");
 				Main.verBancosTotales();
 				System.out.println("");
 			}
 			else if(opcionAdmin == 5) {
+				System.out.println("");
+				Main.verEstadosTotales();
+				System.out.println("");
+			}
+			else if(opcionAdmin == 6) {
 				sesioniniciada = 1;
 				seguir = 0;
 				break;		
-			} else if(opcionAdmin == 6) {
+			} else if(opcionAdmin == 7) {
 				seguir = 0;
 				break;			
 			} else {
