@@ -116,10 +116,11 @@ public class Movimientos implements Serializable{
 		}
 	}
 	
+	//	Funcionalidad de Suscripciones de Usuarios
 	public static Object crearMovimiento(Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
 		if(Cuenta.getCuentasTotales().contains(destino)){
 			if(categoria == Categoria.PRESTAMO) {
-				return(new Movimientos(destino, cantidad  , categoria, fecha));
+				return(new Movimientos(destino, cantidad, categoria, fecha));
 			}else {
 				return(new Movimientos(destino, cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria, fecha));
 			}
