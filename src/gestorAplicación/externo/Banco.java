@@ -1,5 +1,6 @@
 package gestorAplicación.externo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
@@ -11,7 +12,7 @@ import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
 import gestorAplicación.interno.Ahorros;
 
-public class Banco extends Estado {
+public class Banco implements Serializable {
 	private static final long serialVersionUID = 2L;
 	private static transient ArrayList<Banco> bancosTotales = new ArrayList<Banco>();
 	public static final String nombreD = "Bancos";
@@ -38,7 +39,7 @@ public class Banco extends Estado {
 	public Banco(String nombre, double comision, Estado estado, double desc_suscripcion, double desc_movimientos_porcentaje, int desc_movimientos_cantidad) {
 		this.nombre = nombre;
 		this.setEstadoAsociado(estado);
-		this.comision = comision + this.getTasa_impuestos();
+		this.comision = comision + estado.getTasa_impuestos();
 		this.desc_suscripcion = desc_suscripcion;
 		this.desc_movimientos_porcentaje = desc_movimientos_porcentaje;
 		this.desc_movimientos_cantidad = desc_movimientos_cantidad;
@@ -49,7 +50,7 @@ public class Banco extends Estado {
 	public Banco(String nombre, double comision, Estado estado) {
 		this.nombre = nombre;
 		this.setEstadoAsociado(estado);
-		this.comision = comision + this.getTasa_impuestos();
+		this.comision = comision + estado.getTasa_impuestos();
 		bancosTotales.add(this);
 		this.setId(Banco.getBancosTotales().size());
 	}
@@ -57,7 +58,7 @@ public class Banco extends Estado {
 	public Banco(String nombre, double comision, Estado estado, double prestamo) {
 		this.nombre = nombre;
 		this.setEstadoAsociado(estado);
-		this.comision = comision + this.getTasa_impuestos();
+		this.comision = comision + estado.getTasa_impuestos();
 		this.setPrestamo(prestamo);
 		bancosTotales.add(this);
 		this.setDivisa(estado.getDivisa());
@@ -292,29 +293,29 @@ public class Banco extends Estado {
 		double[] descuento_total = Banco.descuentoTotal(descuento_movimientos, descuento_suscripcion);
 		switch(suscripcion) {
 			case DIAMANTE:
-				if (cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[3]) {
-					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[3];
+				if (cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[3]) {
+					interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[3];
 				}
 				else {
 					interes = 0.0;
 				}
 			case ORO:
-				if (cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[2]) {
-					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[2];
+				if (cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[2]) {
+					interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[2];
 				}
 				else {
 					interes = 0.0;
 				}
 			case PLATA:
-				if(cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[1]) {
-					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[1];
+				if(cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[1]) {
+					interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[1];
 				}
 				else {
 					interes = 0.0;
 				}
 			case BRONCE:
-				if(cuenta.getBanco().getInteres_bancario_corriente() >= descuento_total[0]) {
-					interes = cuenta.getBanco().getInteres_bancario_corriente() - descuento_total[0];
+				if(cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[0]) {
+					interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[0];
 				}
 				else {
 					interes = 0.0;
@@ -481,7 +482,7 @@ public class Banco extends Estado {
 	public void setCionario(ArrayList<Double> cionario) {
 		this.cionario = cionario;
 	}
-	
+
 	public String toString() {
 		return "Nombre: " + this.nombre +
 				"\nComision: " + this.comision +
