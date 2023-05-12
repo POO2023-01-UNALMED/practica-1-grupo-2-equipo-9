@@ -18,6 +18,8 @@ public class Movimientos implements Serializable{
 	private Date fecha;
 	private Cuenta destino;
 	private Cuenta origen;
+	private Divisas divisa;
+	private Divisas divisaAux;
 	
 	// Funcionalidad de Asesor Inversiones
 	private Usuario owner;
@@ -100,6 +102,13 @@ public class Movimientos implements Serializable{
 		this.setOrigen(origen);
 		origen.setDisponible(origen.getDisponible() - cantidad);
 		destino.setSaldo(destino.getSaldo() + cantidad);
+	}
+	
+	//Movimiento de cambio de divisa
+	public Movimientos(Divisas divisa, Divisas divisaAux, Usuario owner) {
+		this.setDivisa(divisa);
+		this.setDivisaAux(divisaAux);
+		this.setOwner(owner);
 	}
 	
 	//	MÉTODOS
@@ -255,12 +264,13 @@ public class Movimientos implements Serializable{
 	}
 	
 	//Métodos para funcionalidad cambio de divisa
-	public ArrayList<Banco> facilitarInformación(Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion) {
-		for (int i = 0; i < titular.getBancosAsociados().size() ; i++) {
+	public static ArrayList<Banco> facilitarInformación(Movimientos mov) {
+		//Usuario titular, Divisas divisaOrigen, Divisas divisaDevolucion
+		for (int i = 0; i < mov.getOwner().getBancosAsociados().size() ; i++) {
 			//int totalOrigen=0;
-			titular.getBancosAsociados().get(i).setAsociado(true);
+			mov.getOwner().getBancosAsociados().get(i).setAsociado(true);
 		}
-		String cadena= divisaOrigen.name() + divisaDevolucion.name();
+		String cadena= mov.getDivisa().name() + mov.getDivisaAux().name();
 		ArrayList<Banco> existeCambio = new ArrayList<Banco>();
 		for (int j = 0; j < Banco.getBancosTotales().size(); j++) {
 			for (int k = 0; j< Banco.getBancosTotales().get(j).getDic().size(); k++ )
@@ -556,5 +566,21 @@ public class Movimientos implements Serializable{
 
 	public void setOwner(Usuario owner) {
 		this.owner = owner;
+	}
+
+	public Divisas getDivisa() {
+		return divisa;
+	}
+
+	public void setDivisa(Divisas divisa) {
+		this.divisa = divisa;
+	}
+
+	public Divisas getDivisaAux() {
+		return divisaAux;
+	}
+
+	public void setDivisaAux(Divisas divisaAux) {
+		this.divisaAux = divisaAux;
 	}
 }

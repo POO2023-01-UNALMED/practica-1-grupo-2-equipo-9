@@ -35,11 +35,35 @@ public final class Main {
 			System.out.println("y la Exacta se da cuando se desea obtener exactamente una cifra de dinero de una divisa a partir de otra ");
 		}
 		System.out.println("¿Cuál tipo de cambio desea hacer?" + "\n1. Convencional" + "\n2.Exacta");
+		opcion = Integer.parseInt(sc.nextLine());
+		boolean exacta = false;
+		if (opcion == 2) {
+			exacta = true;
+		}
+		
 		System.out.println("¿Desde qué divisa va a hacer el cambio?:");
 		for(int i = 1;i < Divisas.getDivisas().size() + 1;i++ ) {
 			System.out.println(i + ". " + Divisas.getDivisas().get(i-1).name());
 		}
 		opcion = Integer.parseInt(sc.nextLine());
+		Divisas divisaA = Divisas.getDivisas().get(opcion-1);
+		ArrayList<Divisas> divisasDevolucion = Divisas.getDivisas();
+		divisasDevolucion.remove(opcion-1);
+		System.out.println("¿A qué divisa desea hacer el cambio?");
+		for(int i = 1;i < divisasDevolucion.size() + 1;i++ ) {
+			System.out.println(i + ". " + divisasDevolucion.get(i-1).name());
+		}
+		opcion = Integer.parseInt(sc.nextLine());
+		Divisas divisaB = Divisas.getDivisas().get(opcion-1);
+		if(exacta) {
+			System.out.println("Usted hará un cambio de divisa exacto, ¿ a qué monto desea llegar?:  ");
+		}
+		else {
+			System.out.println("Usted hará un cambio de divisa convencional, ¿qué monto desea cambiar?:  ");		
+			}
+		double monto = Double.parseDouble(sc.nextLine());
+		Movimientos cambioDiv = new Movimientos(divisaA , divisaB, user);
+		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
 		System.out.println();
 	}
 	
