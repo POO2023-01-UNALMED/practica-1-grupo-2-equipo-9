@@ -253,12 +253,12 @@ public class Movimientos implements Serializable{
 			Metas.getMetasTotales().remove(deuda);
 			deuda.setCantidad(0);
 			cantidad= -cantidad;
-			cuenta.setSaldo(cuenta.getSaldo()-cantidad);
+//			cuenta.setSaldo(cuenta.getSaldo()-cantidad);
 			return (Movimientos.crearMovimiento(cuenta,cantidad, Categoria.PRESTAMO, new Date()));
 		}else{
 			deuda.setCantidad(deuda.getCantidad() - cantidad);
 			Ahorros cuenta = ((Deuda) deuda).getCuenta();
-			cuenta.setSaldo(cuenta.getSaldo()-cantidad);
+//			cuenta.setSaldo(cuenta.getSaldo()-cantidad);
 			cantidad= -cantidad;
 			return(Movimientos.crearMovimiento(cuenta,cantidad, Categoria.PRESTAMO, new Date()));
 		}

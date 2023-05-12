@@ -76,6 +76,12 @@ public class Deuda extends Metas{
         ArrayList<Deuda> deudasUsuario = new ArrayList<Deuda>();
         for(int i = 0; i < deudas.size(); i++){
             if(deudas.get(i).getTitular().equals(usuario)){
+            	deudas.get(i).setTitular(usuario);
+            	for(int i1=0;i1<usuario.getCuentasAhorrosAsociadas().size();i1++) {
+            		if(usuario.getCuentasAhorrosAsociadas().get(i1).equals(deudas.get(i).getCuenta())) {
+            			deudas.get(i).setCuenta(usuario.getCuentasAhorrosAsociadas().get(i1));
+            		}
+            	}
                 deudasUsuario.add(deudas.get(i));
             }
         }

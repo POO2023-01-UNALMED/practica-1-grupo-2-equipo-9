@@ -177,7 +177,7 @@ public final class Main {
 							if(deudas.get(seleccion - 1).getCantidad() == 0) {
 								deudas.remove(deudas.get(seleccion - 1));
 								System.out.println("|----------------------------------|\n\n Has pagado completamente tu deuda con éxito\n\n|----------------------------------|");
-								System.gc();
+//								System.gc();
 							}else {
 								System.out.println("Has pagado parcialmente tu deuda con éxito.\n");
 							}
