@@ -34,8 +34,7 @@ public class Banco extends Estado {
 	private double desc_movimientos_porcentaje = 0.2;
 	private int desc_movimientos_cantidad = 5;
 	
-	//Constructor
-	
+	//Constructores
 	public Banco(String nombre, double comision, Estado estado, double desc_suscripcion, double desc_movimientos_porcentaje, int desc_movimientos_cantidad) {
 		this.nombre = nombre;
 		this.setEstadoAsociado(estado);
@@ -61,10 +60,13 @@ public class Banco extends Estado {
 		this.comision = comision + this.getTasa_impuestos();
 		this.setPrestamo(prestamo);
 		bancosTotales.add(this);
+		this.setDivisa(estado.getDivisa());
 		this.setId(Banco.getBancosTotales().size());
 	}
 	
-	public Banco() {}
+	public Banco() {
+		this("Banco de Colombia", 0.3, Estado.getEstadosTotales().get(0), 200.0);
+	}
 	
 	@Override
 	public boolean equals(Object o) {
@@ -481,11 +483,11 @@ public class Banco extends Estado {
 	}
 	
 	public String toString() {
-		return "Nombre" + this.nombre +
+		return "Nombre: " + this.nombre +
 				"\nComision: " + this.comision +
 				"\nDivisa: " + this.divisa +
 				"\nId: " + this.id +
-				"\nEstadoAsociado: " + this.estadoAsociado.getNombre() +
+				"\nEstado Asociado: " + this.estadoAsociado.getNombre() +
 				"\nCupo base: " + this.cupo_base +
 				"\nMultiplicador: " + this.multiplicador +
 				"\nDescuento por suscripción: " + this.desc_suscripcion +

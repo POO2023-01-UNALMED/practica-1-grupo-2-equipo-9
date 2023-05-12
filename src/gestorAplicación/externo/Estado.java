@@ -21,7 +21,7 @@ public class Estado implements Serializable {
 	//Atributo que almacena el multiplicador máximo aplicable al interes_bancario_corriente
 	private double tasas_usura;
 	
-	//Constructor
+	//Constructores
 	public Estado(String nombre, double tasa_impuestos, Divisas divisa) {
 		this.setNombre(nombre);
 		this.setTasa_impuestos(tasa_impuestos);
@@ -29,7 +29,9 @@ public class Estado implements Serializable {
 		Estado.getEstadosTotales().add(this);
 		this.setId(Estado.getEstadosTotales().size());
 	}
-	public Estado(){}
+	public Estado(){
+		this("Colombia", 0.2, Divisas.COP);
+	}
 	
 	@Override
 	public boolean equals(Object o) {

@@ -283,7 +283,7 @@ public class Corriente extends Cuenta implements Cloneable{
 	public String toString() { 
 		return "Cuenta: " + this.nombre +
 				"\nCuenta Corriente # " + this.id +
-				"\nBanco: " + this.banco +
+				"\nBanco: " + this.banco.getNombre() +
 				"\nDivisa: " + this.divisa +
 				"\nCupo disponible: " + this.cupo + " " + this.divisa +
 				"\nCuotas: " + this.plazo_Pago;
