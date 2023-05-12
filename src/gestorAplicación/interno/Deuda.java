@@ -75,7 +75,7 @@ public class Deuda extends Metas{
         ArrayList<Deuda> deudas = Deuda.getDeudasTotales();
         ArrayList<Deuda> deudasUsuario = new ArrayList<Deuda>();
         for(int i = 0; i < deudas.size(); i++){
-            if(deudas.get(i).getTitular() == usuario){
+            if(deudas.get(i).getTitular().equals(usuario)){
                 deudasUsuario.add(deudas.get(i));
             }
         }

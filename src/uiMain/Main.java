@@ -74,7 +74,7 @@ public final class Main {
 		System.out.println("2-Pagar Prestamo");
 		System.out.println("3-Salir al menu");
 		String c = sc.nextLine();
-		switch (c) {
+		switch (c) { 
 			case "1":
 				ArrayList<?> prestamo;
 				prestamo = user.comprobarConfiabilidad();
@@ -85,20 +85,32 @@ public final class Main {
 						System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
 						for (int i = 0; i < prestamo.size(); i++) {
 							Ahorros cuenta = (Ahorros) prestamo.get(i);
-							System.out.println(i + "-Cuenta: " + cuenta.getNombre() + " Maximo a prestar:" + cuenta.getBanco().getPrestamo() * user.getSuscripcion().getPorcentajePrestamo());
+							System.out.println((i+1)+ "-Cuenta: " + cuenta.getNombre() + " Maximo a prestar:" + cuenta.getBanco().getPrestamo() * user.getSuscripcion().getPorcentajePrestamo());
 						}
-						System.out.println(prestamo.size() + "-Salir al Menú");
+						System.out.println(prestamo.size()+1 + "-Salir al Menú");
 						System.out.println("Seleccione una:");
 //				recibe la opccion del usuario
 						int opcion = Integer.parseInt(sc.nextLine());
 						System.out.println("");
-
+						while(opcion<1) {
+							System.out.println("¡Error! Seleccione una de las siguientes opciones");
+							System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
+							for (int i = 0; i < prestamo.size(); i++) {
+								Ahorros cuenta = (Ahorros) prestamo.get(i);
+								System.out.println((i+1)+ "-Cuenta: " + cuenta.getNombre() + " Maximo a prestar:" + cuenta.getBanco().getPrestamo() * user.getSuscripcion().getPorcentajePrestamo());
+							}
+							System.out.println(prestamo.size()+1 + "-Salir al Menú");
+							System.out.println("Seleccione una:");
+//					recibe la opccion del usuario
+							opcion = Integer.parseInt(sc.nextLine());
+							System.out.println("");
+						}
 //				En caso de que desee salir se sale,
-						if (opcion == prestamo.size()) {
+						if (opcion == prestamo.size()+1) {
 							break;
-						} else {
+						}else{
 //					en caso de que seleccione una de las cuentas
-							Ahorros cuenta = (Ahorros) prestamo.get(opcion);
+							Ahorros cuenta = (Ahorros) prestamo.get(opcion-1);
 							double maxPrestamo = cuenta.getBanco().getPrestamo() * user.getSuscripcion().getPorcentajePrestamo();
 							System.out.println("Ingrese el valor del prestamo, el valor de este debe ser menor de $" + maxPrestamo);
 							maxPrestamo = Double.parseDouble(sc.nextLine());
@@ -108,7 +120,7 @@ public final class Main {
 								System.out.println(exito);
 								System.out.println("");
 								System.out.println("|----------------------------------|\n\n    Prestamo Realizado con Exito\n\n|----------------------------------|");
-								break;
+								funcionalidadPrestamo();
 							} else {
 								System.out.println("Por favor seleccione una cantidad adecuada");
 								funcionalidadPrestamo();
@@ -126,8 +138,10 @@ public final class Main {
 					}
 					break;
 				}
+				break;
 				//PAGAR PRESTAMO
 			case "2":
+				System.out.print("Desde aca se repite\n");
 				ArrayList<Deuda> deudas = Deuda.conseguirDeudas(user);
 				if (deudas.size() != 0) {
 					for (int i = 1; i < deudas.size() + 1; i++) {
@@ -162,22 +176,20 @@ public final class Main {
 							System.out.println(Movimientos.pagarDeuda(user, deudas.get(seleccion - 1), cantidad));
 							if(deudas.get(seleccion - 1).getCantidad() == 0) {
 								deudas.remove(deudas.get(seleccion - 1));
-								System.out.println("Has pagado completamente tu deuda con éxito.");
+								System.out.println("|----------------------------------|\n\n Has pagado completamente tu deuda con éxito\n\n|----------------------------------|");
 								System.gc();
 							}else {
-								System.out.println("Has pagado parcialmente tu deuda con éxito.");
+								System.out.println("Has pagado parcialmente tu deuda con éxito.\n");
 							}
 							break;
 						}	
-					}		
-					break;
+					}
 				} else {
 					System.out.println("Usted no tiene deudas por pagar");
-					break;
 				}
-			case "3":
 				break;
-
+			default:
+				
 		}
 	}
 	

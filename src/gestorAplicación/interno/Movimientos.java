@@ -51,6 +51,8 @@ public class Movimientos implements Serializable{
 		this.setDestino(destino);
 		this.setOrigen(null);
 		destino.setSaldo(destino.getSaldo() + cantidad);
+		System.out.print(destino.getSaldo());
+		
 	}
 	
 	//	Movimiento entre dos cuentas corrientes
@@ -233,7 +235,7 @@ public class Movimientos implements Serializable{
 		Usuario titular = cuenta.getTitular();
 		double maxCantidad = banco.getPrestamo() * titular.getSuscripcion().getPorcentajePrestamo();
 		//	Comprueba que la cantidad si sea la adecuada
-		if(cantidad > maxCantidad){
+		if(cantidad > maxCantidad||cantidad<=0){
 			return null;
 		}else{
 			// Creamos instancia de la clase deuda
@@ -250,11 +252,15 @@ public class Movimientos implements Serializable{
 			Deuda.getDeudasTotales().remove(deuda);
 			Metas.getMetasTotales().remove(deuda);
 			deuda.setCantidad(0);
-			return (Movimientos.crearMovimiento(cuenta, cuenta.getSaldo() - cantidad, Categoria.PRESTAMO, new Date()));
+			cantidad= -cantidad;
+			cuenta.setSaldo(cuenta.getSaldo()-cantidad);
+			return (Movimientos.crearMovimiento(cuenta,cantidad, Categoria.PRESTAMO, new Date()));
 		}else{
 			deuda.setCantidad(deuda.getCantidad() - cantidad);
 			Ahorros cuenta = ((Deuda) deuda).getCuenta();
-			return(Movimientos.crearMovimiento(cuenta, cuenta.getSaldo() - cantidad, Categoria.PRESTAMO, new Date()));
+			cuenta.setSaldo(cuenta.getSaldo()-cantidad);
+			cantidad= -cantidad;
+			return(Movimientos.crearMovimiento(cuenta,cantidad, Categoria.PRESTAMO, new Date()));
 		}
 	}
 	
