@@ -1890,10 +1890,12 @@ public final class Main {
 					+ "\n1. Crear Usuario"
 					+ "\n2. Crear Banco"
 					+ "\n3. Crear Estado"
-					+ "\n4. Ver Bancos"
-					+ "\n5. Ver Estados"
-					+ "\n6. Iniciar Sesión"
-					+ "\n7. Volver al menú anterior");
+					+ "\n4. Ver Usuarios"
+					+ "\n5. Ver Bancos"
+					+ "\n6. Ver Estados"
+					+ "\n7. Ver Cuentas"
+					+ "\n8. Iniciar Sesión"
+					+ "\n9. Volver al menú anterior");
 			
 			int opcionAdmin = Integer.parseInt(sc.nextLine());
 					
@@ -1966,19 +1968,29 @@ public final class Main {
 			}
 			else if(opcionAdmin == 4) {
 				System.out.println("");
-				Main.verBancosTotales();
+				Main.verUsuariosTotales();
 				System.out.println("");
 			}
 			else if(opcionAdmin == 5) {
 				System.out.println("");
-				Main.verEstadosTotales();
+				Main.verBancosTotales();
 				System.out.println("");
 			}
 			else if(opcionAdmin == 6) {
+				System.out.println("");
+				Main.verEstadosTotales();
+				System.out.println("");
+			}
+			else if(opcionAdmin == 7) {
+				System.out.println("");
+				Main.verCuentasTotales();
+				System.out.println("");
+			}
+			else if(opcionAdmin == 8) {
 				sesioniniciada = 1;
 				seguir = 0;
 				break;		
-			} else if(opcionAdmin == 7) {
+			} else if(opcionAdmin == 9) {
 				seguir = 0;
 				break;			
 			} else {
