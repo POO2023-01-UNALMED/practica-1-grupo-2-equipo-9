@@ -2909,6 +2909,7 @@ public final class Main {
 	static int seccion = 0;
 	static int opcion = 0;
 	static String contrasenaAdmin = "";
+	static boolean conf = true;
 	static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws ParseException, CloneNotSupportedException{
@@ -2917,4 +2918,6 @@ public final class Main {
 	}	
 	
 	public static void setContraseñaAdmin(String contrasenaAdmin) { Main.contrasenaAdmin = contrasenaAdmin; }
+	public static boolean getConf() { return conf; }
+	public static void setConf(boolean conf) { Main.conf = conf; }
 }

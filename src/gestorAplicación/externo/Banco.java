@@ -10,6 +10,7 @@ import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Movimientos;
 import gestorAplicación.interno.Suscripcion;
 import gestorAplicación.interno.Usuario;
+import uiMain.Main;
 import gestorAplicación.interno.Ahorros;
 
 public class Banco implements Serializable {
@@ -107,19 +108,27 @@ public class Banco implements Serializable {
 				usuario.setLimiteCuentas(usuario.getSuscripcion().getLimiteCuentas());
 				switch(usuario.getSuscripcion()) {
 					case DIAMANTE:
-						this.setComision(this.getComision() * 0.50);
+						if(Main.getConf()) {
+							this.setComision(this.getComision() * 0.50);
+							Main.setConf(false);
+						}
 						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
-								+ "por eso te cobramos " + (this.getComision() * 0.50) + " de comision");
+								+ "por eso te cobramos " + this.getComision() + " de comision");
 					case ORO:
-						this.setComision(this.getComision() * 0.65);
+						if(Main.getConf()) {
+							this.setComision(this.getComision() * 0.65);	
+							Main.setConf(false);
+						}
 						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
-								+ "por eso te cobramos " + this.getComision() * 0.65 + " de comision");
+								+ "por eso te cobramos " + this.getComision()+ " de comision");
 					case PLATA:
-						this.setComision(this.getComision() * 0.85);
+						if(Main.getConf()) {
+							this.setComision(this.getComision() * 0.85);
+							Main.setConf(false);
+						}
 						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
-								+ "por eso te cobramos " + this.getComision() * 0.85 + " de comision");
+								+ "por eso te cobramos " + this.getComision() + " de comision");
 					case BRONCE:
-						this.setComision(this.getComision());
 						return ("Bienvenido " + usuario.getNombre() + ", eres un cliente " + usuario.getSuscripcion().name() + " de nuestro banco, "
 								+ "por eso te cobramos " + this.getComision() + " de comision");	
 					default:
