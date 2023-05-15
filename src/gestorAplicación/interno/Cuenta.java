@@ -104,6 +104,22 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	}
 	//Para ordenar cualquier arreglo de tipo Cuenta, se ordenará según el id de la cuenta y se hará con Collections.sort(nombre_lista);
 
+
+//	Ligadura dinamica
+	public Object invertirSaldo(){
+		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
+		double rand = (double)((Math.random()) + probabilidad);
+		if(this instanceof Ahorros){
+			if(rand < 1){
+				Ahorros cuenta = (Ahorros) this;
+				return(Movimientos.crearMovimiento(cuenta,-(cuenta.getSaldo() - cuenta.getSaldo()*0.25),Categoria.FINANZAS,new Date())+"" +
+						"\nLastimosamente debido a una mala inversion usted ha pedido un 25% de su saldo");
+			}
+		}
+		return ("Esta cuenta no puede hacer inversiones");
+
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if(this.getId() == ((Cuenta) o).getId()){

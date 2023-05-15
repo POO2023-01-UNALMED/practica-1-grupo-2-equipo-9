@@ -141,6 +141,8 @@ public class Metas implements Serializable {
 		u.getMetasAsociadas().add(0, me);
 	}
 
+
+
 	@Override
 	protected void finalize() {
 		String name = this.getNombre();

@@ -141,7 +141,6 @@ public final class Main {
 			break;
 			//PAGAR PRESTAMO
 		case "2":
-			System.out.print("Desde aca se repite\n");
 			ArrayList<Deuda> deudas = Deuda.conseguirDeudas(user);
 			if (deudas.size() != 0) {
 				for (int i = 1; i < deudas.size() + 1; i++) {
