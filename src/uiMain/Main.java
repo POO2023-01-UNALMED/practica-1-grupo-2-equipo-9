@@ -1896,12 +1896,22 @@ public final class Main {
 					+ "\n7. Ver Cuentas"
 					+ "\n8. Iniciar Sesión"
 					+ "\n9. Volver al menú anterior");
-
+			
+			
 			int opcionAdmin = Integer.parseInt(sc.nextLine());
-
 			if(opcionAdmin == 1) {
-				System.out.print("¿Deseas crear el usuario por defecto? (Y/N): ");
-				String confirmacion = sc.nextLine();
+				String confirmacion = "Y";
+				for(Usuario usu : Usuario.getUsuariosTotales()) {
+					if(usu.getNombre().equals("Pepe Morales") && usu.getContrasena().equals("12345")) {
+						System.out.println("El usuario por defecto ya ha sido creado.");
+						confirmacion = "N";
+						break;
+					}
+				}
+				if(confirmacion.equals("Y")) {
+					System.out.print("¿Deseas crear el usuario por defecto? (Y/N): ");
+					confirmacion = sc.nextLine();
+				}
 				while(true) {
 					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 						Usuario u = new Usuario();
@@ -1923,8 +1933,18 @@ public final class Main {
 				if(Estado.getEstadosTotales().size() == 0) {
 					System.out.println("Para crear un banco debes crear un estado primero. Volviendo al menú anterior.");
 				}else {
-					System.out.print("¿Deseas crear el banco por defecto? (Y/N): ");
-					String confirmacion = sc.nextLine();
+					String confirmacion = "Y";
+					for(Banco ban : Banco.getBancosTotales()) {
+						if(ban.getNombre().equals("Banco de Colombia") && ban.getEstadoAsociado().equals(Estado.getEstadosTotales().get(0))) {
+							System.out.println("El banco por defecto ya ha sido creado.");
+							confirmacion = "N";
+							break;
+						}
+					}
+					if(confirmacion.equals("Y")) {
+						System.out.print("¿Deseas crear el banco por defecto? (Y/N): ");
+						confirmacion = sc.nextLine();
+					}	
 					while(true) {
 						if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 							Banco banco = new Banco();
@@ -1946,8 +1966,18 @@ public final class Main {
 					}	
 				}		
 			} else if(opcionAdmin == 3) {
-				System.out.print("¿Deseas crear el estado por defecto? (Y/N): ");
-				String confirmacion = sc.nextLine();
+				String confirmacion = "Y";
+				for(Estado est : Estado.getEstadosTotales()) {
+					if(est.getNombre().equals("Colombia")) {
+						System.out.println("El estado por defecto ya ha sido creado.");
+						confirmacion = "N";
+						break;
+					}
+				}
+				if(confirmacion.equals("Y")) {
+					System.out.print("¿Deseas crear el estado por defecto? (Y/N): ");
+					confirmacion = sc.nextLine();
+				}	
 				while(true) {
 					if(confirmacion.equals("Y") || confirmacion.equals("y")) {
 						Estado estado = new Estado();
