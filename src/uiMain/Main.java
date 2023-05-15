@@ -1859,13 +1859,13 @@ public final class Main {
 		}
 
 		int divisas_op = Integer.parseInt(sc.nextLine());
-		Divisas divisa_estado = Divisas.getDivisas().get(divisas_op);
+		Divisas divisa_estado = Divisas.getDivisas().get(divisas_op - 1);
 		new Estado(nombreEstado, tasaImpuestosEstado, divisa_estado);
 		System.out.println("Estado creado con éxito");
 	}	
 
 	// ACCESO ADMINISTRATIVO EN EL MAIN
-	static void accesoAdministrativo() {
+	static void accesoAdministrativo() throws ParseException {
 		if(contrasenaAdmin.equals("admin")) {
 			for(Usuario u : Usuario.getUsuariosTotales()) {
 				if(u.getNombre().equals("admin")) {
@@ -1894,9 +1894,10 @@ public final class Main {
 					+ "\n5. Ver Bancos"
 					+ "\n6. Ver Estados"
 					+ "\n7. Ver Cuentas"
-					+ "\n8. Iniciar Sesión"
-					+ "\n9. Volver al menú anterior");
-			
+					+ "\n8. Ver Movimientos"
+					+ "\n9. Ver Metas"
+					+ "\n10. Iniciar Sesión"
+					+ "\n11. Volver al menú anterior");
 			
 			int opcionAdmin = Integer.parseInt(sc.nextLine());
 			if(opcionAdmin == 1) {
@@ -2017,10 +2018,20 @@ public final class Main {
 				System.out.println("");
 			}
 			else if(opcionAdmin == 8) {
+				System.out.println("");
+				Main.verMovimientosTotales();
+				System.out.println("");
+			}
+			else if(opcionAdmin == 9) {
+				System.out.println("");
+				Main.verMetasTotales();
+				System.out.println("");
+			}
+			else if(opcionAdmin == 10) {
 				sesioniniciada = 1;
 				seguir = 0;
 				break;		
-			} else if(opcionAdmin == 9) {
+			} else if(opcionAdmin == 11) {
 				seguir = 0;
 				break;			
 			} else {
@@ -2548,7 +2559,7 @@ public final class Main {
 		if(Movimientos.getMovimientosTotales().size() > 0) {
 			System.out.println("La lista de Movimientos son: ");
 			for(int i = 1; i < Movimientos.getMovimientosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Movimientos.getMovimientosTotales().get(i - 1).getId());
+				System.out.println(i + ". " + Movimientos.getMovimientosTotales().get(i - 1));
 			}
 
 			//SE IMPRIME QUE NO EXISTEN MOVIMIENTOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
@@ -2594,7 +2605,7 @@ public final class Main {
 		if(Estado.getEstadosTotales().size() > 0) {
 			System.out.println("La lista de Estados son: ");
 			for(int i = 1; i < Estado.getEstadosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1).getNombre());
+				System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1));
 			}
 
 			//SE IMPRIME QUE NO EXISTEN ESTADOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	

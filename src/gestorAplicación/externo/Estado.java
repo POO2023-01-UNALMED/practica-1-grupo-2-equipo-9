@@ -42,6 +42,10 @@ public class Estado implements Serializable {
 		}	
 	}
 	
+	public String toString() {
+		return this.getNombre() + " Divisa: " + this.getDivisa();
+	}
+	
 	//Gets
 	public String getNombre() {
 		return nombre;
