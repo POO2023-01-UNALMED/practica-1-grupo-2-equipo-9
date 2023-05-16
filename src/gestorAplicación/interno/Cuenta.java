@@ -81,6 +81,10 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 			return user.getCuentasCorrienteAsociadas().get(contador);
 		}
 	}
+	// Métodos para funcionlidad de cambio de divisa
+	public void hacerCambio() {
+		
+	}
 
 	// Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota);

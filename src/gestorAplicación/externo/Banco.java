@@ -137,6 +137,27 @@ public class Banco implements Serializable {
 			}
 		} return ("No encontramos tu ID registrado en este banco, considera registrarte en nuestro banco.");
 	}
+	// Métodos para funcionalidad de cambio de divisa
+	public static ArrayList<Movimientos> cotizarTaza(Usuario user, ArrayList<Banco> existeCambio, String cadena, ArrayList<Cuenta> cuentasPosibles) {
+		ArrayList<Movimientos> imprimir = new ArrayList<Movimientos>();
+		for (Cuenta cuenta : cuentasPosibles) {
+			int indice = cuenta.getBanco().getDic().indexOf(cadena);
+			double valor = cuenta.getBanco().getCionario().get(indice);
+			for(Banco banco: existeCambio) {
+				if (banco.isAsociado()) {
+					valor = valor *0.97;
+				}
+				double cuotaManejo = Banco.divisaSuscripcion(user);
+				Movimientos cotizacion = new Movimientos(banco, cuenta, valor, cuotaManejo);
+				imprimir.add(cotizacion);
+			}
+		}
+		return imprimir;
+	}
+	
+	public static double divisaSuscripcion(Usuario user) {
+		return 0.0;
+	}
 	
 	// Método funcionalidad Asesoramiento de inversiones
 	public static Integer retornoPortafolio(int riesgo, double invertir, String plazo, Usuario user) {

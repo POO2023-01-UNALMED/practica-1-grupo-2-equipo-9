@@ -47,6 +47,12 @@ public final class Main {
 		}
 		opcion = Integer.parseInt(sc.nextLine());
 		Divisas divisaA = Divisas.getDivisas().get(opcion-1);
+		ArrayList<Cuenta> cuentasPosibles = new ArrayList<Cuenta>();
+		for (Cuenta cuenta : user.getCuentasAsociadas()) {
+			if (cuenta.getDivisa().equals(divisaA)) {
+				cuentasPosibles.add(cuenta);
+			}
+		}
 		ArrayList<Divisas> divisasDevolucion = Divisas.getDivisas();
 		divisasDevolucion.remove(opcion-1);
 		System.out.println("¿A qué divisa desea hacer el cambio?");
@@ -55,6 +61,7 @@ public final class Main {
 		}
 		opcion = Integer.parseInt(sc.nextLine());
 		Divisas divisaB = Divisas.getDivisas().get(opcion-1);
+		String cadena = divisaA.name() + divisaB.name();
 		if(exacta) {
 			System.out.println("Usted hará un cambio de divisa exacto, ¿ a qué monto desea llegar?:  ");
 		}
@@ -64,7 +71,25 @@ public final class Main {
 		double monto = Double.parseDouble(sc.nextLine());
 		Movimientos cambioDiv = new Movimientos(divisaA , divisaB, user);
 		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
-		System.out.println();
+		if (existeCambio.size()==0) {
+			System.out.println("No existe banco en el cual poder hacer dicho cambio de divisa");
+		}
+		else if (existeCambio.size()==1) {
+			System.out.println("Se ha encontrado un banco en donde realizar el cambio");
+		}
+		else {
+			System.out.println("Se han encontrado " + existeCambio.size() + "bancos en donde realizar el cambio");
+		}
+	System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
+	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, cuentasPosibles);
+	int j=1;
+	for (Movimientos cotizacion : imprimir) {
+		j=j+1;
+		System.out.println(j + ". con el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
+	}
+	opcion = Integer.parseInt(sc.nextLine());
+	Movimientos escogencia = imprimir.get(opcion-1);
+	System.out.print("¿Desea comtinuar con el proceso?");
 	}
 
 	// FUNCIONALIDAD DE PRESTAMO 

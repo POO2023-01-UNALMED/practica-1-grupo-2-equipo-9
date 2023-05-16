@@ -20,7 +20,10 @@ public class Movimientos implements Serializable{
 	private Cuenta origen;
 	private Divisas divisa;
 	private Divisas divisaAux;
+	private Banco banco;
+	private double coutaManejo;			
 	
+
 	// Funcionalidad de Asesor Inversiones
 	private Usuario owner;
 	public static String nombreCategoria;
@@ -106,11 +109,18 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
-	//Movimiento de cambio de divisa
+	//Intención de cambio de divisa
 	public Movimientos(Divisas divisa, Divisas divisaAux, Usuario owner) {
 		this.setDivisa(divisa);
 		this.setDivisaAux(divisaAux);
 		this.setOwner(owner);
+	}
+	//Cotización de cambio de divisa
+	public Movimientos(Banco banco, Cuenta origen, double cantidad, double coutaManejo) {
+		this.setBanco(banco);
+		this.setOrigen(origen);
+		this.setCantidad(cantidad);
+		this.setCoutaManejo(coutaManejo);
 	}
 	
 	//	MÉTODOS
@@ -584,5 +594,20 @@ public class Movimientos implements Serializable{
 
 	public void setDivisaAux(Divisas divisaAux) {
 		this.divisaAux = divisaAux;
+	}
+
+	public Banco getBanco() {
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}
+	public double getCoutaManejo() {
+		return coutaManejo;
+	}
+
+	public void setCoutaManejo(double coutaManejo) {
+		this.coutaManejo = coutaManejo;
 	}
 }
