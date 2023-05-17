@@ -218,7 +218,7 @@ public class Usuario implements Serializable {
 			if(cuentasUsuario.size()!=0){
 				return cuentasUsuario;
 			}else{
-				cadena.add("¡Error! Usted no tiene ninguna cuenta Corriente creada");
+				cadena.add("¡Error! Usted no tiene ninguna cuenta Ahorros creada");
 			}
 		}else{
 			cadena.add("¡Error! La suscripción"+this.getSuscripcion().name()+"solo permite realizar un total de"+this.getSuscripcion().getMaxDeudas()+". Usted tiene"+this.getSuscripcion().getMaxDeudas()+"/"+this.getSuscripcion().getMaxDeudas()+"Deudas");
