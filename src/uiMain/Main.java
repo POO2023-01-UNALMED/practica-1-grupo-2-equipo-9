@@ -60,7 +60,7 @@ public final class Main {
 			System.out.println(i + ". " + divisasDevolucion.get(i-1).name());
 		}
 		opcion = Integer.parseInt(sc.nextLine());
-		Divisas divisaB = Divisas.getDivisas().get(opcion-1);
+		Divisas divisaB = divisasDevolucion.get(opcion-1);
 		String cadena = divisaA.name() + divisaB.name();
 		if(exacta) {
 			System.out.println("Usted hará un cambio de divisa exacto, ¿ a qué monto desea llegar?:  ");
@@ -89,7 +89,37 @@ public final class Main {
 	}
 	opcion = Integer.parseInt(sc.nextLine());
 	Movimientos escogencia = imprimir.get(opcion-1);
-	System.out.print("¿Desea comtinuar con el proceso?");
+	System.out.print("¿Desea comtinuar con el proceso? (Y/N): ");
+	String c = sc.nextLine();
+	if (c.equals("Y") || c.equalsIgnoreCase("y")) {
+		while(true) {
+			System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
+			ArrayList<Cuenta> cuentasB = Cuenta.obtenerCuentasDivisa(user, divisaB);
+			int h = 1;
+			for (Cuenta cuenta : cuentasB ) {
+				System.out.println(h + ". " + cuenta.getNombre());
+				h = h+1;
+			}
+			System.out.println("Crear una cuenta en" + divisaB.name());
+			opcion = Integer.parseInt(sc.nextLine());
+			if (opcion == h+1) {
+				Main.crearCuenta();
+				Cuenta cuentaB = user.getCuentasAsociadas().get(-1);
+				break;
+			}
+			else if ((opcion > 0) && (opcion < h+1)) {
+				Cuenta cuentaB =  cuentasB.get(opcion -1);
+				break;
+			}
+			else {
+				System.out.println("No existe la opción " + opcion + ". Por favor digite su elección de nuevo");
+			}
+		}
+	}
+	else {
+		//Main.BienvenidaApp();
+	}
+	Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
 
 	// FUNCIONALIDAD DE PRESTAMO 

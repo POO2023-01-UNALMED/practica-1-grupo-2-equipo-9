@@ -82,8 +82,17 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		}
 	}
 	// Métodos para funcionlidad de cambio de divisa
-	public void hacerCambio() {
+	public static void hacerCambio(Movimientos escogencia, double monto, Cuenta cuenta) {
 		
+	}
+	public static ArrayList<Cuenta> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
+		ArrayList<Cuenta> cuentasB = new ArrayList<Cuenta>();
+		for (Cuenta cuenta: usuario.getCuentasAsociadas()) {
+			if (cuenta.getDivisa().equals(divisa)) {
+				cuentasB.add(cuenta);
+			}
+		}
+		return cuentasB;
 	}
 
 	// Implementación métodos abstracto a redefinir
