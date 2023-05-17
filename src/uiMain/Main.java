@@ -89,8 +89,9 @@ public final class Main {
 	}
 	opcion = Integer.parseInt(sc.nextLine());
 	Movimientos escogencia = imprimir.get(opcion-1);
-	System.out.print("¿Desea comtinuar con el proceso? (Y/N): ");
+	System.out.print("¿Desea continuar con el proceso? (Y/N): ");
 	String c = sc.nextLine();
+	Cuenta cuentaB = null;
 	if (c.equals("Y") || c.equalsIgnoreCase("y")) {
 		while(true) {
 			System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
@@ -104,11 +105,11 @@ public final class Main {
 			opcion = Integer.parseInt(sc.nextLine());
 			if (opcion == h+1) {
 				Main.crearCuenta();
-				Cuenta cuentaB = user.getCuentasAsociadas().get(-1);
+				cuentaB = user.getCuentasAsociadas().get(-1);
 				break;
 			}
 			else if ((opcion > 0) && (opcion < h+1)) {
-				Cuenta cuentaB =  cuentasB.get(opcion -1);
+				cuentaB =  cuentasB.get(opcion -1);
 				break;
 			}
 			else {
