@@ -124,6 +124,24 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 
 	}
 
+	public double[] retornoCuotaMensual(double DeudaActual) {
+		Banco banco = this.getBanco();
+		double[] cuotaMensual = new double[3];
+		if(banco.getComision()+ banco.getEstadoAsociado().getInteres_bancario_corriente() <1){
+//			Cuota del estado y del banco
+			double cuota1 = DeudaActual*banco.getComision() + banco.getEstadoAsociado().getInteres_bancario_corriente()*DeudaActual;
+			double cuota2 = (DeudaActual-cuota1)/2;
+			cuotaMensual[0] = DeudaActual*banco.getComision() + banco.getEstadoAsociado().getInteres_bancario_corriente()*DeudaActual;
+			cuotaMensual[1] = cuota2;
+			cuotaMensual[1] = cuota2;
+		}else{
+			cuotaMensual[0] = DeudaActual/3;
+			cuotaMensual[1] = DeudaActual/3;
+			cuotaMensual[2] = DeudaActual/3;
+		}
+		return cuotaMensual;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if(this.getId() == ((Cuenta) o).getId()){
