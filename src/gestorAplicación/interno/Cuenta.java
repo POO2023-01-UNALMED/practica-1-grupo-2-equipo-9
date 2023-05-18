@@ -94,7 +94,10 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		}
 		return cuentasB;
 	}
-
+	public static ArrayList<Cuenta> comprobarSaldo(Usuario usuario, double monto) {
+		ArrayList<Cuenta> cuentaConSaldo = new ArrayList<Cuenta>();
+		for (cuenta : usuario.getCuentasAsociadas)
+	}
 	// Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota);
 	

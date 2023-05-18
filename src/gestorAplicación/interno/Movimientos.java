@@ -122,6 +122,17 @@ public class Movimientos implements Serializable{
 		this.setCantidad(cantidad);
 		this.setCoutaManejo(coutaManejo);
 	}
+	//Movimiento de cambio de divisa
+	public Movimientos(Banco banco, Cuenta origen, Cuenta destino, Divisas divisa, Divisas divisasAux, double coutaManejo, double cantidad) {
+		Movimientos.movimientosTotales.add(this);
+		this.setBanco(banco);
+		this.setOrigen(origen);
+		this.setDestino(destino);
+		this.setDivisa(divisa);
+		this.setDivisaAux(divisaAux);
+		this.setCoutaManejo(coutaManejo);
+		this.setCantidad(cantidad);
+	}
 	
 	//	MÉTODOS
 	//	Funcionalidad de Suscripciones de Usuarios

@@ -40,7 +40,6 @@ public final class Main {
 		if (opcion == 2) {
 			exacta = true;
 		}
-
 		System.out.println("¿Desde qué divisa va a hacer el cambio?:");
 		for(int i = 1;i < Divisas.getDivisas().size() + 1;i++ ) {
 			System.out.println(i + ". " + Divisas.getDivisas().get(i-1).name());
@@ -49,7 +48,7 @@ public final class Main {
 		Divisas divisaA = Divisas.getDivisas().get(opcion-1);
 		ArrayList<Cuenta> cuentasPosibles = new ArrayList<Cuenta>();
 		for (Cuenta cuenta : user.getCuentasAsociadas()) {
-			if (cuenta.getDivisa().equals(divisaA)) {
+			if (cuenta.getDivisa().equals(divisaA) && cuenta.isInstanceOf(Cuenta.Ahorros)) {
 				cuentasPosibles.add(cuenta);
 			}
 		}
@@ -120,6 +119,7 @@ public final class Main {
 	else {
 		//Main.BienvenidaApp();
 	}
+	Cuenta.comprobarSaldo(cuenta, monto);
 	Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
 
