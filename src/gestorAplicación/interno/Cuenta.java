@@ -85,6 +85,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	public static void hacerCambio(Movimientos escogencia, double monto, Cuenta cuenta) {
 		
 	}
+	
 	public static ArrayList<Cuenta> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
 		ArrayList<Cuenta> cuentasB = new ArrayList<Cuenta>();
 		for (Cuenta cuenta: usuario.getCuentasAsociadas()) {
@@ -94,9 +95,22 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		}
 		return cuentasB;
 	}
-	public static ArrayList<Cuenta> comprobarSaldo(Usuario usuario, double monto) {
-		ArrayList<Cuenta> cuentaConSaldo = new ArrayList<Cuenta>();
-		for (cuenta : usuario.getCuentasAsociadas)
+	
+	public static boolean comprobarSaldo(Cuenta cuenta, double monto) {
+		if (cuenta.getSaldo() >= monto) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	public static ArrayList<Cuenta> cuentasConSaldo(ArrayList<Cuenta> cuentasDisponibes, double monto){
+		ArrayList<Cuenta> cuentasConSaldo = new ArrayList<Cuenta>(); 
+		for (Cuenta cuenta : ArrayList<Cuenta>; double monto) {
+			if (cuenta.getSaldo >= monto) {
+				cuentasConSaldo.add(cuenta);
+			}
+		}
 	}
 	// Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota);

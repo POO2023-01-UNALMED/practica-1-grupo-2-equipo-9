@@ -48,7 +48,7 @@ public final class Main {
 		Divisas divisaA = Divisas.getDivisas().get(opcion-1);
 		ArrayList<Cuenta> cuentasPosibles = new ArrayList<Cuenta>();
 		for (Cuenta cuenta : user.getCuentasAsociadas()) {
-			if (cuenta.getDivisa().equals(divisaA) && cuenta.isInstanceOf(Cuenta.Ahorros)) {
+			if (cuenta.getDivisa().equals(divisaA) && (cuenta instanceof Ahorros)) {
 				cuentasPosibles.add(cuenta);
 			}
 		}
@@ -119,8 +119,18 @@ public final class Main {
 	else {
 		//Main.BienvenidaApp();
 	}
-	Cuenta.comprobarSaldo(cuenta, monto);
-	Cuenta.hacerCambio(escogencia, monto, cuentaB);
+	if (Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
+		Cuenta.hacerCambio(escogencia, monto, cuentaB);
+		}
+	else {
+		ArrayList<Cuenta> cuentasConSaldo = Cuenta.cuentasConSaldo(cuentasPosibles, monto);
+		System.out.print("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida" + "\n Sí posee los fondos suficientes en las siguientes cuentas");
+		for (Cuenta cuenta : cuentasConSaldo) {
+			System.out.print(" : " + cuenta.getNombre());
+		}
+		System.out.println(".");
+		System.out.print("Puede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Por el momento");
+		}
 	}
 
 	// FUNCIONALIDAD DE PRESTAMO 
