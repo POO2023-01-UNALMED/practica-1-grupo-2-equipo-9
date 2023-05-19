@@ -82,36 +82,43 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		}
 	}
 	// Métodos para funcionlidad de cambio de divisa
-	public static void hacerCambio(Movimientos escogencia, double monto, Cuenta cuenta) {
-		
+	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros Ahorros) {
+		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
+		Ahorros destino = (Ahorros) escogencia.getDestino();
+		monto = monto*(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
+		monto = monto*(1-escogencia.getCoutaManejo());
+		double cambiado = monto*(escogencia.getCantidad());
+		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto);
 	}
 	
-	public static ArrayList<Cuenta> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
-		ArrayList<Cuenta> cuentasB = new ArrayList<Cuenta>();
-		for (Cuenta cuenta: usuario.getCuentasAsociadas()) {
-			if (cuenta.getDivisa().equals(divisa)) {
-				cuentasB.add(cuenta);
+	public static ArrayList<Ahorros> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
+		ArrayList<Ahorros> cuentasB = new ArrayList<Ahorros>();
+		for (Ahorros ahorro: usuario.getCuentasAhorrosAsociadas()) {
+			if (ahorro.getDivisa().equals(divisa)) {
+				cuentasB.add(ahorro);
 			}
 		}
 		return cuentasB;
 	}
 	
 	public static boolean comprobarSaldo(Cuenta cuenta, double monto) {
-		if (cuenta.getSaldo() >= monto) {
+		Ahorros ahorro = (Ahorros) cuenta;
+		if (ahorro.getSaldo() >= monto) {
 			return true;
 		}
 		else {
 			return false;
 		}
-		
-	public static ArrayList<Cuenta> cuentasConSaldo(ArrayList<Cuenta> cuentasDisponibes, double monto){
-		ArrayList<Cuenta> cuentasConSaldo = new ArrayList<Cuenta>(); 
-		for (Cuenta cuenta : ArrayList<Cuenta>; double monto) {
-			if (cuenta.getSaldo >= monto) {
-				cuentasConSaldo.add(cuenta);
-			}
 		}
-	}
+		
+//	public static ArrayList<Cuenta> cuentasConSaldo(ArrayList<Cuenta> cuentasDisponibes, double monto){
+//		ArrayList<Cuenta> cuentasConSaldo = new ArrayList<Cuenta>(); 
+//		for (Cuenta cuenta : ArrayList<Cuenta>; double monto) {
+//			if (cuenta.getSaldo >= monto) {
+//				cuentasConSaldo.add(cuenta);
+//			}
+//		}
+//	}
 	// Implementación métodos abstracto a redefinir
 	public abstract void vaciarCuenta(Ahorros gota);
 	

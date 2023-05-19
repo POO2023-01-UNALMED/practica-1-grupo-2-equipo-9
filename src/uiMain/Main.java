@@ -46,10 +46,11 @@ public final class Main {
 		}
 		opcion = Integer.parseInt(sc.nextLine());
 		Divisas divisaA = Divisas.getDivisas().get(opcion-1);
-		ArrayList<Cuenta> cuentasPosibles = new ArrayList<Cuenta>();
+		ArrayList<Ahorros> ahorrosPosibles = new ArrayList<Ahorros>();
 		for (Cuenta cuenta : user.getCuentasAsociadas()) {
 			if (cuenta.getDivisa().equals(divisaA) && (cuenta instanceof Ahorros)) {
-				cuentasPosibles.add(cuenta);
+				Ahorros ahorro = (Ahorros) cuenta;
+				ahorrosPosibles.add(ahorro);
 			}
 		}
 		ArrayList<Divisas> divisasDevolucion = Divisas.getDivisas();
@@ -80,7 +81,7 @@ public final class Main {
 			System.out.println("Se han encontrado " + existeCambio.size() + "bancos en donde realizar el cambio");
 		}
 	System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
-	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, cuentasPosibles);
+	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, ahorrosPosibles);
 	int j=1;
 	for (Movimientos cotizacion : imprimir) {
 		j=j+1;
@@ -90,21 +91,21 @@ public final class Main {
 	Movimientos escogencia = imprimir.get(opcion-1);
 	System.out.print("¿Desea continuar con el proceso? (Y/N): ");
 	String c = sc.nextLine();
-	Cuenta cuentaB = null;
+	Ahorros cuentaB = null;
 	if (c.equals("Y") || c.equalsIgnoreCase("y")) {
 		while(true) {
 			System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
-			ArrayList<Cuenta> cuentasB = Cuenta.obtenerCuentasDivisa(user, divisaB);
+			ArrayList<Ahorros> cuentasB = Cuenta.obtenerCuentasDivisa(user, divisaB);
 			int h = 1;
-			for (Cuenta cuenta : cuentasB ) {
-				System.out.println(h + ". " + cuenta.getNombre());
+			for (Cuenta ahorro : cuentasB ) {
+				System.out.println(h + ". " + ahorro.getNombre());
 				h = h+1;
 			}
 			System.out.println("Crear una cuenta en" + divisaB.name());
 			opcion = Integer.parseInt(sc.nextLine());
 			if (opcion == h+1) {
 				Main.crearCuenta();
-				cuentaB = user.getCuentasAsociadas().get(-1);
+				cuentaB = user.getCuentasAhorrosAsociadas().get(-1);
 				break;
 			}
 			else if ((opcion > 0) && (opcion < h+1)) {
@@ -117,20 +118,13 @@ public final class Main {
 		}
 	}
 	else {
-		//Main.BienvenidaApp();
+		//Main.BienvenidaApp(); //Volver al menú anterior
 	}
-	if (Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
-		Cuenta.hacerCambio(escogencia, monto, cuentaB);
-		}
-	else {
-		ArrayList<Cuenta> cuentasConSaldo = Cuenta.cuentasConSaldo(cuentasPosibles, monto);
-		System.out.print("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida" + "\n Sí posee los fondos suficientes en las siguientes cuentas");
-		for (Cuenta cuenta : cuentasConSaldo) {
-			System.out.print(" : " + cuenta.getNombre());
-		}
-		System.out.println(".");
-		System.out.print("Puede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Por el momento");
-		}
+	if (!Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
+		System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
+		//Volver al menú anterior
+	}
+	Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
 
 	// FUNCIONALIDAD DE PRESTAMO 

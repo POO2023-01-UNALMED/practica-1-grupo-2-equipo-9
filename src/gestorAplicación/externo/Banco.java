@@ -138,17 +138,17 @@ public class Banco implements Serializable {
 		} return ("No encontramos tu ID registrado en este banco, considera registrarte en nuestro banco.");
 	}
 	// Métodos para funcionalidad de cambio de divisa
-	public static ArrayList<Movimientos> cotizarTaza(Usuario user, ArrayList<Banco> existeCambio, String cadena, ArrayList<Cuenta> cuentasPosibles) {
+	public static ArrayList<Movimientos> cotizarTaza(Usuario user, ArrayList<Banco> existeCambio, String cadena, ArrayList<Ahorros> ahorrosPosibles) {
 		ArrayList<Movimientos> imprimir = new ArrayList<Movimientos>();
-		for (Cuenta cuenta : cuentasPosibles) {
-			int indice = cuenta.getBanco().getDic().indexOf(cadena);
-			double valor = cuenta.getBanco().getCionario().get(indice);
+		for (Ahorros ahorro : ahorrosPosibles) {
+			int indice = ahorro.getBanco().getDic().indexOf(cadena);
+			double valor = ahorro.getBanco().getCionario().get(indice);
 			for(Banco banco: existeCambio) {
 				if (banco.isAsociado()) {
 					valor = valor *0.97;
 				}
 				double cuotaManejo = Banco.divisaSuscripcion(user);
-				Movimientos cotizacion = new Movimientos(banco, cuenta, valor, cuotaManejo);
+				Movimientos cotizacion = new Movimientos(banco, ahorro, valor, cuotaManejo);
 				imprimir.add(cotizacion);
 			}
 		}
@@ -156,6 +156,16 @@ public class Banco implements Serializable {
 	}
 	
 	public static double divisaSuscripcion(Usuario user) {
+		switch(user.getSuscripcion()) {
+		case BRONCE:
+			return 0.01;
+		case PLATA:
+			return 0.008;
+		case ORO:
+			return 0.006;
+		case DIAMANTE:
+			return 0.004;
+		}
 		return 0.0;
 	}
 	
