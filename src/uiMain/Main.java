@@ -692,6 +692,71 @@ public final class Main {
 		System.out.println(Movimientos.crearMovimiento(origen, destino, cantidad, categoria, Date.from(Instant.now())));
 	}
 
+	static void compraCorriente() {
+		if (user.getCuentasCorrienteAsociadas().size() == 0) {
+			System.out.println("Para realizar una compra con una cuenta Corriente debes primero poseer una cuenta de este tipo.");
+			return;
+		}
+		
+		System.out.println("¿Qué tipo de compra desea realizar?");
+		for (int i = 1; i < Categoria.getCategorias().size() + 1; i++) {
+			System.out.println(i + ". "+ Categoria.getCategorias().get(i - 1));
+		}
+		
+		int tipo_Compra = 0;
+		//Atributo para validación entrada tipo_Compra
+		boolean validacion_Cuenta_Compra = true;
+		while (validacion_Cuenta_Compra) {
+			System.out.print("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
+			tipo_Compra = Integer.parseInt(sc.nextLine());
+
+			if (tipo_Compra >= 1 && tipo_Compra < Categoria.getCategorias().size() + 1) {
+				validacion_Cuenta_Compra = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo.");
+			}
+		}
+		
+		System.out.print("Ingrese el valor de la compra que desea realizar: ");
+		int valorCompra = Integer.parseInt(sc.nextLine());
+		
+		ArrayList<Corriente> cuentasCompra = new ArrayList<Corriente>();
+		for (Corriente cuenta : user.getCuentasCorrienteAsociadas()) {
+			if (cuenta.capacidadDeuda(valorCompra)) {
+				cuentasCompra.add(cuenta);
+			}
+		}
+		
+		if (cuentasCompra.size() == 0) {
+			System.out.println("No puedes hacer la compra con ninguna de tus cuentas corriente.");
+			return;
+		}
+		
+		System.out.println("Las cuentas a nombre de " + user.getNombre() + " capaces de recibir tu compra son:");
+		for (int i = 1; i < cuentasCompra.size() + 1; i++) {
+			System.out.println(i + ". " + cuentasCompra.get(i - 1));
+		}
+		
+		int eleccion_Cuenta = 0;
+		//Atributo para validación entrada eleccion_Cuenta
+		boolean validacion_eleccion_Cuenta = true;
+		while(validacion_eleccion_Cuenta) {
+			System.out.print("Elija por favor la cuenta con la que realizará la compra: ");
+			eleccion_Cuenta = Integer.parseInt(sc.nextLine());
+			
+			if (eleccion_Cuenta >= 1 && eleccion_Cuenta <= cuentasCompra.size()) {
+				validacion_eleccion_Cuenta = false;
+			}
+			else {
+				System.out.println("Entrada no válida, intente de nuevo.");
+			}
+		}
+		
+		new Movimientos(cuentasCompra.get(eleccion_Cuenta - 1), valorCompra, Categoria.getCategorias().get(tipo_Compra - 1), Date.from(Instant.now()), true);
+		System.out.println("Compra realizada con éxito.");
+	}
+	
 	// FUNCIONALIDAD ASESORAMIENTO DE INVERSIONES
 	static void asesorInversiones() throws ParseException, CloneNotSupportedException {
 		int funcionalidad = 1;
@@ -1162,8 +1227,6 @@ public final class Main {
 			System.out.println("El usuario " + usuario.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
 			return;
 		}
-
-
 
 		//Atributo auxiliar que almacenará el índice de la cuenta escogida por el usuario
 		int Cuenta_Compra = 0;
@@ -2821,11 +2884,12 @@ public final class Main {
 							+ "\n2. Invertir saldo de mi cuenta"
 							+ "\n3. Consignar saldo a mi cuenta"
 							+ "\n4. Transferir saldo entre cuentas"
-							+ "\n5. Gestionar prestamos"
-							+ "\n6. Asesoramiento de inversiones"
-							+ "\n7. Compra de cartera"
-							+ "\n8. Calculadora financiera"
-							+ "\n9. Salir al menú principal");
+							+ "\n5. Compra con cuenta Corriente"
+							+ "\n6. Gestionar prestamos"
+							+ "\n7. Asesoramiento de inversiones"
+							+ "\n8. Compra de cartera"
+							+ "\n9. Calculadora financiera"
+							+ "\n10. Salir al menú principal");
 
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
@@ -2844,28 +2908,34 @@ public final class Main {
 					else if(opcion == 4) {
 						Main.transferirSaldoCuentasUsuario();
 					}
+					
+					//REALIZAR COMPRA CON CUENTA CORRIENTE
+					else if(opcion == 5) {
+						Main.compraCorriente();
+					}
+					
 					// PEDIR PRESTAMO
-					else if(opcion == 5){
+					else if(opcion == 6){
 						Main.funcionalidadPrestamo();
 					}
 
 					//ASESORAMIENTO DE INVERSIONES
-					else if (opcion == 6){
+					else if (opcion == 7){
 						Main.asesorInversiones();
 					}
 
 					// COMPRA CARTERA
-					else if(opcion == 7){
+					else if(opcion == 8){
 						Main.compraCartera(user);
 					}
 
 					// CALCULADORA FINANCIERA (ADICIONAL)
-					else if(opcion == 8) {
+					else if(opcion == 9) {
 						Main.calculadoraCuotas();
 					}
 
 					// Volver al menú anterior
-					else if (opcion == 9) {
+					else if (opcion == 10) {
 						seccion = 0;
 					}
 					//Comprobar que la opción seleccionada pueda ejecutarse

@@ -211,6 +211,16 @@ public class Corriente extends Cuenta implements Cloneable{
 		cuenta.setDisponible(cupo);
 	}
 	
+	//Método que evalúa la capacidad de hacer una compra
+	public boolean capacidadDeuda(double cantidad) {
+		if (this.getDisponible().compareTo(cantidad) >= 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public int compareTo(Corriente cuenta) {
 		if(this.getDisponible() > cuenta.getDisponible()) {
 			return 1;
@@ -285,7 +295,8 @@ public class Corriente extends Cuenta implements Cloneable{
 				"\nCuenta Corriente # " + this.id +
 				"\nBanco: " + this.banco.getNombre() +
 				"\nDivisa: " + this.divisa +
-				"\nCupo disponible: " + this.cupo + " " + this.divisa +
+				"\nCupo: " + this.cupo + " " + this.divisa +
+				"\nCupo disponible: " + this.disponible + " " + this.divisa +
 				"\nCuotas: " + this.plazo_Pago;
 	}
 	

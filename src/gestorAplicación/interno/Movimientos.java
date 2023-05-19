@@ -109,6 +109,17 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
+	// Movimiento que emula una compra con una cuenta corriente
+	public Movimientos(Corriente origen, double cantidad, Categoria categoria, Date fecha, boolean verificador) {
+		Movimientos.movimientosTotales.add(this);
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
+		this.setOrigen(origen);
+		origen.setDisponible(origen.getDisponible() - cantidad);
+	}
+	
 	//Intención de cambio de divisa
 	public Movimientos(Divisas divisa, Divisas divisaAux, Usuario owner) {
 		this.setDivisa(divisa);
