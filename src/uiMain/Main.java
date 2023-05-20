@@ -2436,11 +2436,16 @@ public final class Main {
 
 	// VER CUENTAS DE AHORRO Y CORRIENTES DEL USUARIO EN EL MAIN
 	static void verCuentasAsociadas() {
+		
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAsociadas());
 			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
+				
+				user.getCuentasAsociadas().get(i - 1).impresionTabla();
+				System.out.println("");
+				
 				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1));
 				System.out.println("");
 			}
@@ -2934,7 +2939,6 @@ public final class Main {
 					// COMPRA CARTERA
 					else if(opcion == 8){
 						Main.compraCartera();
-						
 					}
 
 					// CALCULADORA FINANCIERA (ADICIONAL)
