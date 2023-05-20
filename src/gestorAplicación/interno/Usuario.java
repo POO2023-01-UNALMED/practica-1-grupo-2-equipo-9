@@ -139,7 +139,7 @@ public class Usuario implements Serializable {
 			if(cuenta instanceof Ahorros) {
 				return(this.asociarCuentaAhorros((Ahorros) cuenta));
 			}else {
-				if(((Corriente) cuenta).getCupo() == null) {
+				if(((Corriente) cuenta).getCupo() == 0.0) {
 					Corriente.inicializarCupo((Corriente) cuenta);
 				}
 				return(this.asociarCuentaCorriente((Corriente) cuenta));
