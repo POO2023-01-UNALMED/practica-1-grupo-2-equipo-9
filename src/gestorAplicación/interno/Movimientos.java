@@ -109,17 +109,6 @@ public class Movimientos implements Serializable{
 		destino.setSaldo(destino.getSaldo() + cantidad);
 	}
 	
-	// Movimiento que emula una compra con una cuenta corriente
-	public Movimientos(Corriente origen, double cantidad, Categoria categoria, Date fecha, boolean verificador) {
-		Movimientos.movimientosTotales.add(this);
-		this.setCantidad(cantidad);
-		this.setCategoria(categoria);
-		this.setFecha(fecha);
-		this.setId(Movimientos.getMovimientosTotales().size());
-		this.setOrigen(origen);
-		origen.setDisponible(origen.getDisponible() - cantidad);
-	}
-	
 	//Intención de cambio de divisa
 	public Movimientos(Divisas divisa, Divisas divisaAux, Usuario owner) {
 		this.setDivisa(divisa);
@@ -255,12 +244,7 @@ public class Movimientos implements Serializable{
 		if(this.getOrigen() == null) {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
 					getCantidad() + "\nCategoria: " + getCategoria().name());
-		}
-		else if (this.getDestino() == null) {
-			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nCantidad: " +
-					getCantidad() + "\nCategoria: " + getCategoria().name());
-		}
-		else {
+		}else {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
 					getCantidad() + "\nCategoria: " + getCategoria().name());
 		}

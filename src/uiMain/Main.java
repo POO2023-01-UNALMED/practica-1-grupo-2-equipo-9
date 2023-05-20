@@ -47,9 +47,8 @@ public final class Main {
 		opcion = Integer.parseInt(sc.nextLine());
 		Divisas divisaA = Divisas.getDivisas().get(opcion-1);
 		ArrayList<Ahorros> ahorrosPosibles = new ArrayList<Ahorros>();
-		for (Cuenta cuenta : user.getCuentasAsociadas()) {
-			if (cuenta.getDivisa().equals(divisaA) && (cuenta instanceof Ahorros)) {
-				Ahorros ahorro = (Ahorros) cuenta;
+		for (Ahorros ahorro : user.getCuentasAhorrosAsociadas()) {
+			if (ahorro.getDivisa().equals(divisaA)) {
 				ahorrosPosibles.add(ahorro);
 			}
 		}

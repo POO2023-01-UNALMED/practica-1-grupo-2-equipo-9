@@ -82,13 +82,14 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		}
 	}
 	// Métodos para funcionlidad de cambio de divisa
-	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros Ahorros) {
+	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino) {
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
-		Ahorros destino = (Ahorros) escogencia.getDestino();
-		monto = monto*(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
-		monto = monto*(1-escogencia.getCoutaManejo());
-		double cambiado = monto*(escogencia.getCantidad());
+		double cambiado = monto*(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
+		cambiado = cambiado*(1-escogencia.getCoutaManejo());
+		cambiado = cambiado*(escogencia.getCantidad());
 		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto);
+		origen.setSaldo(origen.getSaldo()-monto);
+		destino.setSaldo(destino.getSaldo()+cambiado);
 	}
 	
 	public static ArrayList<Ahorros> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
