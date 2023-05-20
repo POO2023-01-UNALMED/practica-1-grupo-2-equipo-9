@@ -13,7 +13,7 @@ public class Corriente extends Cuenta implements Cloneable{
 	public static final String nombreD = "Corriente";
 	private double cupo = 0.0;
 	private double disponible;
-	private Cuotas plazo_Pago;
+	private Cuotas plazo_Pago = Cuotas.C1;
 	//Tasa efectiva anual
 	private double intereses;
 	//Atributo que decide pago de interes en primer mes
@@ -91,9 +91,9 @@ public class Corriente extends Cuenta implements Cloneable{
 	}
 	
 	public static String imprimirCuotaMensual(double[] cuotaMensual) {
-		return "Cuota: " + cuotaMensual[2] +
-				"\nIntereses: " + cuotaMensual[1] +
-				"\nAbono a capital: " + cuotaMensual[0];
+		return "Cuota: " + Corriente.redondeoDecimal(cuotaMensual[2], 2) +
+				"\nIntereses: " + Corriente.redondeoDecimal(cuotaMensual[0], 2) +
+				"\nAbono a capital: " + Corriente.redondeoDecimal(cuotaMensual[1], 2);
 	}
 	
 	public static double calculoInteresNominalMensual(double interesEfectivoAnual) {

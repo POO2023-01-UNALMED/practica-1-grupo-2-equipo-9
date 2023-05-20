@@ -255,7 +255,12 @@ public class Movimientos implements Serializable{
 		if(this.getOrigen() == null) {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
 					getCantidad() + "\nCategoria: " + getCategoria().name());
-		}else {
+		}
+		else if (this.getDestino() == null) {
+			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nCantidad: " +
+					getCantidad() + "\nCategoria: " + getCategoria().name());
+		}
+		else {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
 					getCantidad() + "\nCategoria: " + getCategoria().name());
 		}

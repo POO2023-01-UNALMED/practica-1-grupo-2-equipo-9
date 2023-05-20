@@ -995,7 +995,7 @@ public final class Main {
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta a eliminar son: ");
-		for (int i = 0; i <= cuentasCapacesDeuda.size(); i++) {
+		for (int i = 0; i < cuentasCapacesDeuda.size(); i++) {
 			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
 			+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
 			System.out.println("");
@@ -1198,27 +1198,28 @@ public final class Main {
 	}
 
 	// FUNCIONALIDAD COMPRA DE CARTERA
-	static void compraCartera(Usuario usuario) throws CloneNotSupportedException {
+	static void compraCartera() throws CloneNotSupportedException {
+		
 		//Arreglo que almacena las cuentas con deuda alguna 
-		ArrayList<Corriente> cuentasEnDeuda = usuario.retornarDeudas();
+		ArrayList<Corriente> cuentasEnDeuda = user.retornarDeudas();
 		Collections.sort(cuentasEnDeuda);
-
+		
 		//Arreglo que almacena las cuentas asociadas a un usuario
-		ArrayList<Cuenta> cuentasAux = usuario.getCuentasAsociadas();
+		ArrayList<Cuenta> cuentasAux = user.getCuentasAsociadas();
 		Collections.sort(cuentasAux);
 
-		ArrayList<Corriente> cuentasAux1 = usuario.getCuentasCorrienteAsociadas();
+		ArrayList<Corriente> cuentasAux1 = user.getCuentasCorrienteAsociadas();
 
 		//Comprobación de existencia de Cuentas Corriente por parte del Usuario
 		if(cuentasAux1.size() <= 1) {
-			System.out.println("El usuario " + usuario.getNombre() + " no alcanza la cantidad de cuentas Corriente necesarias para "
+			System.out.println("El usuario " + user.getNombre() + " no alcanza la cantidad de cuentas Corriente necesarias para "
 					+ "desarrollar la funcionalidad, recuerda que para ejecutar una compra de cartera necesitas por lo menos dos cuentas "
 					+ "Corriente, una de ellas con una Deuda.");
 			return;
 		}
 		//Comprobación de existencia de Deudas por parte del Usuario
 		if (cuentasEnDeuda.size() == 0) {
-			System.out.println("El usuario " + usuario.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
+			System.out.println("El usuario " + user.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.");
 			return;
 		}
 
@@ -1228,7 +1229,7 @@ public final class Main {
 		boolean seleccion_Cuenta = true;
 
 		while (seleccion_Cuenta) {
-			System.out.println("Cuentas a nombre de " + usuario.getNombre() + " con préstamos asociados: ");
+			System.out.println("Cuentas a nombre de " + user.getNombre() + " con préstamos asociados: ");
 
 			//Impresión Cuentas con Préstamo Asociado
 			int i = 1;
@@ -1240,7 +1241,7 @@ public final class Main {
 			//Atributo para validación entrada Cuenta_Compra
 			boolean validacion_Cuenta_Compra = true;
 			while (validacion_Cuenta_Compra) {
-				System.out.println("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
+				System.out.print("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
 				Cuenta_Compra = Integer.parseInt(sc.nextLine());
 
 				if (Cuenta_Compra >= 1 && Cuenta_Compra < i) {
@@ -1256,7 +1257,7 @@ public final class Main {
 			System.out.println(cuentasEnDeuda.get(Cuenta_Compra - 1));
 
 			System.out.println("");
-			System.out.println("Confirme por favor si esta es la cuenta a la cual desea aplicar este mecanismo financiero (y/n): ");
+			System.out.print("Confirme por favor si esta es la cuenta a la cual desea aplicar este mecanismo financiero (y/n): ");
 			String ConfirmacionI = sc.nextLine();
 
 
@@ -1289,13 +1290,16 @@ public final class Main {
 		cuentasAux.remove(cuentasEnDeuda.get(Cuenta_Compra - 1));
 
 		//Arreglo que almacena las cuentas capaces de recibir la deuda
-		ArrayList<Corriente> cuentasCapacesDeuda = usuario.Capacidad_Endeudamiento(cuentasAux, cuentasEnDeuda.get(Cuenta_Compra - 1));
+		ArrayList<Corriente> cuentasCapacesDeuda = user.Capacidad_Endeudamiento(cuentasAux, cuentasEnDeuda.get(Cuenta_Compra - 1));
 		Collections.sort(cuentasCapacesDeuda);
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
-		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
+		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(user, cuentasCapacesDeuda);
 
+		cuentasAux.add(cuentasEnDeuda.get(Cuenta_Compra - 1));
+		Collections.sort(cuentasAux);
+		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
-		for (int i = 0; i <= cuentasCapacesDeuda.size(); i++) {
+		for (int i = 0; i < cuentasCapacesDeuda.size(); i++) {
 			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
 			+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
 			System.out.println("");
@@ -1306,7 +1310,7 @@ public final class Main {
 		//Atributo auxiliar que almacenará la cuenta destino de la deuda
 		int Cuenta_Destino = 0;
 		while (validacion_Cuenta_Destino) {
-			System.out.println("Por favor escoga la cuenta destino de la deuda:");
+			System.out.print("Por favor escoga la cuenta destino de la deuda: ");
 			Cuenta_Destino = Integer.parseInt(sc.nextLine());
 			if (Cuenta_Destino >= 1 && Cuenta_Destino <= cuentasCapacesDeuda.size()) {
 				validacion_Cuenta_Destino = false;
@@ -1362,43 +1366,44 @@ public final class Main {
 			switch(seleccion_periodicidad) {
 			case 1:
 				eleccion_periodicidad = Cuotas.C1;
-				System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + " cuotas.");
 				break;
 			case 2:
 				eleccion_periodicidad = Cuotas.C6;
-				System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + " cuotas.");
 				break;
 			case 3:
 				eleccion_periodicidad = Cuotas.C12;
-				System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + " cuotas.");
 				break;
 			case 4:
 				eleccion_periodicidad = Cuotas.C18;
-				System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + " cuotas.");
 				break;
 			case 5:
 				eleccion_periodicidad = Cuotas.C24;
-				System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + " cuotas.");
 				break;
 			case 6:
 				eleccion_periodicidad = Cuotas.C36;
-				System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + " cuotas.");
 				break;
 			case 7:
 				eleccion_periodicidad = Cuotas.C48;
-				System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + " cuotas.");
 				break;
 			}
 		}
 
 		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
-				cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
+				(cuentasEnDeuda.get(Cuenta_Compra - 1).getCupo() - cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible()),
+				tasacionCuentas.get(Cuenta_Destino - 1));
 
 		boolean validacionPagoPrimerMes = true;
 		int pagoPrimerMes = 0;
 		while(validacionPagoPrimerMes) {
 			System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
-					+ "deberá pagar su valor correspondiente."
+					+ " deberá pagar su valor correspondiente."
 					+ "\n1. Sí"
 					+ "\n2. No");
 			pagoPrimerMes = Integer.parseInt(sc.nextLine());
@@ -1471,30 +1476,31 @@ public final class Main {
 		}
 		switch(confirmacionMovimiento) {
 		case 1:
-			//Cambios para la cuenta destino
-			Cuenta.getCuentasTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
-			usuario.getCuentasAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
-			usuario.getCuentasCorrienteAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
-			Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
-			Corriente aux = cuentasCapacesDeuda.get(Cuenta_Destino - 1);
-			aux = null;
-
 			//Cambios para la cuenta origen
 			cuentasEnDeuda.get(Cuenta_Compra - 1).setDisponible(cuentasEnDeuda.get(Cuenta_Compra - 1).getCupo());
-			cuentasEnDeuda.get(Cuenta_Compra - 1).setPlazo_Pago(null);
+			cuentasEnDeuda.get(Cuenta_Compra - 1).setPlazo_Pago(Cuotas.C1);
+			
+			//Cambios para la cuenta destino
+			Cuenta.getCuentasTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+			user.getCuentasAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+			user.getCuentasCorrienteAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+			Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
+			
+			user.asociarCuenta(vistaPrevia);
+			
+			System.out.println("Compra de cartera realizada con éxito");
 
-			return;
-
+			break;
 		case 2:
 			Cuenta.getCuentasTotales().remove(vistaPrevia);
-			usuario.getCuentasAsociadas().remove(vistaPrevia);
-			usuario.getCuentasCorrienteAsociadas().remove(vistaPrevia);
 			Corriente.getCuentasCorrienteTotales().remove(vistaPrevia);
 			vistaPrevia = null;
 			System.out.println("Movimiento cancelado.");
-			return;
+			break;
 		}
-		System.gc();
+
+		return;
+
 	}
 
 	// CALCULADORA DE CUOTAS
@@ -2366,15 +2372,23 @@ public final class Main {
 									System.gc();
 									break;
 								}else {
-									System.out.print("Contraseña errada. ¿Desea intentarlo de nuevo? (Y/N): ");
-									String confirmacion = sc.nextLine();
-									if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-										System.out.print("Inserte la contraseña de nuevo: ");
-										claveCuenta = Integer.parseInt(sc.nextLine());
-									}else {
-										System.out.println("Volviendo al menú anterior.");
-										break;
-									}	
+									while(true) {
+										System.out.print("Contraseña errada. ¿Desea intentarlo de nuevo? (Y/N): ");
+										String confirmacion = sc.nextLine();
+										if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+											System.out.print("Inserte la contraseña de nuevo: ");
+											claveCuenta = Integer.parseInt(sc.nextLine());
+											break;
+										}
+										else if(confirmacion.equals("N") || confirmacion.equals("n")){
+											System.out.println("Volviendo al menú anterior.");
+											return;
+										}
+										else {
+											System.out.println("Entrada no válida.");
+										}
+									}
+									
 								}	
 							}
 						}	
@@ -2920,7 +2934,8 @@ public final class Main {
 
 					// COMPRA CARTERA
 					else if(opcion == 8){
-						Main.compraCartera(user);
+						Main.compraCartera();
+						
 					}
 
 					// CALCULADORA FINANCIERA (ADICIONAL)
