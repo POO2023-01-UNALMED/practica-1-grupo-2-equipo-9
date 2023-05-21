@@ -72,6 +72,7 @@ public final class Main {
 		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
 		if (existeCambio.size()==0) {
 			System.out.println("No existe banco en el cual poder hacer dicho cambio de divisa");
+			return;
 		}
 		else if (existeCambio.size()==1) {
 			System.out.println("Se ha encontrado un banco en donde realizar el cambio");
@@ -82,6 +83,10 @@ public final class Main {
 	System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
 	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, ahorrosPosibles);
 	int j=1;
+//	if (imprimir.size() == 0) {
+//		System.out.println("No existen bancos que realicen el tipo de cambio pedido. Intente usar otra divisa como puente.");
+//		return;
+//	}
 	for (Movimientos cotizacion : imprimir) {
 		j=j+1;
 		System.out.println(j + ". con el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
@@ -117,11 +122,11 @@ public final class Main {
 		}
 	}
 	else {
-		//Main.BienvenidaApp(); //Volver al menú anterior
+		return;//Main.BienvenidaApp(); //Volver al menú anterior
 	}
 	if (!Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
 		System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
-		//Volver al menú anterior
+		return; //Volver al menú anterior
 	}
 	Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
@@ -1935,6 +1940,58 @@ public final class Main {
 
 		System.out.print("Cantidad de dinero que puede prestar el banco (En formato double): ");
 		Double prestamo = Double.parseDouble(sc.nextLine());
+		
+		System.out.println("Una divisa central del banco. Seleccione una. La lista de divisas permitidas son: ");
+		for(int i = 1; i < Divisas.getDivisas().size() + 1; i++) {
+			System.out.println(i + ". " + Divisas.getDivisas().get(i-1).name());
+		}
+		int divisa_op = Integer.parseInt(sc.nextLine());
+		Divisas divisa = Divisas.getDivisas().get(divisa_op - 1);
+		
+		System.out.println("Unas tasas de cambio entre divisas.");
+		ArrayList<String> dic = new ArrayList<String>();
+		ArrayList<Double> cionario = new ArrayList<Double>();
+		
+		while (true) { 
+			System.out.println("Escoja la tasa de origen: ");
+			double j=1;
+			for (Divisas div : Divisas.getDivisas()) {
+				System.out.println(j + ". " + div.name());
+				j = j+1;
+			}
+			System.out.println((j) + ". No tengo más tasas de cambio por agregar");
+			int div_op = Integer.parseInt(sc.nextLine());
+			if (div_op == j) {
+				break;
+			}
+			String div = Divisas.getDivisas().get(div_op-1).name();
+			ArrayList<Divisas> sinEscoger = Divisas.getDivisas();
+			sinEscoger.remove(div_op-1);
+			j=1;
+			System.out.println("Escoja la tasa de destino: ");
+			for (Divisas isa : sinEscoger) {
+				System.out.println(j + ". " + isa.name());
+				j = j+1;
+			}
+			int isa_op = Integer.parseInt(sc.nextLine());
+			String isa = sinEscoger.get(isa_op-1).name();
+			if (dic.contains(div+isa)){
+				System.out.println("Este tipo de cambio ya fue ingresado ya fue ingresado.");
+			}
+			else {
+				System.out.print("¿Qué valor va a tener la tasa?: ");
+				double tasa = Double.parseDouble(sc.nextLine());
+				dic.add(div+isa);
+				cionario.add(tasa);
+			}
+			}
+		
+		System.out.print("¿Desea asignar un cupo base específico?: (Y/N): ");
+		String cupo_op = sc.nextLine();
+		double cupo = 1000000;
+		if (cupo_op.equals("y") && cupo_op.equalsIgnoreCase("y")) {
+			System.out.print("¿")
+		}
 
 		while(true) {
 			if(Estado.getEstadosTotales().size() == 0) {
@@ -1946,9 +2003,8 @@ public final class Main {
 				user.impresionEstados(Estado.getEstadosTotales());
 				int estado_op = Integer.parseInt(sc.nextLine());
 				Estado estado_banco = Estado.getEstadosTotales().get(estado_op - 1);
-
 				seguir = 0;
-				new Banco(nombreBanco, comision, estado_banco, prestamo);	
+				new Banco(nombreBanco, comision, estado_banco, prestamo, divisa, dic, cionario);	
 				System.out.println("Banco creado con éxito");
 				break;
 			}
