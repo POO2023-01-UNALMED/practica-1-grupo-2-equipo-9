@@ -5,8 +5,10 @@ import java.util.Date;
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import gestorAplicación.externo.Estado;
+import gestorAplicación.externo.Tablas;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.time.Instant;
 
 public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
@@ -183,6 +185,21 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		}else {
 			return false;
 		}	
+	}
+	
+	public static void limpiarPropiedades(ArrayList<String> arreglo){
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("cuentasTotales");
+	}
+	
+	public static ArrayList<String> propiedadesCuenta() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Cuenta.class.getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		return arreglos;
 	}
 	
 	@Override	

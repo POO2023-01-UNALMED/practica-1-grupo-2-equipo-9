@@ -2441,13 +2441,13 @@ public final class Main {
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAsociadas());
-			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
-				
-				user.getCuentasAsociadas().get(i - 1).impresionTabla();
-				System.out.println("");
-				
-				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1));
-				System.out.println("");
+			if(user.getCuentasAhorrosAsociadas().size() != 0) {
+				System.out.println("CUENTAS DE AHORROS");
+				user.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
+			}
+			if(user.getCuentasCorrienteAsociadas().size() != 0) {
+				System.out.println("CUENTAS CORRIENTE");
+				user.impresionCuentasCorriente(user.getCuentasCorrienteAsociadas());
 			}
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -2508,9 +2508,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
 		if(Usuario.getUsuariosTotales().size() > 0) {
 			System.out.println("Todos los usuarios son: ");
-			for(int i = 1; i < Usuario.getUsuariosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Usuario.getUsuariosTotales().get(i - 1).getNombre());
-			}
+			user.impresionUsuarios(Usuario.getUsuariosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {
@@ -2601,9 +2599,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
 		if(Banco.getBancosTotales().size() > 0) {
 			System.out.println("La lista de Bancos son: ");
-			for(int i = 1; i < Banco.getBancosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Banco.getBancosTotales().get(i - 1));
-			}
+			user.impresionBancos(Banco.getBancosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {
@@ -2698,9 +2694,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
 		if(Movimientos.getMovimientosTotales().size() > 0) {
 			System.out.println("La lista de Movimientos son: ");
-			for(int i = 1; i < Movimientos.getMovimientosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Movimientos.getMovimientosTotales().get(i - 1));
-			}
+			user.impresionMovimientos(Movimientos.getMovimientosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN MOVIMIENTOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {
@@ -2721,9 +2715,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
 		if(Metas.getMetasTotales().size() > 0) {
 			System.out.println("La lista de Metas son: ");
-			for(int i = 1; i < Metas.getMetasTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Metas.getMetasTotales().get(i - 1).getNombre());
-			}
+			user.impresionMetas(Metas.getMetasTotales());
 
 			//SE IMPRIME QUE NO EXISTEN METAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2744,9 +2736,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
 		if(Estado.getEstadosTotales().size() > 0) {
 			System.out.println("La lista de Estados son: ");
-			for(int i = 1; i < Estado.getEstadosTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1));
-			}
+			user.impresionEstados(Estado.getEstadosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN ESTADOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {

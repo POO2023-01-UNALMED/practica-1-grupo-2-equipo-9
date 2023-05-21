@@ -4,6 +4,7 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
 import java.util.Date;
+import java.lang.reflect.Field;
 import java.time.Instant;
 
 public class Ahorros extends Cuenta{
@@ -74,6 +75,25 @@ public class Ahorros extends Cuenta{
 		Movimientos movimiento = new Movimientos(this, gota, this.getSaldo(), Categoria.OTROS,
 				Date.from(Instant.now()));
 		Movimientos.getMovimientosTotales().remove(movimiento);
+	}
+	
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("cuentasAhorroTotales");
+	}
+	
+	public static ArrayList<String> propiedadesCuenta() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Ahorros.class.getSuperclass().getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		Field[] arregloAux = Ahorros.class.getDeclaredFields();
+		for(int i = 0 ; i < arregloAux.length; i++) {
+			arreglos.add(arregloAux[i].getName());
+		}
+		return arreglos;
 	}
 	
 	public int CompareTo(Ahorros cuenta) {

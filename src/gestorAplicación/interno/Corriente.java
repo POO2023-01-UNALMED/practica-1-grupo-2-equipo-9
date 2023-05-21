@@ -5,6 +5,7 @@ import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
 import java.util.Date;
+import java.lang.reflect.Field;
 import java.time.Instant;
 
 public class Corriente extends Cuenta implements Cloneable{
@@ -221,6 +222,25 @@ public class Corriente extends Cuenta implements Cloneable{
 		}
 	}
 	
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("cuentasCorrienteTotales");
+	}
+	
+	public static ArrayList<String> propiedadesCuenta() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Corriente.class.getSuperclass().getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		Field[] arregloAux = Corriente.class.getDeclaredFields();
+		for(int i = 0 ; i < arregloAux.length; i++) {
+			arreglos.add(arregloAux[i].getName());
+		}
+		return arreglos;
+	}
+	
 	public int compareTo(Corriente cuenta) {
 		if(this.getDisponible() > cuenta.getDisponible()) {
 			return 1;
@@ -297,7 +317,8 @@ public class Corriente extends Cuenta implements Cloneable{
 				"\nDivisa: " + this.divisa +
 				"\nCupo: " + this.cupo + " " + this.divisa +
 				"\nCupo disponible: " + this.disponible + " " + this.divisa +
-				"\nCuotas: " + this.plazo_Pago;
+				"\nCuotas: " + this.plazo_Pago +
+				"\nIntereses: " + this.intereses;
 	}
 	
 	public static ArrayList<Corriente> getCuentasCorrienteTotales() {

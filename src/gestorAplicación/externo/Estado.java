@@ -1,6 +1,7 @@
 package gestorAplicación.externo;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import gestorAplicación.interno.Cuenta;
@@ -31,6 +32,21 @@ public class Estado implements Serializable {
 	}
 	public Estado(){
 		this("Colombia", 0.2, Divisas.COP);
+	}
+	
+	public static ArrayList<String> propiedadesCuenta() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Estado.class.getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		return arreglos;
+	}
+	
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("estadosTotales");
 	}
 	
 	@Override

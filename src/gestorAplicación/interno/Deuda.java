@@ -1,13 +1,14 @@
 package gestorAplicación.interno;
 import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Estado;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Deuda extends Metas{
 //  Atributos
     public static final String nombreD = "Deudas";
     private static final long serialVersionUID = 6L;
-    private int id;
     private Ahorros cuenta;
     private Banco banco;
     private static ArrayList<Deuda> deudasTotales = new ArrayList<>();
@@ -15,12 +16,30 @@ public class Deuda extends Metas{
     //	Constructor
     public Deuda(double cantidad, Ahorros cuenta, Usuario dueno, Banco banco){
         super(cantidad,dueno);
-        this.id = deudasTotales.size();
         this.cuenta = cuenta;
         this.banco = banco;
         deudasTotales.add(this);
         Metas.getMetasTotales().add(this);
     }
+    
+    public static ArrayList<String> propiedadesCuenta() {
+    	ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Deuda.class.getSuperclass().getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		Field[] arregloAux = Deuda.class.getDeclaredFields();
+		for(int i = 0 ; i < arregloAux.length; i++) {
+			arreglos.add(arregloAux[i].getName());
+		}
+		return arreglos;
+	}
+    
+    public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("deudasTotales");
+	}
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;

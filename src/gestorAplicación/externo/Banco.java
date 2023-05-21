@@ -1,6 +1,7 @@
 package gestorAplicación.externo;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Date;
@@ -411,6 +412,26 @@ public class Banco implements Serializable {
 				cupo = banco.cupo_base;
 		}
 		return cupo;
+	}
+	
+	public static ArrayList<String> propiedadesCuenta() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Banco.class.getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		return arreglos;
+	}
+	
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("bancosTotales");
+		arreglo.remove("dic");
+		arreglo.remove("cionario");
+		arreglo.remove("prestamo");
+		arreglo.remove("asociado");
+		arreglo.remove("$SWITCH_TABLE$gestorAplicación$interno$Suscripcion");
 	}
 	
 	//Gets

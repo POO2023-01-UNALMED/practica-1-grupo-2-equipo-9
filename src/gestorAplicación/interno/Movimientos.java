@@ -2,6 +2,8 @@ package gestorAplicación.interno;
 
 import java.util.Date;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+
 import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Divisas;
 import java.util.ArrayList;
@@ -134,6 +136,17 @@ public class Movimientos implements Serializable{
 		this.setCantidad(cantidad);
 	}
 	
+	// Movimiento que emula una compra con una cuenta corriente
+	public Movimientos(Corriente origen, double cantidad, Categoria categoria, Date fecha, boolean verificador) {
+		Movimientos.movimientosTotales.add(this);
+		this.setCantidad(cantidad);
+		this.setCategoria(categoria);
+		this.setFecha(fecha);
+		this.setId(Movimientos.getMovimientosTotales().size());
+		this.setOrigen(origen);
+		origen.setDisponible(origen.getDisponible() - cantidad);
+	}
+	
 	//	MÉTODOS
 	//	Funcionalidad de Suscripciones de Usuarios
 	public static Object crearMovimiento(Ahorros origen, Ahorros destino, double cantidad, Categoria categoria, Date fecha) {
@@ -244,7 +257,11 @@ public class Movimientos implements Serializable{
 		if(this.getOrigen() == null) {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
 					getCantidad() + "\nCategoria: " + getCategoria().name());
-		}else {
+		}else if(this.getDestino() == null){
+			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nCantidad: " +
+					getCantidad() + "\nCategoria: " + getCategoria().name());
+		}
+		else {
 			return("Movimiento creado \nFecha: " + getFecha() + "\nID: " + getId() + "\nOrigen: " + getOrigen().getId() + "\nDestino: " + getDestino().getId() + "\nCantidad: " +
 					getCantidad() + "\nCategoria: " + getCategoria().name());
 		}
@@ -514,6 +531,29 @@ public class Movimientos implements Serializable{
 		}
 		return movimientosUsuario_Banco;
 		
+	}
+
+	public static ArrayList<String> propiedadesMovimientos() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Movimientos.class.getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		return arreglos;
+	}
+	
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("movimientosTotales");
+		arreglo.remove("divisa");
+		arreglo.remove("divisaAux");
+		arreglo.remove("banco");
+		arreglo.remove("cuotaManejo");
+		arreglo.remove("owner");
+		arreglo.remove("nombreCategoria");
+		arreglo.remove("cantidadCategoria");
+		arreglo.remove("recomensarFecha");
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package gestorAplicación.interno;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.DateFormat;
@@ -141,7 +142,23 @@ public class Metas implements Serializable {
 		u.getMetasAsociadas().add(0, me);
 	}
 
-
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("metasTotales");
+		arreglo.remove("DATE_FORMAT");
+		arreglo.remove("metaProxima");
+		arreglo.remove("plazo");
+	}
+	
+	public static ArrayList<String> propiedadesCuenta() {
+		ArrayList<String> arreglos = new ArrayList<String>();
+		Field[] arreglo = Metas.class.getDeclaredFields();
+		for(int i = 0 ; i < arreglo.length; i++) {
+			arreglos.add(arreglo[i].getName());
+		}
+		return arreglos;
+	}
 
 	@Override
 	protected void finalize() {

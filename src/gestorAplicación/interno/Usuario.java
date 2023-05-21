@@ -3,8 +3,10 @@ package gestorAplicación.interno;
 import java.io.Serializable;
 import java.util.ArrayList;
 import gestorAplicación.externo.Banco;
+import gestorAplicación.externo.Estado;
+import gestorAplicación.externo.Tablas;
 
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, Tablas {
 	//Atributos
 	//Atributos para serializar
 	private static final long serialVersionUID = 3L;
@@ -264,6 +266,222 @@ public class Usuario implements Serializable {
 		Metas.getMetasTotales().remove(n);
 	}
 	
+	public void impresionBancos(ArrayList<Banco> bancos) {
+		ArrayList<String> cadena = Banco.propiedadesCuenta();
+		
+		Banco.limpiarPropiedades(cadena);
+		
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %20s %10s %10s %15s %20s %20s %29s", 
+				"#", cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(2), cadena.get(4), cadena.get(5), cadena.get(7), cadena.get(8));
+		System.out.println();
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Banco banco: bancos) {
+			System.out.printf("%4d %8d %20s %10s %10s %15s %20s %20s %29s", 
+					i, banco.getId(), banco.getNombre(), (banco.getComision() + " %"), banco.getDivisa(), banco.getEstadoAsociado().getNombre(),
+					(banco.getCupo_base() + " (" + banco.getMultiplicador() + ")"), banco.getDesc_suscripcion(),
+					(banco.getDesc_movimientos_porcentaje() + " (" + banco.getDesc_movimientos_cantidad() + ")"));
+			System.out.println();
+			i++;
+		}
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public static void limpiarPropiedades(ArrayList<String> arreglo) {
+		arreglo.remove("serialVersionUID");
+		arreglo.remove("nombreD");
+		arreglo.remove("usuariosTotales");
+		arreglo.remove("bancosAsociados");
+		arreglo.remove("cuentasAsociadas");
+		arreglo.remove("movimientosAsociados");
+		arreglo.remove("CuentasCorrienteAsociadas");
+		arreglo.remove("CuentasAhorrosAsociadas");
+		arreglo.remove("metasAsociadas");
+		arreglo.remove("$SWITCH_TABLE$gestorAplicación$interno$Suscripcion");
+	}
+	
+	public void impresionEstados(ArrayList<Estado> estados) {
+		ArrayList<String> cadena = Estado.propiedadesCuenta();
+		
+		Estado.limpiarPropiedades(cadena);
+		
+		System.out.println("-------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %10s %15s %29s %15s", 
+				"#", cadena.get(1), cadena.get(0), cadena.get(3), cadena.get(2), cadena.get(4), cadena.get(5));
+		System.out.println();
+		System.out.println("-------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Estado estado: estados) {
+			System.out.printf("%4d %8d %15s %10s %15s %29s %15s", 
+					i, estado.getId(), estado.getNombre(), estado.getDivisa(), estado.getDivisa(), (estado.getTasa_impuestos() + " %"),
+					(estado.getInteres_bancario_corriente() + " %"), (estado.getTasas_usura() + " %"));
+			System.out.println();
+			i++;
+		}
+		System.out.println("-------------------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public void impresionCuentasCorriente(ArrayList<Corriente> cuentas){
+		ArrayList<String> cadena = Corriente.propiedadesCuenta();
+		
+		Corriente.limpiarPropiedades(cadena);
+		Cuenta.limpiarPropiedades(cadena);
+		
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %15s %10s %15s %15s %10s %10s %20s %20s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(7),
+				cadena.get(8), cadena.get(9), cadena.get(10), cadena.get(5));
+		System.out.println();
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Corriente cuenta: cuentas) {
+			System.out.printf("%4d %8d %15s %15s %10d %15s %15s %10d %10s %20s %20s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (cuenta.getCupo() + " " + cuenta.getDivisa()), (cuenta.getDisponible() + " " + cuenta.getDivisa()),
+					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (cuenta.getIntereses() + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre());
+			System.out.println();
+			i++;
+		}
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public void impresionCuentasAhorros(ArrayList<Ahorros> cuentas) {
+		ArrayList<String> cadena = Ahorros.propiedadesCuenta();
+		
+		Ahorros.limpiarPropiedades(cadena);
+		Cuenta.limpiarPropiedades(cadena);
+		
+		System.out.println("-------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %15s %10s %15s %20s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(5));
+		System.out.println();
+		System.out.println("-------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Ahorros cuenta: cuentas) {
+			System.out.printf("%4d %8d %15s %15s %10d %15s %20s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(),
+					(cuenta.getSaldo() + " " + cuenta.getDivisa()), cuenta.getBanco().getNombre());
+			System.out.println();
+			i++;
+		}
+		System.out.println("-------------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public void impresionDeudas(ArrayList<Deuda> deudas) {
+		ArrayList<String> cadena = Deuda.propiedadesCuenta();
+		
+		Deuda.limpiarPropiedades(cadena);
+		Metas.limpiarPropiedades(cadena);
+		
+		System.out.println("----------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %15s %15s %15s %15s", 
+				"#", cadena.get(3), cadena.get(0), cadena.get(4), cadena.get(1), cadena.get(6), cadena.get(5));
+		System.out.println();
+		System.out.println("----------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Deuda deuda: deudas) {
+			System.out.printf("%4d %8d %15s %15s %15s %15s %15s", 
+					i, deuda.getId(), deuda.getNombre(), deuda.getDueno().getNombre(), deuda.getCantidad(), deuda.getBanco().getNombre(),
+					(deuda.getCuenta().getId() + ": " + deuda.getCuenta().getNombre()));
+			System.out.println();
+			i++;
+		}
+		System.out.println("----------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public void impresionMetas(ArrayList<Metas> metas) {
+		ArrayList<String> cadena = Metas.propiedadesCuenta();
+		
+		Metas.limpiarPropiedades(cadena);
+		
+		System.out.println("--------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %20s %15s %12s %14s", 
+				"#", cadena.get(3), cadena.get(0), cadena.get(4), cadena.get(1), cadena.get(2));
+		System.out.println();
+		System.out.println("--------------------------------------------------------------------------------");
+		int i = 1;
+		for (Metas meta: metas) {
+			System.out.printf("%4d %8d %20s %15s %12s %14s", 
+					i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), meta.getCantidad(), meta.getFechaNormal());
+			System.out.println();
+			i++;
+		}
+		System.out.println("--------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public void impresionMovimientos(ArrayList<Movimientos> movimiento) {
+		ArrayList<String> cadena = Movimientos.propiedadesMovimientos();
+		
+		Movimientos.limpiarPropiedades(cadena);
+		
+		System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %15s %35s %20s %20s", 
+				"#", cadena.get(0), cadena.get(1), cadena.get(2), cadena.get(3), cadena.get(5), cadena.get(4));
+		System.out.println();
+		System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Movimientos mov: movimiento) {
+			if (mov.getOrigen() == null) {
+				System.out.printf("%4d %8d %15f %15s %35s %20s %20s", 
+					i, mov.getId(), mov.getCantidad(), mov.getCategoria(), mov.getFecha(),
+					"/", (mov.getDestino().getId() + ": " + mov.getDestino().getNombre()));
+			}
+			else if(mov.getDestino() == null) {
+				System.out.printf("%4d %8d %15s %15s %35s %20s %20s", 
+					i, mov.getId(), mov.getCantidad(), mov.getCategoria(), mov.getFecha(),
+					(mov.getOrigen().getId() + ": " + mov.getOrigen().getNombre()), "/");
+			}
+			else {
+				System.out.printf("%4d %8d %15s %15s %35s %20s %20s", 
+					i, mov.getId(), mov.getCantidad(), mov.getCategoria(), mov.getFecha(),
+					(mov.getOrigen().getId() + ": " + mov.getOrigen().getNombre()),
+					(mov.getDestino().getId() + ": " + mov.getDestino().getNombre()));
+			}
+			
+			System.out.println();
+			i++;
+		}
+		System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
+	public void impresionUsuarios(ArrayList<Usuario> usuarios) {
+		ArrayList<String> cadena = this.recibirPropiedadesObjeto();
+		
+		Usuario.limpiarPropiedades(cadena);
+
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %22s %30s %15s %12s %15s %20s", 
+				"#", cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(2), cadena.get(4), cadena.get(5), cadena.get(6));
+		System.out.println();
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Usuario usuario: usuarios) {
+			System.out.printf("%4s %8s %22s %30s %15s %12s %15d %20d", 
+					i, usuario.getId(), usuario.getNombre(), usuario.getCorreo(), usuario.getContrasena(), usuario.getSuscripcion(),
+					usuario.getLimiteCuentas(), usuario.getContadorMovimientos());
+			System.out.println();
+			i++;
+		}
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+
+		return;
+		
+	}
+	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }
 	
@@ -313,4 +531,5 @@ public class Usuario implements Serializable {
 	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
 	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}
 	public void setCuentasAhorrosAsociadas(ArrayList<Ahorros> cuentasAhorrosAsociadas) {CuentasAhorrosAsociadas = cuentasAhorrosAsociadas;}
+
 }
