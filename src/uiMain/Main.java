@@ -202,10 +202,7 @@ public final class Main {
 		case "2":
 			ArrayList<Deuda> deudas = Deuda.conseguirDeudas(user);
 			if (deudas.size() != 0) {
-				for (int i = 1; i < deudas.size() + 1; i++) {
-					System.out.println("");
-					System.out.println(i + "-Deuda con id " + deudas.get(i - 1).getId()+":\n"+ deudas.get(i - 1).getCuenta() + "\nDEUDA: " + deudas.get(i - 1).getCantidad());
-				}
+				user.impresionDeudas(deudas);
 				System.out.println("");
 				System.out.print("Seleccione el número de la deuda que desea pagar: ");
 				int seleccion = Integer.parseInt(sc.nextLine());
@@ -692,19 +689,17 @@ public final class Main {
 		}
 		
 		System.out.println("¿Qué tipo de compra desea realizar?");
-		for (int i = 1; i < Categoria.getCategorias().size() + 1; i++) {
-			System.out.println(i + ". "+ Categoria.getCategorias().get(i - 1));
-		}
+		Main.verCategorias();
 		
 		int tipo_Compra = 0;
 		//Atributo para validación entrada tipo_Compra
-		boolean validacion_Cuenta_Compra = true;
-		while (validacion_Cuenta_Compra) {
-			System.out.print("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
+		boolean validacion_Tipo_Compra = true;
+		while (validacion_Tipo_Compra) {
+			System.out.print("Por favor, seleccione el tipo de compra: ");
 			tipo_Compra = Integer.parseInt(sc.nextLine());
 
 			if (tipo_Compra >= 1 && tipo_Compra < Categoria.getCategorias().size() + 1) {
-				validacion_Cuenta_Compra = false;
+				validacion_Tipo_Compra = false;
 			}
 			else {
 				System.out.println("Entrada no válida, intente de nuevo.");
@@ -727,9 +722,7 @@ public final class Main {
 		}
 		
 		System.out.println("Las cuentas a nombre de " + user.getNombre() + " capaces de recibir tu compra son:");
-		for (int i = 1; i < cuentasCompra.size() + 1; i++) {
-			System.out.println(i + ". " + cuentasCompra.get(i - 1));
-		}
+		user.impresionCuentasCorriente(cuentasCompra);
 		
 		int eleccion_Cuenta = 0;
 		//Atributo para validación entrada eleccion_Cuenta
@@ -1231,11 +1224,7 @@ public final class Main {
 			System.out.println("Cuentas a nombre de " + user.getNombre() + " con préstamos asociados: ");
 
 			//Impresión Cuentas con Préstamo Asociado
-			int i = 1;
-			for (Cuenta cuentas: cuentasEnDeuda) {
-				System.out.println(i + ". " + cuentas.getNombre());
-				i++;
-			}
+			user.impresionCuentasCorriente(cuentasEnDeuda);
 
 			//Atributo para validación entrada Cuenta_Compra
 			boolean validacion_Cuenta_Compra = true;
@@ -1243,7 +1232,7 @@ public final class Main {
 				System.out.print("Por favor, seleccione la cuenta a la cual quiere aplicar la compra de cartera: ");
 				Cuenta_Compra = Integer.parseInt(sc.nextLine());
 
-				if (Cuenta_Compra >= 1 && Cuenta_Compra < i) {
+				if (Cuenta_Compra >= 1 && Cuenta_Compra < cuentasEnDeuda.size() + 1) {
 					validacion_Cuenta_Compra = false;
 				}
 				else {
@@ -1429,7 +1418,7 @@ public final class Main {
 		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 
 		System.out.println("Primer Cuota: ");
-		System.out.println(cuotaMensual);
+		System.out.println(cuotaMensual + " " + vistaPrevia.getDivisa());
 
 		boolean validacionCalculadora = true;
 		int decisionCalculadora = 0;
@@ -1954,9 +1943,7 @@ public final class Main {
 			}else {
 				System.out.println("");
 				System.out.println("Seleccione un estado para la operación del banco. La lista de Estados disponibles son: ");
-				for(int i = 1; i < Estado.getEstadosTotales().size() + 1; i++) {
-					System.out.println(i + ". " + Estado.getEstadosTotales().get(i-1).getNombre());
-				}
+				user.impresionEstados(Estado.getEstadosTotales());
 				int estado_op = Integer.parseInt(sc.nextLine());
 				Estado estado_banco = Estado.getEstadosTotales().get(estado_op - 1);
 
@@ -2349,9 +2336,7 @@ public final class Main {
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de cuentas creadas por el usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAsociadas());
-			for(int i = 1; i < user.getCuentasAsociadas().size() + 1; i++) {
-				System.out.println(i + ". " + user.getCuentasAsociadas().get(i - 1).getNombre());
-			}
+			Main.verCuentasAsociadas();
 			System.out.println("");
 			System.out.print("Inserte el numero de la cuenta que desea eliminar: ");
 			int cuentaOp = Integer.parseInt(sc.nextLine());
@@ -2413,13 +2398,8 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas de ahorro creadas por el Usuario " + user.getNombre() + " son: ");
-			Collections.sort(user.getCuentasAsociadas());
-			int i = 1;
-			for(Ahorros cuenta : user.getCuentasAhorrosAsociadas()) {
-				System.out.println(i + ". " + cuenta);
-				i++;
-				System.out.println("");
-			}
+			Collections.sort(user.getCuentasAhorrosAsociadas());
+			user.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2468,9 +2448,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
 		if(user.getBancosAsociados().size() > 0) {
 			System.out.println("La lista de Bancos asociados por el Usuario " + user.getNombre() + " son: ");
-			for(int i = 1; i < user.getBancosAsociados().size() + 1; i++) {
-				System.out.println(i + ". " + user.getBancosAsociados().get(i - 1).getNombre());
-			}
+			user.impresionBancos(user.getBancosAsociados());
 
 			//SE IMPRIME QUE NO EXISTEN BANCOS ASOCIADOS, SE LE PREGUNTA AL USUARIO SI DESEA ASOCIAR UNO	
 		}else {
@@ -2621,10 +2599,7 @@ public final class Main {
 		if(Corriente.getCuentasCorrienteTotales().size() > 0) {
 			System.out.println("La lista de Cuentas Corrientes totales en el sistema son: ");
 			Collections.sort(Corriente.getCuentasCorrienteTotales());
-			for(int i = 1; i < Corriente.getCuentasCorrienteTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Corriente.getCuentasCorrienteTotales().get(i - 1));
-				System.out.println("");
-			}
+			user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2646,10 +2621,7 @@ public final class Main {
 		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
 			System.out.println("La lista de Cuentas de Ahorro totales en el sistema son: ");
 			Collections.sort(Ahorros.getCuentasAhorroTotales());
-			for(int i = 1; i < Ahorros.getCuentasAhorroTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Ahorros.getCuentasAhorroTotales().get(i - 1));
-				System.out.println("");
-			}
+			user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2671,8 +2643,13 @@ public final class Main {
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			Collections.sort(Cuenta.getCuentasTotales());
-			for(int i = 1; i < Cuenta.getCuentasTotales().size() + 1; i++) {
-				System.out.println(i + ". " + Cuenta.getCuentasTotales().get(i - 1));
+			if(user.getCuentasAhorrosAsociadas().size() != 0) {
+				System.out.println("CUENTAS DE AHORROS");
+				user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
+			}
+			if(user.getCuentasCorrienteAsociadas().size() != 0) {
+				System.out.println("CUENTAS CORRIENTE");
+				user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
 			}
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
