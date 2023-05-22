@@ -913,16 +913,16 @@ public final class Main {
 							+ "hacer un préstamo. ¿Deseas hacer el préstamo? (Y/N): ");
 					String prestamo = sc.nextLine();
 					System.out.println("");
-
-					if (prestamo.equals("n") || prestamo.equals("N") || prestamo.equals("y") || prestamo.equals("Y")) {
-						System.out.print(
-								"¿Deseas hacer el préstamo pero los intereses de los bancos te parecen muy altos?(Y/N): ");
-						String prestamoI = sc.nextLine();
-						System.out.println("");
-						if (prestamoI.equals("n") || prestamoI.equals("N") || prestamoI.equals("y") || prestamoI.equals("Y")) {
-							System.out.print("Tenemos la solución para ti, aunque no sea la más correcta…"
-									+ " Vas a hacer un prestamo con el usuario " + "\ngota a gota"
-									+ ". Ingrese el monto que desea solicitar prestado: ");
+					
+					if (prestamo.equals("n") || prestamo.equals("N")) {	
+						System.out.println("Ha sido un placer asesorarte en este proceso, "
+							+ "espero que nuestra recomendación haya sido de ayuda.");
+						funcionalidad = 0;
+					}
+					else if (prestamo.equals("y") || prestamo.equals("Y")) {
+						System.out.print("Las tasas de interés de los prestamos estan muy altas pero tenemos la solución perfecta para ti, "
+									+ "\naunque no sea la más correcta... Vas a hacer un prestamo con el usuario gota a gota."
+									+ "\nIngrese el monto que desea solicitar prestado: ");
 
 							// Parte del gota a gota
 							double cantidadPrestamo = Double.parseDouble(sc.nextLine());
@@ -933,21 +933,18 @@ public final class Main {
 									.getCuentasAhorrosAsociadas().get(0);
 							Cuenta.gotaGota(cantidadPrestamo, user, gotaGota).vaciarCuenta(gotaGota);
 							System.out.println("Era una trampa, ahora el usuario gota a gota vació tu cuenta");
+							System.out.println("");
+							System.out.println("Ha sido un placer asesorarte en este proceso, "
+									+ "espero que nuestra recomendación haya sido de ayuda.");
+							funcionalidad = 0;
 						}
-					}
 
 					else {
 						System.out.println("Entrada no valida");
 						break;
 					}
-
-					// Fin de la funcionalidad
-					System.out.println("");
-					System.out.println("Ha sido un placer asesorarte en este proceso, "
-							+ "espero que nuestra recomendación haya sido de ayuda.");
 				}
 			}
-			funcionalidad = 0;
 		}
 	}
 
