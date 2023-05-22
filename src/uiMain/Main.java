@@ -6,6 +6,7 @@ import gestorAplicación.externo.Banco;
 import gestorAplicación.externo.Cuotas;
 import gestorAplicación.externo.Divisas;
 import gestorAplicación.externo.Estado;
+import gestorAplicación.externo.Tablas;
 import gestorAplicación.interno.Ahorros;
 import gestorAplicación.interno.Categoria;
 import gestorAplicación.interno.Corriente;
@@ -638,32 +639,7 @@ public final class Main {
 				}
 			} else {
 				System.out.println("");
-				for (int i = 0; i < user.getMetasAsociadas().size(); i++) {
-					String name = user.getMetasAsociadas().get(i).getNombre();
-					double amount = user.getMetasAsociadas().get(i).getCantidad();
-					Date date = user.getMetasAsociadas().get(i).getFecha();
-
-					if (date == null) {
-						System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-								+ user.getMetasAsociadas().get(i).getCantidad());
-					}
-
-					else if (amount == 0) {
-						System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-								+ user.getMetasAsociadas().get(i).getFechaNormal());
-					}
-
-					else if (name == null) {
-						System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getCantidad() + ", "
-								+ user.getMetasAsociadas().get(i).getFechaNormal());
-					}
-
-					else {
-						System.out.println(i + 1 + ". " + user.getMetasAsociadas().get(i).getNombre() + ", "
-								+ user.getMetasAsociadas().get(i).getCantidad() + ", "
-								+ user.getMetasAsociadas().get(i).getFechaNormal());
-					}
-				}
+				user.impresionMetas(user.getMetasAsociadas());
 			}
 			break;
 		}
@@ -1998,7 +1974,7 @@ public final class Main {
 		String cupo_op = sc.nextLine();
 		double cupo = 1000000;
 		if (cupo_op.equals("y") && cupo_op.equalsIgnoreCase("y")) {
-			System.out.print("¿")
+			System.out.print("¿");
 		}
 
 		while(true) {
