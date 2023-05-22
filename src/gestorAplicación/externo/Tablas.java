@@ -24,6 +24,7 @@ public interface Tablas {
 	public abstract void impresionBancos(ArrayList<Banco> bancos);
 	public abstract void impresionEstados(ArrayList<Estado> estados);
 	public abstract void impresionCuentasCorriente(ArrayList<Corriente> cuentas);
+	public abstract void impresionCuentasCorrienteInteres(ArrayList<Corriente> cuentas, ArrayList<Double> intereses);
 	public abstract void impresionCuentasAhorros(ArrayList<Ahorros> cuentas);
 	public abstract void impresionCuentas(ArrayList<Cuenta> cuentas);
 	public abstract void impresionDeudas(ArrayList<Deuda> deudas);

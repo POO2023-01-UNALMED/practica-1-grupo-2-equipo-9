@@ -991,12 +991,11 @@ public final class Main {
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(usuario, cuentasCapacesDeuda);
 
+		cuentasAux.add(cuenta);
+		Collections.sort(cuentasAux);
+		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta a eliminar son: ");
-		for (int i = 0; i < cuentasCapacesDeuda.size(); i++) {
-			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
-			+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
-			System.out.println("");
-		}
+		user.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
 
 		//Atributo de validacion de la entrada Cuenta_Destino
 		boolean validacion_Cuenta_Destino = true;
@@ -1033,7 +1032,7 @@ public final class Main {
 			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + " cuotas.");
 		}
 		//Atributo de la periodicidad
-		Cuotas eleccion_periodicidad = null;
+		Cuotas eleccion_periodicidad = cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago();
 		if (Periodicidad == 2) {
 			//Atributo de validacion de la seleccion de periodicidad
 			boolean validacion_Seleccion_Periodicidad = true;
@@ -1090,20 +1089,23 @@ public final class Main {
 
 		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
 				cuenta.getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
-
-		boolean validacionPagoPrimerMes = true;
-		int pagoPrimerMes = 0;
-		while(validacionPagoPrimerMes) {
-			System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
-					+ "deberá pagar su valor correspondiente."
-					+ "\n1. Sí"
-					+ "\n2. No");
-			pagoPrimerMes = Integer.parseInt(sc.nextLine());
-			if (pagoPrimerMes == 1 || pagoPrimerMes == 2) {
-				validacionPagoPrimerMes = false;
-			}
-			else {
-				System.out.println("Entrada no válida, intente de nuevo");
+		
+		int pagoPrimerMes = 1;
+		
+		if(eleccion_periodicidad.getCantidad_Cuotas() != 1) {
+			boolean validacionPagoPrimerMes = true;
+			while(validacionPagoPrimerMes) {
+				System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
+						+ "deberá pagar su valor correspondiente."
+						+ "\n1. Sí"
+						+ "\n2. No");
+				pagoPrimerMes = Integer.parseInt(sc.nextLine());
+				if (pagoPrimerMes == 1 || pagoPrimerMes == 2) {
+					validacionPagoPrimerMes = false;
+				}
+				else {
+					System.out.println("Entrada no válida, intente de nuevo");
+				}
 			}
 		}
 
@@ -1118,27 +1120,30 @@ public final class Main {
 
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
+		System.out.println();
 		System.out.println(vistaPrevia);
 		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 
 		System.out.println("Primer Cuota: ");
-		System.out.println(cuotaMensual);
-
-		boolean validacionCalculadora = true;
-		int decisionCalculadora = 0;
-		while(validacionCalculadora) {
-			System.out.println("¿Desea un resumen completo de las deudas a pagar?"
-					+ "\n1. Sí"
-					+ "\n2. No");
-			decisionCalculadora = Integer.parseInt(sc.nextLine());
-			if (decisionCalculadora == 1 || decisionCalculadora == 2) {
-				validacionCalculadora = false;
-			}
-			else {
-				System.out.println("Entrada no válida, intente de nuevo");
+		System.out.println(cuotaMensual + " " + vistaPrevia.getDivisa());
+		
+		int decisionCalculadora = 2;
+		if(eleccion_periodicidad.getCantidad_Cuotas() != 1) {
+			boolean validacionCalculadora = true;
+			while(validacionCalculadora) {
+				System.out.println("¿Desea un resumen completo de las deudas a pagar?"
+						+ "\n1. Sí"
+						+ "\n2. No");
+				decisionCalculadora = Integer.parseInt(sc.nextLine());
+				if (decisionCalculadora == 1 || decisionCalculadora == 2) {
+					validacionCalculadora = false;
+				}
+				else {
+					System.out.println("Entrada no válida, intente de nuevo");
+				}
 			}
 		}
-
+	
 		if(decisionCalculadora == 1) {
 			double[][] cuotaCalculadora;
 			if(vistaPrevia.getPrimerMensualidad()) {
@@ -1168,29 +1173,29 @@ public final class Main {
 		}
 		switch(confirmacionMovimiento) {
 		case 1:
+			//Cambios para la cuenta origen
+			cuenta.setDisponible(cuenta.getCupo());
+			cuenta.setPlazo_Pago(Cuotas.C1);
+			
+			//Cambios para la cuenta destino
 			Cuenta.getCuentasTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 			usuario.getCuentasAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 			usuario.getCuentasCorrienteAsociadas().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
 			Corriente.getCuentasCorrienteTotales().remove(cuentasCapacesDeuda.get(Cuenta_Destino - 1));
-			Corriente aux = cuentasCapacesDeuda.get(Cuenta_Destino - 1);
-			aux = null;
-
-			//Cambios para la cuenta origen
-			cuenta.setDisponible(cuenta.getCupo());
-			cuenta.setPlazo_Pago(null);
-
+			
+			user.asociarCuenta(vistaPrevia);
+			
+			System.out.println("Compra de cartera realizada con éxito");
+			
 			return true;
 
 		case 2:
 			Cuenta.getCuentasTotales().remove(vistaPrevia);
-			usuario.getCuentasAsociadas().remove(vistaPrevia);
-			usuario.getCuentasCorrienteAsociadas().remove(vistaPrevia);
 			Corriente.getCuentasCorrienteTotales().remove(vistaPrevia);
 			vistaPrevia = null;
 			System.out.println("Movimiento cancelado.");
 			return false;
 		}
-		System.gc();
 		return false;
 	}
 
@@ -1247,6 +1252,7 @@ public final class Main {
 
 			//Retornar información de la Cuenta
 			System.out.println("Información de la cuenta: ");
+			System.out.println("");
 			System.out.println(cuentasEnDeuda.get(Cuenta_Compra - 1));
 
 			System.out.println("");
@@ -1292,11 +1298,7 @@ public final class Main {
 		Collections.sort(cuentasAux);
 		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
-		for (int i = 0; i < cuentasCapacesDeuda.size(); i++) {
-			System.out.println(i + 1 + ". " + cuentasCapacesDeuda.get(i)
-			+ "\n Tasa de Interés: " + tasacionCuentas.get(i));
-			System.out.println("");
-		}
+		user.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
 
 		//Atributo de validacion de la entrada Cuenta_Destino
 		boolean validacion_Cuenta_Destino = true;
@@ -1330,10 +1332,10 @@ public final class Main {
 		}
 
 		if (Periodicidad == 1) {
-			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + " cuotas.");
+			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + ".");
 		}
 		//Atributo de la periodicidad
-		Cuotas eleccion_periodicidad = null;
+		Cuotas eleccion_periodicidad = cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago();
 		if (Periodicidad == 2) {
 			//Atributo de validacion de la seleccion de periodicidad
 			boolean validacion_Seleccion_Periodicidad = true;
@@ -1359,31 +1361,31 @@ public final class Main {
 			switch(seleccion_periodicidad) {
 			case 1:
 				eleccion_periodicidad = Cuotas.C1;
-				System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C1 + ".");
 				break;
 			case 2:
 				eleccion_periodicidad = Cuotas.C6;
-				System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C6 + ".");
 				break;
 			case 3:
 				eleccion_periodicidad = Cuotas.C12;
-				System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C12 + ".");
 				break;
 			case 4:
 				eleccion_periodicidad = Cuotas.C18;
-				System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C18 + ".");
 				break;
 			case 5:
 				eleccion_periodicidad = Cuotas.C24;
-				System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C24 + ".");
 				break;
 			case 6:
 				eleccion_periodicidad = Cuotas.C36;
-				System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C36 + ".");
 				break;
 			case 7:
 				eleccion_periodicidad = Cuotas.C48;
-				System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + " cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C48 + ".");
 				break;
 			}
 		}
@@ -1391,52 +1393,58 @@ public final class Main {
 		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
 				(cuentasEnDeuda.get(Cuenta_Compra - 1).getCupo() - cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible()),
 				tasacionCuentas.get(Cuenta_Destino - 1));
-
-		boolean validacionPagoPrimerMes = true;
-		int pagoPrimerMes = 0;
-		while(validacionPagoPrimerMes) {
-			System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
-					+ " deberá pagar su valor correspondiente."
-					+ "\n1. Sí"
-					+ "\n2. No");
-			pagoPrimerMes = Integer.parseInt(sc.nextLine());
-			if (pagoPrimerMes == 1 || pagoPrimerMes == 2) {
-				validacionPagoPrimerMes = false;
-			}
-			else {
-				System.out.println("Entrada no válida, intente de nuevo");
+		
+		int pagoPrimerMes = 1;
+		
+		if(eleccion_periodicidad.getCantidad_Cuotas() != 1) {
+			boolean validacionPagoPrimerMes = true;
+			while(validacionPagoPrimerMes) {
+				System.out.println("¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes"
+						+ " deberá pagar su valor correspondiente."
+						+ "\n1. Sí"
+						+ "\n2. No");
+				pagoPrimerMes = Integer.parseInt(sc.nextLine());
+				if (pagoPrimerMes == 1 || pagoPrimerMes == 2) {
+					validacionPagoPrimerMes = false;
+				}
+				else {
+					System.out.println("Entrada no válida, intente de nuevo");
+				}
 			}
 		}
-
+		
 		double[] cuota;
 		if (pagoPrimerMes == 1) {
-			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible());
+			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible());
 			vistaPrevia.setPrimerMensualidad(true);
 		}
 		else {
-			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getDisponible(), 1);
+			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible(), 1);
 		}
 
 		//Vista Previa de los resultados del cambio
 		System.out.println("Vista previa de como quedaría la cuenta escogida para recibir la deuda: ");
+		System.out.println();
 		System.out.println(vistaPrevia);
 		String cuotaMensual = Corriente.imprimirCuotaMensual(cuota);
 
 		System.out.println("Primer Cuota: ");
 		System.out.println(cuotaMensual + " " + vistaPrevia.getDivisa());
-
-		boolean validacionCalculadora = true;
-		int decisionCalculadora = 0;
-		while(validacionCalculadora) {
-			System.out.println("¿Desea un resumen completo de las deudas a pagar?"
-					+ "\n1. Sí"
-					+ "\n2. No");
-			decisionCalculadora = Integer.parseInt(sc.nextLine());
-			if (decisionCalculadora == 1 || decisionCalculadora == 2) {
-				validacionCalculadora = false;
-			}
-			else {
-				System.out.println("Entrada no válida, intente de nuevo");
+		
+		int decisionCalculadora = 2;
+		if(eleccion_periodicidad.getCantidad_Cuotas() != 1) {
+			boolean validacionCalculadora = true;
+			while(validacionCalculadora) {
+				System.out.println("¿Desea un resumen completo de las cuotas a pagar?"
+						+ "\n1. Sí"
+						+ "\n2. No");
+				decisionCalculadora = Integer.parseInt(sc.nextLine());
+				if (decisionCalculadora == 1 || decisionCalculadora == 2) {
+					validacionCalculadora = false;
+				}
+				else {
+					System.out.println("Entrada no válida, intente de nuevo");
+				}
 			}
 		}
 
@@ -1597,20 +1605,20 @@ public final class Main {
 
 	// SOBRECARGA CALCULADORA DE CUOTAS (IMPRESIÓN CON DIVISA)
 	static void calculadoraCuotas(double[][] cuotaCalculadora, double[] infoAdicional, Divisas divisa) {
-		System.out.println("Total pagado: $" + Corriente.redondeoDecimal(infoAdicional[0], 2) + divisa);
-		System.out.println("Intereses pagados: $" + Corriente.redondeoDecimal(infoAdicional[1], 2) + divisa);
+		System.out.println("Total pagado: $" + Corriente.redondeoDecimal(infoAdicional[0], 2) + " " + divisa);
+		System.out.println("Intereses pagados: $" + Corriente.redondeoDecimal(infoAdicional[1], 2) + " " + divisa);
 		System.out.println("Mes 1:");
-		System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(infoAdicional[2], 2) + divisa);
-		System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][0], 2) + divisa);
-		System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][1], 2) + divisa);
-		System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][2], 2) + divisa);
+		System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(infoAdicional[2], 2) + " " + divisa);
+		System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][0], 2) + " " + divisa);
+		System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][1], 2) + " " + divisa);
+		System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[0][2], 2) + " " + divisa);
 
 		for (int i = 2; i <= cuotaCalculadora.length; i++) {
 			System.out.println("Mes " + i + ":");
-			System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 2][2], 2) + divisa);
-			System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][0], 2) + divisa);
-			System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][1], 2) + divisa);
-			System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][2], 2) + divisa);
+			System.out.println("\tDeuda: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 2][2], 2) + " " + divisa);
+			System.out.println("\tIntereses: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][0], 2) + " " + divisa);
+			System.out.println("\tCuota a pagar: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][1], 2) + " " + divisa);
+			System.out.println("\tSaldo restante: $" + Corriente.redondeoDecimal(cuotaCalculadora[i - 1][2], 2) + " " + divisa);
 		}
 	}
 

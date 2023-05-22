@@ -36,6 +36,11 @@ public enum Cuotas {
 	}
 	
 	public String toString() {
-		return cantidad_Cuotas + " cuotas";
+		if (cantidad_Cuotas == 1) {
+			return cantidad_Cuotas + " cuota";
+		}
+		else {
+			return cantidad_Cuotas + " cuotas";
+		}
 	}
 }

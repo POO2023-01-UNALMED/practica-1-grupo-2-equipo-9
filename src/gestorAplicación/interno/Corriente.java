@@ -53,7 +53,7 @@ public class Corriente extends Cuenta implements Cloneable{
 		double interes_nominal_mensual = Corriente.calculoInteresNominalMensual(this.getIntereses());
 		double interes = DeudaActual * (interes_nominal_mensual / 100);
 		cuotaMensual[0] = interes;
-		double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+		double abono_capital = (this.getCupo() - this.getDisponible()) / this.getPlazo_Pago().getCantidad_Cuotas();
 		cuotaMensual[1] = abono_capital;
 		double cuotaMensualFinal = interes + abono_capital;
 		cuotaMensual[2] = cuotaMensualFinal;
@@ -65,13 +65,13 @@ public class Corriente extends Cuenta implements Cloneable{
 		double interes_nominal_mensual = Corriente.calculoInteresNominalMensual(this.getIntereses());
 		if(mes == 1) {
 			cuotaMensual[0] = 0;
-			double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+			double abono_capital = (this.getCupo() - this.getDisponible()) / this.getPlazo_Pago().getCantidad_Cuotas();
 			cuotaMensual[1] = abono_capital;
 			double cuotaMensualFinal = abono_capital;
 			cuotaMensual[2] = cuotaMensualFinal;
 		}
 		else if(mes == 2){
-			double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+			double abono_capital = (this.getCupo() - this.getDisponible()) / this.getPlazo_Pago().getCantidad_Cuotas();
 			double interes_mes1 = (interes_nominal_mensual / 100) * (abono_capital + DeudaActual);
 			double interes_mes2 = DeudaActual * (interes_nominal_mensual / 100);
 			double interes = interes_mes1 + interes_mes2;
@@ -83,7 +83,7 @@ public class Corriente extends Cuenta implements Cloneable{
 		else {
 			double interes = DeudaActual * (interes_nominal_mensual / 100);
 			cuotaMensual[0] = interes;
-			double abono_capital = this.getDisponible() / this.getPlazo_Pago().getCantidad_Cuotas();
+			double abono_capital = (this.getCupo() - this.getDisponible()) / this.getPlazo_Pago().getCantidad_Cuotas();
 			cuotaMensual[1] = abono_capital;
 			double cuotaMensualFinal = interes + abono_capital;
 			cuotaMensual[2] = cuotaMensualFinal;

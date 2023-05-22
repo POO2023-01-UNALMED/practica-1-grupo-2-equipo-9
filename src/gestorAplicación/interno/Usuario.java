@@ -351,6 +351,31 @@ public class Usuario implements Serializable, Tablas {
 		return;
 	}
 	
+	public void impresionCuentasCorrienteInteres(ArrayList<Corriente> cuentas, ArrayList<Double> intereses){
+		ArrayList<String> cadena = Corriente.propiedadesCuenta();
+		
+		Corriente.limpiarPropiedades(cadena);
+		Cuenta.limpiarPropiedades(cadena);
+		
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %15s %10s %15s %15s %10s %10s %20s %20s %15s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(7),
+				cadena.get(8), cadena.get(9), cadena.get(10), cadena.get(5), "Interés Nuevo");
+		System.out.println();
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Corriente cuenta: cuentas) {
+			System.out.printf("%4d %8d %15s %15s %10d %15s %15s %10d %10s %20s %20s %15s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (cuenta.getCupo() + " " + cuenta.getDivisa()), (cuenta.getDisponible() + " " + cuenta.getDivisa()),
+					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (cuenta.getIntereses() + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre(), (intereses.get(i - 1) + " %"));
+			System.out.println();
+			i++;
+		}
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
 	public void impresionCuentasAhorros(ArrayList<Ahorros> cuentas) {
 		ArrayList<String> cadena = Ahorros.propiedadesCuenta();
 		
@@ -433,10 +458,31 @@ public class Usuario implements Serializable, Tablas {
 		System.out.println("--------------------------------------------------------------------------------");
 		int i = 1;
 		for (Metas meta: metas) {
-			System.out.printf("%4d %8d %20s %15s %12s %14s", 
-					i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), meta.getCantidad(), meta.getFechaNormal());
-			System.out.println();
-			i++;
+			if (meta.getFecha() == null) {
+				System.out.printf("%4d %8d %20s %15s %12s %14s", 
+					i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), meta.getCantidad(), "/");
+				System.out.println();
+				i++;
+			}
+			else if(meta.getCantidad() == 0) {
+				System.out.printf("%4d %8d %20s %15s %12s %14s", 
+					i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), "/", meta.getFechaNormal());
+				System.out.println();
+				i++;
+			}
+			else if(meta.getNombre() == null) {
+				System.out.printf("%4d %8d %20s %15s %12s %14s", 
+					i, meta.getId(), "/", meta.getDueno().getNombre(), meta.getCantidad(), meta.getFechaNormal());
+				System.out.println();
+				i++;
+			}
+			else {
+				System.out.printf("%4d %8d %20s %15s %12s %14s", 
+						i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), meta.getCantidad(), meta.getFechaNormal());
+				System.out.println();
+				i++;
+			}
+			
 		}
 		System.out.println("--------------------------------------------------------------------------------");
 
