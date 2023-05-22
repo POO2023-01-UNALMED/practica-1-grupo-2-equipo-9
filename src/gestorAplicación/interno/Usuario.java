@@ -375,6 +375,28 @@ public class Usuario implements Serializable, Tablas {
 		return;
 	}
 	
+	public void impresionCuentas(ArrayList<Cuenta> cuentas) {
+		ArrayList<String> cadena = Cuenta.propiedadesCuenta();
+
+		Cuenta.limpiarPropiedades(cadena);
+		
+		System.out.println("-----------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %10s %20s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(5));
+		System.out.println();
+		System.out.println("-----------------------------------------------------------------------------------------");
+		int i = 1;
+		for (Cuenta cuenta: cuentas) {
+			System.out.printf("%4d %8d %15s %25s %10d %20s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), cuenta.getBanco().getNombre());
+			System.out.println();
+			i++;
+		}
+		System.out.println("-----------------------------------------------------------------------------------------");
+
+		return;
+	}
+	
 	public void impresionDeudas(ArrayList<Deuda> deudas) {
 		ArrayList<String> cadena = Deuda.propiedadesCuenta();
 		

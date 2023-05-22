@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import gestorAplicación.interno.Ahorros;
 import gestorAplicación.interno.Corriente;
+import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Deuda;
 import gestorAplicación.interno.Metas;
 import gestorAplicación.interno.Movimientos;
@@ -24,6 +25,7 @@ public interface Tablas {
 	public abstract void impresionEstados(ArrayList<Estado> estados);
 	public abstract void impresionCuentasCorriente(ArrayList<Corriente> cuentas);
 	public abstract void impresionCuentasAhorros(ArrayList<Ahorros> cuentas);
+	public abstract void impresionCuentas(ArrayList<Cuenta> cuentas);
 	public abstract void impresionDeudas(ArrayList<Deuda> deudas);
 	public abstract void impresionMetas(ArrayList<Metas> metas);
 	public abstract void impresionMovimientos(ArrayList<Movimientos> movimientos);
