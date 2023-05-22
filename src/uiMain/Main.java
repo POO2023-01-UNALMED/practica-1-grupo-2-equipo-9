@@ -1205,7 +1205,6 @@ public final class Main {
 
 		while (seleccion_Cuenta) {
 			System.out.println("Cuentas a nombre de " + user.getNombre() + " con préstamos asociados: ");
-
 			//Impresión Cuentas con Préstamo Asociado
 			user.impresionCuentasCorriente(cuentasEnDeuda);
 
@@ -1270,6 +1269,11 @@ public final class Main {
 		cuentasAux.add(cuentasEnDeuda.get(Cuenta_Compra - 1));
 		Collections.sort(cuentasAux);
 		
+		if (cuentasCapacesDeuda.size() == 0) {
+			System.out.println("Ninguna de las cuentas Corriente que posees tiene la capacidad de recibir la deuda de la cuenta escogida.");
+			return;
+		}
+		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
 		user.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
 
@@ -1303,13 +1307,14 @@ public final class Main {
 				System.out.println("Entrada no válida, intente de nuevo");
 			}
 		}
-
+		
+		//Atributo de la periodicidad
+		Cuotas eleccion_periodicidad = Cuotas.C1;
 		if (Periodicidad == 1) {
 			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + ".");
+			eleccion_periodicidad = cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago();
 		}
-		//Atributo de la periodicidad
-		Cuotas eleccion_periodicidad = cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago();
-		if (Periodicidad == 2) {
+		else if (Periodicidad == 2) {
 			//Atributo de validacion de la seleccion de periodicidad
 			boolean validacion_Seleccion_Periodicidad = true;
 			int seleccion_periodicidad = 0;

@@ -384,8 +384,8 @@ public class Banco implements Serializable {
 	public static ArrayList<Double> verificarTasasdeInteres(Usuario usuario, ArrayList<Corriente> cuentas){
 		ArrayList<Double> tasasdeInteres = new ArrayList<Double>();
 		Suscripcion suscripcion = usuario.getSuscripcion();
-		for (Cuenta cuenta : cuentas) {
-			Double interes = verificarTasasdeInteres(suscripcion, (Corriente) cuenta);
+		for (Corriente cuenta : cuentas) {
+			Double interes = verificarTasasdeInteres(suscripcion, cuenta);
 			tasasdeInteres.add(interes);
 		}
 		return tasasdeInteres;
