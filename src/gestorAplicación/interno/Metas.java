@@ -30,21 +30,21 @@ public class Metas implements Serializable {
 		this.nombre = nombre;
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
-		this.setId(Metas.getMetasTotales().size());
+		this.setId(Metas.getMetasTotales().size() + 1);
 		Metas.getMetasTotales().add(this);
 	}
 
 	public Metas(String nombre, double cantidad) {
 		this.nombre = nombre;
 		this.cantidad = cantidad;
-		this.setId(Metas.getMetasTotales().size());
+		this.setId(Metas.getMetasTotales().size() + 1);
 		Metas.getMetasTotales().add(this);
 	}
 
 	public Metas(String nombre, String fecha) throws ParseException {
 		this.nombre = nombre;
 		this.fecha = DATE_FORMAT.parse(fecha);
-		this.setId(Metas.getMetasTotales().size());
+		this.setId(Metas.getMetasTotales().size() + 1);
 		Metas.getMetasTotales().add(this);
 	}
 
@@ -52,7 +52,7 @@ public class Metas implements Serializable {
 		this.setId(id);
 		this.cantidad = cantidad;
 		this.fecha = DATE_FORMAT.parse(fecha);
-		this.setId(Metas.getMetasTotales().size());
+		this.setId(Metas.getMetasTotales().size() + 1);
 		Metas.getMetasTotales().add(this);
 	}
 
