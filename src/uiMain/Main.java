@@ -2482,7 +2482,14 @@ public final class Main {
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas creadas por el Usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAsociadas());
-			user.impresionCuentas(user.getCuentasAsociadas());
+			if(user.getCuentasAhorrosAsociadas().size() != 0) {
+				System.out.println("CUENTAS DE AHORROS");
+				user.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
+			}
+			if(user.getCuentasCorrienteAsociadas().size() != 0) {
+				System.out.println("CUENTAS CORRIENTE");
+				user.impresionCuentasCorriente(user.getCuentasCorrienteAsociadas());
+			}
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2697,7 +2704,14 @@ public final class Main {
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			Collections.sort(Cuenta.getCuentasTotales());
-			user.impresionCuentas(Cuenta.getCuentasTotales());
+			if(user.getCuentasAhorrosAsociadas().size() != 0) {
+				System.out.println("CUENTAS DE AHORROS");
+				user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
+			}
+			if(user.getCuentasCorrienteAsociadas().size() != 0) {
+				System.out.println("CUENTAS CORRIENTE");
+				user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
+			}
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
