@@ -89,9 +89,18 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		double cambiado = monto*(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
 		cambiado = cambiado*(1-escogencia.getCoutaManejo());
 		cambiado = cambiado*(escogencia.getCantidad());
-		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto);
+		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto, Date.from(Instant.now()));
 		origen.setSaldo(origen.getSaldo()-monto);
 		destino.setSaldo(destino.getSaldo()+cambiado);
+	}
+	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino, boolean exacto) {
+		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
+		double pagar = monto/(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
+		pagar = pagar/(1-escogencia.getCoutaManejo());
+		pagar = pagar/(escogencia.getCantidad());
+		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , pagar, Date.from(Instant.now()));
+		origen.setSaldo(origen.getSaldo()-pagar);
+		destino.setSaldo(destino.getSaldo()+monto);
 	}
 	
 	public static ArrayList<Ahorros> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
@@ -113,6 +122,19 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 			return false;
 		}
 		}
+	
+	public static boolean comprobarSaldo(Movimientos escogencia, double monto ) {
+		double pagar = monto/(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
+		pagar = pagar/(1-escogencia.getCoutaManejo());
+		pagar = pagar/(escogencia.getCantidad());
+		Ahorros ahorro = (Ahorros) escogencia.getOrigen();
+		if (ahorro.getSaldo() >= monto) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 		
 //	public static ArrayList<Cuenta> cuentasConSaldo(ArrayList<Cuenta> cuentasDisponibes, double monto){
 //		ArrayList<Cuenta> cuentasConSaldo = new ArrayList<Cuenta>(); 

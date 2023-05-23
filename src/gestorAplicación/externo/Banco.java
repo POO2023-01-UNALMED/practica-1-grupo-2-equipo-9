@@ -160,9 +160,11 @@ public class Banco implements Serializable {
 	public static ArrayList<Movimientos> cotizarTaza(Usuario user, ArrayList<Banco> existeCambio, String cadena, ArrayList<Ahorros> ahorrosPosibles) {
 		ArrayList<Movimientos> imprimir = new ArrayList<Movimientos>();
 		for (Ahorros ahorro : ahorrosPosibles) {
-			int indice = ahorro.getBanco().getDic().indexOf(cadena);
-			double valor = ahorro.getBanco().getCionario().get(indice);
 			for(Banco banco: existeCambio) {
+				int indice = banco.getDic().indexOf(cadena);
+				double valor = banco.getCionario().get(indice);
+				if (ahorro.getBanco().equals(banco))
+					valor = valor * 0.98;
 				if (banco.isAsociado()) {
 					valor = valor *0.97;
 				}

@@ -82,55 +82,89 @@ public final class Main {
 		else {
 			System.out.println("Se han encontrado " + existeCambio.size() + " bancos en donde realizar el cambio");
 		}
+		System.out.println(ahorrosPosibles);
+		if (ahorrosPosibles.size() == 0) {
+			System.out.print("Usted no posee ninguna cuenta con divisa " + divisaA.name());
+			return;
+		}
 	System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
 	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, ahorrosPosibles);
-	int j=1;
+	int j=0;
 //	if (imprimir.size() == 0) {
 //		System.out.println("No existen bancos que realicen el tipo de cambio pedido. Intente usar otra divisa como puente.");
 //		return;
 //	}
 	for (Movimientos cotizacion : imprimir) {
 		j=j+1;
-		System.out.println(j + ". con el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
+		System.out.println(j + ". Por el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
 	}
 	opcion = Integer.parseInt(sc.nextLine());
 	Movimientos escogencia = imprimir.get(opcion-1);
 	System.out.print("¿Desea continuar con el proceso? (Y/N): ");
 	String c = sc.nextLine();
-	Ahorros cuentaB = null;
-	if (c.equals("Y") || c.equalsIgnoreCase("y")) {
-		while(true) {
-			System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
-			ArrayList<Ahorros> cuentasB = Cuenta.obtenerCuentasDivisa(user, divisaB);
-			int h = 1;
-			for (Cuenta ahorro : cuentasB ) {
-				System.out.println(h + ". " + ahorro.getNombre());
-				h = h+1;
-			}
-			System.out.println("Crear una cuenta en" + divisaB.name());
-			opcion = Integer.parseInt(sc.nextLine());
-			if (opcion == h+1) {
-				Main.crearCuenta();
-				cuentaB = user.getCuentasAhorrosAsociadas().get(-1);
-				break;
-			}
-			else if ((opcion > 0) && (opcion < h+1)) {
-				cuentaB =  cuentasB.get(opcion -1);
-				break;
-			}
-			else {
-				System.out.println("No existe la opción " + opcion + ". Por favor digite su elección de nuevo");
+	if (c.equals("N") || c.equalsIgnoreCase("n")) {
+		return;
+	}
+	System.out.print("La cuenta que recibe el dinero es mía (Y/N): ");
+	String d= sc.nextLine();
+	Usuario usuarioB = user;
+	if (d.equals("N") || d.equalsIgnoreCase("n")) {
+		while (true) {
+			System.out.print("Digite el nombre o correo electrónico de destinatario: ");
+			String respuesta = sc.nextLine();
+			for (Usuario usuario : Usuario.getUsuariosTotales()) {
+				if (usuario.getNombre().equals(respuesta) || usuario.getCorreo().equals(respuesta) ) {
+					usuarioB = usuario;
+					break;
+				}
+				else {
+					System.out.print("Entrada no válida, ¿salir? (Y/N): ");
+					String e = sc.nextLine();
+					if (e.equals("Y") || e.equalsIgnoreCase("y")) {
+						return;
+					}
+				}
 			}
 		}
 	}
+	Ahorros cuentaB = null;
+	while(true) {
+		System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
+		ArrayList<Ahorros> cuentasB = Cuenta.obtenerCuentasDivisa(usuarioB, divisaB);
+		int h = 1;
+		for (Cuenta ahorro : cuentasB ) {
+			System.out.println(h + ". " + ahorro.getNombre());
+			h = h+1;
+		}
+		System.out.println(h + ". Salir");
+		opcion = Integer.parseInt(sc.nextLine());
+		if (opcion == h) {
+			return;
+		}
+		else if ((opcion > 0) && (opcion < h)) {
+			cuentaB =  cuentasB.get(opcion -1);
+			break;
+		}
+		else {
+			System.out.println("No existe la opción " + opcion + ". Por favor digite su elección de nuevo");
+		}
+	}
+	if (exacta==true) {
+		if (!Cuenta.comprobarSaldo(escogencia, monto)) {
+			System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
+			return; 
+		}
+		Cuenta.hacerCambio(escogencia, monto, cuentaB, exacta);
+	}
 	else {
-		return;//Main.BienvenidaApp(); //Volver al menú anterior
+		if (!Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
+			System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
+			return; 
+		}
+		Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
-	if (!Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
-		System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
-		return; //Volver al menú anterior
-	}
-	Cuenta.hacerCambio(escogencia, monto, cuentaB);
+	
+	novato=false;
 	}
 
 	// FUNCIONALIDAD DE PRESTAMO 
@@ -2250,7 +2284,7 @@ public final class Main {
 	// CREAR CUENTA EN EL MAIN
 	static void crearCuenta() {
 		//PRIMERO DEBEMOS PEDIR LOS DATOS, COMO ALGUNOS SON OPCIONALES, SE PEDIRÁ QUE SI NO SE QUIERE INGRESAR
-		//LA INFORMACIÓN SOLICITADA SE DE ENTER
+		//LA INFORMACIÓN SOLICITADA SE DA ENTER
 		if(Banco.getBancosTotales().size() == 0) {
 			System.out.println("Para crear una cuenta deben existir bancos. Volviendo al menú anterior");
 			opcion = 0;
@@ -2754,14 +2788,15 @@ public final class Main {
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			Collections.sort(Cuenta.getCuentasTotales());
-			if(Ahorros.getCuentasAhorroTotales().size() != 0) {
-				System.out.println("CUENTAS DE AHORROS");
-				user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
-			}
-			if(Corriente.getCuentasCorrienteTotales().size() != 0) {
-				System.out.println("CUENTAS CORRIENTE");
-				user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
-			}
+			user.impresionCuentas(Cuenta.getCuentasTotales());
+//			if(Ahorros.getCuentasAhorroTotales().size() != 0) {
+//				System.out.println("CUENTAS DE AHORROS");
+//				user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
+//			}
+//			if(Corriente.getCuentasCorrienteTotales().size() != 0) {
+//				System.out.println("CUENTAS CORRIENTE");
+//				user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
+//			}
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {

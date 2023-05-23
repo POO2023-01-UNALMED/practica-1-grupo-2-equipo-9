@@ -125,7 +125,7 @@ public class Movimientos implements Serializable{
 		this.setCoutaManejo(coutaManejo);
 	}
 	//Movimiento de cambio de divisa
-	public Movimientos(Banco banco, Ahorros origen, Ahorros destino, Divisas divisa, Divisas divisasAux, double coutaManejo, double cantidad) {
+	public Movimientos(Banco banco, Ahorros origen, Ahorros destino, Divisas divisa, Divisas divisasAux, double coutaManejo, double cantidad, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
 		this.setBanco(banco);
 		this.setOrigen(origen);
@@ -134,6 +134,7 @@ public class Movimientos implements Serializable{
 		this.setDivisaAux(divisaAux);
 		this.setCoutaManejo(coutaManejo);
 		this.setCantidad(cantidad);
+		this.setFecha(fecha);
 	}
 	
 	// Movimiento que emula una compra con una cuenta corriente
