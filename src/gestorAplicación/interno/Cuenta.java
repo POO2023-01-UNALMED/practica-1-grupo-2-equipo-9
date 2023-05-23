@@ -224,6 +224,19 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		return arreglos;
 	}
 	
+	public static double DineroaTenerDisponible(Cuenta cuenta, Divisas divisa) {
+		//Tienes una cuenta de la que extraes su deuda (con el cupo y el disponible)
+		//De la misma cuenta extraes la divisa en la que esta ese valor
+		
+		//Recibes por parámetro la divisa a la cual quiero pasar ese dinero
+		
+		//Haces tus cálculos y me devuelves cual es el valor que debo checar este disponible en la otra cuenta
+		//El double debe resultar en la divisa que recibe el parámetro
+		//Tu veras si cobras comisiones o no o si lo quieres traspasar a otro código
+		return 0;
+	}
+	
+	
 	@Override	
 	protected void finalize() {
 		System.out.println("La cuenta " + this.getClass().getSimpleName() + " con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminada satisfactoriamente del sistema.");

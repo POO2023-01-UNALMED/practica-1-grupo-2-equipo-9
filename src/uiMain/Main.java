@@ -755,7 +755,8 @@ public final class Main {
 			}
 		}
 		
-		new Movimientos(cuentasCompra.get(eleccion_Cuenta - 1), valorCompra, Categoria.getCategorias().get(tipo_Compra - 1), Date.from(Instant.now()), true);
+		Movimientos movimiento_nuevo = new Movimientos(cuentasCompra.get(eleccion_Cuenta - 1), valorCompra, Categoria.getCategorias().get(tipo_Compra - 1), Date.from(Instant.now()), true);
+		user.asociarMovimiento(movimiento_nuevo);
 		System.out.println("Compra realizada con éxito.");
 	}
 	
@@ -980,6 +981,7 @@ public final class Main {
 					}
 				}
 			}
+			funcionalidad = 0;
 		}
 	}
 
@@ -2832,6 +2834,27 @@ public final class Main {
 			}	
 		}
 	}
+	
+	// VER MOVIMIENTOS ASOCIADOS EN EL MAIN
+		static void verMovimientosAsociados() {
+			//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
+			if(user.getMovimientosAsociados().size() > 0) {
+				System.out.println("La lista de Movimientos asociados son: ");
+				user.impresionMovimientos(user.getMovimientosAsociados());
+
+				//SE IMPRIME QUE NO EXISTEN MOVIMIENTOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
+			}else {
+				System.out.print("No hay movimientos creados. ¿Deseas crear uno? (Y/N): ");
+				String confirmacion = sc.nextLine();
+				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
+					Main.crearMovimiento();
+				}else {
+					System.out.println("Volviendo al menú anterior");
+					opcion = 0;
+					seccion = 1;
+				}	
+			}
+		}
 
 	// VER METAS TOTALES EN EL MAIN
 	static void verMetasTotales() throws ParseException {
@@ -3144,22 +3167,27 @@ public final class Main {
 					// Contenido de Movimientos
 					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?" 
 							+ "\n1. Realizar un cambio de divisa"
-							+ "\n2. Salir al menú principal");
+							+ "\n2. Ver mis movimientos"
+							+ "\n3. Salir al menú principal");
 
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
+					//Comprobar que la opción seleccionada pueda ejecutarse
+					if (opcion < 1 || opcion > 3 ) {
+						System.out.println("Entrada no valida");
+						continue;
+					}
 					//Entrada para funcionalidad de cambio de divisa
 					if (opcion == 1) {
 						Main.CambioDivisa();
 					}
 					// Volver al menú anterior
 					else if (opcion == 2) {
-						seccion = 0;
+						Main.verMovimientosAsociados();
 					}
-					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcion < 1 || opcion > 2 ) {
-						System.out.println("Entrada no valida");
-						continue;
+					// Volver al menú anterior
+					else if (opcion == 3) {
+						seccion = 0;
 					}
 				}	
 				// CERRAR SESIÓN COMO USUARIO

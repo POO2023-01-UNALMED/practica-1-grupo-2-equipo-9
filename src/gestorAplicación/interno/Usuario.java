@@ -165,7 +165,11 @@ public class Usuario implements Serializable, Tablas {
 		if(Movimientos.getMovimientosTotales().contains(movimiento)) {
 			movimiento.setOwner(this);
 			this.getMovimientosAsociados().add(movimiento);
-			return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
+			if (movimiento.getDestino() == null) {
+				return("El movimiento con origen " + movimiento.getOrigen().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
+			}else {
+				return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
+			}
 		}else {
 			return("No se encuentra el movimiento. Por favor asegurese de que el movimiento se haya realizado con éxito" );
 		}
