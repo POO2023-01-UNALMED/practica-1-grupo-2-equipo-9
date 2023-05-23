@@ -332,21 +332,21 @@ public class Usuario implements Serializable, Tablas {
 		Corriente.limpiarPropiedades(cadena);
 		Cuenta.limpiarPropiedades(cadena);
 		
-		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %15s %10s %15s %15s %10s %10s %20s %20s", 
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %10s %15s %15s %10s %10s %20s %20s", 
 				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(7),
 				cadena.get(8), cadena.get(9), cadena.get(10), cadena.get(5));
 		System.out.println();
-		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Corriente cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %15s %10d %15s %15s %10d %10s %20s %20s", 
+			System.out.printf("%4d %8d %15s %25s %10d %15s %15s %10d %10s %20s %20s", 
 					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (cuenta.getCupo() + " " + cuenta.getDivisa()), (cuenta.getDisponible() + " " + cuenta.getDivisa()),
 					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (cuenta.getIntereses() + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
-		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
 		return;
 	}
@@ -357,21 +357,21 @@ public class Usuario implements Serializable, Tablas {
 		Corriente.limpiarPropiedades(cadena);
 		Cuenta.limpiarPropiedades(cadena);
 		
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %15s %10s %15s %15s %10s %10s %20s %20s %15s", 
+		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %10s %15s %15s %10s %10s %20s %20s %15s", 
 				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(7),
 				cadena.get(8), cadena.get(9), cadena.get(10), cadena.get(5), "Interés Nuevo");
 		System.out.println();
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Corriente cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %15s %10d %15s %15s %10d %10s %20s %20s %15s", 
+			System.out.printf("%4d %8d %15s %25s %10d %15s %15s %10d %10s %20s %20s %15s", 
 					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (cuenta.getCupo() + " " + cuenta.getDivisa()), (cuenta.getDisponible() + " " + cuenta.getDivisa()),
 					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (cuenta.getIntereses() + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre(), (intereses.get(i - 1) + " %"));
 			System.out.println();
 			i++;
 		}
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
 		return;
 	}
@@ -382,20 +382,20 @@ public class Usuario implements Serializable, Tablas {
 		Ahorros.limpiarPropiedades(cadena);
 		Cuenta.limpiarPropiedades(cadena);
 		
-		System.out.println("-------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %15s %10s %15s %20s", 
+		System.out.println("---------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %10s %15s %20s", 
 				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(5));
 		System.out.println();
-		System.out.println("-------------------------------------------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Ahorros cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %15s %10d %15s %20s", 
+			System.out.printf("%4d %8d %15s %25s %10d %15s %20s", 
 					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(),
 					(cuenta.getSaldo() + " " + cuenta.getDivisa()), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
-		System.out.println("-------------------------------------------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------------");
 
 		return;
 	}

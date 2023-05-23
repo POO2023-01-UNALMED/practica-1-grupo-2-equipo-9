@@ -2706,11 +2706,11 @@ public final class Main {
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			Collections.sort(Cuenta.getCuentasTotales());
-			if(user.getCuentasAhorrosAsociadas().size() != 0) {
+			if(Ahorros.getCuentasAhorroTotales().size() != 0) {
 				System.out.println("CUENTAS DE AHORROS");
 				user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
 			}
-			if(user.getCuentasCorrienteAsociadas().size() != 0) {
+			if(Corriente.getCuentasCorrienteTotales().size() != 0) {
 				System.out.println("CUENTAS CORRIENTE");
 				user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
 			}
