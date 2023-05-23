@@ -67,6 +67,24 @@ public class Banco implements Serializable {
 		this.setId(Banco.getBancosTotales().size());
 	}
 	
+	public Banco(String nombre, double comision, Estado estado, double prestamo, Divisas divisa, ArrayList<String> dic, ArrayList<Double> cionario, double cupo, int multiplicador, double desc_suscripcion, double desc_movimientos_porcentaje, int desc_movimientos_cantidad) {
+		this.nombre = nombre;
+		this.setEstadoAsociado(estado);
+		this.comision = comision + estado.getTasa_impuestos();
+		this.setPrestamo(prestamo);
+		this.setDivisa(estado.getDivisa());
+		this.setId(Banco.getBancosTotales().size());
+		this.setDivisa(divisa);
+		this.setDic(dic);
+		this.setCionario(cionario);
+		this.setCupo_base(cupo);
+		this.setMultiplicador(multiplicador);
+		this.setDesc_suscripcion(desc_suscripcion);
+		this.setDesc_movimientos_porcentaje(desc_movimientos_porcentaje);
+		this.setDesc_movimientos_cantidad(desc_movimientos_cantidad);
+		bancosTotales.add(this);
+	}
+	
 	public Banco() {
 		this("Banco de Colombia", 0.3, Estado.getEstadosTotales().get(0), 200.0);
 	}

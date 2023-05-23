@@ -69,6 +69,7 @@ public final class Main {
 			System.out.println("Usted hará un cambio de divisa convencional, ¿qué monto desea cambiar?:  ");		
 		}
 		double monto = Double.parseDouble(sc.nextLine());
+		System.out.println("Buscando bancos para el cambio de divisa " + cadena + " ...");
 		Movimientos cambioDiv = new Movimientos(divisaA , divisaB, user);
 		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
 		if (existeCambio.size()==0) {
@@ -79,7 +80,7 @@ public final class Main {
 			System.out.println("Se ha encontrado un banco en donde realizar el cambio");
 		}
 		else {
-			System.out.println("Se han encontrado " + existeCambio.size() + "bancos en donde realizar el cambio");
+			System.out.println("Se han encontrado " + existeCambio.size() + " bancos en donde realizar el cambio");
 		}
 	System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
 	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, ahorrosPosibles);
@@ -1969,14 +1970,55 @@ public final class Main {
 				double tasa = Double.parseDouble(sc.nextLine());
 				dic.add(div+isa);
 				cionario.add(tasa);
+				System.out.println("Se agrega la tasa " + (div+isa) +  " con valor de " + tasa + ".");
 			}
 			}
+		for (String clave : dic) {
+			System.out.println(clave);
+		}
+		for (double valor : cionario) {
+			System.out.println(valor);
+		}
 		
 		System.out.print("¿Desea asignar un cupo base específico?: (Y/N): ");
 		String cupo_op = sc.nextLine();
 		double cupo = 1000000;
 		if (cupo_op.equals("y") && cupo_op.equalsIgnoreCase("y")) {
 			System.out.print("¿");
+			System.out.print("¿A qué valor? (Formato double): ");
+			cupo = Double.parseDouble(sc.nextLine());
+		}
+		
+		System.out.print("¿Desea asignar un multiplicador específico? (Y/N): ");
+		String multi_op = sc.nextLine();
+		int multi = 2; 
+		if (multi_op.equals("y") && multi_op.equalsIgnoreCase("y")) {
+			System.out.print("¿A qué valor? (Formato double): ");
+			multi = Integer.parseInt(sc.nextLine());
+		} 
+		
+		System.out.print("¿Desea asignar un desc_suscripcion base específico?: (Y/N): ");
+		String dsus_op = sc.nextLine();
+		double dsus = 0.2;
+		if (dsus_op.equals("y") && dsus_op.equalsIgnoreCase("y")) {
+			System.out.print("¿A qué valor? (Formato double): ");
+			dsus = Double.parseDouble(sc.nextLine());
+		}
+		
+		System.out.print("¿Desea asignar un desc_movimientos_porcentaje específico?: (Y/N): ");
+		String dmovp_op = sc.nextLine();
+		double dmovp = 0.2;
+		if (dmovp_op.equals("y") && dmovp_op.equalsIgnoreCase("y")) {
+			System.out.print("¿A qué valor? (Formato double): ");
+			dmovp = Double.parseDouble(sc.nextLine());
+		}
+		
+		System.out.print("¿Desea asignar un desc_movimientos_cantidad específico?: (Y/N): ");
+		String dmovc_op = sc.nextLine();
+		int dmovc = 5;
+		if (dmovc_op.equals("y") && dmovc_op.equalsIgnoreCase("y")) {
+			System.out.print("¿A qué valor? (Formato int): ");
+			dmovc = Integer.parseInt(sc.nextLine());
 		}
 
 		while(true) {
@@ -1990,7 +2032,7 @@ public final class Main {
 				int estado_op = Integer.parseInt(sc.nextLine());
 				Estado estado_banco = Estado.getEstadosTotales().get(estado_op - 1);
 				seguir = 0;
-				new Banco(nombreBanco, comision, estado_banco, prestamo, divisa, dic, cionario);	
+				new Banco(nombreBanco, comision, estado_banco, prestamo, divisa, dic, cionario, cupo, multi, dsus, dmovp, dmovc);	
 				System.out.println("Banco creado con éxito");
 				break;
 			}
@@ -2641,6 +2683,12 @@ public final class Main {
 		if(Banco.getBancosTotales().size() > 0) {
 			System.out.println("La lista de Bancos son: ");
 			user.impresionBancos(Banco.getBancosTotales());
+			for (Banco banco : Banco.getBancosTotales()) {
+				System.out.println(banco.getNombre());
+				for (int i=0; i< banco.getDic().size(); i++) {
+					System.out.println(banco.getDic().get(i) + " : " + banco.getCionario().get(i));
+				}
+			}
 
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {

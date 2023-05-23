@@ -312,7 +312,7 @@ public class Movimientos implements Serializable{
 		String cadena= mov.getDivisa().name() + mov.getDivisaAux().name();
 		ArrayList<Banco> existeCambio = new ArrayList<Banco>();
 		for (int j = 0; j < Banco.getBancosTotales().size(); j++) {
-			for (int k = 0; j< Banco.getBancosTotales().get(j).getDic().size(); k++ )
+			for (int k = 0; k< Banco.getBancosTotales().get(j).getDic().size(); k++ )
 				if (cadena.equals(Banco.getBancosTotales().get(j).getDic().get(k))) {
 					existeCambio.add(Banco.getBancosTotales().get(j));
 			}
