@@ -135,6 +135,7 @@ public class Movimientos implements Serializable{
 		this.setCoutaManejo(coutaManejo);
 		this.setCantidad(cantidad);
 		this.setFecha(fecha);
+		this.setCategoria(Categoria.FINANZAS);
 	}
 	
 	// Movimiento que emula una compra con una cuenta corriente

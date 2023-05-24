@@ -170,7 +170,9 @@ public class Usuario implements Serializable {
 			if (movimiento.getDestino() == null) {
 				return("El movimiento con origen " + movimiento.getOrigen().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 			}else {
-				movimiento.getDestino().getTitular().getMovimientosAsociados().add(movimiento);
+				if(!movimiento.getDestino().getTitular().equals(this)) {
+					movimiento.getDestino().getTitular().getMovimientosAsociados().add(movimiento);
+				}
 				return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 			}
 		}else {

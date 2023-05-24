@@ -85,22 +85,24 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	}
 	
 	// Métodos para funcionlidad de cambio de divisa
-	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino) {
+	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino, Usuario user) {
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
 		double cambiado = monto*(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
 		cambiado = cambiado*(1-escogencia.getCoutaManejo());
-		cambiado = redondeoDecimal(cambiado*(escogencia.getCantidad()), 2);
-		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto, Date.from(Instant.now()));
+		cambiado = cambiado*(escogencia.getCantidad());
+		Movimientos m = new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto, Date.from(Instant.now()));
+		user.asociarMovimiento(m);
 		origen.setSaldo(origen.getSaldo()-monto);
 		destino.setSaldo(destino.getSaldo()+cambiado);
 	}
 	
-	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino, boolean exacto) {
+	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino, boolean exacto, Usuario user) {
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
 		double pagar = monto/(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
 		pagar = pagar/(1-escogencia.getCoutaManejo());
-		pagar = redondeoDecimal(pagar/(escogencia.getCantidad()), 2);
-		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , pagar, Date.from(Instant.now()));
+		pagar = pagar/(escogencia.getCantidad());
+		Movimientos m = new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , pagar, Date.from(Instant.now()));
+		user.asociarMovimiento(m);
 		origen.setSaldo(origen.getSaldo()-pagar);
 		destino.setSaldo(destino.getSaldo()+monto);
 	}
@@ -123,7 +125,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		else {
 			return false;
 		}
-		}
+	}
 	
 	public static boolean comprobarSaldo(Movimientos escogencia, double monto ) {
 		double pagar = monto/(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());

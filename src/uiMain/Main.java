@@ -32,10 +32,10 @@ public final class Main {
 		System.out.println("¡Bienvenido al servicio de cambio de divisa!");
 		if(novato) {
 			System.out.println("Nota: El cambio de divisa se puede hacer de dos formas:" );
-			System.out.println("La Convencional se da teniendo cuando una cantidad de dinero de una divisa y se desea convertirlo a otra,");
-			System.out.println("y la Exacta se da cuando se desea obtener exactamente una cifra de dinero de una divisa a partir de otra ");
+			System.out.println("La Convencional se da cuando se tiene una cantidad de dinero en una divisa y se desea convertirla a otra divisa,");
+			System.out.println("y la Exacta se da cuando se desea obtener exactamente una cifra de dinero de una divisa a partir de otra divisa.");
 		}
-		System.out.println("¿Cuál tipo de cambio desea hacer?" + "\n1. Convencional" + "\n2.Exacta");
+		System.out.println("¿Cuál tipo de cambio desea hacer?" + "\n1. Convencional" + "\n2. Exacta");
 		opcion = Integer.parseInt(sc.nextLine());
 		boolean exacta = false;
 		if (opcion == 2) {
@@ -60,20 +60,20 @@ public final class Main {
 			System.out.println(i + ". " + divisasDevolucion.get(i-1).name());
 		}
 		opcion = Integer.parseInt(sc.nextLine());
-		Divisas divisaB = divisasDevolucion.get(opcion-1);
+		Divisas divisaB = divisasDevolucion.get(opcion - 1);
 		String cadena = divisaA.name() + divisaB.name();
 		if(exacta) {
-			System.out.println("Usted hará un cambio de divisa exacto, ¿ a qué monto desea llegar?:  ");
+			System.out.print("Usted hará un cambio de divisa exacto, ¿a qué monto desea llegar?: ");
 		}
 		else {
-			System.out.println("Usted hará un cambio de divisa convencional, ¿qué monto desea cambiar?:  ");		
+			System.out.print("Usted hará un cambio de divisa convencional, ¿qué monto desea cambiar?: ");		
 		}
 		double monto = Double.parseDouble(sc.nextLine());
 		System.out.println("Buscando bancos para el cambio de divisa " + cadena + " ...");
 		Movimientos cambioDiv = new Movimientos(divisaA , divisaB, user);
 		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
 		if (existeCambio.size()==0) {
-			System.out.println("No existe banco en el cual poder hacer dicho cambio de divisa");
+			System.out.println("No existe banco que pueda hacer dicho cambio de divisa");
 			return;
 		}
 		else if (existeCambio.size()==1) {
@@ -87,90 +87,90 @@ public final class Main {
 			System.out.print("Usted no posee ninguna cuenta con divisa " + divisaA.name());
 			return;
 		}
-	System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
-	ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, ahorrosPosibles);
-	int j=0;
-//	if (imprimir.size() == 0) {
-//		System.out.println("No existen bancos que realicen el tipo de cambio pedido. Intente usar otra divisa como puente.");
-//		return;
-//	}
-//	for (Movimientos cotizacion : imprimir) {
-//		j=j+1;
-//		System.out.println(j + ". Por el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
-//	}
-	Tablas.impresionCotizaciones(imprimir);
-	opcion = Integer.parseInt(sc.nextLine());
-	Movimientos escogencia = imprimir.get(opcion-1);
-	System.out.print("¿Desea continuar con el proceso? (Y/N): ");
-	String c = sc.nextLine();
-	if (c.equals("N") || c.equalsIgnoreCase("n")) {
-		return;
-	}
-	System.out.print("La cuenta que recibe el dinero es mía (Y/N): ");
-	String d= sc.nextLine();
-	Usuario usuarioB = user;
-	if (d.equals("N") || d.equalsIgnoreCase("n")) {
-		while (true) {
-			System.out.print("Digite el nombre o correo electrónico de destinatario: ");
-			String respuesta = sc.nextLine();
-			for (Usuario usuario : Usuario.getUsuariosTotales()) {
-				if (usuario.getNombre().equals(respuesta) || usuario.getCorreo().equals(respuesta) ) {
-					usuarioB = usuario;
-					break;
-				}
-				else {
-					System.out.print("Entrada no válida, ¿salir? (Y/N): ");
-					String e = sc.nextLine();
-					if (e.equals("Y") || e.equalsIgnoreCase("y")) {
-						return;
-					}
-				}
-			}
-		}
-	}
-	Ahorros cuentaB = null;
-	while(true) {
-		System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
-		ArrayList<Ahorros> cuentasB = Cuenta.obtenerCuentasDivisa(usuarioB, divisaB);
-		int h = 1;
-		for (Cuenta ahorro : cuentasB ) {
-			System.out.println(h + ". " + ahorro.getNombre());
-			h = h+1;
-		}
-		System.out.println(h + ". Salir");
+		System.out.println("A continuación todas las cotizaciones posibles para el cambio de divisa solicitado. Escoja una:");	
+		ArrayList<Movimientos> imprimir = Banco.cotizarTaza(user, existeCambio, cadena, ahorrosPosibles);
+		int j=0;
+	//	if (imprimir.size() == 0) {
+	//		System.out.println("No existen bancos que realicen el tipo de cambio pedido. Intente usar otra divisa como puente.");
+	//		return;
+	//	}
+	//	for (Movimientos cotizacion : imprimir) {
+	//		j=j+1;
+	//		System.out.println(j + ". Por el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
+	//	}
+		Tablas.impresionCotizaciones(imprimir);
 		opcion = Integer.parseInt(sc.nextLine());
-		if (opcion == h) {
+		Movimientos escogencia = imprimir.get(opcion-1);
+		System.out.print("¿Desea continuar con el proceso? (Y/N): ");
+		String c = sc.nextLine();
+		if (c.equals("N") || c.equals("n")) {
+			opcion = 2;
 			return;
 		}
-		else if ((opcion > 0) && (opcion < h)) {
-			cuentaB =  cuentasB.get(opcion -1);
-			break;
+		System.out.print("La cuenta que recibe el dinero es mía (Y/N): ");
+		String d= sc.nextLine();
+		Usuario usuarioB = user;
+		boolean confirmacion = false;
+		if (d.equals("N") || d.equals("n")) {
+			while (true) {
+				System.out.print("Digite el nombre o correo electrónico de destinatario: ");
+				String respuesta = sc.nextLine();
+				for (Usuario usuario : Usuario.getUsuariosTotales()) {
+					if (usuario.getNombre().equals(respuesta) || usuario.getCorreo().equals(respuesta)) {
+						usuarioB = usuario;
+						confirmacion = true;
+						break;
+						} 
+					}if(!confirmacion) {
+						System.out.print("Entrada no válida. Saliendo al menú anterior.");
+						return;
+					} break;
+			}
+		}
+		Ahorros cuentaB = null;
+		while(true) {
+			System.out.println("Escoja la cuenta que va a recibir el dinero en " + divisaB.name() + ": ");
+			ArrayList<Ahorros> cuentasB = Cuenta.obtenerCuentasDivisa(usuarioB, divisaB);
+			int h = 1;
+			for (Cuenta ahorro : cuentasB ) {
+				System.out.println(h + ". " + ahorro.getNombre());
+				h = h+1;
+			}
+			System.out.println(h + ". Salir");
+			opcion = Integer.parseInt(sc.nextLine());
+			if (opcion == h) {
+				return;
+			}
+			else if ((opcion > 0) && (opcion < h)) {
+				cuentaB =  cuentasB.get(opcion - 1);
+				break;
+			}
+			else {
+				System.out.println("No existe la opción " + opcion + ". Por favor digite su elección de nuevo");
+			}
+		}
+		if (exacta == true) {
+			if (!Cuenta.comprobarSaldo(escogencia, monto)) {
+				System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
+				return; 
+			}
+			Cuenta.hacerCambio(escogencia, monto, cuentaB, exacta, user);
 		}
 		else {
-			System.out.println("No existe la opción " + opcion + ". Por favor digite su elección de nuevo");
+			if (!Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
+				System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
+				return; 
+			}else {
+				Cuenta.hacerCambio(escogencia, monto, cuentaB, user);
+			}
 		}
-	}
-	if (exacta==true) {
-		if (!Cuenta.comprobarSaldo(escogencia, monto)) {
-			System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
-			return; 
-		}
-		Cuenta.hacerCambio(escogencia, monto, cuentaB, exacta);
-	}
-	else {
-		if (!Cuenta.comprobarSaldo(escogencia.getOrigen(), monto)) {
-			System.out.println("Error. Usted no posee los fondos suficientes para realizar el cambio de divisa en la cuenta escogida." + "\nPuede realizar una transferencia a la cuenta que escogió en la cotización o utilizar alguna de las cuentas anteriormente mencionadas. Inténtelo de nuevo.");
-			return; 
-		}
-		Cuenta.hacerCambio(escogencia, monto, cuentaB);
-	}
-	System.out.println("Así quedan sus cuentas: ");
-	ArrayList<Ahorros> imprimelo = new ArrayList<Ahorros>();
-	Ahorros ahorroA = (Ahorros) escogencia.getOrigen();
-	imprimelo.add(ahorroA);
-	imprimelo.add(cuentaB);
-	Tablas.impresionCuentasAhorros(imprimelo);
-	novato=false;
+		System.out.println("Así quedan sus cuentas: ");
+		ArrayList<Ahorros> imprimelo = new ArrayList<Ahorros>();
+		Ahorros ahorroA = (Ahorros) escogencia.getOrigen();
+		imprimelo.add(ahorroA);
+		imprimelo.add(cuentaB);
+		Tablas.impresionCuentasAhorros(imprimelo);
+		novato=false;
 	}
 
 	// FUNCIONALIDAD DE PRESTAMO 
@@ -2943,10 +2943,11 @@ public final class Main {
 	
 	//CONSULTAR MIS MOVIMIENTOS
 	public static void consultarMovimientos() {
-		if (user.getMovimientosAsociados().size()==0) {
-			System.out.println("Aún no se han hecho movimientos desde este usuario");
+		if (user.getMovimientosAsociados().size() == 0) {
+			System.out.println("Aún no se han hecho movimientos desde este usuario.");
+		}else {
+			Tablas.impresionMovimientos(user.getMovimientosAsociados());
 		}
-		System.out.print("Esta es la lista de los últimos 10 movimientos");
 	}
 
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA

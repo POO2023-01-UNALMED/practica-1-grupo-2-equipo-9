@@ -257,17 +257,17 @@ public interface Tablas {
 		for (Movimientos mov: movimiento) {
 			if (mov.getOrigen() == null) {
 				System.out.printf("%4d %8d %15f %15s %35s %20s %20s", 
-					i, mov.getId(), mov.getCantidad(), mov.getCategoria(), mov.getFecha(),
+					i, mov.getId(), Cuenta.redondeoDecimal(mov.getCantidad(), 2), mov.getCategoria(), mov.getFecha(),
 					"/", (mov.getDestino().getId() + ": " + mov.getDestino().getNombre()));
 			}
 			else if(mov.getDestino() == null) {
 				System.out.printf("%4d %8d %15s %15s %35s %20s %20s", 
-					i, mov.getId(), mov.getCantidad(), mov.getCategoria(), mov.getFecha(),
+					i, mov.getId(), Cuenta.redondeoDecimal(mov.getCantidad(), 2), mov.getCategoria(), mov.getFecha(),
 					(mov.getOrigen().getId() + ": " + mov.getOrigen().getNombre()), "/");
 			}
 			else {
 				System.out.printf("%4d %8d %15s %15s %35s %20s %20s", 
-					i, mov.getId(), mov.getCantidad(), mov.getCategoria(), mov.getFecha(),
+					i, mov.getId(), Cuenta.redondeoDecimal(mov.getCantidad(), 2), mov.getCategoria(), mov.getFecha(),
 					(mov.getOrigen().getId() + ": " + mov.getOrigen().getNombre()),
 					(mov.getDestino().getId() + ": " + mov.getDestino().getNombre()));
 			}
@@ -313,7 +313,7 @@ public interface Tablas {
 		for (Movimientos movimiento: movimientos) {
 			System.out.printf("%4s %20s %20s %10s %20s", 
 					i, (movimiento.getOrigen().getId() + ": " + movimiento.getOrigen().getNombre()),
-					movimiento.getBanco().getNombre(), Cuenta.redondeoDecimal(movimiento.getCantidad(), 2), Cuenta.redondeoDecimal(movimiento.getCoutaManejo(), 2));
+					movimiento.getBanco().getNombre(), Cuenta.redondeoDecimal(movimiento.getCantidad(), 4), Cuenta.redondeoDecimal(movimiento.getCoutaManejo(), 4));
 			System.out.println();
 			i++;
 		}
