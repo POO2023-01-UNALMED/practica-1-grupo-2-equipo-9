@@ -22,8 +22,8 @@ public class Metas implements Serializable {
 	protected Usuario dueno;
 
 	// FUNCIONALIDAD
-	public static Metas metaProxima;
-	public static String plazo;
+	private static Metas metaProxima;
+	private static String plazo;
 
 	// CONSTRUCTORES
 	public Metas(String nombre, double cantidad, String fecha) throws ParseException {
@@ -129,11 +129,11 @@ public class Metas implements Serializable {
 		Date d1 = sdformat.parse("2024-01-01");
 		Date d2 = sdformat.parse("2026-01-01");
 		if (me1.getFecha().compareTo(d1) < 0) {
-			plazo = "Corto";
+			setPlazo("Corto");
 		} else if (me1.getFecha().compareTo(d1) > 0 && me1.getFecha().compareTo(d2) < 0) {
-			plazo = "Mediano";
+			setPlazo("Mediano");
 		} else {
-			plazo = "Largo";
+			setPlazo("Largo");
 		}
 	}
 
@@ -223,5 +223,21 @@ public class Metas implements Serializable {
 
 	public void setDueno(Usuario dueno) {
 		this.dueno = dueno;
+	}
+
+	public static String getPlazo() {
+		return plazo;
+	}
+
+	public static void setPlazo(String plazo) {
+		Metas.plazo = plazo;
+	}
+
+	public static Metas getMetaProxima() {
+		return metaProxima;
+	}
+
+	public static void setMetaProxima(Metas metaProxima) {
+		Metas.metaProxima = metaProxima;
 	}
 }

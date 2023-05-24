@@ -28,9 +28,9 @@ public class Movimientos implements Serializable{
 
 	// Funcionalidad de Asesor Inversiones
 	private Usuario owner;
-	public static String nombreCategoria;
-	public static double cantidadCategoria;
-	public static String recomendarFecha;
+	private static String nombreCategoria;
+	private static double cantidadCategoria;
+	private static String recomendarFecha;
 
 	//	CONSTRUCTORES
 	//	Movimiento entre dos cuentas de ahorros
@@ -370,7 +370,7 @@ public class Movimientos implements Serializable{
 		}
 
 		if (posicion == 0) {
-			nombreCategoria = "Transporte";
+			setNombreCategoria("Transporte");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.TRANSPORTE == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -379,7 +379,7 @@ public class Movimientos implements Serializable{
 		}
 
 		else if (posicion == 1) {
-			nombreCategoria = "Comida";
+			setNombreCategoria("Comida");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.COMIDA == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -388,7 +388,7 @@ public class Movimientos implements Serializable{
 		}
 
 		else if (posicion == 2) {
-			nombreCategoria = "Educacion";
+			setNombreCategoria("Educacion");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.EDUCACION == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -397,7 +397,7 @@ public class Movimientos implements Serializable{
 		}
 
 		else if (posicion == 3) {
-			nombreCategoria = "Salud";
+			setNombreCategoria("Salud");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.SALUD == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -406,7 +406,7 @@ public class Movimientos implements Serializable{
 		}
 
 		else if (posicion == 4) {
-			nombreCategoria = "Regalos";
+			setNombreCategoria("Regalos");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.REGALOS == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -415,7 +415,7 @@ public class Movimientos implements Serializable{
 		}
 
 		else if (posicion == 5) {
-			nombreCategoria = "Finanzas";
+			setNombreCategoria("Finanzas");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.FINANZAS == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -424,7 +424,7 @@ public class Movimientos implements Serializable{
 		}
 
 		else if (posicion == 6) {
-			nombreCategoria = "Otros";
+			setNombreCategoria("Otros");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.OTROS == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
@@ -437,26 +437,26 @@ public class Movimientos implements Serializable{
 		if (plazo == "Corto") {
 			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha()
 					.compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
-				recomendarFecha = "01/01/2024";
+				setRecomendarFecha("01/01/2024");
 			} else {
-				recomendarFecha = "01/06/2025";
+				setRecomendarFecha("01/06/2025");
 			}
 		} else if (plazo == "Mediano") {
 			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha()
 					.compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
-				recomendarFecha = "01/01/2026";
+				setRecomendarFecha("01/01/2026");
 			} else {
-				recomendarFecha = "01/06/2027";
+				setRecomendarFecha("01/06/2027");
 			}
 		} else if (plazo == "Largo") {
 			if (u.getMovimientosAsociados().get(u.getMovimientosAsociados().size() - 1).getFecha()
 					.compareTo(Metas.revisionMetas(u).getFecha()) < 0) {
-				recomendarFecha = "01/01/2028";
+				setRecomendarFecha("01/01/2028");
 			} else {
-				recomendarFecha = "01/06/2029";
+				setRecomendarFecha("01/06/2029");
 			}
 		} else {
-			recomendarFecha = null;
+			setRecomendarFecha(null);
 		}
 	}
 
@@ -652,5 +652,29 @@ public class Movimientos implements Serializable{
 
 	public void setCoutaManejo(double coutaManejo) {
 		this.coutaManejo = coutaManejo;
+	}
+
+	public static String getRecomendarFecha() {
+		return recomendarFecha;
+	}
+
+	public static void setRecomendarFecha(String recomendarFecha) {
+		Movimientos.recomendarFecha = recomendarFecha;
+	}
+
+	public static String getNombreCategoria() {
+		return nombreCategoria;
+	}
+
+	public static void setNombreCategoria(String nombreCategoria) {
+		Movimientos.nombreCategoria = nombreCategoria;
+	}
+
+	public static double getCantidadCategoria() {
+		return cantidadCategoria;
+	}
+
+	public static void setCantidadCategoria(double cantidadCategoria) {
+		Movimientos.cantidadCategoria = cantidadCategoria;
 	}
 }

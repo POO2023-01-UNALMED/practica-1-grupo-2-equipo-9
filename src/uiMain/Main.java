@@ -826,13 +826,13 @@ public final class Main {
 						Metas.determinarPlazo(Metas.cambioFecha(Metas.revisionMetas(user), nuevaFecha));
 						System.out.println("");
 						System.out.println("La fecha ha sido modificada satisfactoriamente y "
-								+ "su plazo de inversión es: Plazo " + Metas.plazo);
+								+ "su plazo de inversión es: Plazo " + Metas.getPlazo());
 						System.out.println("");
 					}
 
 					else if (cambiarFecha.equals("n") || cambiarFecha.equals("N")) {
 						Metas.determinarPlazo(Metas.revisionMetas(user));
-						System.out.println("Su plazo de inversión es: Plazo " + Metas.plazo);
+						System.out.println("Su plazo de inversión es: Plazo " + Metas.getPlazo());
 						System.out.println("");
 					}
 
@@ -846,11 +846,11 @@ public final class Main {
 					System.out.println("" + "\nProcesando..." + "\n");
 
 					// Buscamos la categoría en la que el usuario ha gastado más dinero
-					Movimientos.analizarCategoria(user, Metas.plazo);
+					Movimientos.analizarCategoria(user, Metas.getPlazo());
 
 					System.out.println(
-							"La categoría en la que más dinero ha gastado es en: " + Movimientos.nombreCategoria
-							+ " que suma un total de " + Movimientos.cantidadCategoria + ".");
+							"La categoría en la que más dinero ha gastado es en: " + Movimientos.getNombreCategoria()
+							+ " que suma un total de " + Movimientos.getCantidadCategoria() + ".");
 					System.out.print("¿Deseas crear una meta con el fin de ahorrar la misma "
 							+ "cantidad que has gastado en esta categoría? (Y/N): ");
 					String nuevaMeta = sc.nextLine();
@@ -861,8 +861,8 @@ public final class Main {
 						System.out.println(
 								"Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas");
 
-						Metas metaCategoria = new Metas(Movimientos.nombreCategoria, Movimientos.cantidadCategoria,
-								Movimientos.recomendarFecha);
+						Metas metaCategoria = new Metas(Movimientos.getNombreCategoria(), Movimientos.getCantidadCategoria(),
+								Movimientos.getRecomendarFecha());
 
 						user.asociarMeta(metaCategoria);
 
@@ -883,56 +883,56 @@ public final class Main {
 							+ Banco.bancoPortafolio(user).getNombre() + ", con una tasa de interes del: "
 							+ Banco.interesesPortafolio(Banco.bancoPortafolio(user), user) + "%";
 
-					if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 1) {
+					if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 1) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Servicios de comunicación" + "\n-Consumo discrecional"
 										+ "\n-Bienes raíces" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 2
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 2) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 2) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Productos básicos de consumo\r\n" + "-Energía\r\n"
 										+ "-Compañías de inteligencia artificial\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 3
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 3) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 3) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Finanzas\r\n" + "-Cuidado de la salud\r\n"
 										+ "-Servicios de comunicación\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 4
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 4) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 4) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Oro\r\n" + "-Acciones industriales\r\n" + "-Información tecnológica\r\n"
 										+ "\n" + bancoPortafolio);
 					}
 					// Portafolio 5
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 5) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 5) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Materiales de construcción\r\n" + "-Bienes raíces\r\n" + "-Finanzas\r\n"
 										+ "\n" + bancoPortafolio);
 					}
 					// Portafolio 6
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 6) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 6) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Cuidado de la salud\r\n" + "-Utilidades\r\n" + "-Comodidades\r\n" + "\n"
 										+ bancoPortafolio);
 					}
 					// Portafolio 7
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 7) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 7) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Oro\r\n" + "-Bonos gubernamentales a mediano plazo\r\n"
 										+ "-Información tecnológica\r\n" + "\n" + bancoPortafolio);
 					}
 					// Portafolio 8
-					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.plazo, user) == 8) {
+					else if (Banco.retornoPortafolio(riesgo, invertir, Metas.getPlazo(), user) == 8) {
 						System.out.println(
 								"En base a los datos recolectados, deberías invertir tu dinero en estos sectores: "
 										+ "\n-Compañías de inteligencia artificial\r\n"
