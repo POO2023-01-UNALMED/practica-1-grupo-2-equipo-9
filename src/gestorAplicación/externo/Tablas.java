@@ -14,7 +14,7 @@ import gestorAplicación.interno.Usuario;
 public interface Tablas {
 	public static ArrayList<String> recibirPropiedadesObjeto(Object clase){
 		ArrayList<String> propiedades = new ArrayList<String>();
-		if(clase.getClass().getName() == "gestorAplicación.interno.Ahorros" || clase.getClass().getName() == "gestorAplicación.interno.Corriente") {
+		if(clase.getClass().getName() == "gestorAplicación.interno.Ahorros" || clase.getClass().getName() == "gestorAplicación.interno.Corriente" || clase.getClass().getName() == "gestorAplicación.interno.Deuda") {
 			Field[] propiedadAux = clase.getClass().getSuperclass().getDeclaredFields();
 			for(int i = 0 ; i < propiedadAux.length; i++) {
 				propiedades.add(propiedadAux[i].getName());
@@ -181,20 +181,22 @@ public interface Tablas {
 		Deuda.limpiarPropiedades(cadena);
 		Metas.limpiarPropiedades(cadena);
 		
-		System.out.println("----------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %15s %15s %15s %15s", 
-				"#", cadena.get(3), cadena.get(0), cadena.get(4), cadena.get(1), cadena.get(6), cadena.get(5));
+		System.out.println(cadena);
+		
+		System.out.println("------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %15s %20s %15s", 
+				"#", cadena.get(3), cadena.get(4), cadena.get(1), cadena.get(6), cadena.get(5));
 		System.out.println();
-		System.out.println("----------------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Deuda deuda: deudas) {
-			System.out.printf("%4d %8d %15s %15s %15s %15s %15s", 
-					i, deuda.getId(), deuda.getNombre(), deuda.getDueno().getNombre(), deuda.getCantidad(), deuda.getBanco().getNombre(),
+			System.out.printf("%4d %8d %15s %15s %20s %15s", 
+					i, deuda.getId(), deuda.getDueno().getNombre(), deuda.getCantidad(), deuda.getBanco().getNombre(),
 					(deuda.getCuenta().getId() + ": " + deuda.getCuenta().getNombre()));
 			System.out.println();
 			i++;
 		}
-		System.out.println("----------------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------------");
 
 		return;
 	}
