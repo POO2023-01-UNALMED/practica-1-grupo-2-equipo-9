@@ -30,7 +30,7 @@ public final class Main {
 	private static boolean novato = true;
 	private static void CambioDivisa(){
 		System.out.println("¡Bienvenido al servicio de cambio de divisa!");
-		if(novato = true) {
+		if(novato) {
 			System.out.println("Nota: El cambio de divisa se puede hacer de dos formas:" );
 			System.out.println("La Convencional se da teniendo cuando una cantidad de dinero de una divisa y se desea convertirlo a otra,");
 			System.out.println("y la Exacta se da cuando se desea obtener exactamente una cifra de dinero de una divisa a partir de otra ");
@@ -244,7 +244,7 @@ public final class Main {
 		case "2":
 			ArrayList<Deuda> deudas = Deuda.conseguirDeudas(user);
 			if (deudas.size() != 0) {
-				Tablas.impresionDeudas(deudas);
+				user.impresionDeudas(deudas);
 				System.out.println("");
 				System.out.print("Seleccione el número de la deuda que desea pagar: ");
 				int seleccion = Integer.parseInt(sc.nextLine());
@@ -675,7 +675,7 @@ public final class Main {
 				}
 			} else {
 				System.out.println("");
-				Tablas.impresionMetas(user.getMetasAsociadas());
+				user.impresionMetas(user.getMetasAsociadas());
 			}
 			break;
 		}
@@ -739,7 +739,7 @@ public final class Main {
 		}
 		
 		System.out.println("Las cuentas a nombre de " + user.getNombre() + " capaces de recibir tu compra son:");
-		Tablas.impresionCuentasCorriente(cuentasCompra);
+		user.impresionCuentasCorriente(cuentasCompra);
 		
 		int eleccion_Cuenta = 0;
 		//Atributo para validación entrada eleccion_Cuenta
@@ -756,8 +756,7 @@ public final class Main {
 			}
 		}
 		
-		Movimientos movimiento_nuevo = new Movimientos(cuentasCompra.get(eleccion_Cuenta - 1), valorCompra, Categoria.getCategorias().get(tipo_Compra - 1), Date.from(Instant.now()), true);
-		user.asociarMovimiento(movimiento_nuevo);
+		new Movimientos(cuentasCompra.get(eleccion_Cuenta - 1), valorCompra, Categoria.getCategorias().get(tipo_Compra - 1), Date.from(Instant.now()), true);
 		System.out.println("Compra realizada con éxito.");
 	}
 	
@@ -982,7 +981,6 @@ public final class Main {
 					}
 				}
 			}
-			funcionalidad = 0;
 		}
 	}
 
@@ -1006,7 +1004,7 @@ public final class Main {
 		Collections.sort(cuentasAux);
 		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta a eliminar son: ");
-		Tablas.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
+		user.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
 
 		//Atributo de validacion de la entrada Cuenta_Destino
 		boolean validacion_Cuenta_Destino = true;
@@ -1244,7 +1242,7 @@ public final class Main {
 		while (seleccion_Cuenta) {
 			System.out.println("Cuentas a nombre de " + user.getNombre() + " con préstamos asociados: ");
 			//Impresión Cuentas con Préstamo Asociado
-			Tablas.impresionCuentasCorriente(cuentasEnDeuda);
+			user.impresionCuentasCorriente(cuentasEnDeuda);
 
 			//Atributo para validación entrada Cuenta_Compra
 			boolean validacion_Cuenta_Compra = true;
@@ -1313,7 +1311,7 @@ public final class Main {
 		}
 		
 		System.out.println("Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: ");
-		Tablas.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
+		user.impresionCuentasCorrienteInteres(cuentasCapacesDeuda, tasacionCuentas);
 
 		//Atributo de validacion de la entrada Cuenta_Destino
 		boolean validacion_Cuenta_Destino = true;
@@ -2065,7 +2063,7 @@ public final class Main {
 			}else {
 				System.out.println("");
 				System.out.println("Seleccione un estado para la operación del banco. La lista de Estados disponibles son: ");
-				Tablas.impresionEstados(Estado.getEstadosTotales());
+				user.impresionEstados(Estado.getEstadosTotales());
 				int estado_op = Integer.parseInt(sc.nextLine());
 				Estado estado_banco = Estado.getEstadosTotales().get(estado_op - 1);
 				seguir = 0;
@@ -2520,7 +2518,7 @@ public final class Main {
 		if(user.getCuentasAsociadas().size() > 0) {
 			System.out.println("La lista de Cuentas de ahorro creadas por el Usuario " + user.getNombre() + " son: ");
 			Collections.sort(user.getCuentasAhorrosAsociadas());
-			Tablas.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
+			user.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2541,7 +2539,7 @@ public final class Main {
 			if(user.getCuentasAsociadas().size() > 0) {
 				System.out.println("La lista de Cuentas Corriente creadas por el Usuario " + user.getNombre() + " son: ");
 				Collections.sort(user.getCuentasCorrienteAsociadas());
-				Tablas.impresionCuentasCorriente(user.getCuentasCorrienteAsociadas());
+				user.impresionCuentasCorriente(user.getCuentasCorrienteAsociadas());
 
 				//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 			}else {
@@ -2565,11 +2563,11 @@ public final class Main {
 			Collections.sort(user.getCuentasAsociadas());
 			if(user.getCuentasAhorrosAsociadas().size() != 0) {
 				System.out.println("CUENTAS DE AHORROS");
-				Tablas.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
+				user.impresionCuentasAhorros(user.getCuentasAhorrosAsociadas());
 			}
 			if(user.getCuentasCorrienteAsociadas().size() != 0) {
 				System.out.println("CUENTAS CORRIENTE");
-				Tablas.impresionCuentasCorriente(user.getCuentasCorrienteAsociadas());
+				user.impresionCuentasCorriente(user.getCuentasCorrienteAsociadas());
 			}
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
@@ -2590,7 +2588,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN BANCOS ASOCIADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LOS BANCOS ASOCIADOS AL USUARIO
 		if(user.getBancosAsociados().size() > 0) {
 			System.out.println("La lista de Bancos asociados por el Usuario " + user.getNombre() + " son: ");
-			Tablas.impresionBancos(user.getBancosAsociados());
+			user.impresionBancos(user.getBancosAsociados());
 
 			//SE IMPRIME QUE NO EXISTEN BANCOS ASOCIADOS, SE LE PREGUNTA AL USUARIO SI DESEA ASOCIAR UNO	
 		}else {
@@ -2628,7 +2626,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN USUARIOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS USUARIOS CREADOS
 		if(Usuario.getUsuariosTotales().size() > 0) {
 			System.out.println("Todos los usuarios son: ");
-			Tablas.impresionUsuarios(Usuario.getUsuariosTotales());
+			user.impresionUsuarios(Usuario.getUsuariosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN USUARIOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {
@@ -2719,7 +2717,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN BANCOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS BANCOS CREADOS
 		if(Banco.getBancosTotales().size() > 0) {
 			System.out.println("La lista de Bancos son: ");
-			Tablas.impresionBancos(Banco.getBancosTotales());
+			user.impresionBancos(Banco.getBancosTotales());
 			for (Banco banco : Banco.getBancosTotales()) {
 				System.out.println(banco.getNombre());
 				for (int i=0; i< banco.getDic().size(); i++) {
@@ -2747,7 +2745,7 @@ public final class Main {
 		if(Corriente.getCuentasCorrienteTotales().size() > 0) {
 			System.out.println("La lista de Cuentas Corrientes totales en el sistema son: ");
 			Collections.sort(Corriente.getCuentasCorrienteTotales());
-			Tablas.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
+			user.impresionCuentasCorriente(Corriente.getCuentasCorrienteTotales());
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2769,7 +2767,7 @@ public final class Main {
 		if(Ahorros.getCuentasAhorroTotales().size() > 0) {
 			System.out.println("La lista de Cuentas de Ahorro totales en el sistema son: ");
 			Collections.sort(Ahorros.getCuentasAhorroTotales());
-			Tablas.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
+			user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
 
 			//SE IMPRIME QUE NO EXISTEN CUENTAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2791,7 +2789,7 @@ public final class Main {
 		if(Cuenta.getCuentasTotales().size() > 0) {
 			System.out.println("La lista de Cuentas totales en el sistema son: ");
 			Collections.sort(Cuenta.getCuentasTotales());
-			Tablas.impresionCuentas(Cuenta.getCuentasTotales());
+			user.impresionCuentas(Cuenta.getCuentasTotales());
 //			if(Ahorros.getCuentasAhorroTotales().size() != 0) {
 //				System.out.println("CUENTAS DE AHORROS");
 //				user.impresionCuentasAhorros(Ahorros.getCuentasAhorroTotales());
@@ -2820,7 +2818,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
 		if(Movimientos.getMovimientosTotales().size() > 0) {
 			System.out.println("La lista de Movimientos son: ");
-			Tablas.impresionMovimientos(Movimientos.getMovimientosTotales());
+			user.impresionMovimientos(Movimientos.getMovimientosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN MOVIMIENTOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {
@@ -2835,34 +2833,13 @@ public final class Main {
 			}	
 		}
 	}
-	
-	// VER MOVIMIENTOS ASOCIADOS EN EL MAIN
-		static void verMovimientosAsociados() {
-			//SE VERIFICA QUE EXISTAN MOVIMIENTOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS MOVIMIENTOS CREADOS
-			if(user.getMovimientosAsociados().size() > 0) {
-				System.out.println("La lista de Movimientos asociados son: ");
-				Tablas.impresionMovimientos(user.getMovimientosAsociados());
-
-				//SE IMPRIME QUE NO EXISTEN MOVIMIENTOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
-			}else {
-				System.out.print("No hay movimientos creados. ¿Deseas crear uno? (Y/N): ");
-				String confirmacion = sc.nextLine();
-				if(confirmacion.equals("Y") || confirmacion.equals("y")) {
-					Main.crearMovimiento();
-				}else {
-					System.out.println("Volviendo al menú anterior");
-					opcion = 0;
-					seccion = 1;
-				}	
-			}
-		}
 
 	// VER METAS TOTALES EN EL MAIN
 	static void verMetasTotales() throws ParseException {
 		//SE VERIFICA QUE EXISTAN METAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS METAS CREADAS
 		if(Metas.getMetasTotales().size() > 0) {
 			System.out.println("La lista de Metas son: ");
-			Tablas.impresionMetas(Metas.getMetasTotales());
+			user.impresionMetas(Metas.getMetasTotales());
 
 			//SE IMPRIME QUE NO EXISTEN METAS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNA	
 		}else {
@@ -2883,7 +2860,7 @@ public final class Main {
 		//SE VERIFICA QUE EXISTAN ESTADOS CREADOS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS ESTADOS CREADOS
 		if(Estado.getEstadosTotales().size() > 0) {
 			System.out.println("La lista de Estados son: ");
-			Tablas.impresionEstados(Estado.getEstadosTotales());
+			user.impresionEstados(Estado.getEstadosTotales());
 
 			//SE IMPRIME QUE NO EXISTEN ESTADOS, SE LE PREGUNTA AL USUARIO SI DESEA CREAR UNO	
 		}else {
@@ -3174,24 +3151,13 @@ public final class Main {
 				// CLASE DE MOVIMIENTOS
 				while (seccion == 4) {
 					// Contenido de Movimientos
-<<<<<<< Updated upstream
-					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?" 
-							+ "\n1. Realizar un cambio de divisa"
-							+ "\n2. Ver mis movimientos"
-=======
 					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
 							+ "\n1. Consultar mis movimientos"
 							+ "\n2. Realizar un cambio de divisa"
->>>>>>> Stashed changes
 							+ "\n3. Salir al menú principal");
 
 					opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
-					//Comprobar que la opción seleccionada pueda ejecutarse
-					if (opcion < 1 || opcion > 3 ) {
-						System.out.println("Entrada no valida");
-						continue;
-					}
 					//Entrada para funcionalidad de cambio de divisa
 					if (opcion == 1) {
 						Main.consultarMovimientos();
@@ -3200,17 +3166,13 @@ public final class Main {
 						Main.CambioDivisa();
 					}
 					// Volver al menú anterior
-<<<<<<< Updated upstream
-					else if (opcion == 2) {
-						Main.verMovimientosAsociados();
-=======
 					else if (opcion == 3) {
 						seccion = 0;
->>>>>>> Stashed changes
 					}
-					// Volver al menú anterior
-					else if (opcion == 3) {
-						seccion = 0;
+					//Comprobar que la opción seleccionada pueda ejecutarse
+					if (opcion < 1 || opcion > 2 ) {
+						System.out.println("Entrada no valida");
+						continue;
 					}
 				}	
 				// CERRAR SESIÓN COMO USUARIO
