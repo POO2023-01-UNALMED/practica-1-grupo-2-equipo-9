@@ -50,6 +50,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionEstados(ArrayList<Estado> estados) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(estados.get(0));
 		
@@ -72,6 +73,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionCuentasCorriente(ArrayList<Corriente> cuentas) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(cuentas.get(0));
 		
@@ -96,6 +98,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionCuentasCorrienteInteres(ArrayList<Corriente> cuentas, ArrayList<Double> intereses) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(cuentas.get(0));
 		
@@ -120,6 +123,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionCuentasAhorros(ArrayList<Ahorros> cuentas) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(cuentas.get(0));
 		
@@ -143,6 +147,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionCuentas(ArrayList<Cuenta> cuentas) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(cuentas.get(0));
 
@@ -169,6 +174,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionDeudas(ArrayList<Deuda> deudas) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(deudas.get(0));
 		
@@ -192,6 +198,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionMetas(ArrayList<Metas> metas) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(metas.get(0));
 		
@@ -234,6 +241,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionMovimientos(ArrayList<Movimientos> movimiento) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(movimiento.get(0));
 		
@@ -270,6 +278,7 @@ public interface Tablas {
 
 		return;
 	}
+	
 	public static void impresionUsuarios(ArrayList<Usuario> usuarios) {
 		ArrayList<String> cadena = Tablas.recibirPropiedadesObjeto(usuarios.get(0));
 		
@@ -290,6 +299,25 @@ public interface Tablas {
 		}
 		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
 
+		return;
+	}
+	
+	public static void impresionCotizaciones(ArrayList<Movimientos> movimientos) {
+		System.out.println("--------------------------------------------------------------------------------");
+		System.out.printf("%4s %20s %20s %10s %20s", 
+				"#", "CUENTA", "BANCO", "TASA", "CUOTA DE MANEJO");
+		System.out.println();
+		System.out.println("--------------------------------------------------------------------------------");
+		int i = 1;
+		for (Movimientos movimiento: movimientos) {
+			System.out.printf("%4s %20s %20s %10s %20s", 
+					i, (movimiento.getOrigen().getId() + ": " + movimiento.getOrigen().getNombre()),
+					movimiento.getBanco(), movimiento.getCantidad(), movimiento.getCoutaManejo());
+			System.out.println();
+			i++;
+		}
+		System.out.println("--------------------------------------------------------------------------------");
+		
 		return;
 	}
 }
