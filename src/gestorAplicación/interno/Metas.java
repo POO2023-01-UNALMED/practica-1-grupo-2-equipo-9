@@ -13,7 +13,7 @@ import java.time.Instant;
 public class Metas implements Serializable {
 	private static final long serialVersionUID = 5L;
 	public static final String nombreD = "Metas";
-	public String nombre; 
+	private String nombre; 
 	protected double cantidad;
 	private Date fecha;
 	protected int id;
