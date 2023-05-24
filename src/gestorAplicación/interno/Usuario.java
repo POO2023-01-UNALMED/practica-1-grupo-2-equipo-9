@@ -256,13 +256,20 @@ public class Usuario implements Serializable {
 	
 	//Funcionalidad Compra Cartera
 	public ArrayList<Corriente> Capacidad_Endeudamiento(ArrayList<Cuenta> cuentas, Corriente cuenta_a_Aplicar) {
-		double deuda = cuenta_a_Aplicar.getCupo() - cuenta_a_Aplicar.getDisponible();
+//		double deuda = cuenta_a_Aplicar.getCupo() - cuenta_a_Aplicar.getDisponible();
 		ArrayList<Corriente> cuentasCapacesDeuda = new ArrayList<Corriente>();
 		for (Cuenta cuenta: cuentas) {
 			if (cuenta instanceof Corriente) {
-				if (((Corriente) cuenta).getDisponible() >= deuda) {
+				double deudaValidar = ((Corriente) cuenta).getCupo() - ((Corriente) cuenta).getDisponible();
+				if (!cuenta.getDivisa().equals(cuenta_a_Aplicar.getDivisa())) {
+					deudaValidar = Cuenta.DineroaTenerDisponible(cuenta_a_Aplicar, cuenta.getDivisa());
+				}
+				if (((Corriente) cuenta).getDisponible() >= deudaValidar && deudaValidar != 0) {
 					cuentasCapacesDeuda.add((Corriente) cuenta);
 				}
+//				if (((Corriente) cuenta).getDisponible() >= deuda) {
+//					cuentasCapacesDeuda.add((Corriente) cuenta);
+//				}
 			}
 		}
 		return cuentasCapacesDeuda;
@@ -284,7 +291,7 @@ public class Usuario implements Serializable {
 		arreglo.remove("CuentasAhorrosAsociadas");
 		arreglo.remove("metasAsociadas");
 		arreglo.remove("$SWITCH_TABLE$gestorAplicación$interno$Suscripcion");
-	}
+	} 
 	
 	@Override
 	protected void finalize() { System.out.println("El usuario con id: " + this.getId() + " y nombre: " + this.getNombre() + " fue eliminado satisfactoriamente del sistema."); }

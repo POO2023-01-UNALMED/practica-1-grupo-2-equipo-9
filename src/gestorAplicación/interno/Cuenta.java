@@ -237,7 +237,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		double deuda = (corriente.getCupo() - corriente.getDisponible());
 		Movimientos cambioDiv = new Movimientos(cuenta.getDivisa() , divisaB, cuenta.getTitular());
 		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
-		if (existeCambio.size()==0) {
+		if (existeCambio.size() == 0) {
 			return 0;
 		}
 		ArrayList<Cuenta> cuentasPosibles = new ArrayList<Cuenta>();

@@ -1305,7 +1305,7 @@ public final class Main {
 		Collections.sort(cuentasCapacesDeuda);
 		//Arreglo que almacena las tasas de intereses aplicables con orden del arreglo anterior
 		ArrayList<Double> tasacionCuentas = Banco.verificarTasasdeInteres(user, cuentasCapacesDeuda);
-
+		
 		cuentasAux.add(cuentasEnDeuda.get(Cuenta_Compra - 1));
 		Collections.sort(cuentasAux);
 		
@@ -1331,6 +1331,8 @@ public final class Main {
 				System.out.println("Entrada no válida, intente de nuevo");
 			}
 		}
+		
+		double deuda = Cuenta.DineroaTenerDisponible(cuentasCapacesDeuda.get(Cuenta_Destino - 1), cuentasEnDeuda.get(Cuenta_Compra - 1).getDivisa());
 
 		//Atributo de validacion de la entrada Periodicidad
 		boolean validacion_Periodicidad = true;
@@ -1409,8 +1411,7 @@ public final class Main {
 		}
 
 		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
-				(cuentasEnDeuda.get(Cuenta_Compra - 1).getCupo() - cuentasEnDeuda.get(Cuenta_Compra - 1).getDisponible()),
-				tasacionCuentas.get(Cuenta_Destino - 1));
+				deuda, tasacionCuentas.get(Cuenta_Destino - 1));
 		
 		int pagoPrimerMes = 1;
 		
