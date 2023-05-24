@@ -183,14 +183,14 @@ public interface Tablas {
 
 		
 		System.out.println("------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %15s %20s %15s", 
+		System.out.printf("%4s %8s %15s %15s %15s %15s", 
 				"#", cadena.get(3), cadena.get(4), cadena.get(1), cadena.get(6), cadena.get(5));
 		System.out.println();
 		System.out.println("------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Deuda deuda: deudas) {
-			System.out.printf("%4d %8d %15s %15s %15s %15s %15s", 
-					i, deuda.getId(), deuda.getNombre(), deuda.getDueno().getNombre(), Cuenta.redondeoDecimal( deuda.getCantidad(), 2), deuda.getBanco().getNombre(),
+			System.out.printf("%4d %8s %20s %10s %20s %15s", 
+					i, deuda.getId(), deuda.getDueno().getNombre(), Cuenta.redondeoDecimal( deuda.getCantidad(), 2), deuda.getBanco().getNombre(),
 					(deuda.getCuenta().getId() + ": " + deuda.getCuenta().getNombre()));
 			System.out.println();
 			i++;
