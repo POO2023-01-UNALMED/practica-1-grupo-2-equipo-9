@@ -88,7 +88,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
 		double cambiado = monto*(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
 		cambiado = cambiado*(1-escogencia.getCoutaManejo());
-		cambiado = cambiado*(escogencia.getCantidad());
+		cambiado = redondeoDecimal(cambiado*(escogencia.getCantidad()), 2);
 		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , monto, Date.from(Instant.now()));
 		origen.setSaldo(origen.getSaldo()-monto);
 		destino.setSaldo(destino.getSaldo()+cambiado);
@@ -97,7 +97,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
 		double pagar = monto/(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
 		pagar = pagar/(1-escogencia.getCoutaManejo());
-		pagar = pagar/(escogencia.getCantidad());
+		pagar = redondeoDecimal(pagar/(escogencia.getCantidad()), 2);
 		new Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo() , pagar, Date.from(Instant.now()));
 		origen.setSaldo(origen.getSaldo()-pagar);
 		destino.setSaldo(destino.getSaldo()+monto);

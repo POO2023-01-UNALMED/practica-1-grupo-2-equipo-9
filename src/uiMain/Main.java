@@ -163,6 +163,7 @@ public final class Main {
 		}
 		Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
+	System.out.println("Así quedan sus cuentas: ");
 	
 	novato=false;
 	}
@@ -2958,6 +2959,14 @@ public final class Main {
 
 		}System.out.println("");
 	}
+	
+	//CONSULTAR MIS MOVIMIENTOS
+	public static void consultarMovimientos() {
+		if (user.getMovimientosAsociados().size()==0) {
+			System.out.println("Aún no se han hecho movimientos desde este usuario");
+		}
+		System.out.print("Esta es la lista de los últimos 10 movimientos");
+	}
 
 	// INTERFAZ DE BIENVENIDA EN EL MAIN - MÉTODO DE INICIO DE PROGRAMA
 	static void bienvenidaApp() throws ParseException, CloneNotSupportedException {
@@ -3165,9 +3174,15 @@ public final class Main {
 				// CLASE DE MOVIMIENTOS
 				while (seccion == 4) {
 					// Contenido de Movimientos
+<<<<<<< Updated upstream
 					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?" 
 							+ "\n1. Realizar un cambio de divisa"
 							+ "\n2. Ver mis movimientos"
+=======
+					System.out.println("Bienvenido a Movimientos, ¿en que te podemos ayudar?"
+							+ "\n1. Consultar mis movimientos"
+							+ "\n2. Realizar un cambio de divisa"
+>>>>>>> Stashed changes
 							+ "\n3. Salir al menú principal");
 
 					opcion = Integer.parseInt(sc.nextLine());
@@ -3179,11 +3194,19 @@ public final class Main {
 					}
 					//Entrada para funcionalidad de cambio de divisa
 					if (opcion == 1) {
+						Main.consultarMovimientos();
+					}
+					else if (opcion == 2) {
 						Main.CambioDivisa();
 					}
 					// Volver al menú anterior
+<<<<<<< Updated upstream
 					else if (opcion == 2) {
 						Main.verMovimientosAsociados();
+=======
+					else if (opcion == 3) {
+						seccion = 0;
+>>>>>>> Stashed changes
 					}
 					// Volver al menú anterior
 					else if (opcion == 3) {
