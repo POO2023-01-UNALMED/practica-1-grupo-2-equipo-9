@@ -94,10 +94,11 @@ public final class Main {
 //		System.out.println("No existen bancos que realicen el tipo de cambio pedido. Intente usar otra divisa como puente.");
 //		return;
 //	}
-	for (Movimientos cotizacion : imprimir) {
-		j=j+1;
-		System.out.println(j + ". Por el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
-	}
+//	for (Movimientos cotizacion : imprimir) {
+//		j=j+1;
+//		System.out.println(j + ". Por el banco " + cotizacion.getBanco().getNombre() + ", con su cuenta " + cotizacion.getOrigen().getNombre() + ", a una tasa de " + cotizacion.getCantidad() + " y una couta de manejo de " + cotizacion.getCoutaManejo());
+//	}
+	Tablas.impresionCotizaciones(imprimir);
 	opcion = Integer.parseInt(sc.nextLine());
 	Movimientos escogencia = imprimir.get(opcion-1);
 	System.out.print("¿Desea continuar con el proceso? (Y/N): ");

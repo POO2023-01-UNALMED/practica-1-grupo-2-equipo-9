@@ -313,7 +313,7 @@ public interface Tablas {
 		for (Movimientos movimiento: movimientos) {
 			System.out.printf("%4s %20s %20s %10s %20s", 
 					i, (movimiento.getOrigen().getId() + ": " + movimiento.getOrigen().getNombre()),
-					movimiento.getBanco(), Cuenta.redondeoDecimal(movimiento.getCantidad(), 2), Cuenta.redondeoDecimal(movimiento.getCoutaManejo(), 2));
+					movimiento.getBanco().getNombre(), Cuenta.redondeoDecimal(movimiento.getCantidad(), 2), Cuenta.redondeoDecimal(movimiento.getCoutaManejo(), 2));
 			System.out.println();
 			i++;
 		}
