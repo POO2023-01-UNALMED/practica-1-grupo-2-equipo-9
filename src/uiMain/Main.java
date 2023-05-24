@@ -1439,6 +1439,7 @@ public final class Main {
 		}
 		else {
 			cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible(), 1);
+			vistaPrevia.setPrimerMensualidad(false);
 		}
 
 		//Vista Previa de los resultados del cambio

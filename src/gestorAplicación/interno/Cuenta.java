@@ -226,7 +226,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		//El double debe resultar en la divisa que recibe el parámetro
 		//Tu veras si cobras comisiones o no o si lo quieres traspasar a otro código
 		Corriente corriente = (Corriente) cuenta;
-		double deuda = (corriente.getCupo()-corriente.getDisponible());
+		double deuda = (corriente.getCupo() - corriente.getDisponible());
 		Movimientos cambioDiv = new Movimientos(cuenta.getDivisa() , divisaB, cuenta.getTitular());
 		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
 		if (existeCambio.size()==0) {
