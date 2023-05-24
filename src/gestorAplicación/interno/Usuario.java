@@ -25,6 +25,7 @@ public class Usuario implements Serializable {
 	private ArrayList<Cuenta> cuentasAsociadas = new ArrayList<Cuenta>();
 	private int limiteCuentas;
 	private int contadorMovimientos;
+	private int contadorMovimientosAux;
 
 	
 	//Funcionalidad Asesor inversiones
@@ -99,7 +100,8 @@ public class Usuario implements Serializable {
 	//Funcionalidad de Suscripciones de Usuarios
 	public String verificarContadorMovimientos() {
 		this.setContadorMovimientos(this.getMovimientosAsociados().size());
-		if(this.getContadorMovimientos() == 5) {
+		if(this.getContadorMovimientos() - this.getContadorMovimientosAux() == 5) {
+			this.setContadorMovimientosAux(this.getContadorMovimientosAux() + 5);
 			switch(this.getSuscripcion()) {
 				case DIAMANTE:
 					this.setContadorMovimientos(0);
@@ -333,5 +335,6 @@ public class Usuario implements Serializable {
 	public void setCuentasCorrienteAsociadas(ArrayList<Corriente> cuentasCorrienteAsociadas) {CuentasCorrienteAsociadas = cuentasCorrienteAsociadas;}
 	public ArrayList<Ahorros> getCuentasAhorrosAsociadas() {return CuentasAhorrosAsociadas;}
 	public void setCuentasAhorrosAsociadas(ArrayList<Ahorros> cuentasAhorrosAsociadas) {CuentasAhorrosAsociadas = cuentasAhorrosAsociadas;}
-
+	public int getContadorMovimientosAux() { return contadorMovimientosAux; }
+	public void setContadorMovimientosAux(int contadorMovimientosAux) { this.contadorMovimientosAux = contadorMovimientosAux; }
 }

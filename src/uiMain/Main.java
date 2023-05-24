@@ -1900,9 +1900,7 @@ public final class Main {
 					} else {
 						System.out.println("");
 						cuentas.remove(opcion_cuenta_origen - 1);
-						for (int i = 1; i < cuentas.size() + 1; i++) {
-							System.out.println(i + ". " + cuentas.get(i - 1));
-						}
+						Main.verCuentasCorrienteAsociadas();
 						System.out.print("A cual de sus cuentas desea transferir su saldo: ");
 						int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
 						while(true) {
@@ -2534,7 +2532,7 @@ public final class Main {
 	}
 	
 	// VER CUENTAS CORRIENTE ASOCIADAS AL USER EN EL MAIN
-		static void verCuentasCorrienteAsociadas() {
+	static void verCuentasCorrienteAsociadas() {
 			//SE VERIFICA QUE EXISTAN CUENTAS CREADAS, SI ESE ES EL CASO, SE IMPRIME EL NOMBRE DE LAS CUENTAS CREADAS POR EL USUARIO
 			if(user.getCuentasAsociadas().size() > 0) {
 				System.out.println("La lista de Cuentas Corriente creadas por el Usuario " + user.getNombre() + " son: ");

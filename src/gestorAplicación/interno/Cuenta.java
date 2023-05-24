@@ -83,6 +83,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 			return user.getCuentasCorrienteAsociadas().get(contador);
 		}
 	}
+	
 	// Métodos para funcionlidad de cambio de divisa
 	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino) {
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
@@ -93,6 +94,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		origen.setSaldo(origen.getSaldo()-monto);
 		destino.setSaldo(destino.getSaldo()+cambiado);
 	}
+	
 	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino, boolean exacto) {
 		Ahorros origen = (Ahorros) escogencia.getOrigen(); 
 		double pagar = monto/(1-escogencia.getBanco().getEstadoAsociado().getTasa_impuestos());
@@ -166,8 +168,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 	}
 	//Para ordenar cualquier arreglo de tipo Cuenta, se ordenará según el id de la cuenta y se hará con Collections.sort(nombre_lista);
 
-
-//	Ligadura dinamica
+	//	Ligadura dinamica
 	public Object invertirSaldo(){
 		float probabilidad = this.getTitular().getSuscripcion().getProbabilidad_Inversion();
 		double rand = (double)((Math.random()) + probabilidad);

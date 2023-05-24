@@ -2,7 +2,6 @@ package gestorAplicación.externo;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
 import gestorAplicación.interno.Ahorros;
 import gestorAplicación.interno.Corriente;
 import gestorAplicación.interno.Cuenta;
@@ -40,9 +39,9 @@ public interface Tablas {
 		int i = 1;
 		for (Banco banco: bancos) {
 			System.out.printf("%4d %8d %20s %10s %10s %15s %20s %20s %29s", 
-					i, banco.getId(), banco.getNombre(), (banco.getComision() + " %"), banco.getDivisa(), banco.getEstadoAsociado().getNombre(),
-					(banco.getCupo_base() + " (" + banco.getMultiplicador() + ")"), banco.getDesc_suscripcion(),
-					(banco.getDesc_movimientos_porcentaje() + " (" + banco.getDesc_movimientos_cantidad() + ")"));
+					i, banco.getId(), banco.getNombre(), (Cuenta.redondeoDecimal(banco.getComision(), 2) + " %"), banco.getDivisa(), banco.getEstadoAsociado().getNombre(),
+					(Cuenta.redondeoDecimal(banco.getCupo_base(), 2) + " (" + Cuenta.redondeoDecimal(banco.getMultiplicador(), 2) + ")"), Cuenta.redondeoDecimal(banco.getDesc_suscripcion(), 2),
+					(Cuenta.redondeoDecimal(banco.getDesc_movimientos_porcentaje(), 2) + " (" + banco.getDesc_movimientos_cantidad() + ")"));
 			System.out.println();
 			i++;
 		}
@@ -64,8 +63,8 @@ public interface Tablas {
 		int i = 1;
 		for (Estado estado: estados) {
 			System.out.printf("%4d %8d %15s %10s %15s %29s %15s", 
-					i, estado.getId(), estado.getNombre(), estado.getDivisa(), estado.getDivisa(), (estado.getTasa_impuestos() + " %"),
-					(estado.getInteres_bancario_corriente() + " %"), (estado.getTasas_usura() + " %"));
+					i, estado.getId(), estado.getNombre(), estado.getDivisa(), estado.getDivisa(), (Cuenta.redondeoDecimal(estado.getTasa_impuestos(), 2) + " %"),
+					(Cuenta.redondeoDecimal(estado.getInteres_bancario_corriente(), 2)+ " %"), (Cuenta.redondeoDecimal(estado.getTasas_usura(), 2) + " %"));
 			System.out.println();
 			i++;
 		}
@@ -89,8 +88,8 @@ public interface Tablas {
 		int i = 1;
 		for (Corriente cuenta: cuentas) {
 			System.out.printf("%4d %8d %15s %25s %10d %15s %15s %10d %10s %20s %20s", 
-					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (cuenta.getCupo() + " " + cuenta.getDivisa()), (cuenta.getDisponible() + " " + cuenta.getDivisa()),
-					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (cuenta.getIntereses() + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre());
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (Cuenta.redondeoDecimal(cuenta.getCupo(), 2) + " " + cuenta.getDivisa()), (Cuenta.redondeoDecimal(cuenta.getDisponible(), 2) + " " + cuenta.getDivisa()),
+					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (Cuenta.redondeoDecimal(cuenta.getIntereses(), 2) + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
@@ -114,8 +113,8 @@ public interface Tablas {
 		int i = 1;
 		for (Corriente cuenta: cuentas) {
 			System.out.printf("%4d %8d %15s %25s %10d %15s %15s %10d %10s %20s %20s %15s", 
-					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (cuenta.getCupo() + " " + cuenta.getDivisa()), (cuenta.getDisponible() + " " + cuenta.getDivisa()),
-					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (cuenta.getIntereses() + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre(), (intereses.get(i - 1) + " %"));
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (Cuenta.redondeoDecimal(cuenta.getCupo(), 2) + " " + cuenta.getDivisa()), (Cuenta.redondeoDecimal(cuenta.getDisponible(), 2) + " " + cuenta.getDivisa()),
+					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (Cuenta.redondeoDecimal(cuenta.getIntereses(), 2) + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre(), (intereses.get(i - 1) + " %"));
 			System.out.println();
 			i++;
 		}
@@ -139,7 +138,7 @@ public interface Tablas {
 		for (Ahorros cuenta: cuentas) {
 			System.out.printf("%4d %8d %15s %25s %10d %15s %20s", 
 					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(),
-					(cuenta.getSaldo() + " " + cuenta.getDivisa()), cuenta.getBanco().getNombre());
+					(Cuenta.redondeoDecimal(cuenta.getSaldo(), 2)) + " " + cuenta.getDivisa(), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
@@ -190,8 +189,8 @@ public interface Tablas {
 		System.out.println("------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Deuda deuda: deudas) {
-			System.out.printf("%4d %8d %15s %15s %20s %15s", 
-					i, deuda.getId(), deuda.getDueno().getNombre(), deuda.getCantidad(), deuda.getBanco().getNombre(),
+			System.out.printf("%4d %8d %15s %15s %15s %15s %15s", 
+					i, deuda.getId(), deuda.getNombre(), deuda.getDueno().getNombre(), Cuenta.redondeoDecimal( deuda.getCantidad(), 2), deuda.getBanco().getNombre(),
 					(deuda.getCuenta().getId() + ": " + deuda.getCuenta().getNombre()));
 			System.out.println();
 			i++;
@@ -215,7 +214,7 @@ public interface Tablas {
 		for (Metas meta: metas) {
 			if (meta.getFecha() == null) {
 				System.out.printf("%4d %8d %20s %15s %12s %14s", 
-					i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), meta.getCantidad(), "/");
+					i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), Cuenta.redondeoDecimal(meta.getCantidad(), 2), "/");
 				System.out.println();
 				i++;
 			}
@@ -227,13 +226,13 @@ public interface Tablas {
 			}
 			else if(meta.getNombre() == null) {
 				System.out.printf("%4d %8d %20s %15s %12s %14s", 
-					i, meta.getId(), "/", meta.getDueno().getNombre(), meta.getCantidad(), meta.getFechaNormal());
+					i, meta.getId(), "/", meta.getDueno().getNombre(), Cuenta.redondeoDecimal(meta.getCantidad(), 2), meta.getFechaNormal());
 				System.out.println();
 				i++;
 			}
 			else {
 				System.out.printf("%4d %8d %20s %15s %12s %14s", 
-						i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), meta.getCantidad(), meta.getFechaNormal());
+						i, meta.getId(), meta.getNombre(), meta.getDueno().getNombre(), Cuenta.redondeoDecimal(meta.getCantidad(), 2), meta.getFechaNormal());
 				System.out.println();
 				i++;
 			}
@@ -314,7 +313,7 @@ public interface Tablas {
 		for (Movimientos movimiento: movimientos) {
 			System.out.printf("%4s %20s %20s %10s %20s", 
 					i, (movimiento.getOrigen().getId() + ": " + movimiento.getOrigen().getNombre()),
-					movimiento.getBanco(), movimiento.getCantidad(), movimiento.getCoutaManejo());
+					movimiento.getBanco(), Cuenta.redondeoDecimal(movimiento.getCantidad(), 2), Cuenta.redondeoDecimal(movimiento.getCoutaManejo(), 2));
 			System.out.println();
 			i++;
 		}

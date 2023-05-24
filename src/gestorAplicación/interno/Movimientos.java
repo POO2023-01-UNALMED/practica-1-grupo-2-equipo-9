@@ -56,8 +56,6 @@ public class Movimientos implements Serializable{
 		this.setDestino(destino);
 		this.setOrigen(null);
 		destino.setSaldo(destino.getSaldo() + cantidad);
-		System.out.print(destino.getSaldo());
-		
 	}
 	
 	//	Movimiento entre dos cuentas corrientes
