@@ -216,7 +216,7 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		arreglo.remove("cuentasTotales");
 	}
 	
-	public static double DineroaTenerDisponible(Cuenta cuenta, Divisas divisa) {
+	public static double DineroaTenerDisponible(Cuenta cuenta, Divisas divisaB) {
 		//Tienes una cuenta de la que extraes su deuda (con el cupo y el disponible)
 		//De la misma cuenta extraes la divisa en la que esta ese valor
 		
@@ -225,7 +225,30 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		//Haces tus cálculos y me devuelves cual es el valor que debo checar este disponible en la otra cuenta
 		//El double debe resultar en la divisa que recibe el parámetro
 		//Tu veras si cobras comisiones o no o si lo quieres traspasar a otro código
-		return 0;
+		Corriente corriente = (Corriente) cuenta;
+		double deuda = (corriente.getCupo()-corriente.getDisponible());
+		Movimientos cambioDiv = new Movimientos(cuenta.getDivisa() , divisaB, cuenta.getTitular());
+		ArrayList<Banco> existeCambio = Movimientos.facilitarInformación(cambioDiv);
+		if (existeCambio.size()==0) {
+			return 0;
+		}
+		ArrayList<Ahorros> ahorrosPosibles = new ArrayList<Ahorros>();
+		for (Ahorros ahorro : cuenta.getTitular().getCuentasAhorrosAsociadas()) {
+			if (ahorro.getDivisa().equals(cuenta.getDivisa())) {
+				ahorrosPosibles.add(ahorro);
+			}
+		}
+		String cadena = cuenta.getDivisa().name()+ divisaB.name();
+		ArrayList<Movimientos> imprimir = Banco.cotizarTaza(cuenta.getTitular(), existeCambio, cadena, ahorrosPosibles);
+		double cambioMax = 0;
+		double valor = 0;
+		for (Movimientos cotizacion : imprimir) {
+			valor = cotizacion.getCantidad()*(1-cotizacion.getCoutaManejo())*(1-cotizacion.getBanco().getEstadoAsociado().getTasa_impuestos());
+			if (valor > cambioMax) {
+				cambioMax = valor;
+			}
+		}
+		return cambioMax*deuda;
 	}
 	
 	

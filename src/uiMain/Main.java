@@ -164,7 +164,11 @@ public final class Main {
 		Cuenta.hacerCambio(escogencia, monto, cuentaB);
 	}
 	System.out.println("Así quedan sus cuentas: ");
-	
+	ArrayList<Ahorros> imprimelo = new ArrayList<Ahorros>();
+	Ahorros ahorroA = (Ahorros) escogencia.getOrigen();
+	imprimelo.add(ahorroA);
+	imprimelo.add(cuentaB);
+	Tablas.impresionCuentasAhorros(imprimelo);
 	novato=false;
 	}
 
