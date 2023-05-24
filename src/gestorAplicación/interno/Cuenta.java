@@ -94,6 +94,9 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		user.asociarMovimiento(m);
 		origen.setSaldo(origen.getSaldo()-monto);
 		destino.setSaldo(destino.getSaldo()+cambiado);
+		for (int i = 0; i < user.getBancosAsociados().size() ; i++) {
+			user.getBancosAsociados().get(i).setAsociado(false);
+		}
 	}
 	
 	public static void hacerCambio(Movimientos escogencia, double monto, Ahorros destino, boolean exacto, Usuario user) {
@@ -105,6 +108,9 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		user.asociarMovimiento(m);
 		origen.setSaldo(origen.getSaldo()-pagar);
 		destino.setSaldo(destino.getSaldo()+monto);
+		for (int i = 0; i < user.getBancosAsociados().size() ; i++) {
+			user.getBancosAsociados().get(i).setAsociado(false);
+		}
 	}
 	
 	public static ArrayList<Ahorros> obtenerCuentasDivisa(Usuario usuario, Divisas divisa){
