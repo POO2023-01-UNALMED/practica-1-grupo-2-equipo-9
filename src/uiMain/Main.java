@@ -1332,7 +1332,7 @@ public final class Main {
 			}
 		}
 		
-		double deuda = Cuenta.DineroaTenerDisponible(cuentasCapacesDeuda.get(Cuenta_Destino - 1), cuentasEnDeuda.get(Cuenta_Compra - 1).getDivisa());
+		double deuda = Cuenta.DineroaTenerDisponible(cuentasEnDeuda.get(Cuenta_Compra - 1), cuentasCapacesDeuda.get(Cuenta_Destino - 1).getDivisa());
 
 		//Atributo de validacion de la entrada Periodicidad
 		boolean validacion_Periodicidad = true;

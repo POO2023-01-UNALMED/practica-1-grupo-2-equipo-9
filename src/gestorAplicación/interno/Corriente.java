@@ -303,8 +303,8 @@ public class Corriente extends Cuenta implements Cloneable{
 				"\nCuenta Corriente # " + this.id +
 				"\nBanco: " + this.banco.getNombre() +
 				"\nDivisa: " + this.divisa +
-				"\nCupo: " + this.cupo + " " + this.divisa +
-				"\nCupo disponible: " + this.disponible + " " + this.divisa +
+				"\nCupo: " + Cuenta.redondeoDecimal(this.cupo, 2) + " " + this.divisa +
+				"\nCupo disponible: " + Cuenta.redondeoDecimal(this.disponible, 2) + " " + this.divisa +
 				"\nCuotas: " + this.plazo_Pago +
 				"\nIntereses: " + this.intereses;
 	}
