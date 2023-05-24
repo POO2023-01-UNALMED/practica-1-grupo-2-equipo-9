@@ -176,6 +176,25 @@ public class Banco implements Serializable {
 		return imprimir;
 	}
 	
+	public static ArrayList<Movimientos> cotizarTazaAux(Usuario user, ArrayList<Banco> existeCambio, String cadena, ArrayList<Cuenta> cuentasPosibles) {
+		ArrayList<Movimientos> imprimir = new ArrayList<Movimientos>();
+		for (Cuenta conta : cuentasPosibles) {
+			for(Banco banco: existeCambio) {
+				int indice = banco.getDic().indexOf(cadena);
+				double valor = banco.getCionario().get(indice);
+				if (conta.getBanco().equals(banco))
+					valor = valor * 0.98;
+				if (banco.isAsociado()) {
+					valor = valor *0.97;
+				}
+				double cuotaManejo = Banco.divisaSuscripcion(user);
+				Movimientos cotizacion = new Movimientos(banco, conta, valor, cuotaManejo);
+				imprimir.add(cotizacion);
+			}
+		}
+		return imprimir;
+	}
+	
 	public static double divisaSuscripcion(Usuario user) {
 		switch(user.getSuscripcion()) {
 		case BRONCE:

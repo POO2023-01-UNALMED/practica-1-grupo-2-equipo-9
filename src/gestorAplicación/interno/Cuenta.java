@@ -234,18 +234,18 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		if (existeCambio.size()==0) {
 			return 0;
 		}
-		ArrayList<Ahorros> ahorrosPosibles = new ArrayList<Ahorros>();
-		for (Ahorros ahorro : cuenta.getTitular().getCuentasAhorrosAsociadas()) {
-			if (ahorro.getDivisa().equals(cuenta.getDivisa())) {
-				ahorrosPosibles.add(ahorro);
+		ArrayList<Cuenta> cuentasPosibles = new ArrayList<Cuenta>();
+		for (Cuenta conta : cuenta.getTitular().getCuentasCorrienteAsociadas()) {
+			if (conta.getDivisa().equals(cuenta.getDivisa())) {
+				cuentasPosibles.add(conta);
 			}
 		}
 		String cadena = cuenta.getDivisa().name()+ divisaB.name();
-		ArrayList<Movimientos> imprimir = Banco.cotizarTaza(cuenta.getTitular(), existeCambio, cadena, ahorrosPosibles);
+		ArrayList<Movimientos> imprimir = Banco.cotizarTazaAux(cuenta.getTitular(), existeCambio, cadena, cuentasPosibles);
 		double cambioMax = 0;
-		double valor = 0;
+		double valor = 999999999;
 		for (Movimientos cotizacion : imprimir) {
-			valor = cotizacion.getCantidad()*(1-cotizacion.getCoutaManejo())*(1-cotizacion.getBanco().getEstadoAsociado().getTasa_impuestos());
+			valor = cotizacion.getCantidad()/((1-cotizacion.getCoutaManejo())*(1-cotizacion.getBanco().getEstadoAsociado().getTasa_impuestos()));
 			if (valor > cambioMax) {
 				cambioMax = valor;
 			}

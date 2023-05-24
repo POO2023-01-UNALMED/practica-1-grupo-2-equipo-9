@@ -82,7 +82,6 @@ public final class Main {
 		else {
 			System.out.println("Se han encontrado " + existeCambio.size() + " bancos en donde realizar el cambio");
 		}
-		System.out.println(ahorrosPosibles);
 		if (ahorrosPosibles.size() == 0) {
 			System.out.print("Usted no posee ninguna cuenta con divisa " + divisaA.name());
 			return;
