@@ -53,7 +53,7 @@ public class Usuario implements Serializable {
 		this.setCorreo(correo);
 		this.setId(Usuario.getUsuariosTotales().size());
 	}
-	
+	//Constructor por defecto
 	public Usuario() {
 		this("Pepe Morales", "PepeMorales@mail.com", "12345", Suscripcion.DIAMANTE);
 	}
@@ -168,6 +168,7 @@ public class Usuario implements Serializable {
 			if (movimiento.getDestino() == null) {
 				return("El movimiento con origen " + movimiento.getOrigen().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 			}else {
+				movimiento.getDestino().getTitular().getMovimientosAsociados().add(movimiento);
 				return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + this.getNombre());
 			}
 		}else {

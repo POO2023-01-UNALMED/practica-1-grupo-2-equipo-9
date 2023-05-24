@@ -117,6 +117,7 @@ public class Movimientos implements Serializable{
 		this.setDivisaAux(divisaAux);
 		this.setOwner(owner);
 	}
+	
 	//Cotización de cambio de divisa
 	public Movimientos(Banco banco, Ahorros origen, double cantidad, double coutaManejo) {
 		this.setBanco(banco);
@@ -124,6 +125,7 @@ public class Movimientos implements Serializable{
 		this.setCantidad(cantidad);
 		this.setCoutaManejo(coutaManejo);
 	}
+	
 	//Movimiento de cambio de divisa
 	public Movimientos(Banco banco, Ahorros origen, Ahorros destino, Divisas divisa, Divisas divisasAux, double coutaManejo, double cantidad, Date fecha) {
 		Movimientos.movimientosTotales.add(this);
