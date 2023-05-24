@@ -533,15 +533,6 @@ public class Movimientos implements Serializable{
 		return movimientosUsuario_Banco;
 		
 	}
-
-	public static ArrayList<String> propiedadesMovimientos() {
-		ArrayList<String> arreglos = new ArrayList<String>();
-		Field[] arreglo = Movimientos.class.getDeclaredFields();
-		for(int i = 0 ; i < arreglo.length; i++) {
-			arreglos.add(arreglo[i].getName());
-		}
-		return arreglos;
-	}
 	
 	public static void limpiarPropiedades(ArrayList<String> arreglo) {
 		arreglo.remove("serialVersionUID");

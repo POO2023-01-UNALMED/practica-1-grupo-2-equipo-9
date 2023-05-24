@@ -228,19 +228,6 @@ public class Corriente extends Cuenta implements Cloneable{
 		arreglo.remove("cuentasCorrienteTotales");
 	}
 	
-	public static ArrayList<String> propiedadesCuenta() {
-		ArrayList<String> arreglos = new ArrayList<String>();
-		Field[] arreglo = Corriente.class.getSuperclass().getDeclaredFields();
-		for(int i = 0 ; i < arreglo.length; i++) {
-			arreglos.add(arreglo[i].getName());
-		}
-		Field[] arregloAux = Corriente.class.getDeclaredFields();
-		for(int i = 0 ; i < arregloAux.length; i++) {
-			arreglos.add(arregloAux[i].getName());
-		}
-		return arreglos;
-	}
-	
 	public int compareTo(Corriente cuenta) {
 		if(this.getDisponible() > cuenta.getDisponible()) {
 			return 1;

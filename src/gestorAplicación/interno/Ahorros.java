@@ -83,19 +83,6 @@ public class Ahorros extends Cuenta{
 		arreglo.remove("cuentasAhorroTotales");
 	}
 	
-	public static ArrayList<String> propiedadesCuenta() {
-		ArrayList<String> arreglos = new ArrayList<String>();
-		Field[] arreglo = Ahorros.class.getSuperclass().getDeclaredFields();
-		for(int i = 0 ; i < arreglo.length; i++) {
-			arreglos.add(arreglo[i].getName());
-		}
-		Field[] arregloAux = Ahorros.class.getDeclaredFields();
-		for(int i = 0 ; i < arregloAux.length; i++) {
-			arreglos.add(arregloAux[i].getName());
-		}
-		return arreglos;
-	}
-	
 	public int CompareTo(Ahorros cuenta) {
 		if(this.getSaldo() > cuenta.getSaldo()) {
 			return 1;

@@ -34,15 +34,6 @@ public class Estado implements Serializable {
 		this("Colombia", 0.2, Divisas.COP);
 	}
 	
-	public static ArrayList<String> propiedadesCuenta() {
-		ArrayList<String> arreglos = new ArrayList<String>();
-		Field[] arreglo = Estado.class.getDeclaredFields();
-		for(int i = 0 ; i < arreglo.length; i++) {
-			arreglos.add(arreglo[i].getName());
-		}
-		return arreglos;
-	}
-	
 	public static void limpiarPropiedades(ArrayList<String> arreglo) {
 		arreglo.remove("serialVersionUID");
 		arreglo.remove("nombreD");

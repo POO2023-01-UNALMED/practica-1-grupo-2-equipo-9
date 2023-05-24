@@ -215,15 +215,6 @@ public abstract class Cuenta implements Serializable, Comparable<Cuenta>{
 		arreglo.remove("cuentasTotales");
 	}
 	
-	public static ArrayList<String> propiedadesCuenta() {
-		ArrayList<String> arreglos = new ArrayList<String>();
-		Field[] arreglo = Cuenta.class.getDeclaredFields();
-		for(int i = 0 ; i < arreglo.length; i++) {
-			arreglos.add(arreglo[i].getName());
-		}
-		return arreglos;
-	}
-	
 	public static double DineroaTenerDisponible(Cuenta cuenta, Divisas divisa) {
 		//Tienes una cuenta de la que extraes su deuda (con el cupo y el disponible)
 		//De la misma cuenta extraes la divisa en la que esta ese valor

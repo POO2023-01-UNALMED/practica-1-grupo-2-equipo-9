@@ -150,15 +150,6 @@ public class Metas implements Serializable {
 		arreglo.remove("metaProxima");
 		arreglo.remove("plazo");
 	}
-	
-	public static ArrayList<String> propiedadesCuenta() {
-		ArrayList<String> arreglos = new ArrayList<String>();
-		Field[] arreglo = Metas.class.getDeclaredFields();
-		for(int i = 0 ; i < arreglo.length; i++) {
-			arreglos.add(arreglo[i].getName());
-		}
-		return arreglos;
-	}
 
 	@Override
 	protected void finalize() {
