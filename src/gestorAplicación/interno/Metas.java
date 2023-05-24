@@ -13,10 +13,10 @@ import java.time.Instant;
 public class Metas implements Serializable {
 	private static final long serialVersionUID = 5L;
 	public static final String nombreD = "Metas";
-	public String nombre;
+	public String nombre; 
 	protected double cantidad;
 	private Date fecha;
-	public int id;
+	protected int id;
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 	private static transient ArrayList<Metas> metasTotales = new ArrayList<Metas>();
 	protected Usuario dueno;

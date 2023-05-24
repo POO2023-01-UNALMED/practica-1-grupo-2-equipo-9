@@ -330,6 +330,7 @@ public class Movimientos implements Serializable{
 		int otros = 0;
 		int regalos = 0;
 		int salud = 0;
+		int prestamos = 0;
 		int big = 0;
 		int posicion = 0;
 		ArrayList<Integer> mayor = new ArrayList<Integer>();
@@ -351,6 +352,8 @@ public class Movimientos implements Serializable{
 				finanzas++;
 			} else if (categoria == Categoria.OTROS) {
 				otros++;
+			}else if (categoria == Categoria.PRESTAMO) {
+				prestamos++;
 			}
 		}
 
@@ -361,6 +364,7 @@ public class Movimientos implements Serializable{
 		mayor.add(regalos);
 		mayor.add(finanzas);
 		mayor.add(otros);
+		mayor.add(prestamos);
 
 		for (int e = 0; e < mayor.size(); e++) {
 			if (mayor.get(e) > big) {
@@ -425,6 +429,16 @@ public class Movimientos implements Serializable{
 
 		else if (posicion == 6) {
 			setNombreCategoria("Otros");
+			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
+				if (Categoria.OTROS == u.getMovimientosAsociados().get(i).getCategoria()) {
+					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
+				}
+			}
+
+		}
+		
+		else if (posicion == 7) {
+			setNombreCategoria("Prestamos");
 			for (int i = 0; i < u.getMovimientosAsociados().size(); i++) {
 				if (Categoria.OTROS == u.getMovimientosAsociados().get(i).getCategoria()) {
 					cantidadCategoria = cantidadCategoria + u.getMovimientosAsociados().get(i).getCantidad();
