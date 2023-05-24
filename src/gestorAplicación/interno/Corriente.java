@@ -109,6 +109,7 @@ public class Corriente extends Cuenta implements Cloneable{
 	public void vaciarCuenta(Ahorros gota) {
 		Movimientos movimiento = new Movimientos(this, gota, this.getDisponible(), Categoria.OTROS,
 				Date.from(Instant.now()));
+		this.getTitular().getMovimientosAsociados().add(movimiento);
 		Movimientos.getMovimientosTotales().remove(movimiento);
 	}
 	
