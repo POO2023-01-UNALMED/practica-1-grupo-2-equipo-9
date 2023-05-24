@@ -193,7 +193,7 @@ public final class Main {
 					//				recibe la opccion del usuario
 					int opcion = Integer.parseInt(sc.nextLine());
 					System.out.println("");
-					while(opcion<1) {
+					while(opcion<1 || opcion >prestamo.size()+1) {
 						System.out.println("¡Error! Seleccione una de las siguientes opciones");
 						System.out.println("Estas son las cuentas valida para hacer un prestamo y el valor maximo del prestamo");
 						for (int i = 0; i < prestamo.size(); i++) {

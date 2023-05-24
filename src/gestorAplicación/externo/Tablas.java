@@ -180,7 +180,7 @@ public interface Tablas {
 		Deuda.limpiarPropiedades(cadena);
 		Metas.limpiarPropiedades(cadena);
 		
-		System.out.println(cadena);
+
 		
 		System.out.println("------------------------------------------------------------------------------------");
 		System.out.printf("%4s %8s %15s %15s %20s %15s", 

@@ -232,11 +232,9 @@ public class Usuario implements Serializable {
 				cadena.add("¡Error! Usted no tiene ninguna cuenta Ahorros creada");
 			}
 		}else{
-			cadena.add("¡Error! La suscripción"+this.getSuscripcion().name()+"solo permite realizar un total de"+this.getSuscripcion().getMaxDeudas()+". Usted tiene"+this.getSuscripcion().getMaxDeudas()+"/"+this.getSuscripcion().getMaxDeudas()+"Deudas");
+			cadena.add("¡Error! La suscripción "+this.getSuscripcion().name()+" solo permite realizar un total de "+this.getSuscripcion().getMaxDeudas()+". Usted tiene"+this.getSuscripcion().getMaxDeudas()+"/"+this.getSuscripcion().getMaxDeudas()+" Deudas");
 //			Agrega a cadena todas las cuentas del usuario para mostrarselas
-			for(int i =0;i<deudasUsuario.size();i++){
-				cadena.add(i+"-Deuda con id"+deudasUsuario.get(i).getId()+"efectuada por el banco"+deudasUsuario.get(i).getBanco()+" en la cuenta"+deudasUsuario.get(i).getCuenta()+"por una cantidad de"+deudasUsuario.get(i).getCantidad());
-			}
+			Tablas.impresionDeudas(deudasUsuario);
 		}
 		return cadena;
 	}
