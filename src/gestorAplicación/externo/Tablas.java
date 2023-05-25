@@ -79,21 +79,21 @@ public interface Tablas {
 		Corriente.limpiarPropiedades(cadena);
 		Cuenta.limpiarPropiedades(cadena);
 		
-		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %25s %10s %15s %15s %10s %10s %20s %20s", 
-				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(7),
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %15s %15s %10s %10s %20s %20s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(6), cadena.get(7),
 				cadena.get(8), cadena.get(9), cadena.get(10), cadena.get(5));
 		System.out.println();
-		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Corriente cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %25s %10d %15s %15s %10d %10s %20s %20s", 
-					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (Cuenta.redondeoDecimal(cuenta.getCupo(), 2) + " " + cuenta.getDivisa()), (Cuenta.redondeoDecimal(cuenta.getDisponible(), 2) + " " + cuenta.getDivisa()),
+			System.out.printf("%4d %8d %15s %25s %15s %15s %10d %10s %20s %20s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), (Cuenta.redondeoDecimal(cuenta.getCupo(), 2) + " " + cuenta.getDivisa()), (Cuenta.redondeoDecimal(cuenta.getDisponible(), 2) + " " + cuenta.getDivisa()),
 					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (Cuenta.redondeoDecimal(cuenta.getIntereses(), 2) + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
-		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------");
 
 		return;
 	}
@@ -104,21 +104,21 @@ public interface Tablas {
 		Corriente.limpiarPropiedades(cadena);
 		Cuenta.limpiarPropiedades(cadena);
 		
-		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %25s %10s %15s %15s %10s %10s %20s %20s %15s", 
-				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(7),
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %15s %15s %10s %10s %20s %20s %15s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(6), cadena.get(7),
 				cadena.get(8), cadena.get(9), cadena.get(10), cadena.get(5), "Interés Nuevo");
 		System.out.println();
-		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Corriente cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %25s %10d %15s %15s %10d %10s %20s %20s %15s", 
-					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), (Cuenta.redondeoDecimal(cuenta.getCupo(), 2) + " " + cuenta.getDivisa()), (Cuenta.redondeoDecimal(cuenta.getDisponible(), 2) + " " + cuenta.getDivisa()),
+			System.out.printf("%4d %8d %15s %25s %15s %15s %10d %10s %20s %20s %15s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), (Cuenta.redondeoDecimal(cuenta.getCupo(), 2) + " " + cuenta.getDivisa()), (Cuenta.redondeoDecimal(cuenta.getDisponible(), 2) + " " + cuenta.getDivisa()),
 					cuenta.getPlazo_Pago().getCantidad_Cuotas(), (Cuenta.redondeoDecimal(cuenta.getIntereses(), 2) + " %"), cuenta.getPrimerMensualidad(), cuenta.getBanco().getNombre(), (intereses.get(i - 1) + " %"));
 			System.out.println();
 			i++;
 		}
-		System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
 		return;
 	}
@@ -129,20 +129,20 @@ public interface Tablas {
 		Ahorros.limpiarPropiedades(cadena);
 		Cuenta.limpiarPropiedades(cadena);
 		
-		System.out.println("---------------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %25s %10s %15s %20s", 
-				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(6), cadena.get(5));
+		System.out.println("----------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %15s %20s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(6), cadena.get(5));
 		System.out.println();
-		System.out.println("---------------------------------------------------------------------------------------------------------");
+		System.out.println("----------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Ahorros cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %25s %10d %15s %20s", 
-					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(),
+			System.out.printf("%4d %8d %15s %25s %15s %20s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(),
 					(Cuenta.redondeoDecimal(cuenta.getSaldo(), 2)) + " " + cuenta.getDivisa(), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
-		System.out.println("---------------------------------------------------------------------------------------------------------");
+		System.out.println("----------------------------------------------------------------------------------------------");
 
 		return;
 	}
@@ -157,19 +157,19 @@ public interface Tablas {
 		else if (cuentas.get(0) instanceof Corriente) {
 			Corriente.limpiarPropiedades(cadena);
 		}
-		System.out.println("-----------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %15s %25s %10s %20s", 
-				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(5));
+		System.out.println("------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %15s %25s %20s", 
+				"#", cadena.get(4), cadena.get(3), cadena.get(0), cadena.get(5));
 		System.out.println();
-		System.out.println("-----------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------");
 		int i = 1;
 		for (Cuenta cuenta: cuentas) {
-			System.out.printf("%4d %8d %15s %25s %10d %20s", 
-					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getClave(), cuenta.getBanco().getNombre());
+			System.out.printf("%4d %8d %15s %25s %20s", 
+					i, cuenta.getId(), cuenta.getNombre(), cuenta.getTitular().getNombre(), cuenta.getBanco().getNombre());
 			System.out.println();
 			i++;
 		}
-		System.out.println("-----------------------------------------------------------------------------------------");
+		System.out.println("------------------------------------------------------------------------------");
 
 		return;
 	}
@@ -285,20 +285,20 @@ public interface Tablas {
 		
 		Usuario.limpiarPropiedades(cadena);
 
-		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%4s %8s %22s %30s %15s %12s %15s %20s", 
-				"#", cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(2), cadena.get(4), cadena.get(5), cadena.get(6));
+		System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%4s %8s %22s %30s %12s %15s %20s", 
+				"#", cadena.get(3), cadena.get(0), cadena.get(1), cadena.get(4), cadena.get(5), cadena.get(6));
 		System.out.println();
-		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------------------------------");
 		int i = 1;
 		for (Usuario usuario: usuarios) {
-			System.out.printf("%4s %8s %22s %30s %15s %12s %15d %20d", 
-					i, usuario.getId(), usuario.getNombre(), usuario.getCorreo(), usuario.getContrasena(), usuario.getSuscripcion(),
+			System.out.printf("%4s %8s %22s %30s %12s %15d %20d", 
+					i, usuario.getId(), usuario.getNombre(), usuario.getCorreo(), usuario.getSuscripcion(),
 					usuario.getLimiteCuentas(), usuario.getContadorMovimientos());
 			System.out.println();
 			i++;
 		}
-		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------------------------------");
 
 		return;
 	}
