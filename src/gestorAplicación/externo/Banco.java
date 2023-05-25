@@ -344,7 +344,7 @@ public class Banco implements Serializable {
 		if (user.getBancosAsociados().size() == 1) {
 			banco = user.getBancosAsociados().get(0);
 		} else {
-			for (int i = 1; i <= user.getBancosAsociados().size(); i++) {
+			for (int i = 1; i < user.getBancosAsociados().size() - 1; i++) {
 				if (user.getBancosAsociados().get(i - 1) != user.getBancosAsociados().get(i)) {
 					banco = user.getBancosAsociados().get(i);
 				} else {
