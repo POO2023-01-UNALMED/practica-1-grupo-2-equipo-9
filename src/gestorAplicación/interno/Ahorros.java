@@ -63,7 +63,6 @@ public class Ahorros extends Cuenta{
 		double rand = (double)((Math.random()) + probabilidad);
 		if(rand >= 1){
 			Movimientos m = (Movimientos) Movimientos.crearMovimiento(this, this.getSaldo() + this.getSaldo() * probabilidad, Categoria.FINANZAS, new Date());
-			this.getTitular().asociarMovimiento(m);
 			return (m);
 		}else {
 			return("Su inversion ha fallado, inténtelo de nuevo. Considere subir de nivel para aumentar la probabilidad de tener inversiones exitosas");

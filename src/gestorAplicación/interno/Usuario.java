@@ -123,7 +123,7 @@ public class Usuario implements Serializable {
 			
 			}
 		}else {
-			return("Debes completar 5 movimientos para ser promovido de nivel, llevas " + this.getContadorMovimientos() + " movimiento(s)");
+			return("Debes completar 5 movimientos para ser promovido de nivel, llevas " + (this.getContadorMovimientos()- this.getContadorMovimientosAux()) + " movimiento(s)");
 		}
 	}
 	
