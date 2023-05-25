@@ -1323,7 +1323,7 @@ public final class Main {
 		//Atributo auxiliar que almacenará la cuenta destino de la deuda
 		int Cuenta_Destino = 0;
 		while (validacion_Cuenta_Destino) {
-			System.out.print("Por favor escoga la cuenta destino de la deuda: ");
+			System.out.print("Por favor escoja la cuenta destino de la deuda: ");
 			Cuenta_Destino = Integer.parseInt(sc.nextLine());
 			if (Cuenta_Destino >= 1 && Cuenta_Destino <= cuentasCapacesDeuda.size()) {
 				validacion_Cuenta_Destino = false;
