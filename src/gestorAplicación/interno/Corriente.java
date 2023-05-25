@@ -16,7 +16,7 @@ public class Corriente extends Cuenta implements Cloneable{
 	private double disponible;
 	private Cuotas plazo_Pago = Cuotas.C1;
 	//Tasa efectiva anual
-	private double intereses;
+	private double intereses = 28;
 	//Atributo que decide pago de interes en primer mes
 	private boolean primerMensualidad;
 	private static ArrayList<Corriente> cuentasCorrienteTotales = new ArrayList<Corriente>();;
