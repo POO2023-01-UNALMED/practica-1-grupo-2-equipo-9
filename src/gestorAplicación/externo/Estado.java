@@ -3,7 +3,6 @@ package gestorAplicación.externo;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
 import gestorAplicación.interno.Cuenta;
 import gestorAplicación.interno.Usuario;
 

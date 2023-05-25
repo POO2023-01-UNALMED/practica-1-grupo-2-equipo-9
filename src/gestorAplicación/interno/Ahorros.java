@@ -12,7 +12,7 @@ public class Ahorros extends Cuenta{
 	private static final long serialVersionUID = 7L;
 	public static final String nombreD = "Ahorros";
 	private static ArrayList<Ahorros> cuentasAhorroTotales = new ArrayList<Ahorros>();;
-	double saldo = 0.0d;
+	private double saldo = 0.0d;
 
 	//Constructores
 	public Ahorros(Banco banco, int clave, Divisas divisa, String nombre, Double saldo) {
