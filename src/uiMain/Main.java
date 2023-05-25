@@ -1024,6 +1024,8 @@ public final class Main {
 				System.out.println("Entrada no válida, intente de nuevo");
 			}
 		}
+		
+		double deuda = Cuenta.DineroaTenerDisponible(cuenta, cuentasCapacesDeuda.get(Cuenta_Destino - 1).getDivisa());
 
 		//Atributo de validacion de la entrada Periodicidad
 		boolean validacion_Periodicidad = true;
@@ -1040,13 +1042,12 @@ public final class Main {
 				System.out.println("Entrada no válida, intente de nuevo");
 			}
 		}
-
+		//Atributo de la periodicidad
+		Cuotas eleccion_periodicidad = Cuotas.C1;
 		if (Periodicidad == 1) {
 			System.out.println("Perfecto, la deuda mantendrá un plazo de pago a " + cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago() + " cuotas.");
-		}
-		//Atributo de la periodicidad
-		Cuotas eleccion_periodicidad = cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago();
-		if (Periodicidad == 2) {
+			eleccion_periodicidad = cuentasCapacesDeuda.get(Cuenta_Destino - 1).getPlazo_Pago();
+		}else if (Periodicidad == 2) {
 			//Atributo de validacion de la seleccion de periodicidad
 			boolean validacion_Seleccion_Periodicidad = true;
 			int seleccion_periodicidad = 0;
@@ -1071,37 +1072,37 @@ public final class Main {
 			switch(seleccion_periodicidad) {
 			case 1:
 				eleccion_periodicidad = Cuotas.C1;
-				System.out.println("Deuda establecida a: " + Cuotas.C1.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C1 + ".");
 				break;
 			case 2:
 				eleccion_periodicidad = Cuotas.C6;
-				System.out.println("Deuda establecida a: " + Cuotas.C6.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C6 + ".");
 				break;
 			case 3:
 				eleccion_periodicidad = Cuotas.C12;
-				System.out.println("Deuda establecida a: " + Cuotas.C12.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C12 + ".");
 				break;
 			case 4:
 				eleccion_periodicidad = Cuotas.C18;
-				System.out.println("Deuda establecida a: " + Cuotas.C18.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C18 + ".");
 				break;
 			case 5:
 				eleccion_periodicidad = Cuotas.C24;
-				System.out.println("Deuda establecida a: " + Cuotas.C24.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C24 + ".");
 				break;
 			case 6:
 				eleccion_periodicidad = Cuotas.C36;
-				System.out.println("Deuda establecida a: " + Cuotas.C36.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C36 + ".");
 				break;
 			case 7:
 				eleccion_periodicidad = Cuotas.C48;
-				System.out.println("Deuda establecida a: " + Cuotas.C48.getCantidad_Cuotas() + "cuotas.");
+				System.out.println("Deuda establecida a: " + Cuotas.C48 + ".");
 				break;
 			}
 		}
 
 		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
-				cuenta.getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
+				deuda, tasacionCuentas.get(Cuenta_Destino - 1));
 		
 		int pagoPrimerMes = 1;
 		
@@ -1166,7 +1167,7 @@ public final class Main {
 				cuotaCalculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses(), true);
 			}
 			double[] infoAdicional = Corriente.informacionAdicionalCalculadora(cuotaCalculadora, vistaPrevia.getCupo() - vistaPrevia.getDisponible());
-			Main.calculadoraCuotas(cuotaCalculadora, infoAdicional);
+			Main.calculadoraCuotas(cuotaCalculadora, infoAdicional, vistaPrevia.getDivisa());
 		}
 
 		//Atributo de validacion de la entrada confirmacion Movimiento
