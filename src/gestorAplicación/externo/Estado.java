@@ -29,6 +29,7 @@ public class Estado implements Serializable {
 		Estado.getEstadosTotales().add(this);
 		this.setId(Estado.getEstadosTotales().size());
 	}
+	
 	public Estado(){
 		this("Colombia", 0.2, Divisas.COP);
 	}
