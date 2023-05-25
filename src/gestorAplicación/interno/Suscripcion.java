@@ -3,10 +3,10 @@ package gestorAplicación.interno;
 import java.util.ArrayList;
 
 public enum Suscripcion{
-	DIAMANTE(8, 0.80F, 4, 2f),
-	ORO(6, 0.60F, 3, 1.5f),
-	PLATA(4, 0.40F, 2, 1f),
-	BRONCE(2, 0.20F, 2, 0.5f);
+	DIAMANTE(13, 0.80F, 4, 2f),
+	ORO(10, 0.60F, 3, 1.5f),
+	PLATA(7, 0.40F, 2, 1f),
+	BRONCE(4, 0.20F, 2, 0.5f);
 	
 	//Atributos
 	private final int limiteCuentas;
