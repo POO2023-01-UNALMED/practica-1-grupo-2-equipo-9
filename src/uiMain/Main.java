@@ -1100,8 +1100,7 @@ public final class Main {
 			}
 		}
 
-		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, 
-				cuenta.getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
+		Corriente vistaPrevia = Corriente.vistaPreviaMovimiento(cuentasCapacesDeuda.get(Cuenta_Destino - 1), eleccion_periodicidad, cuenta.getDisponible(), tasacionCuentas.get(Cuenta_Destino - 1));
 		
 		int pagoPrimerMes = 1;
 		

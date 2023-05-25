@@ -39,7 +39,7 @@ public interface Tablas {
 		int i = 1;
 		for (Banco banco: bancos) {
 			System.out.printf("%4d %8d %20s %10s %10s %15s %20s %20s %29s", 
-					i, banco.getId(), banco.getNombre(), (Cuenta.redondeoDecimal(banco.getComision(), 2) + " %"), banco.getDivisa(), banco.getEstadoAsociado().getNombre(),
+					i, banco.getId(), banco.getNombre(), (Cuenta.redondeoDecimal(banco.getComision(), 2)), banco.getDivisa(), banco.getEstadoAsociado().getNombre(),
 					(Cuenta.redondeoDecimal(banco.getCupo_base(), 2) + " (" + Cuenta.redondeoDecimal(banco.getMultiplicador(), 2) + ")"), Cuenta.redondeoDecimal(banco.getDesc_suscripcion(), 2),
 					(Cuenta.redondeoDecimal(banco.getDesc_movimientos_porcentaje(), 2) + " (" + banco.getDesc_movimientos_cantidad() + ")"));
 			System.out.println();
