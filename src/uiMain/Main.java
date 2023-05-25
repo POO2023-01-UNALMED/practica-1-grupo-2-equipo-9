@@ -2883,17 +2883,17 @@ public final class Main {
 	static void guardarObjetos() throws ParseException{
 		while(true){
 			if (Usuario.getUsuariosTotales().size() != 0) {
-				System.out.println(Serializador.serializar(Usuario.getUsuariosTotales(), "Usuarios"));}
+				Serializador.serializar(Usuario.getUsuariosTotales(), "Usuarios");}
 			if (Banco.getBancosTotales().size() !=0 ) {
-				System.out.println(Serializador.serializar(Banco.getBancosTotales(), "Bancos"));}
+				Serializador.serializar(Banco.getBancosTotales(), "Bancos");}
 			if (Estado.getEstadosTotales().size() !=0 ) {
-				System.out.println(Serializador.serializar(Estado.getEstadosTotales(), "Estados"));}
+				Serializador.serializar(Estado.getEstadosTotales(), "Estados");}
 			if (Cuenta.getCuentasTotales().size()!=0) {
-				System.out.println(Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas"));}
+				Serializador.serializar(Cuenta.getCuentasTotales(), "Cuentas");}
 			if (Movimientos.getMovimientosTotales().size()!=0) {
-				System.out.println(Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos"));}
+				Serializador.serializar(Movimientos.getMovimientosTotales(), "Movimientos");}
 			if (Metas.getMetasTotales().size()!=0) {
-				System.out.println(Serializador.serializar(Metas.getMetasTotales(), "Metas"));} 
+				Serializador.serializar(Metas.getMetasTotales(), "Metas");} 
 			if(Metas.getMetasTotales().size() == 0 && Movimientos.getMovimientosTotales().size() == 0 && Cuenta.getCuentasTotales().size() == 0 && Banco.getBancosTotales().size() == 0 && Usuario.getUsuariosTotales().size() == 0){
 				System.out.println("Primero debes crear objetos para poder guardarlos.");
 			}
@@ -2916,22 +2916,22 @@ public final class Main {
 
 			File fCuenta = new File(f.getAbsolutePath() + "\\src\\baseDatos\\temp\\" + Cuenta.nombreD + "_lista" + ".dat");
 			if (fUsuario.exists()) {
-				System.out.println(Deserializador.deserializar_listas("Usuarios"));
+				Deserializador.deserializar_listas("Usuarios");
 				existencia = true;
 			}if (fEstado.exists()) {
-				System.out.println(Deserializador.deserializar_listas("Estados"));
+				Deserializador.deserializar_listas("Estados");
 				existencia = true;
 			}if (fBanco.exists()) {
-				System.out.println(Deserializador.deserializar_listas("Bancos"));
+				Deserializador.deserializar_listas("Bancos");
 				existencia = true;
 			}if (fMovimientos.exists()) {
-				System.out.println(Deserializador.deserializar_listas("Movimientos"));
+				Deserializador.deserializar_listas("Movimientos");
 				existencia = true;
 			}if (fMetas.exists()) {
-				System.out.println(Deserializador.deserializar_listas("Metas"));
+				Deserializador.deserializar_listas("Metas");
 				existencia = true;
 			}if (fCuenta.exists()) {
-				System.out.println(Deserializador.deserializar_listas("Cuentas"));
+				Deserializador.deserializar_listas("Cuentas");
 				existencia = true;
 			}if (!existencia) {
 				System.out.println("No existe un estado previo del sistema guardado");

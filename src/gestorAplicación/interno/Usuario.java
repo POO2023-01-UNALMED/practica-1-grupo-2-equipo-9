@@ -87,7 +87,7 @@ public class Usuario implements Serializable {
 	public static int hallarUsuarioImpuestosPortafolio() {
 		int contador = 0;
 		for (int i = 0; i < Usuario.getUsuariosTotales().size(); i++) {
-			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("Impuestos Portafolio")) {
+			if (Usuario.getUsuariosTotales().get(i).getNombre().equals("impuestosPortafolio")) {
 				contador = i;
 			} else {
 				continue;
