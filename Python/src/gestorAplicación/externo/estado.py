@@ -1,4 +1,4 @@
-class Estado:
+class Estado():
     _estadosTotales = []
     def __init__(self,nombre,tasa_impuestos,divisa):
         self._nombre = nombre

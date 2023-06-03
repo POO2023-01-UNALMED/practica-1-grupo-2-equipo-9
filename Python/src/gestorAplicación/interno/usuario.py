@@ -1,4 +1,4 @@
-from suscripcion import Suscripcion
+from .suscripcion import Suscripcion
 class Usuario():
     #Atributos de clase
     _usuariosTotales = []
@@ -196,5 +196,3 @@ class Usuario():
         return self._contadorMovimientosAux
     def setContadorMovimientosAux(self, _contadorMovimientosAux) -> None:
         self._contadorMovimientosAux = _contadorMovimientosAux
-
-
