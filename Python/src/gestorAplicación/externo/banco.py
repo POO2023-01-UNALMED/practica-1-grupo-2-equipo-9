@@ -6,7 +6,6 @@ from gestorAplicación.interno.categoria import Categoria
 
 class Banco():
 
-
     # Métodos de la funcionalidad Asesoramiento de inversiones
     def retornoPortafolio(riesgo, invertir, plazo, user):
         interes = random.random() + riesgo

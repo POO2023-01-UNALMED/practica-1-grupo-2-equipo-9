@@ -1,7 +1,4 @@
 from .cuenta import Cuenta
-from .movimientos import Movimientos
-from .categoria import Categoria
-from datetime import date
 
 class Corriente(Cuenta):
     #Atributos de clase

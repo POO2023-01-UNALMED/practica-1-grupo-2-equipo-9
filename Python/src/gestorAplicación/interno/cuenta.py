@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from .movimientos import Movimientos
-from .categoria import Categoria
 from datetime import date
 
 class Cuenta(ABC):
