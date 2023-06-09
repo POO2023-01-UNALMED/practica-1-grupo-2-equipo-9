@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import font, messagebox, ttk
+from tkinter import font, messagebox, ttk, Button
 import os
 from baseDatos.deserializador import Deserializador
 from baseDatos.serializador import Serializador
@@ -94,7 +94,22 @@ def BienvenidaApp():
     welcome_label = tk.Label(upperleftframe, text = welcome_label_text_variable, fg="black", bg="white", wraplength=400, font=("Alegreya Sans", 12))
     welcome_label.pack(expand=True, fill="both", padx=2, pady=2)
     #--------------------------------------------------
-
+    #-------Hoja de vida de los desarroladores(P5 - upperrightframe)---------------------
+    def change_button_text():
+        if button["text"] == "Hoja de vida 1":
+            button["text"] = "Hoja de vida 2"
+        elif button["text"] == "Hoja de vida 2":
+            button["text"] = "Hoja de vida 3"
+        elif button["text"] == "Hoja de vida 3":
+            button["text"] = "Hoja de vida 4"
+        elif button["text"] == "Hoja de vida 4":
+            button["text"] = "Hoja de vida 5"
+        elif button["text"] == "Hoja de vida 5":
+            button["text"] = "Hoja de vida 1"
+    # Crear el botón y asociar la función change_button_text con él
+    button = Button(upperrightframe, text="Hoja de vida 1", command=change_button_text)
+    button.pack(expand=True, fill="both")
+    #--------------------------------------------------
     welcomewindow.mainloop()
 
 if __name__ == "__main__":
