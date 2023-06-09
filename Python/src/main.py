@@ -15,7 +15,7 @@ from gestorAplicación.externo.banco import Banco
 
 welcomewindow = None
 
-def BienvenidaApp():
+def App():
     #Configuración básica de parámetros de la ventana de inicio
     welcomewindow = tk.Tk()
     welcomewindow.geometry("1000x800")
@@ -31,10 +31,7 @@ def BienvenidaApp():
         welcomewindow.destroy()
 
     def Show_description():
-        style_description = ttk.Style()
-        style_description.configure("Style_description.TLabel", font=("Alegreya Sans", 12, "bold"), foreground="blue")
-        #Dar formato de estilo
-        messagebox.showinfo("Descripción del sistema","Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
+        messagebox.showinfo("Mis Finanzas","Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
 
 
     #Configuración básica de los parámetros del mainframe en la ventana de inicio
@@ -45,15 +42,16 @@ def BienvenidaApp():
     upperframe = tk.Frame(mainframe, bg="black", borderwidth=1, relief="solid")
     upperframe.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03)
 
-    home_menu = tk.Menu(upperframe)
+    #Configuración de menú de inicio
+    home_menu = tk.Menu(upperframe, cursor="cross")
     menu_options= tk.Menu(home_menu, tearoff=0)
-    menu_options.add_command(label="Salir de la aplicación", command=Exit_initial_window)
-    menu_options.add_command(label="Descripción del sistema", command=Show_description)
+    menu_options.add_command(label="Salir de la aplicación", command=Exit_initial_window, activebackground="gray", activeforeground="white")
+    menu_options.add_command(label="Descripción del sistema", command=Show_description, activebackground="gray", activeforeground="white")
     menu_options.add_separator()
-    menu_options.add_command(label="Guardar objetos")
-    menu_options.add_command(label="Cargar objetos")
-    home_menu.add_cascade(label="Inicio", menu=menu_options)
-    welcomewindow.config(menu=home_menu)
+    menu_options.add_command(label="Guardar objetos", activebackground="gray", activeforeground="white")
+    menu_options.add_command(label="Cargar objetos", activebackground="gray", activeforeground="white")
+    home_menu.add_cascade(label="Inicio", menu=menu_options, activebackground="gray", activeforeground="white")
+    welcomewindow.config(menu = home_menu)
 
     leftframe = tk.Frame(mainframe, bg="white", borderwidth=1, relief="solid")
     leftframe.place(anchor="w", relheight=0.85, relwidth=0.46, rely=0.55, relx=0.03)
@@ -91,10 +89,14 @@ def BienvenidaApp():
     #--------------------------------------------------
     #-------Texto de bienvenida(P3 - upperleftframe)---------------------
     welcome_label_text_variable = "Bienvenidos al sistema de gestión financiera Mis Finanzas programado por: \n->Juan Pablo Mejía Gómez.\n->Leonard David Vivas Dallos.\n->José Daniel Moreno Ceballos.\n->Tomás Escobar Rivera.\n->Jorge Humberto García Botero."
-    welcome_label = tk.Label(upperleftframe, text = welcome_label_text_variable, fg="black", bg="white", wraplength=400, font=("Alegreya Sans", 12))
-    welcome_label.pack(expand=True, fill="both", padx=2, pady=2)
+    welcome_label = tk.Text(upperleftframe, cursor="cross", fg="black", bg="white", font=("Alegreya Sans", 12), wrap="word", spacing1=8)
+    welcome_label.insert(tk.INSERT, welcome_label_text_variable)
+    welcome_label.tag_configure("justifying", justify="center")
+    welcome_label.tag_add("justifying", "1.0", tk.END)
+    welcome_label.config(state="disabled")
+    welcome_label.pack(expand=True, fill="both", side="bottom")
     #--------------------------------------------------
-    #-------Hoja de vida de los desarroladores(P5 - upperrightframe)---------------------
+    #-------Hoja de vida de los desarrolladores(P5 - upperrightframe)---------------------
     def change_button_text():
         if button["text"] == "Hoja de vida 1":
             button["text"] = "Hoja de vida 2"
@@ -107,11 +109,11 @@ def BienvenidaApp():
         elif button["text"] == "Hoja de vida 5":
             button["text"] = "Hoja de vida 1"
     # Crear el botón y asociar la función change_button_text con él
-    button = Button(upperrightframe, text="Hoja de vida 1", command=change_button_text, font=("Alegreya Sans", 12))
+    button = Button(upperrightframe, text="Hoja de vida 1", bg="white", command=change_button_text, font=("Alegreya Sans", 12), activebackground="gray", activeforeground="white", border=1, relief="groove", cursor="cross")
     button.pack(expand=True, fill="both")
     #--------------------------------------------------
     welcomewindow.mainloop()
 
 if __name__ == "__main__":
     #Poner código para ejecutar la interfaz
-    BienvenidaApp()
+    App()
