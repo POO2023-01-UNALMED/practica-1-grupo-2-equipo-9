@@ -107,7 +107,7 @@ def BienvenidaApp():
         elif button["text"] == "Hoja de vida 5":
             button["text"] = "Hoja de vida 1"
     # Crear el botón y asociar la función change_button_text con él
-    button = Button(upperrightframe, text="Hoja de vida 1", command=change_button_text)
+    button = Button(upperrightframe, text="Hoja de vida 1", command=change_button_text, font=("Alegreya Sans", 12))
     button.pack(expand=True, fill="both")
     #--------------------------------------------------
     welcomewindow.mainloop()
