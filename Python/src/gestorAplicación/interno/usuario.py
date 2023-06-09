@@ -125,6 +125,25 @@ class Usuario():
         else:
             return ("Primero debes asociar cuentas")
         
+    # Métodos de la funcionalidad asesoramiento de inversiones
+    def hallarUsuariogotaGota():
+        contador = 0
+        for i in range(len(Usuario.getUsuariosTotales())):
+            if Usuario.getUsuariosTotales()[i].getNombre() == "gotaGota":
+                contador = i
+            else:
+                continue
+        return contador
+
+    def hallarUsuarioImpuestosPortafolio():
+        contador = 0
+        for i in range(len(Usuario.getUsuariosTotales())):
+            if Usuario.getUsuariosTotales()[i].getNombre() == "impuestosPortafolio":
+                contador = i
+            else:
+                continue
+        return contador
+
     def __str__(self) -> str:
         return("Usuario: " + self.getNombre() +
 				"\nCorreo: " + self.getCorreo() +

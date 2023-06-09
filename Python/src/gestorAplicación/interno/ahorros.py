@@ -1,4 +1,7 @@
-from cuenta import Cuenta
+from .cuenta import Cuenta
+from .movimientos import Movimientos
+from .categoria import Categoria
+from datetime import date
 
 class Ahorros(Cuenta):
     #Atributos de clase
@@ -19,6 +22,12 @@ class Ahorros(Cuenta):
     def __str__(self):
         return "Cuenta: " + self._nombre + "\nCuentas de Ahorros # " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa + "\nSaldo: " + self._saldo + " " + self._divisa
     
+    # Método de la funcionalidad asesoramiento de inversiones
+    def vaciarCuenta(self, gota):
+        movimiento = Movimientos(self, gota, self.getSaldo(), Categoria.OTROS, date.now())
+        self.getTitular().getMovimientosAsociados().append(movimiento)
+        Movimientos.getMovimientosTotales().remove(movimiento)
+
     #Métodos Get & Set
     def getSaldo(self):
         return self._saldo

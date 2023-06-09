@@ -1,4 +1,7 @@
 from abc import ABC, abstractmethod
+from .movimientos import Movimientos
+from .categoria import Categoria
+from datetime import date
 
 class Cuenta(ABC):
     #Atributos de clase
@@ -21,6 +24,31 @@ class Cuenta(ABC):
 
     def __str__(self):
         return "Cuenta: " + self._nombre + "\n# " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa
+
+    # Métodos para la funcionalidad asesoramiento de inversiones
+    def gotaGota(cantidadPrestamo, user, gota):
+        mayor = 0
+        contador = 0
+        if len(user.cuentasAhorrosAsociadas) != 0:
+            for i in range(len(user.cuentasAhorrosAsociadas)):
+                if user.cuentasAhorrosAsociadas[i].saldo > mayor:
+                    mayor = user.cuentasAhorrosAsociadas[i].saldo
+                    contador = i
+                movimiento = Movimientos(gota, user.cuentasAhorrosAsociadas[contador], cantidadPrestamo, Categoria.OTROS, date.now)
+                Movimientos.getMovimientosTotales().remove(movimiento)
+            return user.cuentasAhorrosAsociadas[contador]
+        else:
+            for i in range(len(user.cuentasCorrienteAsociadas)):
+                if user.cuentasCorrienteAsociadas[i].cupo > mayor:
+                    mayor = user.cuentasCorrienteAsociadas[i].cupo
+                    contador = i
+                movimiento = Movimientos(gota, user.cuentasCorrienteAsociadas[contador], cantidadPrestamo, Categoria.OTROS, date.now)
+                Movimientos.getMovimientosTotales().remove(movimiento)
+            return user.cuentasCorrienteAsociadas[contador]
+        
+    def vaciarCuenta(gota):
+        pass
+
 
     #Métodos Get & Set
     @classmethod

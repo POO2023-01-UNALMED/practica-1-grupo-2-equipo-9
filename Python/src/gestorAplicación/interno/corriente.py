@@ -1,4 +1,7 @@
-from cuenta import Cuenta
+from .cuenta import Cuenta
+from .movimientos import Movimientos
+from .categoria import Categoria
+from datetime import date
 
 class Corriente(Cuenta):
     #Atributos de clase
@@ -18,6 +21,13 @@ class Corriente(Cuenta):
     def __str__(self):
         return "Cuenta: " + self._nombre + "\nCuenta Corriente # " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa + "\nCupo: " + self._cupo + " " + self._divisa + "\nCupo disponible: " + self._disponible + " " + self._divisa + "\Cuotas: " + self._plazo_Pago + "\nIntereses: " + self._intereses
     
+    # Método para la funcionalidad asesoramiento de inversiones
+    def vaciarCuenta(self, gota):
+        movimiento = Movimientos(self, gota, self.getDisponible(), Categoria.OTROS, date.now())
+        self.getTitular().getMovimientosAsociados().append(movimiento)
+        Movimientos.getMovimientosTotales().remove(movimiento)
+
+
     #Atributos Get & Set
     def getCupo(self):
         return self._cupo
