@@ -1,4 +1,6 @@
 from .cuenta import Cuenta
+from  externo.banco import Banco
+from .movimientos import Movimientos
 
 class Ahorros(Cuenta):
     #Atributos de clase
@@ -24,6 +26,25 @@ class Ahorros(Cuenta):
         movimiento = Movimientos(self, gota, self.getSaldo(), Categoria.OTROS, date.now())
         self.getTitular().getMovimientosAsociados().append(movimiento)
         Movimientos.getMovimientosTotales().remove(movimiento)
+
+
+    # Funcionalidad Prestamos
+    @classmethod
+    def comprobarPrestamo(cls,_cuentas):
+        cuentasPrestamos = []
+        bancos = []
+
+        for cuenta in _cuentas:
+            prestamos = cuenta.getBanco().getPrestamos()
+            if(prestamos>0):
+                cuentasPrestamos.append(cuenta)
+            else:
+                bancos.append(cuenta.getBanco())
+        if len(cuentasPrestamos)!=0:
+            return cuentasPrestamos
+        else:
+            return bancos
+
 
     #Métodos Get & Set
     def getSaldo(self):

@@ -1,4 +1,6 @@
 from .suscripcion import Suscripcion
+from .deuda import Deuda
+
 class Usuario():
     #Atributos de clase
     _usuariosTotales = []
@@ -150,6 +152,27 @@ class Usuario():
 				"\n#: " + str(self.getId()) +
 				"\nCuentas Asociadas: " + str(self.getCuentasAsociadas()) +
 				"\nSuscripción: " + str(self.getSuscripcion()))
+
+# Metodos funcionalidad de prestamos
+    def comprobarConfiabilida(self):
+        cuentasUsuario = self.getCuentasAhorroAsociadas()
+        # conseguir la suscripcion
+        suscripcion = self.getSuscripcion()
+        # Comprobamos y contamos las deudas que estan asociadas al usuario
+        deudasUsuario = Deuda.conseguirDeudas(self)
+        if len(deudasUsuario)<suscripcion.getMaxDeudas():
+            if len(cuentasUsuario !=0):
+                return cuentasUsuario
+            else:
+                return "¡Error! Usted no tiene ninguna cuenta Ahorros creada"
+        else:
+            return f"¡Error! La suscripción {suscripcion.name} solo permite realizar un total de {suscripcion.getMaxDeudas()}.Usted tiene {suscripcion.getMaxDeudas()}/{suscripcion.getMaxDeudas()}"
+            ###########Falta imprimir las deudas
+
+
+
+
+
 
 
     #Métodos Get & Set

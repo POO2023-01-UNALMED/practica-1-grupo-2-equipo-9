@@ -4,8 +4,13 @@ from .ahorros import Ahorros
 from .corriente import Corriente
 from .cuenta import Cuenta
 from .categoria import Categoria
-
+from externo.banco import Banco
+from .deuda import Deuda
 class Movimientos():
+    
+
+
+
 
     # Atributos de clase para la funiconalidad Asesoramiento de inversiones
     _owner = None 
@@ -143,6 +148,35 @@ class Movimientos():
             Ahorros.getCuentasAhorroTotales().remove(impuestosBanco)
             Cuenta.getCuentasTotales().remove(impuestosBanco)
             return False
+
+
+# Funcionlidad Prestamo
+    @classmethod
+    def realizarPrestamo(cls,_cuenta,_cantidad):
+        banco = _cuenta.getBanco()
+        titular = _cuenta.getTitular()
+        maxCantidad = banco.getPrestamo() * titular.getSuscripcion().getPorcentajePrestamo()
+        if(_cantidad > maxCantidad or _cantidad<=0):
+            return None
+        else:
+            deuda = Deuda(_cantidad,_cuenta,titular,banco)
+            return(Movimientos.crearMovimiento(_cuenta,_cantidad,Categoria.Prestamos,date.now()))
+        
+
+    @classmethod
+    def pagarDeuda(_usuario,_deuda,_cantidad):
+        if _deuda.getCantidad()==_cantidad:
+            cuenta = _deuda.getCuenta()
+            Deuda.getDeudasTotales().remove(_deuda)
+            Metas.getMetasTotales().remove(_deuda)
+            _deuda.getCantidad(0)
+            cantidad= - _cantidad
+            return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO, date.now())
+        else:
+            _deuda.setCantidad(_deuda.getCantidad()-_cantidad)
+            cuenta = _deuda.getCantidad()
+            cantidad = -_cantidad
+            return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,date.now())
 
     def getOwner(self):
         return self._owner
