@@ -114,7 +114,7 @@ def App():
     button = Button(upperrightframe, text="Hoja de vida 1", bg="white", command=change_button_text, font=("Alegreya Sans", 12), activebackground="gray", activeforeground="white", border=1, relief="groove", cursor="cross")
     button.pack(expand=True, fill="both")
     #--------------------------------------------------
-    #-------Fotos de los desarrolladores(P6 - bottomightframe)---------------------
+    #-------Fotos de los desarrolladores(P6 - bottomrightframe)---------------------
     def update_image():
         global image_index
         image_paths = [
@@ -196,6 +196,38 @@ def App():
     image_label = tk.Label(bottomrightframe)
     image_label.pack(expand=True, fill="both")
     update_image()
+    #--------------------------------------------------
+    #-------Imágenes asociadas al sistema(P4 - bottomleftframe)---------------------
+    # Crear un label para mostrar la imagen.
+    image_label = tk.Label(bottomleftframe)
+    image_label.pack()
+
+    # Lista de las imágenes asociadas al sistema
+    image_paths = [
+        route_logo,
+        route_image,
+        route_logo,
+        route_image,
+        route_logo
+    ]
+    
+    # Cargar las imágenes
+    images = [tk.PhotoImage(file=image_path) for image_path in image_paths]
+
+    # Mostrar la imagen inicial
+    current_image_index = 0
+    current_image = images[current_image_index]
+    image_label.config(image=current_image)
+
+    # Función para cambiar la imagen al hacer clic
+    def cambiar_imagen_sistema(event):
+        nonlocal current_image_index
+        current_image_index = (current_image_index + 1) % len(images)
+        current_image = images[current_image_index]
+        image_label.config(image=current_image)
+
+    # Vincular el evento de clic al label de la imagen
+    image_label.bind("<Button-1>", cambiar_imagen_sistema)
     #--------------------------------------------------
     welcomewindow.mainloop()
 
