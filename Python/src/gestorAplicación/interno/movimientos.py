@@ -9,12 +9,48 @@ from gestorAplicación.externo.banco import Banco
 from gestorAplicación.externo.divisas import Divisas
 
 class Movimientos():
-
+    _movimientosTotales = []
+    def __init__(self,**kwargs):
+        Movimientos._movimientosTotales.append(self)
+        self._id = len(Movimientos._movimientosTotales)
+        self._cantidad = None
+        self._categoria = None
+        self._fecha = None
+        self._destino = None
+        self._origen = None
+        self._divisa = None
+        self._divisaAux = None
+        self._banco = None
+        self._cuotaManejo = None
     # Atributos de clase para la funiconalidad Asesoramiento de inversiones
-    _owner = None 
-    _nombreCategoria = None 
-    _cantidadCategoria = 0.0 
-    _recomendarFecha = None
+
+        self._owner= None
+        self._nombreCategoria = None
+        self._cantidadCategoria = 0.0
+        self._recomendarFecha = None
+
+        for key in kwargs:
+            if key == "nombre":
+                self._nombre = kwargs[key]
+            if key == "cantidad":
+                self._cantidad = kwargs[key]
+            if key == "categoria":
+                self._categoria = kwargs[key]
+            if key == "fecha":
+                self._fecha = kwargs[key]
+            if key == "destino":
+                self._destino = kwargs[key]
+            if key == "origen":
+                self._origen = kwargs[key]
+            if key == "divisa":
+                self._divisa = kwargs[key]
+            if key == "divisaAux":
+                self._divisaAux= kwargs[key]
+            if key == "banco":
+                self._banco = kwargs[key]
+            if key == "cuotaManejo":
+                self._cuotaManejo = kwargs[key]
+    
 
     # Métodos de la funiconalidad Asesoramiento de inversiones
     def analizarCategoria(self, user, plazo): 
