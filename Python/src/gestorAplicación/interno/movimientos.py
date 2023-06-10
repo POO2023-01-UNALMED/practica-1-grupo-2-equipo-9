@@ -30,8 +30,6 @@ class Movimientos():
         self._recomendarFecha = None
 
         for key in kwargs:
-            if key == "nombre":
-                self._nombre = kwargs[key]
             if key == "cantidad":
                 self._cantidad = kwargs[key]
             if key == "categoria":
@@ -50,7 +48,15 @@ class Movimientos():
                 self._banco = kwargs[key]
             if key == "cuotaManejo":
                 self._cuotaManejo = kwargs[key]
-    
+            if key == "owner":
+                self._owner = kwargs[key]
+            if key == "nombreCategoria":
+                self._nombreCategoria = kwargs[key]
+            if key == 'cantidadCategoria':
+                self._cantidadCategoria = kwargs[key]
+            if key == "recomendarFecha":
+                self._recomendarFecha = kwargs[key]
+            
 
     # Métodos de la funiconalidad Asesoramiento de inversiones
     def analizarCategoria(self, user, plazo): 
