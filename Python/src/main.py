@@ -84,10 +84,17 @@ def App():
 
     def update_image():
         global image_index
+
+        #Añadir las rutas para cada imágen
+        pablo_1 = os.path.join(current_directory + "\static\pablo_photos", "1.png")
+        pablo_2 = os.path.join(current_directory + "\static\pablo_photos", "2.png")
+        pablo_3 = os.path.join(current_directory + "\static\pablo_photos", "3.png")
+        pablo_4 = os.path.join(current_directory + "\static\pablo_photos", "4.png")
+
         image_paths = [
             # Pack de imagenes 1
-            route_image,
             route_logo,
+            route_image,
             route_logo,
             route_logo,
             # Pack de imagenes 2
@@ -106,10 +113,10 @@ def App():
             route_logo,
             route_image,
             # Pack de imagenes 5
-            route_logo,
-            route_logo,
-            route_logo,
-            route_logo,
+            pablo_1,
+            pablo_2,
+            pablo_3,
+            pablo_4,
         ]
 
         # Borrar cualquier sub-frame existente
@@ -160,8 +167,7 @@ def App():
         # Incrementar el índice de la imagen
         image_index = (image_index + 4) % len(image_paths)
 
-        # Función para cambiar la imagen al hacer clic
-    
+    # Función para cambiar la imagen al hacer clic
     def cambiar_imagen_sistema(event):
         nonlocal current_image_index
         current_image_index = (current_image_index + 1) % len(images)
