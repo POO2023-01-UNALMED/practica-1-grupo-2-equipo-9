@@ -14,6 +14,7 @@ from gestorAplicación.externo.banco import Banco
 #FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN
 
 welcomewindow = None
+image_index = 0 # Variable para realizar un seguimiento del índice del pack de imagenes de los desarrolladores
 
 def App():
     #Configuración básica de parámetros de la ventana de inicio
@@ -108,9 +109,93 @@ def App():
             button["text"] = "Hoja de vida 5"
         elif button["text"] == "Hoja de vida 5":
             button["text"] = "Hoja de vida 1"
+        update_image()
     # Crear el botón y asociar la función change_button_text con él
     button = Button(upperrightframe, text="Hoja de vida 1", bg="white", command=change_button_text, font=("Alegreya Sans", 12), activebackground="gray", activeforeground="white", border=1, relief="groove", cursor="cross")
     button.pack(expand=True, fill="both")
+    #--------------------------------------------------
+    #-------Fotos de los desarrolladores(P6 - bottomightframe)---------------------
+    def update_image():
+        global image_index
+        image_paths = [
+            # Pack de imagenes 1
+            route_image,
+            route_logo,
+            route_logo,
+            route_logo,
+            # Pack de imagenes 2
+            route_logo,
+            route_image,
+            route_logo,
+            route_logo,
+            # Pack de imagenes 3
+            route_logo,
+            route_logo,
+            route_image,
+            route_logo,
+            # Pack de imagenes 4
+            route_logo,
+            route_logo,
+            route_logo,
+            route_image,
+            # Pack de imagenes 5
+            route_logo,
+            route_logo,
+            route_logo,
+            route_logo,
+        ]
+
+        # Borrar cualquier sub-frame existente
+        for subframe in bottomrightframe.winfo_children():
+            subframe.destroy()
+
+        # Divide el marco inferior derecho en dos filas y dos columnas.
+        for i in range(0, 2):
+            bottomrightframe.rowconfigure(i, weight=1)
+            bottomrightframe.columnconfigure(i, weight=1)
+
+        # Crear sub-frames para las imágenes superiores
+        for i in range(0, 2):
+            # Calcular el índice de la imagen actual
+            current_image_index = (image_index + i) % len(image_paths)
+
+            # Cargar la imagen actual
+            image_path = image_paths[current_image_index]
+            image = tk.PhotoImage(file=image_path)
+
+            # Crear un sub-frame para mostrar la imagen
+            subframe = tk.Frame(bottomrightframe, bg="white", borderwidth=1, relief="groove")
+            subframe.grid(row=0, column=i, sticky="nsew")
+
+            # Crear un label para mostrar la imagen
+            image_label = tk.Label(subframe, image=image)
+            image_label.image = image  # Keep a reference to the image to prevent it from being garbage collected
+            image_label.pack(expand=True, fill="both")
+
+        # Crear sub-frame para las imágenes inferiores
+        for i in range(0, 2):
+            # Calcular el índice de la imagen actual
+            current_image_index = (image_index + i + 2) % len(image_paths)
+
+            # Cargar la imagen actual
+            image_path = image_paths[current_image_index]
+            image = tk.PhotoImage(file=image_path)
+
+            # Crear un sub-frame para mostrar la imagen
+            subframe = tk.Frame(bottomrightframe, bg="white", borderwidth=1, relief="groove")
+            subframe.grid(row=1, column=i, sticky="nsew")
+
+            # Crear un label para mostrar la imagen
+            image_label = tk.Label(subframe, image=image)
+            image_label.image = image  # Keep a reference to the image to prevent it from being garbage collected
+            image_label.pack(expand=True, fill="both")
+
+        # Incrementar el índice de la imagen
+        image_index = (image_index + 4) % len(image_paths)
+
+    image_label = tk.Label(bottomrightframe)
+    image_label.pack(expand=True, fill="both")
+    update_image()
     #--------------------------------------------------
     welcomewindow.mainloop()
 
