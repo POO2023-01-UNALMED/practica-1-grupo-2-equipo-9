@@ -1,4 +1,4 @@
-from Metas import Metas
+from gestorAplicación.interno.metas import Metas
 
 class Deuda(Metas):
     _deudasTotales = []

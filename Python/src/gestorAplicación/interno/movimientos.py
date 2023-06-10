@@ -4,7 +4,7 @@ from .ahorros import Ahorros
 from .corriente import Corriente
 from .cuenta import Cuenta
 from .categoria import Categoria
-from externo.banco import Banco
+from gestorAplicación.externo.banco import Banco
 from .deuda import Deuda
 class Movimientos():
     

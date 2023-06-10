@@ -1,6 +1,6 @@
 from .cuenta import Cuenta
-from  externo.banco import Banco
-from .movimientos import Movimientos
+from gestorAplicación.externo.banco import Banco
+
 
 class Ahorros(Cuenta):
     #Atributos de clase
@@ -23,6 +23,7 @@ class Ahorros(Cuenta):
     
     # Método de la funcionalidad asesoramiento de inversiones
     def vaciarCuenta(self, gota):
+        from .movimientos import Movimientos
         movimiento = Movimientos(self, gota, self.getSaldo(), Categoria.OTROS, date.now())
         self.getTitular().getMovimientosAsociados().append(movimiento)
         Movimientos.getMovimientosTotales().remove(movimiento)
