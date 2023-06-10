@@ -1,13 +1,12 @@
 import random
 from datetime import datetime
-
-from gestorAplicación.interno.usuario import Usuario
 from gestorAplicación.interno.categoria import Categoria
 
 class Banco():
 
     # Métodos de la funcionalidad Asesoramiento de inversiones
     def retornoPortafolio(riesgo, invertir, plazo, user):
+        from gestorAplicación.interno.usuario import Usuario
         from gestorAplicación.interno.movimientos import Movimientos
         interes = random.random() + riesgo
 

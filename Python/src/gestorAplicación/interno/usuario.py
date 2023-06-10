@@ -1,5 +1,10 @@
 from .suscripcion import Suscripcion
 from .deuda import Deuda
+from .movimientos import Movimientos
+from .corriente import Corriente
+from .cuenta import Cuenta
+from .ahorros import Ahorros
+from .metas import Metas
 
 class Usuario():
     #Atributos de clase
@@ -59,6 +64,7 @@ class Usuario():
             return("Debes completar 5 movimientos para ser promovido de nivel, llevas " + str((self.getContadorMovimientos() - self.getContadorMovimientosAux())) + " movimiento(s)")
         
     def asociarBanco(self, banco) -> str:
+        from gestorAplicación.externo.banco import Banco
         if(banco in Banco.getBancosTotales() and not(banco in self.getBancosAsociados())):
             self.getBancosAsociados().append(banco)
             return("El banco " + banco.getNombre() + " se ha asociado con éxito al usuario " + self.getNombre())

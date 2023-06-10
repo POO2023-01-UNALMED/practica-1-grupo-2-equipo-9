@@ -4,13 +4,11 @@ from .ahorros import Ahorros
 from .corriente import Corriente
 from .cuenta import Cuenta
 from .categoria import Categoria
-from gestorAplicación.externo.banco import Banco
 from .deuda import Deuda
+from gestorAplicación.externo.banco import Banco
+from gestorAplicación.externo.divisas import Divisas
+
 class Movimientos():
-    
-
-
-
 
     # Atributos de clase para la funiconalidad Asesoramiento de inversiones
     _owner = None 

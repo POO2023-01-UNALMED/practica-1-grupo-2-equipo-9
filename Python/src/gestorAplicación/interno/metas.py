@@ -1,5 +1,4 @@
 from datetime import date
-from datetime import datetime
 
 class Metas:
     _metasTotales = []
@@ -56,14 +55,14 @@ class Metas:
 
     @staticmethod
     def cambioFecha(meta, fecha):
-        nuevaFecha = datetime.datetime.strptime(fecha, "%d/%m/%Y")
+        nuevaFecha = date.date.strptime(fecha, "%d/%m/%Y")
         meta.setFecha(nuevaFecha)
         return meta
 
     @staticmethod
     def determinarPlazo(meta):
-        date1 = datetime.datetime.strptime("01/01/2024", "%d/%m/%Y")
-        date2 = datetime.datetime.strptime("01/01/2026", "%d/%m/%Y")
+        date1 = date.strptime("01/01/2024", "%d/%m/%Y")
+        date2 = date.strptime("01/01/2026", "%d/%m/%Y")
 
         if meta.getFecha() < date1:
             Metas.plazo = "Corto"

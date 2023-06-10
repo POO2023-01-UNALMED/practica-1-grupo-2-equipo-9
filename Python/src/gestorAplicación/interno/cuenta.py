@@ -25,6 +25,8 @@ class Cuenta(ABC):
 
     # Métodos para la funcionalidad asesoramiento de inversiones
     def gotaGota(cantidadPrestamo, user, gota):
+        from .movimientos import Movimientos
+        from .categoria import Categoria
         mayor = 0
         contador = 0
         if len(user.cuentasAhorrosAsociadas) != 0:

@@ -1,4 +1,5 @@
 from .cuenta import Cuenta
+from datetime import date
 
 class Corriente(Cuenta):
     #Atributos de clase
@@ -20,6 +21,8 @@ class Corriente(Cuenta):
     
     # Método para la funcionalidad asesoramiento de inversiones
     def vaciarCuenta(self, gota):
+        from .movimientos import Movimientos
+        from .categoria import Categoria
         movimiento = Movimientos(self, gota, self.getDisponible(), Categoria.OTROS, date.now())
         self.getTitular().getMovimientosAsociados().append(movimiento)
         Movimientos.getMovimientosTotales().remove(movimiento)
