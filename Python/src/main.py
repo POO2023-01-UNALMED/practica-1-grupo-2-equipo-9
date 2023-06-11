@@ -35,16 +35,17 @@ def App():
         messagebox.showinfo("Mis Finanzas","Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
 
     def login(event):
-        name_email_user = str(user_email_entry.get())
-        password_user = str(password_entry.get())
-        possible_user = Usuario.verificarCredenciales(name_email_user, password_user)
-        if(isinstance(possible_user, Usuario)):
-            #PONER CÓDIGO PARA SEGUIR EN LA VENTANA DE APLICACIÓN
-            pass
-        else:
-            messagebox.showerror("Mis finanzas", "Error: No se encuentra un usuario con estos datos. Inténtelo de nuevo.")
-            password_entry.delete(0, tk.END)
-            user_email_entry.delete(0, tk.END)
+        # name_email_user = str(user_email_entry.get())
+        # password_user = str(password_entry.get())
+        # possible_user = Usuario.verificarCredenciales(name_email_user, password_user)
+        # if(isinstance(possible_user, Usuario)):
+        #     #PONER CÓDIGO PARA SEGUIR EN LA VENTANA DE APLICACIÓN
+        #     pass
+        # else:
+        #     messagebox.showerror("Mis finanzas", "Error: No se encuentra un usuario con estos datos. Inténtelo de nuevo.")
+        #     password_entry.delete(0, tk.END)
+        #     user_email_entry.delete(0, tk.END)
+        ventanaPrincipal()
 
     def format_entry_user_email(event):
         if int(event.type) == 9:
@@ -302,6 +303,183 @@ def App():
     password_entry.bind('<FocusIn>', format_entry_password)
     password_entry.bind('<FocusOut>', format_entry_password)
     #--------------------------------------------------
+
+#############################################################
+#---------------------VENTANA PRINCIPAL---------------------#
+#############################################################
+    
+    def ventanaPrincipal():
+        # Eliminamos la ventana Principal
+        print("Ventana princoala")
+        exit_initial_window()
+        #Configuración básica de parámetros de la ventana Principal
+        principalWindow = tk.Tk()
+        principalWindow.geometry("1000x800")
+        principalWindow.title("Mis Finanzas")
+        #principalWindow.resizable(0,0)
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        route_logo = os.path.join(current_directory + "\static", "logo.png")
+        logo = tk.PhotoImage(file = route_logo)
+        principalWindow.iconphoto(True, logo)
+
+        tituloFuncionalidad  = "Mis Finanzas"
+    # #Métodos de funcionamiento de la ventana Principal
+        def Exit_principal_window():
+            principalWindow.destroy()
+
+        def Show_description():
+            messagebox.showinfo("Mis Finanzas","Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
+
+        # Metodos de las funcionalidades del menu
+
+        def modificarSuscripcion():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Modificar Suscripcion")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo modificarSuscripcion y agregar aca el funcionamiento de su funcionalidad")
+
+        def invertirSaldo():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Invertir Saldo")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo invertirSaldo y agregar aca el funcionamiento de su funcionalidad")
+            
+        def consignarSaldo():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="consignarSaldo")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo consignarSaldo y agregar aca el funcionamiento de su funcionalidad")
+            
+        def transferirSaldo():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Transferir Saldo")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo transferirSaldo y agregar aca el funcionamiento de su funcionalidad")
+            
+        def compraCorriente():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Comprar con cuenta corriente")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo compraCorriente y agregar aca el funcionamiento de su funcionalidad")
+            
+        def modificarSuscripcion():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Modificar Suscripcion")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo modificarSuscripcion y agregar aca el funcionamiento de su funcionalidad")
+            
+        def asesoramientoInversiones():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Asesoramiento de Inversiones")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo asesoramientoInversiones y agregar aca el funcionamiento de su funcionalidad")
+        
+        def modificarSuscripcion():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Modificar Suscripcion")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo modificarSuscripcion y agregar aca el funcionamiento de su funcionalidad")
+
+        def compraCartera():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Compra Catera")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo compraCartera y agregar aca el funcionamiento de su funcionalidad")
+
+        def calculadoraFinanciera():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Calculadora Financiera")
+            labelDescripcion.config(text="Agregar la descripcion en el metodo calculadoraFinanciera y agregar aca el funcionamiento de su funcionalidad")
+        
+        def pedirPrestamo():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Pedir Prestamo")
+            labelDescripcion.config(text="¿Necesitas dinero? realiza un prestamo con tu banco.\nPara pedir un prestamo es necesario que cuentes con una cuenta de ahorros, la cantidad de dinero que puedes prestar va a depender de tu nivel de suscripción y del banco asociado a tu cuenta")
+
+        def pagarPrestamo():
+            # Editar la descripcion de su funcionalidad
+            labelTitulo.config(text="Pagar Prestamo")
+            labelDescripcion.config(text="Es importante pagar tus deudas para poder confiando en ti.\n En esta sección puedes pagar tus prestamos, si no has realizado ningun prestamos y quieres hacerlo ingresa a la sección Pedir Prestamo")
+
+        
+        
+
+        #Configuración básica de los parámetros del mainframe en la ventana Principal
+        mainframe = tk.Frame(principalWindow, bg="#DFDEDE")
+        mainframe.pack(fill="both", expand=True)
+
+        # Configuración de los subs-frames
+        
+        #subframe del titulo
+        subframe0 = tk.Frame(mainframe, bg="black", borderwidth=1, relief="solid")
+        subframe0.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03 )
+
+        subframeAplicacion = tk.Frame(mainframe, bg="white", borderwidth=1, relief="solid")
+        subframeAplicacion.place( relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
+
+        #-------Menu---------------------
+        proceso1 = "Modificar Suscripcion"
+        proceso2 = "Invertir saldo de mi cuenta"
+        proceso3 = "Consignar saldo a mi cuenta"
+        proceso4 = "Transferir saldo entre cuentas"
+        proceso5 = "Compra con cuenta Corriente"
+        proceso6 = "Gestionar Prestamos"
+        proceso7 = "Asesoramiento de inversiones"
+        proceso8 = "Compra de cartera"
+        proceso9 = "Calculadora Financiera"
+        
+
+        home_menu = tk.Menu(subframe0,cursor="cross")
+
+
+        archivo =tk.Menu(home_menu,tearoff=0)
+        archivo.add_command(label="Aplicación", activebackground="gray", activeforeground="white")
+        archivo.add_command(label="Salir",command=Exit_principal_window ,activebackground="gray", activeforeground="white")
+# ----------Menu procesos y consultas
+        procesos = tk.Menu(home_menu,tearoff=0)
+# ----------sub menus de procesos
+        prestamos_menu = tk.Menu(procesos,tearoff=0)
+        prestamos_menu.add_command(label="Pedir Prestamos",command=pedirPrestamo,activebackground="gray", activeforeground="white")
+        prestamos_menu.add_command(label="Pagar Prestamos",command=pagarPrestamo,activebackground="gray", activeforeground="white")
+
+
+# Agregamos los submenus a procesos
+        procesos.add_command(label=proceso1,command=modificarSuscripcion,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso2,command=invertirSaldo,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso3,command=consignarSaldo,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso4,command=transferirSaldo,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso5,command=compraCorriente,activebackground="gray", activeforeground="white")
+        procesos.add_cascade(label=proceso6,menu=prestamos_menu,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso7,command=asesoramientoInversiones,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso8,command=compraCartera,activebackground="gray", activeforeground="white")
+        procesos.add_command(label=proceso9,command=calculadoraFinanciera,activebackground="gray", activeforeground="white")
+
+
+
+
+        home_menu.add_cascade(label="Archivo",menu =archivo,activebackground="gray", activeforeground="white")
+        home_menu.add_cascade(label="Procesos y Consultas",menu =procesos,activebackground="gray", activeforeground="white")
+
+        principalWindow.config(menu=home_menu)
+
+
+        #-------Texto de título(subframe0)---------------------
+
+        tituloFontStyle = font.Font(weight="bold", size=12, family="Alegreya Sans")
+        labelTitulo = tk.Label(subframe0, text=tituloFuncionalidad, fg="white", bg="gray", wraplength=400, font=tituloFontStyle, width=50)
+        labelTitulo.place(anchor="w", relheight=0.97, relwidth=0.8945, rely=0.5, relx=0.001)
+        #-------Imagen del titulo(subframe0)
+        route_image = os.path.join(current_directory + "\static", "unal.png")    
+        upper_image = tk.PhotoImage(file=route_image)
+        upper_image = upper_image.subsample(4)
+        upper_image_label = tk.Label(subframe0, image=upper_image)
+        upper_image_label.place(anchor="e", relheight=0.97, relwidth=0.101, rely=0.5, relx=0.999)
+
+        # ------------Descripcion de la funcionalidad
+        subframeDescripcion = tk.Frame(subframeAplicacion, bg="gray", borderwidth=1, relief="solid")
+        subframeDescripcion.place(relheight=0.2, relwidth=1, rely=0.0, relx=0.0)
+        descripcionFontStyle = font.Font( size=12, family="Alegreya Sans")
+        descripcionFuncionalidad = "Ad cillum enim occaecat aliqua ad ad sit. Reprehenderit laboris elit veniam minim esse elit. Anim deserunt officia irure proident non velit duis sint quis aute Lorem id."
+        labelDescripcion = tk.Label(subframeDescripcion, text=descripcionFuncionalidad, fg="white", bg="gray", wraplength=400, font=descripcionFontStyle, width=50)
+        labelDescripcion.place(anchor="w", relwidth=1, rely=0.5, relx=0.001)
+
+
+
+        
+        
+
+
 
     welcomewindow.mainloop()
 
