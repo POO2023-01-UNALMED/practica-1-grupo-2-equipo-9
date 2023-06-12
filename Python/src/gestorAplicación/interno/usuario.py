@@ -11,11 +11,21 @@ class Usuario():
     _usuariosTotales = []
 
     #Constructor
-    def __init__(self, _nombre, _correo, _contrasena, _suscripcion) -> None:
+    def __init__(self, **kwargs) -> None:
         #Atributos de instancia 
         Usuario._usuariosTotales.append(self)
         self.setId(len(Usuario.getUsuariosTotales()))
-        if(_nombre == "" and _correo == "" and _contrasena == ""):
+        for key in kwargs:
+            if key == "_nombre":
+                self.setNombre(kwargs[key])
+            if key == "_correo":
+                self.setCorreo(kwargs[key])
+            if key == "_contrasena":
+                self.setContrasena(kwargs[key])
+            if key == "_suscripcion":
+                self.setSuscripcion(kwargs[key])
+
+        """ if(_nombre == "" and _correo == "" and _contrasena == ""):
             self.setNombre("Pepe Morales")
             self.setCorreo("PepeMorales@mail.com")
             self.setContrasena("12345")
@@ -29,7 +39,7 @@ class Usuario():
                 self.setLimiteCuentas(_suscripcion.getLimiteCuentas())
             self.setNombre(_nombre)
             self.setContrasena(_contrasena)
-            self.setCorreo(_correo)
+            self.setCorreo(_correo) """
 
     #Métodos de clase
     @classmethod
@@ -174,11 +184,6 @@ class Usuario():
         else:
             return f"¡Error! La suscripción {suscripcion.name} solo permite realizar un total de {suscripcion.getMaxDeudas()}.Usted tiene {suscripcion.getMaxDeudas()}/{suscripcion.getMaxDeudas()}"
             ###########Falta imprimir las deudas
-
-
-
-
-
 
 
     #Métodos Get & Set
