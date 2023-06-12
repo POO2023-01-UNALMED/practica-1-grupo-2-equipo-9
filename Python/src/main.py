@@ -18,6 +18,8 @@ class App():
     # Guardar objetos al sistema
     """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
     Serializador.serializar([user1]) """
+    #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
+    #Serializador.serializar([user1])
 
     # Cargar objetos al sistema
     Deserializador.deserializar("Usuarios")
