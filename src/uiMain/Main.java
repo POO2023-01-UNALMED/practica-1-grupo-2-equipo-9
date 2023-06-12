@@ -1765,7 +1765,6 @@ public final class Main {
 							break;
 						}
 					}
-					System.out.println(user.getContadorMovimientosAux());
 					Object saldo_movimiento = Movimientos.crearMovimiento(c, saldo_consignar, Categoria.OTROS, new Date());
 					if(saldo_movimiento instanceof Movimientos) {
 						System.out.println("");
