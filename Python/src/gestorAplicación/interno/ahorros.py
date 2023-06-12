@@ -51,8 +51,19 @@ class Ahorros(Cuenta):
             return bancos
 
     @staticmethod
-    def limpiarPropiedades(self, arreglo):
-        pass
+    def limpiarPropiedades(cls, arreglo):
+        arreglo.remove("cuentasTotales")
+        #Verificar que otras variables se crean
+    #Verificar su uso
+
+    #Realizar el método del compare to
+    def compareTo(self, cuenta):
+        if self.getSaldo() > cuenta.getSaldo():
+            return 1
+        elif self.getSaldo() < cuenta.getSaldo():
+            return -1
+        else:
+            return 0
 
     #Métodos Get & Set
     def getSaldo(self):

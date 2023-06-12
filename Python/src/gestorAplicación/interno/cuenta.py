@@ -63,22 +63,49 @@ class Cuenta(ABC):
         pass
 
     #Realizar el método del compare to
+    def compareTo(self, cuenta):
+        if self.getId() > cuenta.getId():
+            return 1
+        elif self.getId() < cuenta.getId():
+            return -1
+        else:
+            return 0
 
+    #¿Se maneja ligadura dinámica?
     def invertirSaldo(self):
         pass
 
     def retornoCuotaMensual(self, deudaActual):
-        pass
+        banco = self.getBanco()
+        cuotaMensual = []
+        if (banco.getComision() + banco.getEstadoAsociado().getInteres_bancario_corriente()) < 1:
+            #Cuota del estado y del banco
+            cuota1 = deudaActual*banco.getComision() + banco.getEstadoAsociado().getIntereses_bancario_corriente()*deudaActual
+            cuota2 = (deudaActual - cuota1) / 2
+            cuotaMensual[0] = deudaActual*banco.getComision() + banco.getEstadoAsociado().getInteres_bancario_corriente()*deudaActual
+            cuotaMensual[1] = cuota2
+            cuotaMensual[2] = cuota2
+        else:
+            cuotaMensual[0] = deudaActual / 3
+            cuotaMensual[1] = deudaActual / 3
+            cuotaMensual[2] = deudaActual / 3
+        return cuotaMensual
 
     #Realizar el método equals
+    def equals(self, cuenta):
+        if self.getId() == cuenta.getId():
+            return True
+        else:
+            return False
 
     @staticmethod
-    def limpiarPropiedades(self, arreglo):
-        pass
+    def limpiarPropiedades(cls, arreglo):
+        arreglo.remove("cuentasTotales")
+        #Verificar que otras variables se crean
     #Verificar su uso
 
     @staticmethod
-    def dineroATenerDisponible(self, cuenta, divisas):
+    def dineroATenerDisponible(cls, cuenta, divisas):
         pass
 
     def __str__(self):
