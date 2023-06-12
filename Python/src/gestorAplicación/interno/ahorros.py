@@ -29,6 +29,9 @@ class Ahorros(Cuenta):
         self.getTitular().getMovimientosAsociados().append(movimiento)
         Movimientos.getMovimientosTotales().remove(movimiento)
 
+    #Funcionalidad de Suscripciones de Usuarios
+    def invertirSaldo(self):
+        pass
 
     # Funcionalidad Prestamos
     @classmethod
@@ -47,6 +50,9 @@ class Ahorros(Cuenta):
         else:
             return bancos
 
+    @staticmethod
+    def limpiarPropiedades(self, arreglo):
+        pass
 
     #Métodos Get & Set
     def getSaldo(self):

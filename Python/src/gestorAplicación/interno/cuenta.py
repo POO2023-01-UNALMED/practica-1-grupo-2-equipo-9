@@ -49,6 +49,40 @@ class Cuenta(ABC):
     def vaciarCuenta(gota):
         pass
 
+    #Métodos para funcionalidad de cambio de divisa
+    @staticmethod
+    def hacerCambio(cls):
+        pass
+
+    @staticmethod
+    def obtenerCuentasDivisa(cls):
+        pass
+
+    @staticmethod
+    def comprobarSaldo(cls):
+        pass
+
+    #Realizar el método del compare to
+
+    def invertirSaldo(self):
+        pass
+
+    def retornoCuotaMensual(self, deudaActual):
+        pass
+
+    #Realizar el método equals
+
+    @staticmethod
+    def limpiarPropiedades(self, arreglo):
+        pass
+    #Verificar su uso
+
+    @staticmethod
+    def dineroATenerDisponible(self, cuenta, divisas):
+        pass
+
+    def __str__(self):
+        return "Cuenta: " + self._nombre + "\n# " + self._id + "\nTitular: " + self.getTitular.getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa
 
     #Métodos Get & Set
     @classmethod

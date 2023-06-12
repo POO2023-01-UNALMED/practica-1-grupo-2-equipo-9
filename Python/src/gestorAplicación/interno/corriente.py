@@ -27,6 +27,45 @@ class Corriente(Cuenta):
         self.getTitular().getMovimientosAsociados().append(movimiento)
         Movimientos.getMovimientosTotales().remove(movimiento)
 
+    def retornoCuotaMensual(self, deudaActual, args):
+        pass
+
+    @staticmethod
+    def imprimitCuotaMensual(cls, cuotaMensual):
+        pass
+
+    @staticmethod
+    def calculoInteresNominalMensual(cls, interesEfectivoAnual):
+        pass
+
+    @staticmethod
+    def vistaPreviaMovimiento(cls, cuenta, plazo, deuda_Previa, interes):
+        pass
+
+    @staticmethod
+    def calculadoraCuotas(cls, cuotas, deuda, intereses):
+        pass
+
+    @staticmethod
+    def informacionAdicionalCalculadora(cls, cuota, deuda):
+        pass
+
+    @staticmethod
+    def inicializarCupo(cls, cuenta):
+        pass
+
+    def capacidadDeuda(self, cantidad):
+        pass
+
+    @staticmethod
+    def limpiarPropiedades(cls, arreglo):
+        pass
+
+    #Hacer el compare to
+
+    #Revisar la parte del clone
+
+    
 
     #Atributos Get & Set
     def getCupo(self):
