@@ -169,7 +169,7 @@ class Usuario():
 				"\nCuentas Asociadas: " + str(self.getCuentasAsociadas()) +
 				"\nSuscripción: " + str(self.getSuscripcion()))
 
-# Metodos funcionalidad de prestamos
+    # Metodos funcionalidad de prestamos
     def comprobarConfiabilida(self):
         cuentasUsuario = self.getCuentasAhorroAsociadas()
         # conseguir la suscripcion
@@ -184,7 +184,6 @@ class Usuario():
         else:
             return f"¡Error! La suscripción {suscripcion.name} solo permite realizar un total de {suscripcion.getMaxDeudas()}.Usted tiene {suscripcion.getMaxDeudas()}/{suscripcion.getMaxDeudas()}"
             ###########Falta imprimir las deudas
-
 
     #Métodos Get & Set
     @classmethod

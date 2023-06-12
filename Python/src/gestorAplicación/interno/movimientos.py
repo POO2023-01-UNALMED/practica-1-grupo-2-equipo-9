@@ -57,7 +57,6 @@ class Movimientos():
             if key == "recomendarFecha":
                 self._recomendarFecha = kwargs[key]
             
-
     # Métodos de la funiconalidad Asesoramiento de inversiones
     def analizarCategoria(self, user, plazo): 
         transporte = 0 
@@ -189,8 +188,7 @@ class Movimientos():
             Cuenta.getCuentasTotales().remove(impuestosBanco)
             return False
 
-
-# Funcionlidad Prestamo
+    # Funcionlidad Prestamo
     @classmethod
     def realizarPrestamo(cls,_cuenta,_cantidad):
         banco = _cuenta.getBanco()
@@ -202,7 +200,6 @@ class Movimientos():
             deuda = Deuda(_cantidad,_cuenta,titular,banco)
             return(Movimientos.crearMovimiento(_cuenta,_cantidad,Categoria.Prestamos,date.now()))
         
-
     @classmethod
     def pagarDeuda(_usuario,_deuda,_cantidad):
         if _deuda.getCantidad()==_cantidad:

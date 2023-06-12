@@ -11,9 +11,16 @@ from gestorAplicación.interno.movimientos import Movimientos
 from gestorAplicación.externo.estado import Estado
 from gestorAplicación.externo.banco import Banco
 
-# FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE, NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS
+# FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS
 
 class App():
+
+    # Guardar objetos al sistema
+    """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
+    Serializador.serializar([user1]) """
+
+    # Cargar objetos al sistema
+    Deserializador.deserializar("Usuarios")
 
     # Variables de clase para funcionamiento de la app
     initial_window = None
@@ -189,9 +196,6 @@ class App():
             current_image_index = (current_image_index + 1) % len(images)
             current_image = images[current_image_index]
             system_image_label.config(image=current_image)
-
-        # Cargar objetos al sistema
-        Deserializador.deserializar("Usuarios")
 
         # Configuración básica de parámetros de la ventana de inicio
         cls.initial_window = tk.Tk()
@@ -378,82 +382,69 @@ class App():
     # ----------------- VENTANA PRINCIPAL --------------
     @classmethod
     def start_main_window(cls):
-        # Métodos de funcionamiento de la ventana Principal
+        # Métodos de funcionamiento de la ventana principal
         def exit_principal_window():
             cls.user = None
             cls.main_window.destroy()
             App.start_initial_window()
 
         # Metodos de las funcionalidades del menú
-        def modificarSuscripcion():
+        def comprobar_suscripcion():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Modificar Suscripcion")
-            label_description.config(
-                text="Agregar la descripcion en el metodo modificarSuscripcion y agregar aca el funcionamiento de su funcionalidad")
+            label_title.config(text="Funcionalidad - Modificar Suscripcion")
+            label_description.config(text="El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario. El atributo comision se invoca haciendo uso del self, luego, este valor se multiplica por K, donde K es un factor que varía con base en el atributo suscripcion del Usuario pasado por parámetro en el método.")
 
-        def invertirSaldo():
+        def invertir_saldo():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Invertir Saldo")
+            label_title.config(text="Funcionalidad - Invertir Saldo")
             label_description.config(
-                text="Agregar la descripcion en el metodo invertirSaldo y agregar aca el funcionamiento de su funcionalidad")
+                text="El método de instancia invertirSaldo que se encuentra en la clase Ahorros consulta el atributo de instancia titular de tipo Usuario, de la instancia de Ahorros utilizada para ejecutar el método, usando el operador self y el método de instancia getTitular, posteriormente, verifica el atributo de instancia suscripcion de la instancia titular y obtiene la constante probabilidad_Inversion de tipo float asociada a este. Esta última constante se utiliza para realizar un cálculo aritmético que se almacena dentro de una variable de tipo double llamada rand y se evalúa que rand sea mayor ó igual a uno. Posteriormente, si la condición es true: se realiza un Movimiento ó si la condición es false: retorna un String.")
 
-        def consignarSaldo():
+        def consignar_saldo():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="consignarSaldo")
+            label_title.config(text="Funcionalidad - Consignar Saldo")
             label_description.config(
-                text="Agregar la descripcion en el metodo consignarSaldo y agregar aca el funcionamiento de su funcionalidad")
+                text="El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos. Se permite que el origen sea vacío.")
 
-        def transferirSaldo():
+        def transferir_saldo():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Transferir Saldo")
+            label_title.config(text="Funcionalidad - Transferir Saldo")
             label_description.config(
-                text="Agregar la descripcion en el metodo transferirSaldo y agregar aca el funcionamiento de su funcionalidad")
+                text="El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
 
-        def compraCorriente():
+        def compra_corriente():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Comprar con cuenta corriente")
+            label_title.config(text="Funcionalidad - Comprar con cuenta corriente")
             label_description.config(
-                text="Agregar la descripcion en el metodo compraCorriente y agregar aca el funcionamiento de su funcionalidad")
+                text="Agregar la descripcion en el metodo compra_corriente y agregar aca el funcionamiento de su funcionalidad")
 
-        def modificarSuscripcion():
+        def asesoramiento_inversiones():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Modificar Suscripcion")
+            label_title.config(text="Funcionalidad - Asesoramiento de Inversiones")
             label_description.config(
-                text="Agregar la descripcion en el metodo modificarSuscripcion y agregar aca el funcionamiento de su funcionalidad")
+                text="Agregar la descripcion en el metodo asesoramiento_inversiones y agregar aca el funcionamiento de su funcionalidad")
 
-        def asesoramientoInversiones():
+        def compra_cartera():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Asesoramiento de Inversiones")
+            label_title.config(text="Funcionalidad - Compra Catera")
             label_description.config(
-                text="Agregar la descripcion en el metodo asesoramientoInversiones y agregar aca el funcionamiento de su funcionalidad")
+                text="Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
 
-        def modificarSuscripcion():
+        def calculadora_financiera():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Modificar Suscripcion")
+            label_title.config(text="Funcionalidad - Calculadora Financiera")
             label_description.config(
-                text="Agregar la descripcion en el metodo modificarSuscripcion y agregar aca el funcionamiento de su funcionalidad")
+                text="Agregar la descripcion en el metodo calculadora_financiera y agregar aca el funcionamiento de su funcionalidad")
 
-        def compraCartera():
+        def pedir_prestamo():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Compra Catera")
-            label_description.config(
-                text="Agregar la descripcion en el metodo compraCartera y agregar aca el funcionamiento de su funcionalidad")
-
-        def calculadoraFinanciera():
-            # Editar la descripcion de su funcionalidad
-            label_title.config(text="Calculadora Financiera")
-            label_description.config(
-                text="Agregar la descripcion en el metodo calculadoraFinanciera y agregar aca el funcionamiento de su funcionalidad")
-
-        def pedirPrestamo():
-            # Editar la descripcion de su funcionalidad
-            label_title.config(text="Pedir Prestamo")
+            label_title.config(text="Funcionalidad - Pedir Prestamo")
             label_description.config(
                 text="¿Necesitas dinero? realiza un prestamo con tu banco.\nPara pedir un prestamo es necesario que cuentes con una cuenta de ahorros, la cantidad de dinero que puedes prestar va a depender de tu nivel de suscripción y del banco asociado a tu cuenta")
 
-        def pagarPrestamo():
+        def pagar_prestamo():
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Pagar Prestamo")
+            label_title.config(text="Funcionalidad - Pagar Prestamo")
             label_description.config(
                 text="Es importante pagar tus deudas para poder confiando en ti.\n En esta sección puedes pagar tus prestamos, si no has realizado ningun prestamos y quieres hacerlo ingresa a la sección Pedir Prestamo")
 
@@ -484,69 +475,72 @@ class App():
         subframe_main.place(
             relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
 
-        # -------Menu---------------------
-        proceso1 = "Modificar Suscripcion"
+        # Opciones dentro del menú procesos y consultas
+        proceso1 = "Modificar suscripcion"
         proceso2 = "Invertir saldo de mi cuenta"
         proceso3 = "Consignar saldo a mi cuenta"
         proceso4 = "Transferir saldo entre cuentas"
-        proceso5 = "Compra con cuenta Corriente"
-        proceso6 = "Gestionar Prestamos"
+        proceso5 = "Compra con cuenta corriente"
+        proceso6 = "Gestionar prestamos"
         proceso7 = "Asesoramiento de inversiones"
         proceso8 = "Compra de cartera"
-        proceso9 = "Calculadora Financiera"
+        proceso9 = "Calculadora financiera"
 
+        # Configuración de barra de menú para ventana principal
         home_menu = tk.Menu(subframe_title, cursor="cross")
-
+        
+        # Configuración del menú archivo
         archivo = tk.Menu(home_menu, tearoff=0)
         archivo.add_command(label="Aplicación",
                             activebackground="gray", activeforeground="white")
         archivo.add_command(label="Cerrar sesión", command=exit_principal_window,
                             activebackground="gray", activeforeground="white")
 
-    # ----------Menu procesos y consultas
+        # Configuración del menú procesos y consultas
         procesos = tk.Menu(home_menu, tearoff=0)
-    # ----------sub menus de procesos
-        prestamos_menu = tk.Menu(procesos, tearoff=0)
-        prestamos_menu.add_command(label="Pedir Prestamos", command=pedirPrestamo,
-                                   activebackground="gray", activeforeground="white")
-        prestamos_menu.add_command(label="Pagar Prestamos", command=pagarPrestamo,
-                                   activebackground="gray", activeforeground="white")
 
-    # Agregamos los submenus a procesos
-        procesos.add_command(label=proceso1, command=modificarSuscripcion,
+        # Agregamos los submenús al gestionar prestamos.
+        prestamos_menu = tk.Menu(procesos, tearoff=0)
+        prestamos_menu.add_command(label="Pedir Prestamos", command=pedir_prestamo,
+                                   activebackground="gray", activeforeground="white")
+        prestamos_menu.add_command(label="Pagar Prestamos", command=pagar_prestamo,
+                                   activebackground="gray", activeforeground="white")
+        
+        # Agregamos los submenús al menú procesos y consultas.
+        procesos.add_command(label=proceso1, command=comprobar_suscripcion,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso2, command=invertirSaldo,
+        procesos.add_command(label=proceso2, command=invertir_saldo,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso3, command=consignarSaldo,
+        procesos.add_command(label=proceso3, command=consignar_saldo,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso4, command=transferirSaldo,
+        procesos.add_command(label=proceso4, command=transferir_saldo,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso5, command=compraCorriente,
+        procesos.add_command(label=proceso5, command=compra_corriente,
                              activebackground="gray", activeforeground="white")
         procesos.add_cascade(label=proceso6, menu=prestamos_menu,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso7, command=asesoramientoInversiones,
+        procesos.add_command(label=proceso7, command=asesoramiento_inversiones,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso8, command=compraCartera,
+        procesos.add_command(label=proceso8, command=compra_cartera,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso9, command=calculadoraFinanciera,
+        procesos.add_command(label=proceso9, command=calculadora_financiera,
                              activebackground="gray", activeforeground="white")
-
         home_menu.add_cascade(label="Archivo", menu=archivo,
                               activebackground="gray", activeforeground="white")
         home_menu.add_cascade(label="Procesos y Consultas", menu=procesos,
                               activebackground="gray", activeforeground="white")
 
+        #Añadir la barra de menú a la ventana principal
         cls.main_window.config(menu=home_menu)
 
         # -------Texto de título(subframe_title)---------------------
-
         title_Font_Style = font.Font(
             weight="bold", size=12, family="Alegreya Sans")
         label_title = tk.Label(subframe_title, text=tituloFuncionalidad, fg="white",
                                bg="gray", wraplength=400, font=title_Font_Style, width=50)
         label_title.place(anchor="w", relheight=0.97,
                           relwidth=0.8945, rely=0.5, relx=0.001)
+        
         # -------Imagen del titulo(subframe_title)
         route_image = os.path.join(current_directory + "\static", "unal.png")
         upper_image = tk.PhotoImage(file=route_image)
@@ -559,12 +553,12 @@ class App():
         subframe_description = tk.Frame(
             subframe_main, bg="gray", borderwidth=1, relief="solid")
         subframe_description.place(
-            relheight=0.2, relwidth=1, rely=0.0, relx=0.0)
-        descripcionFontStyle = font.Font(size=12, family="Alegreya Sans")
-        descripcionFuncionalidad = "Ad cillum enim occaecat aliqua ad ad sit. Reprehenderit laboris elit veniam minim esse elit. Anim deserunt officia irure proident non velit duis sint quis aute Lorem id."
-        label_description = tk.Label(subframe_description, text=descripcionFuncionalidad,
-                                    fg="white", bg="gray", wraplength=400, font=descripcionFontStyle, width=50)
-        label_description.place(anchor="w", relwidth=1, rely=0.5, relx=0.001)
+            relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
+        descripcion_font_style = font.Font(size=12, family="Alegreya Sans")
+        descripcion_funcionalidad = "Ad cillum enim occaecat aliqua ad ad sit. Reprehenderit laboris elit veniam minim esse elit. Anim deserunt officia irure proident non velit duis sint quis aute Lorem id."
+        label_description = tk.Label(subframe_description, text=descripcion_funcionalidad,
+                                    fg="white", bg="gray", font=descripcion_font_style, wraplength=800)
+        label_description.pack(fill="both", expand=True)
 
         cls.main_window.mainloop()
     # --------------------------------------------------
