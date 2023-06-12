@@ -414,11 +414,44 @@ class App():
             label_description.config(
                 text="(REVISAR)El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
 
-        def compra_corriente():
+        def compra_corriente(cuenta = None):
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Comprar con cuenta corriente")
             label_description.config(
                 text="Agregar la descripcion en el metodo compra_corriente y agregar aca el funcionamiento de su funcionalidad")
+
+            #Desarrollo de la funcionalidad
+            if cuenta == None:
+                #Arreglo que almacena las cuentas con deuda alguna
+                cuentasEnDeuda = cls.user.retornarDeudas()
+                cuentasEnDeuda.sort()
+
+                #Arreglo que almacena las cuentas asociadas a un usuario
+                cuentasAux = cls.user.getCuentasAsociadas()
+                cuentasAux.sort()
+
+                cuentasAux1 = cls.user.getCuentasCorrienteAsociadas()
+
+                #Comprobación de existencia de Cuentas Corriente por parte del Usuario
+                if len(cuentasAux1) <= 1:
+                    print ("Falta revisar que se hace con esto")
+                    return
+                
+                if len(cuentasEnDeuda) == 0:
+                    print("Revisar que pasa con esto")
+                    return
+                
+                cuenta_Compra = 0
+                seleccion_Cuenta = False
+
+                while seleccion_Cuenta:
+                    print("Verificar impresión")
+
+
+            
+            else:
+                pass
+
 
         def asesoramiento_inversiones():
             # Editar la descripcion de su funcionalidad
@@ -563,6 +596,11 @@ class App():
         label_description.pack(fill="both", expand=True)
 
         cls.main_window.mainloop()
+    # --------------------------------------------------
+
+    # ----------------- LÓGICA DEL MAIN --------------
+
+
     # --------------------------------------------------
 
 if __name__ == "__main__":

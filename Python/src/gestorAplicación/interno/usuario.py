@@ -185,6 +185,15 @@ class Usuario():
             return f"¡Error! La suscripción {suscripcion.name} solo permite realizar un total de {suscripcion.getMaxDeudas()}.Usted tiene {suscripcion.getMaxDeudas()}/{suscripcion.getMaxDeudas()}"
             ###########Falta imprimir las deudas
 
+    #Métodos funcionalidad Compra de Cartera
+    def retornarDeudas(self):
+        cuentasConDeuda = []
+        for cuenta in self._cuentasAsociadas:
+            if cuenta.getDisponible().compareTo(cuenta.getCupo) != 0:
+                cuentasConDeuda.append(cuenta)
+        
+        return cuentasConDeuda
+
     #Métodos Get & Set
     @classmethod
     def getUsuariosTotales(cls) -> list:
