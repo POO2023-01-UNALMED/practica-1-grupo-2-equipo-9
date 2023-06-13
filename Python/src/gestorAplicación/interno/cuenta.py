@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date
+from Python.src.gestorAplicación.interno.movimientos import Movimientos
 
 class Cuenta(ABC):
     #Atributos de clase
@@ -51,16 +52,46 @@ class Cuenta(ABC):
 
     #Métodos para funcionalidad de cambio de divisa
     @staticmethod
-    def hacerCambio(cls):
-        pass
+    def hacerCambio(escogencia, monto, destino, user, exacto=False):
+        origen = escogencia.getOrigen()
+        if exacto:
+            pagar = monto / (1 - escogencia.getBanco().getEstadoAsociado().getTasaImpuestos())
+            pagar /= (1 - escogencia.getCoutaManejo())
+            pagar /= escogencia.getCantidad()
+            m = Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo(), pagar, datetime.datetime.now())
+            origen.setSaldo(origen.getSaldo() - pagar)
+            destino.setSaldo(destino.getSaldo() + monto)
+        else:
+            cambiado = monto * (1 - escogencia.getBanco().getEstadoAsociado().getTasaImpuestos())
+            cambiado *= (1 - escogencia.getCoutaManejo())
+            cambiado *= escogencia.getCantidad()
+            m = Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo(), monto, datetime.datetime.now())
+            origen.setSaldo(origen.getSaldo() - monto)
+            destino.setSaldo(destino.getSaldo() + cambiado)
+
+        user.asociarMovimiento(m)
+        for i in range(len(user.getBancosAsociados())):
+            user.getBancosAsociados()[i].setAsociado(False)
 
     @staticmethod
-    def obtenerCuentasDivisa(cls):
-        pass
+    def comprobarSaldo(cuenta, monto=None):
+        ahorro = cuenta
+        if monto is None:
+            return ahorro.getSaldo() >= monto
+        else:
+            pagar = monto / (1 - cuenta.getBanco().getEstadoAsociado().getTasaImpuestos())
+            pagar /= (1 - cuenta.getCoutaManejo())
+            pagar /= cuenta.getCantidad()
+            return ahorro.getSaldo() >= pagar
 
     @staticmethod
-    def comprobarSaldo(cls):
-        pass
+    def obtenerCuentasDivisa(usuario, divisa):
+        cuentasB = []
+        for ahorro in usuario.getCuentasAhorrosAsociadas():
+            if ahorro.getDivisa() == divisa:
+                cuentasB.append(ahorro)
+        return cuentasB
+
 
     #Realizar el método del compare to
     def compareTo(self, cuenta):

@@ -214,6 +214,21 @@ class Movimientos():
             cuenta = _deuda.getCantidad()
             cantidad = -_cantidad
             return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,date.now())
+        
+    # Funcionalidad de cambio de divisa
+    @classmethod
+    def facilitarInformacion(mov):
+        for i in range(len(mov.getOwner().getBancosAsociados())):
+            mov.getOwner().getBancosAsociados()[i].setAsociado(True)
+
+        cadena = mov.getDivisa().name + mov.getDivisaAux().name
+        existeCambio = []
+        for j in range(len(Banco.getBancosTotales())):
+            for k in range(len(Banco.getBancosTotales()[j].getDic())):
+                if cadena == Banco.getBancosTotales()[j].getDic()[k]:
+                    existeCambio.append(Banco.getBancosTotales()[j])
+
+        return existeCambio
 
     def getOwner(self):
         return self._owner

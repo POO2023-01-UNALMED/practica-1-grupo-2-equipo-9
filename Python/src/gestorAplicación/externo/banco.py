@@ -1,8 +1,44 @@
 import random
 from datetime import datetime
+from gestorAplicación.interno.movimientos import Movimientos
 from gestorAplicación.interno.categoria import Categoria
 
 class Banco():
+    #Métodos de la funcionalidad de cambio de divisa
+    @staticmethod
+    def cotizarTaza(user, existeCambio, cadena, ahorrosPosibles):
+        imprimir = []
+        for ahorro in ahorrosPosibles:
+            for banco in existeCambio:
+                indice = banco.getDic().index(cadena)
+                valor = banco.getCionario()[indice]
+                if ahorro.getBanco() == banco:
+                    valor *= 0.98
+                if banco.isAsociado():
+                    valor *= 0.97
+                cuotaManejo = Banco.divisaSuscripcion(user)
+                cotizacion = Movimientos(banco, ahorro, valor, cuotaManejo)
+                imprimir.append(cotizacion)
+
+        return imprimir
+    @staticmethod
+    def cotizarTazaAux(user, existeCambio, cadena, cuentasPosibles):
+        imprimir = []
+        for conta in cuentasPosibles:
+            for banco in existeCambio:
+                indice = banco.getDic().index(cadena)
+                valor = banco.getCionario()[indice]
+                if conta.getBanco() == banco:
+                    valor *= 0.98
+                if banco.isAsociado():
+                    valor *= 0.97
+                cuotaManejo = Banco.divisaSuscripcion(user)
+                cotizacion = Movimientos(banco, conta, valor, cuotaManejo)
+                imprimir.append(cotizacion)
+
+        return imprimir
+
+
 
     # Métodos de la funcionalidad Asesoramiento de inversiones
     def retornoPortafolio(riesgo, invertir, plazo, user):
