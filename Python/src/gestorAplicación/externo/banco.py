@@ -6,34 +6,35 @@ from gestorAplicación.interno.categoria import Categoria
 class Banco():
     #Métodos de la funcionalidad de cambio de divisa
     @staticmethod
-    def cotizarTaza(user, existeCambio, cadena, ahorrosPosibles):
+    def cotizar_taza(user, existe_cambio, cadena, ahorros_posibles):
         imprimir = []
-        for ahorro in ahorrosPosibles:
-            for banco in existeCambio:
-                indice = banco.getDic().index(cadena)
-                valor = banco.getCionario()[indice]
-                if ahorro.getBanco() == banco:
+        for ahorro in ahorros_posibles:
+            for banco in existe_cambio:
+                indice = banco.get_dic().index(cadena)
+                valor = banco.get_cionario()[indice]
+                if ahorro.get_banco() == banco:
                     valor *= 0.98
-                if banco.isAsociado():
+                if banco.is_asociado():
                     valor *= 0.97
-                cuotaManejo = Banco.divisaSuscripcion(user)
-                cotizacion = Movimientos(banco, ahorro, valor, cuotaManejo)
+                cuota_manejo = Banco.divisa_suscripcion(user)
+                cotizacion = Movimientos(banco, ahorro, valor, cuota_manejo)
                 imprimir.append(cotizacion)
 
         return imprimir
+
     @staticmethod
-    def cotizarTazaAux(user, existeCambio, cadena, cuentasPosibles):
+    def cotizar_taza_aux(user, existe_cambio, cadena, cuentas_posibles):
         imprimir = []
-        for conta in cuentasPosibles:
-            for banco in existeCambio:
-                indice = banco.getDic().index(cadena)
-                valor = banco.getCionario()[indice]
-                if conta.getBanco() == banco:
+        for conta in cuentas_posibles:
+            for banco in existe_cambio:
+                indice = banco.get_dic().index(cadena)
+                valor = banco.get_cionario()[indice]
+                if conta.get_banco() == banco:
                     valor *= 0.98
-                if banco.isAsociado():
+                if banco.is_asociado():
                     valor *= 0.97
-                cuotaManejo = Banco.divisaSuscripcion(user)
-                cotizacion = Movimientos(banco, conta, valor, cuotaManejo)
+                cuota_manejo = Banco.divisa_suscripcion(user)
+                cotizacion = Movimientos(banco, conta, valor, cuota_manejo)
                 imprimir.append(cotizacion)
 
         return imprimir

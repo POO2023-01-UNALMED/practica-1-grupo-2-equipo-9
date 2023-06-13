@@ -217,18 +217,19 @@ class Movimientos():
         
     # Funcionalidad de cambio de divisa
     @classmethod
-    def facilitarInformacion(mov):
-        for i in range(len(mov.getOwner().getBancosAsociados())):
-            mov.getOwner().getBancosAsociados()[i].setAsociado(True)
+    def facilitar_informacion(mov):
+        for i in range(len(mov.get_owner().get_bancos_asociados())):
+            mov.get_owner().get_bancos_asociados()[i].set_asociado(True)
 
-        cadena = mov.getDivisa().name + mov.getDivisaAux().name
-        existeCambio = []
-        for j in range(len(Banco.getBancosTotales())):
-            for k in range(len(Banco.getBancosTotales()[j].getDic())):
-                if cadena == Banco.getBancosTotales()[j].getDic()[k]:
-                    existeCambio.append(Banco.getBancosTotales()[j])
+        cadena = mov.get_divisa().name + mov.get_divisa_aux().name
+        existe_cambio = []
+        for j in range(len(Banco.get_bancos_totales())):
+            for k in range(len(Banco.get_bancos_totales()[j].get_dic())):
+                if cadena == Banco.get_bancos_totales()[j].get_dic()[k]:
+                    existe_cambio.append(Banco.get_bancos_totales()[j])
 
-        return existeCambio
+        return existe_cambio
+
 
     def getOwner(self):
         return self._owner

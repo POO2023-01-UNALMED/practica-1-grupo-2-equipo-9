@@ -12,6 +12,7 @@ class Estado():
     def __str__(self):
         return f"{self.getNombre} Divisa: {self.getDivisa}"
 
+
 # Set y Gest
     def getNombre(self):
         return self._nombre

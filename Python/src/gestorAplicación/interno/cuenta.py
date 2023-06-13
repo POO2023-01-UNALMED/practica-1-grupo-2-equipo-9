@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from datetime import date
+from datetime import date, datetime
 from Python.src.gestorAplicación.interno.movimientos import Movimientos
 
 class Cuenta(ABC):
@@ -52,45 +52,45 @@ class Cuenta(ABC):
 
     #Métodos para funcionalidad de cambio de divisa
     @staticmethod
-    def hacerCambio(escogencia, monto, destino, user, exacto=False):
-        origen = escogencia.getOrigen()
+    def hacer_cambio(escogencia, monto, destino, user, exacto=False):
+        origen = escogencia.get_origen()
         if exacto:
-            pagar = monto / (1 - escogencia.getBanco().getEstadoAsociado().getTasaImpuestos())
-            pagar /= (1 - escogencia.getCoutaManejo())
-            pagar /= escogencia.getCantidad()
-            m = Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo(), pagar, datetime.datetime.now())
-            origen.setSaldo(origen.getSaldo() - pagar)
-            destino.setSaldo(destino.getSaldo() + monto)
+            pagar = monto / (1 - escogencia.get_banco().get_estado_asociado().get_tasa_impuestos())
+            pagar /= (1 - escogencia.get_couta_manejo())
+            pagar /= escogencia.get_cantidad()
+            m = Movimientos(escogencia.get_banco(), origen, destino, escogencia.get_divisa(), escogencia.get_divisa_aux(), escogencia.get_couta_manejo(), pagar, datetime.datetime.now())
+            origen.set_saldo(origen.get_saldo() - pagar)
+            destino.set_saldo(destino.get_saldo() + monto)
         else:
-            cambiado = monto * (1 - escogencia.getBanco().getEstadoAsociado().getTasaImpuestos())
-            cambiado *= (1 - escogencia.getCoutaManejo())
-            cambiado *= escogencia.getCantidad()
-            m = Movimientos(escogencia.getBanco(), origen, destino, escogencia.getDivisa(), escogencia.getDivisaAux(), escogencia.getCoutaManejo(), monto, datetime.datetime.now())
-            origen.setSaldo(origen.getSaldo() - monto)
-            destino.setSaldo(destino.getSaldo() + cambiado)
+            cambiado = monto * (1 - escogencia.get_banco().get_estado_asociado().get_tasa_impuestos())
+            cambiado *= (1 - escogencia.get_couta_manejo())
+            cambiado *= escogencia.get_cantidad()
+            m = Movimientos(escogencia.get_banco(), origen, destino, escogencia.get_divisa(), escogencia.get_divisa_aux(), escogencia.get_couta_manejo(), monto, datetime.datetime.now())
+            origen.set_saldo(origen.get_saldo() - monto)
+            destino.set_saldo(destino.get_saldo() + cambiado)
 
-        user.asociarMovimiento(m)
-        for i in range(len(user.getBancosAsociados())):
-            user.getBancosAsociados()[i].setAsociado(False)
+        user.asociar_movimiento(m)
+        for i in range(len(user.get_bancos_asociados())):
+            user.get_bancos_asociados()[i].set_asociado(False)
 
     @staticmethod
-    def comprobarSaldo(cuenta, monto=None):
+    def comprobar_saldo(cuenta, monto=None):
         ahorro = cuenta
         if monto is None:
-            return ahorro.getSaldo() >= monto
+            return ahorro.get_saldo() >= monto
         else:
-            pagar = monto / (1 - cuenta.getBanco().getEstadoAsociado().getTasaImpuestos())
-            pagar /= (1 - cuenta.getCoutaManejo())
-            pagar /= cuenta.getCantidad()
-            return ahorro.getSaldo() >= pagar
+            pagar = monto / (1 - cuenta.get_banco().get_estado_asociado().get_tasa_impuestos())
+            pagar /= (1 - cuenta.get_couta_manejo())
+            pagar /= cuenta.get_cantidad()
+            return ahorro.get_saldo() >= pagar
 
     @staticmethod
-    def obtenerCuentasDivisa(usuario, divisa):
-        cuentasB = []
-        for ahorro in usuario.getCuentasAhorrosAsociadas():
-            if ahorro.getDivisa() == divisa:
-                cuentasB.append(ahorro)
-        return cuentasB
+    def obtener_cuentas_divisa(usuario, divisa):
+        cuentas_b = []
+        for ahorro in usuario.get_cuentas_ahorros_asociadas():
+            if ahorro.get_divisa() == divisa:
+                cuentas_b.append(ahorro)
+        return cuentas_b
 
 
     #Realizar el método del compare to
