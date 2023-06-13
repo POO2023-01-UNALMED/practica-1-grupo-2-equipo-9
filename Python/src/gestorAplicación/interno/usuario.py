@@ -188,7 +188,7 @@ class Usuario():
     #Métodos funcionalidad Compra de Cartera
     def retornarDeudas(self):
         cuentasConDeuda = []
-        for cuenta in self._cuentasAsociadas:
+        for cuenta in self.getCuentasAsociadas():
             if cuenta.getDisponible().compareTo(cuenta.getCupo) != 0:
                 cuentasConDeuda.append(cuenta)
         

@@ -414,13 +414,27 @@ class App():
             label_description.config(
                 text="(REVISAR)El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
 
-        def compra_corriente(cuenta = None):
+        def compra_corriente():
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Comprar con cuenta corriente")
             label_description.config(
                 text="Agregar la descripcion en el metodo compra_corriente y agregar aca el funcionamiento de su funcionalidad")
 
+        def asesoramiento_inversiones():
+            # Editar la descripcion de su funcionalidad
+            label_title.config(text="Funcionalidad - Asesoramiento de Inversiones")
+            label_description.config(
+                text="Agregar la descripcion en el metodo asesoramiento_inversiones y agregar aca el funcionamiento de su funcionalidad")
+
+        def compra_cartera(cuenta = None):
+            # Editar la descripcion de su funcionalidad
+            label_title.config(text="Funcionalidad - Compra Catera")
+            label_description.config(
+                text="Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
             #Desarrollo de la funcionalidad
+            framecc = tk.Frame(subframe_main, width=200, height=100)
+            framecc.pack(expand=True)
+
             if cuenta == None:
                 #Arreglo que almacena las cuentas con deuda alguna
                 cuentasEnDeuda = cls.user.retornarDeudas()
@@ -445,25 +459,25 @@ class App():
                 seleccion_Cuenta = False
 
                 while seleccion_Cuenta:
-                    print("Verificar impresión")
+                    label_impresion = tk.Label(framecc, text=("Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "))
+                    label_impresion.grid(row=0, column=0)
+                    #Impresión Cuentas con Préstamo Asociado
+                    #Verificar impresión cuentas
+
+                    #Atributo para validación entrada Cuenta_Compra
+                    validación_Cuenta_Compra = True
+                    while validación_Cuenta_Compra:
+                        print("Revisar impresión")
+                        #Revisar entrada
+
+                        #Verificar entrada
+                
+                
 
 
             
             else:
                 pass
-
-
-        def asesoramiento_inversiones():
-            # Editar la descripcion de su funcionalidad
-            label_title.config(text="Funcionalidad - Asesoramiento de Inversiones")
-            label_description.config(
-                text="Agregar la descripcion en el metodo asesoramiento_inversiones y agregar aca el funcionamiento de su funcionalidad")
-
-        def compra_cartera():
-            # Editar la descripcion de su funcionalidad
-            label_title.config(text="Funcionalidad - Compra Catera")
-            label_description.config(
-                text="Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
 
         def calculadora_financiera():
             # Editar la descripcion de su funcionalidad
@@ -596,11 +610,6 @@ class App():
         label_description.pack(fill="both", expand=True)
 
         cls.main_window.mainloop()
-    # --------------------------------------------------
-
-    # ----------------- LÓGICA DEL MAIN --------------
-
-
     # --------------------------------------------------
 
 if __name__ == "__main__":
