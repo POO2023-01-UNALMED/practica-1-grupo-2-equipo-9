@@ -1,12 +1,13 @@
 import random
 from datetime import datetime
-from gestorAplicación.interno.movimientos import Movimientos
+
 from gestorAplicación.interno.categoria import Categoria
 
 class Banco():
     #Métodos de la funcionalidad de cambio de divisa
     @staticmethod
     def cotizar_taza(user, existe_cambio, cadena, ahorros_posibles):
+        from gestorAplicación.interno.movimientos import Movimientos
         imprimir = []
         for ahorro in ahorros_posibles:
             for banco in existe_cambio:
@@ -24,6 +25,7 @@ class Banco():
 
     @staticmethod
     def cotizar_taza_aux(user, existe_cambio, cadena, cuentas_posibles):
+        from gestorAplicación.interno.movimientos import Movimientos
         imprimir = []
         for conta in cuentas_posibles:
             for banco in existe_cambio:

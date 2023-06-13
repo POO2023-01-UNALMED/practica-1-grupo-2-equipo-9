@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date, datetime
-from Python.src.gestorAplicación.interno.movimientos import Movimientos
+
 
 class Cuenta(ABC):
     #Atributos de clase
@@ -53,6 +53,7 @@ class Cuenta(ABC):
     #Métodos para funcionalidad de cambio de divisa
     @staticmethod
     def hacer_cambio(escogencia, monto, destino, user, exacto=False):
+        from .movimientos import Movimientos
         origen = escogencia.get_origen()
         if exacto:
             pagar = monto / (1 - escogencia.get_banco().get_estado_asociado().get_tasa_impuestos())
