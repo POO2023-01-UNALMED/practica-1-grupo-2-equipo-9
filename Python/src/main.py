@@ -14,26 +14,98 @@ from gestorAplicación.externo.banco import Banco
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS
 
+# ------ FIELD FRAME PARA DIÁLOGOS DE TEXTO --------
+class FieldFrame(tk.Frame):
+    def __init__(self, tituloCriterios, criterios, tituloValores,**kwargs):
+        self.setTituloCriterios(tituloCriterios)
+        self.setCriterios(criterios)
+        self.setTituloValores(tituloValores)
+        self.valores = []
+        self.habilitado = []
+
+        for key in kwargs:
+            if key == "valores":
+                self.setValores(kwargs[key])
+            if key == "habilitado":
+                self.setHabilitado(kwargs[key])
+
+        field_frame = tk.Frame(App.getSubframeMain(), bg="white", borderwidth=1, relief="solid")
+        field_frame.place(
+            relheight=0.75, relwidth=0.6, rely=0.25, relx=0.2)
+        title_style = font.Font(family="Times New Roman", size=13, weight="bold")
+        criteria_style = font.Font(family="Times New Roman", size=13, underline=1)
+        entry_style = font.Font(family="Times New Roman", size=13)
+
+        title_criteria = tk.Label(master=field_frame, textvariable = self.tituloCriterios, width=35, bg="white", fg="black", font=title_style, border=1, relief="ridge")
+        title_criteria.grid(row=0, column=0, padx=3, pady=3)
+        title_value = tk.Label(master=field_frame, textvariable = self.tituloValores, width=35, bg="white", fg="black", font=title_style, border=1, relief="ridge")
+        title_value.grid(row=0, column=1, padx=3, pady=3)
+
+        for i in range(0, len(self.getCriterios())):
+            entry = tk.Entry(master=field_frame, width=35, bg="white", fg="black", font=entry_style, border=1, relief="groove")
+            label = tk.Label(master=field_frame, text = self.getCriterios()[i], width=35, bg="white", fg="black", font=criteria_style, border=1, relief="groove")
+    
+            if(self.getValores() != None):
+                try:
+                    entry.insert(0, self.getValores()[i])
+                except:
+                    pass
+            if(self.getCriterios()[i] in self.getHabilitado()):
+                entry.config(state="disabled")
+
+            entry.grid(column=1, row=i + 1, padx=3, pady=3)
+            label.grid(column=0, row=i + 1, padx=3, pady=3)
+
+    #Gets & Sets
+    def setValue(self, criterio, value):
+        self.criterios[criterio] = value
+    def getValue(self, criterio):
+        return self.criterios[criterio]
+    def setTituloCriterios(self, tituloCriterios):
+        self.tituloCriterios = tk.StringVar()
+        self.tituloCriterios.set(tituloCriterios)
+    def getTituloCriterios(self):
+        return self.tituloCriterios
+    def setCriterios(self, criterios):
+        self.criterios = criterios
+    def getCriterios(self):
+        return self.criterios
+    def setTituloValores(self, tituloValores):
+        self.tituloValores = tk.StringVar()
+        self.tituloValores.set(tituloValores) 
+    def getTituloValores(self):
+        return self.tituloValores
+    def setValores(self, valores):
+        self.valores = valores
+    def getValores(self):
+        return self.valores
+    def setHabilitado(self, habilitado):
+        self.habilitado = habilitado
+    def getHabilitado(self):
+        return self.habilitado
+# --------------------------------------------------
+
+# ----------------- APP ----------------
 class App():
-
-    # Guardar objetos al sistema
-    """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
-    Serializador.serializar([user1]) """
-    user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
-    Serializador.serializar([user1])
-
-    # Cargar objetos al sistema
-    Deserializador.deserializar("Usuarios")
 
     # Variables de clase para funcionamiento de la app
     initial_window = None
     main_window = None
     user = None
+    subframe_main = None
     image_index = 0  # Variable para realizar un seguimiento del índice del pack de imagenes de los desarrolladores
 
     # ----------------- VENTANA INICIAL ----------------
     @classmethod
     def start_initial_window(cls):
+        # Guardar objetos al sistema
+        """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
+        Serializador.serializar([user1]) """
+        #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
+        #Serializador.serializar([user1])
+
+        # Cargar objetos al sistema
+        Deserializador.deserializar("Usuarios")
 
         # Métodos de funcionamiento de la ventana de inicio
         def exit_initial_window():
@@ -369,7 +441,7 @@ class App():
                              relwidth=.45, relx=0.5, rely=0.81)
         # Crear un botón para iniciar sesión.
         login_button = tk.Button(bottom_left_frame, fg="white", bg="black", border=1, relief="sunken",
-                                 font=style, text="Ingresar", activebackground="gray", activeforeground="black")
+                                 font=style, text="Ingresar", activebackground="gray", activeforeground="black", cursor="cross")
         login_button.place(anchor="s", relheight=.39,
                            relwidth=.269, relx=0.860, rely=0.9999999)
         login_button.bind("<Button-1>", login)
@@ -391,11 +463,19 @@ class App():
             cls.main_window.destroy()
             App.start_initial_window()
 
+        def show_description():
+            messagebox.showinfo("Mis Finanzas", "Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
+
+        def acerca_de():
+            messagebox.showinfo("Mis Finanzas", "Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
+
         # Metodos de las funcionalidades del menú
         def comprobar_suscripcion():
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Modificar Suscripcion")
             label_description.config(text="(REVISAR)El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario. El atributo comision se invoca haciendo uso del self, luego, este valor se multiplica por K, donde K es un factor que varía con base en el atributo suscripcion del Usuario pasado por parámetro en el método.")
+
+            suscripcion_forms = FieldFrame(tituloCriterios = "Prueba Criterio", criterios = ["prueba 1", "prueba 2", "prueba 3"], tituloValores = "Prueba Valor", valores = [1, 2])
 
         def invertir_saldo():
             # Editar la descripcion de su funcionalidad
@@ -434,7 +514,7 @@ class App():
             label_description.config(
                 text="Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
             #Desarrollo de la funcionalidad
-            framecc = tk.Frame(subframe_main, width=200, height=100)
+            framecc = tk.Frame(cls.subframe_main, width=200, height=100)
             framecc.pack(expand=True)
 
             if cuenta == None:
@@ -473,10 +553,6 @@ class App():
                         #Revisar entrada
 
                         #Verificar entrada
-                
-                
-
-
             
             else:
                 pass
@@ -768,10 +844,9 @@ class App():
 
             ventana.mainloop()
 
-
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()
-        cls.main_window.geometry("1000x800")
+        cls.main_window.geometry("1390x800")
         cls.main_window.title("Mis Finanzas")
         cls.main_window.resizable(0, 0)
         current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -790,10 +865,9 @@ class App():
         subframe_title = tk.Frame(main_frame, bg="black",
                              borderwidth=1, relief="solid")
         subframe_title.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03)
-
-        subframe_main = tk.Frame(
+        cls.subframe_main = tk.Frame(
             main_frame, bg="white", borderwidth=1, relief="solid")
-        subframe_main.place(
+        cls.subframe_main.place(
             relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
 
         # Opciones dentro del menú procesos y consultas
@@ -813,42 +887,49 @@ class App():
         # Configuración del menú archivo
         archivo = tk.Menu(home_menu, tearoff=0)
         archivo.add_command(label="Aplicación",
-                            activebackground="gray", activeforeground="white")
+                            activebackground="gray", activeforeground="white", command=show_description)
         archivo.add_command(label="Cerrar sesión", command=exit_principal_window,
                             activebackground="gray", activeforeground="white")
 
-        # Configuración del menú procesos y consultas
-        procesos = tk.Menu(home_menu, tearoff=0)
+        # Configuración del menú de ayuda
+        ayuda_menu = tk.Menu(home_menu, tearoff=0)
+        ayuda_menu.add_command(label="Acerca de", command=acerca_de,
+                             activebackground="gray", activeforeground="white")
+
+        # Configuración del menú de Procesos y Consultas
+        procesos_consultas = tk.Menu(home_menu, tearoff=0)
 
         # Agregamos los submenús al gestionar prestamos.
-        prestamos_menu = tk.Menu(procesos, tearoff=0)
+        prestamos_menu = tk.Menu(procesos_consultas, tearoff=0)
         prestamos_menu.add_command(label="Pedir Prestamos", command=pedir_prestamo,
                                    activebackground="gray", activeforeground="white")
         prestamos_menu.add_command(label="Pagar Prestamos", command=pagar_prestamo,
                                    activebackground="gray", activeforeground="white")
-        
-        # Agregamos los submenús al menú procesos y consultas.
-        procesos.add_command(label=proceso1, command=comprobar_suscripcion,
+
+        # Agregamos los submenús a la barra de menú.
+        procesos_consultas.add_command(label=proceso1, command=comprobar_suscripcion,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso2, command=invertir_saldo,
+        procesos_consultas.add_command(label=proceso2, command=invertir_saldo,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso3, command=consignar_saldo,
+        procesos_consultas.add_command(label=proceso3, command=consignar_saldo,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso4, command=transferir_saldo,
+        procesos_consultas.add_command(label=proceso4, command=transferir_saldo,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso5, command=compra_corriente,
+        procesos_consultas.add_command(label=proceso5, command=compra_corriente,
                              activebackground="gray", activeforeground="white")
-        procesos.add_cascade(label=proceso6, menu=prestamos_menu,
+        procesos_consultas.add_cascade(label=proceso6, menu=prestamos_menu,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso7, command=asesoramiento_inversiones,
+        procesos_consultas.add_command(label=proceso7, command=asesoramiento_inversiones,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso8, command=compra_cartera,
+        procesos_consultas.add_command(label=proceso8, command=compra_cartera,
                              activebackground="gray", activeforeground="white")
-        procesos.add_command(label=proceso9, command=calculadora_financiera,
+        procesos_consultas.add_command(label=proceso9, command=calculadora_financiera,
                              activebackground="gray", activeforeground="white")
         home_menu.add_cascade(label="Archivo", menu=archivo,
                               activebackground="gray", activeforeground="white")
-        home_menu.add_cascade(label="Procesos y Consultas", menu=procesos,
+        home_menu.add_cascade(label="Procesos y Consultas", menu=procesos_consultas,
+                              activebackground="gray", activeforeground="white")
+        home_menu.add_cascade(label="Ayuda", menu=ayuda_menu,
                               activebackground="gray", activeforeground="white")
 
         #Añadir la barra de menú a la ventana principal
@@ -872,7 +953,7 @@ class App():
 
         # ------------Descripcion de la funcionalidad
         subframe_description = tk.Frame(
-            subframe_main, bg="gray", borderwidth=1, relief="solid")
+            cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
         subframe_description.place(
             relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
         descripcion_font_style = font.Font(size=12, family="Alegreya Sans")
@@ -883,6 +964,19 @@ class App():
 
         cls.main_window.mainloop()
     # --------------------------------------------------
+
+    @classmethod
+    def getMainWindow(cls):
+        return cls.main_window
+    
+    @classmethod
+    def getInitialWindow(cls):
+        return cls.initial_window
+    
+    @classmethod
+    def getSubframeMain(cls):
+        return cls.subframe_main
+# --------------------------------------------------
 
 if __name__ == "__main__":
     # Poner código para ejecutar la interfaz

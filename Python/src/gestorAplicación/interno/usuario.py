@@ -15,6 +15,14 @@ class Usuario():
         #Atributos de instancia 
         Usuario._usuariosTotales.append(self)
         self.setId(len(Usuario.getUsuariosTotales()))
+        self._bancosAsociados = None
+        self._cuentasAhorroAsociadas = None
+        self._cuentasCorrienteAsociadas = None
+        self._cuentasAsociadas = None
+        self._metasAsociadas = None
+        self._contadorMovimientos = None
+        self._contadorMovimientosAux = None
+        self._movimientosAsociados = None
         for key in kwargs:
             if key == "_nombre":
                 self.setNombre(kwargs[key])
@@ -170,7 +178,7 @@ class Usuario():
 				"\nSuscripción: " + str(self.getSuscripcion()))
 
     # Metodos funcionalidad de prestamos
-    def comprobarConfiabilida(self):
+    def comprobarConfiabilidad(self):
         cuentasUsuario = self.getCuentasAhorroAsociadas()
         # conseguir la suscripcion
         suscripcion = self.getSuscripcion()
