@@ -23,7 +23,7 @@ class Metas:
                 self.dueno = kwargs[key]
 
     # Metodos asesoramiento Inversiones
-    def revisionMetas(user):
+    def revision_metas(user):
         proximaFecha = date.now()
         proximaMeta = None
 
@@ -54,13 +54,13 @@ class Metas:
             return proximaMeta
 
     @staticmethod
-    def cambioFecha(meta, fecha):
+    def cambio_fecha(meta, fecha):
         nuevaFecha = date.date.strptime(fecha, "%d/%m/%Y")
         meta.setFecha(nuevaFecha)
         return meta
 
     @staticmethod
-    def determinarPlazo(meta):
+    def determinar_plazo(meta):
         date1 = date.strptime("01/01/2024", "%d/%m/%Y")
         date2 = date.strptime("01/01/2026", "%d/%m/%Y")
 
@@ -72,12 +72,12 @@ class Metas:
             Metas.plazo = "Largo"
 
     @staticmethod
-    def prioridadMetas(user, meta):
+    def prioridad_metas(user, meta):
         user.getMetasAsociadas().pop(len(user.getMetasAsociadas) - 1)
         user.getMetasAsociadas().insert(0, meta)
 
     @staticmethod
-    def limpiarPropiedades(arreglo):
+    def limpiar_propiedades(arreglo):
         arreglo.remove("serialVersionUID")
         arreglo.remove("nombreD")
         arreglo.remove("metasTotales")
