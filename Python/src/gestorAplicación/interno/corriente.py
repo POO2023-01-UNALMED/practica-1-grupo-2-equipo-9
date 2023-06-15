@@ -1,6 +1,7 @@
 from .cuenta import Cuenta
 from gestorAplicación.externo.banco import Banco
 from datetime import date
+from gestorAplicación.externo.cuotas import Cuotas
 import math
 
 class Corriente(Cuenta):
@@ -8,18 +9,24 @@ class Corriente(Cuenta):
     _cuentasCorrienteTotales = []
 
     #Constructor
-    def __init__(self, banco, clave, divisa, nombre):
+    def __init__(self, plazo_pago = Cuotas.C1, intereses = 28, **kwargs):
         #Atributos de instancia
         Corriente._cuentasCorrienteTotales.append(self)
-        super().__init__(banco, clave, divisa, nombre)
+        super().__init__(**kwargs)
+        self._plazo_Pago = plazo_pago
+        self._intereses = intereses
+        self._cupo = 0.0
 
 #REVISAR SOBRECARGA
 
-    def crearCuenta(self, banco, clave, divisa, nombre):
-        return Corriente(banco, clave, divisa, nombre)
+    def crearCuenta(self, banco, clave, nombre, **kwargs):
+        if "divisa" in kwargs:
+            return Corriente(banco = banco, clave = clave, nombre = nombre, divisa = kwargs["divisa"])
+        else:
+            return Corriente(banco =  banco, clave = clave, nombre = nombre)
     
     def __str__(self):
-        return "Cuenta: " + self._nombre + "\nCuenta Corriente # " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa + "\nCupo: " + self._cupo + " " + self._divisa + "\nCupo disponible: " + self._disponible + " " + self._divisa + "\Cuotas: " + self._plazo_Pago + "\nIntereses: " + self._intereses
+        return "Cuenta: " + self._nombre + "\nCuenta Corriente # " + str(self._id) + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + str(self._divisa) + "\nCupo: " + str(self._cupo) + " " + str(self._divisa) + "\nCupo disponible: " + str(self._disponible) + " " + str(self._divisa) + "\nCuotas: " + str(self._plazo_Pago.getCantidad_Cuotas) + "\nIntereses: " + str(self._intereses)
     
     # Método para la funcionalidad asesoramiento de inversiones
     def vaciarCuenta(self, gota):
@@ -63,7 +70,7 @@ class Corriente(Cuenta):
         return cuotaMensual
 
     @staticmethod
-    def imprimitCuotaMensual(cls, cuotaMensual):
+    def imprimirCuotaMensual(cls, cuotaMensual):
         return "Cuota: " + Corriente.redondeoDeciomal(cuotaMensual[2], 2) + "\nIntereses: " + Corriente.redondeoDecimal(cuotaMensual[0], 2) + "\nAbono a capital: " + Corriente.redondeoDecimal(cuotaMensual[1], 2)
 
     @staticmethod
@@ -151,10 +158,10 @@ class Corriente(Cuenta):
         return infoAdicional
 
     @staticmethod
-    def inicializarCupo(cls, cuenta):
+    def inicializarCupo(cuenta):
         banco = cuenta.getBanco()
         suscripcion = cuenta.getTitular().getSuscripcion()
-        cupo = Banco.decisionCupo(suscripcion, banco)
+        cupo = banco.decisionCupo(suscripcion)
         cuenta.setCupo(cupo)
         cuenta.setDisponible(cupo)
 

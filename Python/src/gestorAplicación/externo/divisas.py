@@ -6,3 +6,4 @@ class Divisas(Enum):
     
     def getDivisas():
         return [Divisas.EUR.value,Divisas.USD.value,Divisas.COP.value]
+    

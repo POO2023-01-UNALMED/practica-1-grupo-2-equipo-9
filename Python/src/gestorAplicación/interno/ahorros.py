@@ -7,16 +7,20 @@ class Ahorros(Cuenta):
     _cuentasAhorroTotales = []
 
     #Constructor
-    def __init__(self, banco, clave, divisa, nombre, saldo):
+    def __init__(self, **kwargs):
         #Atributos de instancia
         Ahorros._cuentasAhorroTotales.append(self)
-        super.__init__(banco, clave, divisa, nombre)
-        self._saldo = saldo
+        if "saldo" in kwargs:
+            self._saldo = kwargs.pop("saldo")
+        super.__init__(kwargs)
 
 #REVISAR SOBRECARGA
 
-    def crearCuenta(self, banco, clave, divisa, nombre):
-        return Ahorros(banco, clave, divisa, nombre)
+    def crearCuenta(self, banco, clave, nombre, **kwargs):
+        if "divisa" in kwargs:
+            return Ahorros(banco = banco, clave = clave, nombre = nombre, divisa = kwargs["divisa"])
+        else:
+            return Ahorros(banco = banco, clave = clave, nombre = nombre)
     
     def __str__(self):
         return "Cuenta: " + self._nombre + "\nCuentas de Ahorros # " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa + "\nSaldo: " + self._saldo + " " + self._divisa

@@ -1,9 +1,53 @@
 import random
 from datetime import datetime
 
+from gestorAplicación.interno.suscripcion import Suscripcion
 from gestorAplicación.interno.categoria import Categoria
+from .estado import Estado
 
 class Banco():
+    _bancosTotales = []
+
+    def __init__(self, nombre = "Banco de Colombia", comision = 0.3, estado = Estado(), prestamo = 200, **kwargs):
+        #Revisar ingreso de atributo Estado, para que su defecto sea el primero como en Java
+        self._nombre = nombre
+        self._comision = comision
+        self._estado = estado
+        self._prestamo = prestamo
+
+        self._cupo_base = 1000000
+        self._multiplicador = 2
+        self._desc_suscripcion = 0.2
+        self._desc_movimientos_porcentaje = 0.2
+        self._desc_movimientos_cantidad = 5
+
+        #Atributos de instancia
+        Banco._bancosTotales.append(self)
+        self._id = len(Banco._bancosTotales)
+        for key in kwargs:
+            if key == "desc_suscripcion":
+                self._desc_suscripcion = kwargs[key]
+            if key == "desc_movimientos_porcentaje":
+                self._desc_movimientos_porcentaje = kwargs[key]
+            if key == "desc_movimientos_cantidad":
+                self._desc_movimientos_cantidad = kwargs[key]
+            if key == "divisa":
+                self._divisa = kwargs[key]
+            if key == "dic":
+                self._dic = kwargs[key]
+            if key == "cionario":
+                self._cionario = kwargs[key]
+            if key == "cupo_base":
+                self._cupo_base
+            if key == "multiplicador":
+                self._multiplicador
+            if key == "desc_suscripcion":
+                self._desc_suscripcion
+            if key == "desc_movimientos_porcentaje":
+                self._desc_movimientos_porcentaje
+            if key == "desc_movimientos_cantidad":
+                self._desc_movimientos_cantidad
+
     #Métodos de la funcionalidad de cambio de divisa
     @staticmethod
     def cotizar_taza(user, existe_cambio, cadena, ahorros_posibles):
@@ -151,3 +195,18 @@ class Banco():
             if user.bancosAsociados[i] == banco:
                 interes = round((interes + random.random() + i), 2)
         return interes
+
+    def decisionCupo(self, suscripcion):
+        cupo = 0
+        if suscripcion == Suscripcion.DIAMANTE:
+            cupo = self._cupo_base * (self._multiplicador * 3)
+        elif suscripcion == Suscripcion.ORO:
+            cupo = self._cupo_base * (self._multiplicador * 2)
+        elif suscripcion == Suscripcion.PLATA:
+            cupo = self._cupo_base * (self._multiplicador)
+        else:
+            cupo = self._cupo_base
+        return cupo
+    
+    def getNombre(self):
+        return self._nombre

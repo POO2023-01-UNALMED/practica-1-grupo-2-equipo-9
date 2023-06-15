@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date, datetime
+from gestorAplicación.externo.banco import Banco
 
 
 class Cuenta(ABC):
@@ -7,19 +8,28 @@ class Cuenta(ABC):
     _cuentasTotales = []
 
     #Constructor
-    def __init__(self, banco, clave, divisa, nombre):
+    def __init__(self, **kwargs):
+        self._banco = Banco()
+        self._clave = None
+        self._nombre = ""
+        self._divisa = None
         #Atributos de instancia
         Cuenta._cuentasTotales.append(self)
-        self._banco = banco
-        self._clave = clave
-        self._divisa = divisa
-        self._nombre = nombre
         self._id = len(Cuenta._cuentasTotales)
-#REVISAR SOBRECARGA
+        for key in kwargs:
+            if key == "banco":
+                self._banco = kwargs[key]
+            if key == "clave":
+                self._clave = kwargs[key]
+            if key == "nombre":
+                self._nombre = kwargs[key]
+            if key == "divisa":
+                self._divisa = kwargs[key]
 
     @abstractmethod
-    def crearCuenta(self, banco, clave, divisa, nombre):
+    def crearCuenta(self, banco, clave, nombre, **kwargs):
         pass
+    #El kwargs hace referencia a la sobrecarga de la divisa
 
     def __str__(self):
         return "Cuenta: " + self._nombre + "\n# " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa

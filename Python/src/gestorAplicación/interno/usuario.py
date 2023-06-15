@@ -15,14 +15,14 @@ class Usuario():
         #Atributos de instancia 
         Usuario._usuariosTotales.append(self)
         self.setId(len(Usuario.getUsuariosTotales()))
-        self._bancosAsociados = None
-        self._cuentasAhorroAsociadas = None
-        self._cuentasCorrienteAsociadas = None
-        self._cuentasAsociadas = None
-        self._metasAsociadas = None
+        self._bancosAsociados = []
+        self._cuentasAhorroAsociadas = []
+        self._cuentasCorrienteAsociadas = []
+        self._cuentasAsociadas = []
+        self._metasAsociadas = []
         self._contadorMovimientos = None
         self._contadorMovimientosAux = None
-        self._movimientosAsociados = None
+        self._movimientosAsociados = []
         for key in kwargs:
             if key == "_nombre":
                 self.setNombre(kwargs[key])
@@ -90,17 +90,17 @@ class Usuario():
             return("No se encuentra el banco ó debes verificar que el banco que quieres asociar no se haya asociado antes, esta es la lista de bancos asociados: " + self.mostrarBancosAsociados())
         
     def asociarCuenta(self, cuenta) -> str:
-        if(not(cuenta in self.getCuentasAsociadas)):
-            cuenta.setTitular(self)
-            self.getCuentasAsociadas().append(cuenta)
-            if(isinstance(cuenta, Cuenta)):
-                return(self.asociarCuentaAhorros(cuenta))
+            if(not(cuenta in self.getCuentasAsociadas())):
+                cuenta.setTitular(self)
+                self.getCuentasAsociadas().append(cuenta)
+                if(isinstance(cuenta, Ahorros)):
+                    return(self.asociarCuentaAhorros(cuenta))
+                else:
+                    if(cuenta.getCupo() == 0.0):
+                        Corriente.inicializarCupo(cuenta)
+                    return(self.asociarCuentaCorriente(cuenta))
             else:
-                if(cuenta.getCupo() == 0.0):
-                    Corriente.inicializarCupo(cuenta)
-                return(self.asociarCuentaCorriente(cuenta))
-        else:
-            return("Debes comprobar que la cuenta no haya sido asociada con anterioridad.")
+                return("Debes comprobar que la cuenta no haya sido asociada con anterioridad.")
     
     def asociarMeta(self, meta) -> str:
         if(meta in Metas.getMetasTotales()):
@@ -197,7 +197,7 @@ class Usuario():
     def retornarDeudas(self):
         cuentasConDeuda = []
         for cuenta in self.getCuentasAsociadas():
-            if cuenta.getDisponible().compareTo(cuenta.getCupo) != 0:
+            if cuenta.getDisponible() != cuenta.getCupo:
                 cuentasConDeuda.append(cuenta)
         
         return cuentasConDeuda

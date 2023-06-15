@@ -1,13 +1,24 @@
+from .divisas import Divisas
+
 class Estado():
     _estadosTotales = []
-    def __init__(self,nombre,tasa_impuestos,divisa):
+    def __init__(self, nombre = "Colombia", tasa_impuestos = 0.2, divisa = Divisas.COP, **kwargs):
         self._nombre = nombre
         self._tasa_impuestos = tasa_impuestos
         self._divisa = divisa
-        self._id = len(Estado.estadosTotales)
-        Estado.estadosTotales.append(self)
-        self._interes_bancario_corriente
-        self._tasa_usura
+
+        self._interes_bancario_corriente = 0.0
+        self._tasa_usura = 0.0
+
+        #Atributos de instancia
+        self._id = len(Estado._estadosTotales)
+        Estado._estadosTotales.append(self)
+
+        for key in kwargs:
+            if key == "interes_bancario_corriente":
+                self._interes_bancario_corriente = kwargs[key]
+            if key == "tasa_usura":
+                self._tasa_usura = kwargs[key]
 
     def __str__(self):
         return f"{self.getNombre} Divisa: {self.getDivisa}"
@@ -26,8 +37,9 @@ class Estado():
     def getId(self):
         return self._id
     
-    def getEstadoTotales(self):
-        return Estado._estadosTotales
+    @classmethod
+    def getEstadoTotales(cls):
+        return cls._estadosTotales
     
     def getTasas_usura(self):
         return self._tasa_usura

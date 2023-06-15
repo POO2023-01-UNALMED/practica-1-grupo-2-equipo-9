@@ -11,6 +11,9 @@ from gestorAplicación.interno.suscripcion import Suscripcion
 from gestorAplicación.interno.movimientos import Movimientos
 from gestorAplicación.externo.estado import Estado
 from gestorAplicación.externo.banco import Banco
+from gestorAplicación.interno.corriente import Corriente
+from gestorAplicación.interno.ahorros import Ahorros
+from gestorAplicación.externo.divisas import Divisas
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS
 
@@ -101,11 +104,22 @@ class App():
         # Guardar objetos al sistema
         """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
         Serializador.serializar([user1]) """
+        
+        #banco1 = Banco()
+        #Serializador.serializar([banco1])
         #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
         #Serializador.serializar([user1])
+        #cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
+        #user1.asociarCuenta(cuenta1)
+        #Serializador.serializar([cuenta1])
+
+        #print (cuenta1)
 
         # Cargar objetos al sistema
         Deserializador.deserializar("Usuarios")
+        Deserializador.deserializar("Cuentas")
+        Deserializador.deserializar("Estados")
+        Deserializador.deserializar("Bancos")
 
         # Métodos de funcionamiento de la ventana de inicio
         def exit_initial_window():
@@ -509,34 +523,38 @@ class App():
             interfaz_asesoramiento_inversiones()
 
         def compra_cartera(cuenta = None):
+
+            cuenta1 = Corriente()
+            Serializador.serializar([cuenta1])
+            cls.user.asociarCuenta(cuenta1)
+
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Compra Catera")
             label_description.config(
                 text="Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
             #Desarrollo de la funcionalidad
-            framecc = tk.Frame(cls.subframe_main, width=200, height=100)
-            framecc.pack(expand=True)
 
             if cuenta == None:
                 #Arreglo que almacena las cuentas con deuda alguna
                 cuentasEnDeuda = cls.user.retornarDeudas()
-                cuentasEnDeuda.sort()
 
                 #Arreglo que almacena las cuentas asociadas a un usuario
                 cuentasAux = cls.user.getCuentasAsociadas()
-                cuentasAux.sort()
 
                 cuentasAux1 = cls.user.getCuentasCorrienteAsociadas()
 
                 #Comprobación de existencia de Cuentas Corriente por parte del Usuario
                 if len(cuentasAux1) <= 1:
-                    print ("Falta revisar que se hace con esto")
+                    messagebox.showerror("Error", "El usuario " + cls.user.getNombre() + " no alcanza la cantidad de cuentas Corriente necesarias para desarrollar la funcionalidad, recuerda que para ejecutar una compra de cartera necesitas por lo menos dos cuentas Corriente, una de ellas con una Deuda.")
                     return
                 
                 if len(cuentasEnDeuda) == 0:
-                    print("Revisar que pasa con esto")
+                    messagebox.showerror("Error", "El usuario " + cls.user.getNombre + " no tiene préstamos asociados, no es posible realizar la funcionalidad.")
                     return
                 
+                framecc = tk.Frame(cls.subframe_main, width=200, height=100)
+                framecc.pack(expand=True)
+
                 cuenta_Compra = 0
                 seleccion_Cuenta = False
 
