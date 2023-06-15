@@ -125,7 +125,7 @@ class Usuario():
     
     def asociarCuentaCorriente(self, corriente) -> str:
         if(corriente in Corriente.getCuentasCorrienteTotales()):
-            self.getCuentasAhorroAsociadas().append(corriente)
+            self.getCuentasCorrienteAsociadas().append(corriente)
             return("La cuenta corriente " + corriente.getNombre() + " ha sido asociada correctamente al usuario " + self.getNombre())
         else:
             return("Debes verificar que la cuenta no haya sido asociada antes")
@@ -197,7 +197,7 @@ class Usuario():
     def retornarDeudas(self):
         cuentasConDeuda = []
         for cuenta in self.getCuentasAsociadas():
-            if cuenta.getDisponible() != cuenta.getCupo:
+            if cuenta.getDisponible() != cuenta.getCupo():
                 cuentasConDeuda.append(cuenta)
         
         return cuentasConDeuda

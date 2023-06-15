@@ -105,13 +105,18 @@ class App():
         """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
         Serializador.serializar([user1]) """
         
-        #banco1 = Banco()
-        #Serializador.serializar([banco1])
-        #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
-        #Serializador.serializar([user1])
-        #cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
-        #user1.asociarCuenta(cuenta1)
-        #Serializador.serializar([cuenta1])
+        banco1 = Banco()
+        Serializador.serializar([banco1])
+        user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
+        Serializador.serializar([user1])
+        cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
+        user1.asociarCuenta(cuenta1)
+        Serializador.serializar([cuenta1])
+        cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
+        user1.asociarCuenta(cuenta2)
+        Serializador.serializar([cuenta2])
+
+        cuenta2.setDisponible(500000)
 
         #print (cuenta1)
 
@@ -524,10 +529,6 @@ class App():
 
         def compra_cartera(cuenta = None):
 
-            cuenta1 = Corriente()
-            Serializador.serializar([cuenta1])
-            cls.user.asociarCuenta(cuenta1)
-
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Compra Catera")
             label_description.config(
@@ -543,34 +544,57 @@ class App():
 
                 cuentasAux1 = cls.user.getCuentasCorrienteAsociadas()
 
+                for cuentas in cuentasAux1:
+                    print(cuentas)
+
                 #Comprobación de existencia de Cuentas Corriente por parte del Usuario
                 if len(cuentasAux1) <= 1:
                     messagebox.showerror("Error", "El usuario " + cls.user.getNombre() + " no alcanza la cantidad de cuentas Corriente necesarias para desarrollar la funcionalidad, recuerda que para ejecutar una compra de cartera necesitas por lo menos dos cuentas Corriente, una de ellas con una Deuda.")
                     return
                 
                 if len(cuentasEnDeuda) == 0:
-                    messagebox.showerror("Error", "El usuario " + cls.user.getNombre + " no tiene préstamos asociados, no es posible realizar la funcionalidad.")
+                    messagebox.showerror("Error", "El usuario " + cls.user.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.")
                     return
                 
-                framecc = tk.Frame(cls.subframe_main, width=200, height=100)
+                framecc = tk.Frame(cls.subframe_main, width=500, height=500)
                 framecc.pack(expand=True)
 
                 cuenta_Compra = 0
-                seleccion_Cuenta = False
+                seleccion_Cuenta = True
 
                 while seleccion_Cuenta:
-                    label_impresion = tk.Label(framecc, text=("Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "))
-                    label_impresion.grid(row=0, column=0)
+                    impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
+                    label_impresion = tk.Label(framecc, text=impresion_1)
+                    label_impresion.grid(row=0, column=0, columnspan=2)
+
+                    i=1
+                    for cuenta_1 in cuentasEnDeuda:
+                        boton_el = tk.Button(framecc, text=str(i))
+                        boton_el.grid(row=1, column=0)
+
+                        ver_cuenta = tk.Label(framecc, text = cuenta_1)
+                        ver_cuenta.grid(row=1, column=1)
+
                     #Impresión Cuentas con Préstamo Asociado
                     #Verificar impresión cuentas
 
+                    #subframe_description = tk.Frame(
+                    #cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
+                    #subframe_description.place(
+                    #relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
+
                     #Atributo para validación entrada Cuenta_Compra
-                    validación_Cuenta_Compra = True
+                    validación_Cuenta_Compra = False
                     while validación_Cuenta_Compra:
                         print("Revisar impresión")
                         #Revisar entrada
 
                         #Verificar entrada
+
+                    break
+
+                #password_entry.delete(0, tk.END)
+                #user_email_entry.delete(0, tk.END)
             
             else:
                 pass
