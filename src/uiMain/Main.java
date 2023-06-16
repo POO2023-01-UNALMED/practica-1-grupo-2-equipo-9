@@ -2676,11 +2676,9 @@ public final class Main {
 				listaSuscripcion.add(Suscripcion.BRONCE);	
 				int i = 1;
 				int j = 0;
-				Suscripcion s = null;
 				for(Suscripcion suscripcion : listaSuscripcion) {
 					if(suscripcion.equals(user.getSuscripcion())) {
 						j = listaSuscripcion.indexOf(suscripcion);
-						s = suscripcion;
 					}else {
 						System.out.println(i + ". " + suscripcion.name());
 						i++;

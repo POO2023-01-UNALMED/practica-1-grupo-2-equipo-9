@@ -23,3 +23,8 @@ class Suscripcion(Enum):
         return self._MAXDEUDAS
     def getPorcentajePrestamo(self) -> float:
         return self._PORCENTAJEPRESTAMO
+
+    #Métodos estáticos
+    @staticmethod
+    def getNivelesSuscripcion() -> list:
+        return([Suscripcion.DIAMANTE, Suscripcion.ORO, Suscripcion.PLATA, Suscripcion.BRONCE])

@@ -5,6 +5,7 @@ from .corriente import Corriente
 from .cuenta import Cuenta
 from .ahorros import Ahorros
 from .metas import Metas
+from excepciones import banksExcepcion
 
 class Usuario():
     #Atributos de clase
@@ -92,12 +93,13 @@ class Usuario():
             self.getBancosAsociados().append(banco)
             return("El banco " + banco.getNombre() + " se ha asociado con éxito al usuario " + self.getNombre())
         else:
-            return("No se encuentra el banco ó debes verificar que el banco que quieres asociar no se haya asociado antes, esta es la lista de bancos asociados: " + self.mostrarBancosAsociados())
+            return("No se encuentra el banco ó debes verificar que el banco que quieres asociar no se haya asociado antes, esta es la lista de bancos asociados: " + self.getBancosAsociados()[m] for m in range(0, len(self.getBancosAsociados())))
         
     def asociarCuenta(self, cuenta) -> str:
             if(not(cuenta in self.getCuentasAsociadas())):
                 cuenta.setTitular(self)
                 self.getCuentasAsociadas().append(cuenta)
+                self.asociarBanco(cuenta.getBanco())
                 if(isinstance(cuenta, Ahorros)):
                     return(self.asociarCuentaAhorros(cuenta))
                 else:
@@ -147,7 +149,7 @@ class Usuario():
         if(len(bancos) != 0):
             return bancos
         else:
-            return("Primero debes asociar bancos")
+            raise banksExcepcion.NoBanksException("Error. No hay bancos asociados a este usuario.")
         
     def mostrarCuentasAsociadas(self) -> object:
         cuentas = self.getCuentasAsociadas()

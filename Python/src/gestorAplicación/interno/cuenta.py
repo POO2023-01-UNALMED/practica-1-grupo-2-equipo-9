@@ -9,8 +9,7 @@ class Cuenta(ABC):
     _cuentasTotales = []
 
     #Constructor
-    def __init__(self, **kwargs):
-        self._banco = Banco()
+    def __init__(self, _banco = Banco(), **kwargs):
         self._clave = None
         self._nombre = ""
         self._divisa = None

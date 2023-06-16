@@ -41,6 +41,10 @@ class Estado():
     def getEstadoTotales(cls):
         return cls._estadosTotales
     
+    @classmethod
+    def setEstadosTotales(cls, _estadosTotales):
+        cls._estadosTotales = _estadosTotales
+    
     def getTasas_usura(self):
         return self._tasa_usura
     

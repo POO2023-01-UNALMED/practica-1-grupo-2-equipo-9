@@ -4,6 +4,7 @@ from datetime import datetime
 from gestorAplicación.interno.suscripcion import Suscripcion
 from gestorAplicación.interno.categoria import Categoria
 from .estado import Estado
+#from main import App
 
 class Banco():
     _bancosTotales = []
@@ -85,8 +86,28 @@ class Banco():
 
         return imprimir
 
-
-
+    #Funcionalidad de Suscripciones de Usuarios
+    def comprobarSuscripcion(self, user):
+        user.setLimiteCuentas(user.getSuscripcion().getLimiteCuentas())
+        suscripcion = user.getSuscripcion()
+        if(suscripcion == Suscripcion.DIAMANTE):
+            if(App.getConf()):
+                self.setComision(self.getComision() * 0.50)
+                App.setConf(False)
+            return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
+        elif(suscripcion == Suscripcion.ORO):
+            if(App.getConf()):
+                self.setComision(self.getComision() * 0.65)
+                App.setConf(False)
+            return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
+        elif(suscripcion == Suscripcion.PLATA):
+            if(App.getConf()):
+                self.setComision(self.getComision() * 0.85)
+                App.setConf(False)
+            return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
+        elif(suscripcion == Suscripcion.BRONCE):
+            return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
+    
     # Métodos de la funcionalidad Asesoramiento de inversiones
     def retorno_portafolio(riesgo, invertir):
         from gestorAplicación.interno.ahorros import Ahorros
@@ -187,7 +208,6 @@ class Banco():
                     continue
         return banco
 
-
     def intereses_portafolio(banco, user):
         interes = 0.0
 
@@ -210,6 +230,12 @@ class Banco():
     
     def getNombre(self):
         return self._nombre
+    
+    def getComision(self):
+        return self._comision
+
+    def setComision(self, _comision):
+        self._comision = _comision
 
     @classmethod
     def getBancosTotales(cls):
