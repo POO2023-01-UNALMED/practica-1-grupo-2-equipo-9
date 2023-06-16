@@ -16,6 +16,7 @@ from gestorAplicación.interno.corriente import Corriente
 from gestorAplicación.interno.ahorros import Ahorros
 from gestorAplicación.externo.divisas import Divisas
 from gestorAplicación.interno.categoria import Categoria
+from gestorAplicación.externo.tablas import Tablas
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS
 
@@ -838,7 +839,7 @@ class App():
             comenzar.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         def compra_cartera(cuenta = None):
-
+            print(Corriente.__name__)
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Compra Catera")
             label_description.config(
@@ -866,32 +867,43 @@ class App():
                     messagebox.showerror("Error", "El usuario " + cls.user.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.")
                     return
                 
-                framecc = tk.Frame(cls.subframe_main, width=500, height=500)
-                framecc.pack(expand=True)
+                framecc = tk.Frame(cls.subframe_main)
+                framecc.pack(expand=True, fill="both")
 
                 cuenta_Compra = 0
                 seleccion_Cuenta = True
 
+                def eleccion(evento):
+                    eleccion = eleccion_cuenta.get()
+                    eleccion = str(eleccion)
+                    cuenta_Compra = int(eleccion[0])
+
                 while seleccion_Cuenta:
                     impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
                     label_impresion = tk.Label(framecc, text=impresion_1)
-                    label_impresion.grid(row=0, column=0, columnspan=2)
+                    label_impresion.grid(row=0, column=0, columnspan=10)
 
-                    i=1
-                    for cuenta_1 in cuentasEnDeuda:
-                        boton_el = tk.Button(framecc, text=str(i))
-                        boton_el.grid(row=1, column=0)
+                    Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
 
-                        ver_cuenta = tk.Label(framecc, text = cuenta_1)
-                        ver_cuenta.grid(row=1, column=1)
+                    cuen_comb = []
+                    for cuent in cuentasEnDeuda:
+                        cadena = str()
+
+                    valor_defecto_ec = tk.StringVar(value="Cuenta")
+                    eleccion_cuenta = Combobox(framecc, values = cuen_comb, textVariable = valor_defecto_ec)
+                    eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
+                    eleccion_cuenta.grid(row = 12, column = len(cuentasEnDeuda)//2, columnspan=2)
+
+                    #i=1
+                    #for cuenta_1 in cuentasEnDeuda:
+                    #    boton_el = tk.Button(framecc, text=str(i))
+                    #    boton_el.grid(row=1, column=0)
+
+                    #    ver_cuenta = tk.Label(framecc, text = cuenta_1)
+                    #    ver_cuenta.grid(row=1, column=1)
 
                     #Impresión Cuentas con Préstamo Asociado
                     #Verificar impresión cuentas
-
-                    #subframe_description = tk.Frame(
-                    #cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
-                    #subframe_description.place(
-                    #relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
 
                     #Atributo para validación entrada Cuenta_Compra
                     validación_Cuenta_Compra = False
@@ -1036,9 +1048,9 @@ class App():
 
         # ------------Descripcion de la funcionalidad
         subframe_description = tk.Frame(
-            cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
-        subframe_description.place(
-            relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
+            cls.subframe_main, bg="gray", borderwidth=1, relief="solid", pady="25")
+        subframe_description.pack(
+            fill="x")
         descripcion_font_style = font.Font(size=12, family="Alegreya Sans")
         descripcion_funcionalidad = "Ad cillum enim occaecat aliqua ad ad sit. Reprehenderit laboris elit veniam minim esse elit. Anim deserunt officia irure proident non velit duis sint quis aute Lorem id."
         label_description = tk.Label(subframe_description, text=descripcion_funcionalidad,
