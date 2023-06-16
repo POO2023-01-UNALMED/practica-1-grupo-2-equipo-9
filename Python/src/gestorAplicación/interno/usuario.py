@@ -9,6 +9,11 @@ from .metas import Metas
 class Usuario():
     #Atributos de clase
     _usuariosTotales = []
+    _metasAsociadas = []
+    _movimientosAsociados = []
+    _cuentasAhorroAsociadas = []
+    _cuentasCorrienteAsociadas = []
+    _bancosAsociados = []
 
     #Constructor
     def __init__(self, **kwargs) -> None:
@@ -106,7 +111,7 @@ class Usuario():
         if(meta in Metas.getMetasTotales()):
             meta.setDueno(self)
             self.getMetasAsociadas().append(meta)
-            return("La meta " + meta.getNombre() + " se ha asociado con éxito al usuario " + self.getNombre())
+            return("La meta " + str(meta.getNombre()) + " se ha asociado con éxito al usuario " + self.getNombre())
         else:
             return("No se encuentra tu meta, debes verificar que la meta que quieres asociar exista" )
     
@@ -118,7 +123,7 @@ class Usuario():
                 return("El movimiento con origen " + movimiento.getOrigen().getNombre() + " ha sido asociada correctamente al usuario " + self.getNombre())
             else:
                 if(not(movimiento.getDestino().getTitular() == self)):
-                    movimiento.getDestino().getTitular().getMovimientosAsociados.append(movimiento)
+                    movimiento.getDestino().getTitular().getMovimientosAsociados().append(movimiento)
                 return("El movimiento con destino " + movimiento.getDestino().getNombre() + " ha sido asociada correctamente al usuario " + self.getNombre())
         else:
             return("No se encuentra el movimiento. Por favor asegurese de que el movimiento se haya realizado con éxito" )
@@ -131,8 +136,8 @@ class Usuario():
             return("Debes verificar que la cuenta no haya sido asociada antes")
         
     def asociarCuentaAhorros(self, ahorros) -> str:
-        if(ahorros in Ahorros.getCuentasAhorroTotales()):
-            self.getCuentasAhorroAsociadas.append(ahorros)
+        if(ahorros in Ahorros.getCuentasAhorrosTotales()):
+            self.getCuentasAhorroAsociadas().append(ahorros)
             return("La cuenta de ahorros " + ahorros.getNombre() + " ha sido asociada correctamente al usuario " + self.getNombre())
         else:
             return("Debes verificar que la cuenta no haya sido asociada antes")

@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import font, messagebox, Button
 from tkinter.ttk import Combobox
 import os
+from datetime import datetime
 from baseDatos.deserializador import Deserializador
 from baseDatos.serializador import Serializador
 from gestorAplicación.interno.usuario import Usuario
@@ -14,6 +15,7 @@ from gestorAplicación.externo.banco import Banco
 from gestorAplicación.interno.corriente import Corriente
 from gestorAplicación.interno.ahorros import Ahorros
 from gestorAplicación.externo.divisas import Divisas
+from gestorAplicación.interno.categoria import Categoria
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS
 
@@ -107,24 +109,53 @@ class App():
         
         banco1 = Banco()
         Serializador.serializar([banco1])
+
         user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
+        user1.asociarBanco(banco1)
         Serializador.serializar([user1])
+
         cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
         user1.asociarCuenta(cuenta1)
         Serializador.serializar([cuenta1])
+
         cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
         user1.asociarCuenta(cuenta2)
-        Serializador.serializar([cuenta2])
-
         cuenta2.setDisponible(500000)
+        Serializador.serializar([cuenta2])
+        
+        cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros", divisa = Divisas.COP, saldo = 100)
+        user1.asociarCuenta(cuenta3)
+        Serializador.serializar([cuenta3])
 
-        #print (cuenta1)
+        userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+        Serializador.serializar([userGota])
+
+        userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+        Serializador.serializar([userGota])
+        
+        cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
+        userGota.asociarCuenta(cuenta4)
+        Serializador.serializar([cuenta4])
+        
+        cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
+        userImpuestosPortafolio.asociarCuenta(cuenta5)
+        Serializador.serializar([cuenta5])
+    
+        meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
+        user1.asociarMeta(meta1)
+        Serializador.serializar([meta1])
+
+        movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
+        user1.asociarMovimiento(movimiento1)
+        Serializador.serializar([movimiento1])
 
         # Cargar objetos al sistema
         Deserializador.deserializar("Usuarios")
         Deserializador.deserializar("Cuentas")
         Deserializador.deserializar("Estados")
         Deserializador.deserializar("Bancos")
+        Deserializador.deserializar("Metas")
+        Deserializador.deserializar("Movimientos")
 
         # Métodos de funcionamiento de la ventana de inicio
         def exit_initial_window():
@@ -524,8 +555,287 @@ class App():
             # Editar la descripcion de su funcionalidad
             label_title.config(text="Funcionalidad - Asesoramiento de Inversiones")
             label_description.config(
-                text="Agregar la descripcion en el metodo asesoramiento_inversiones y agregar aca el funcionamiento de su funcionalidad")
-            interfaz_asesoramiento_inversiones()
+                text="La funcionalidad da una recomendación de un portafolio de inversiones en base a las preferencias y características del usuario, como las fechas de sus metas y sus movimientos o el dinero que hay en sus cuentas. Además, provee herramientas que pretenden mejorar aún más la inversión para la satisfacción del usuario.")
+            
+            user = Usuario.getUsuariosTotales()[0]
+
+            def comienzo():
+                # Ocultar el botón "Comenzar"
+                comenzar.pack_forget()
+
+                # Eliminar todos los widgets del contenedor
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Crear etiqueta y menú desplegable
+                label1 = tk.Label(frame, text="Tolerancia a Riesgos:", font=font.Font(family="Times New Roman", size=16), bg="white")
+                label1.pack()
+                
+                global combobox
+                texto1 = tk.StringVar()
+                combobox = Combobox(frame, textvariable=texto1, font=font.Font(family="Times New Roman", size=16))
+                combobox['values'] = ('', 'Baja', 'Media', 'Alta')
+                combobox.current(0)
+                combobox.pack()
+
+                # Crear etiqueta y campo de texto
+                label2 = tk.Label(frame, text="¿Cuánto dinero deseas invertir?:", font=font.Font(family="Times New Roman", size=16), bg="white")
+                label2.pack()
+                
+                global entry2
+                texto2 = tk.StringVar()
+                entry2 = tk.Entry(frame, textvariable=texto2, font=font.Font(family="Times New Roman", size=16), bg="white")
+                entry2.pack()
+
+                frame2 = tk.Frame(frame, width=200, height=200, bg="white")
+                frame2.pack()
+
+                # Crear botón "Siguiente"
+                Siguiente = tk.Button(frame2, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=16), bg="white")
+                Siguiente.place(relx=0.5, rely=0.5, anchor='s')
+    
+
+            def mostrar_siguiente():
+                tolerancia_riesgos = combobox.get()
+                monto_inversion = entry2.get()
+
+
+                if tolerancia_riesgos == "" or monto_inversion == "":
+                    messagebox.showerror("Error", "Debes llenar todos los campos.")
+                    return
+
+                try:
+                    monto_inversion == int(monto_inversion)
+                except ValueError:
+                    messagebox.showerror("Error", "El campo '¿Cuánto dinero deseas invertir?' debe ser un número entero.")
+                    return
+                
+                global numero_portafolio
+                numero_portafolio = Banco.retorno_portafolio(tolerancia_riesgos, int(monto_inversion))
+                
+                # Eliminar todos los widgets del contenedor
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Obtener los datos de la revisión de metas
+                resultado = Metas.revision_metas(user)
+                nombre = resultado.getNombre()
+                cantidad = resultado.getCantidad()
+                fecha_normal = resultado.getFecha()
+
+                # Mostrar el resultado por pantalla
+                resultado_texto = f"Tienes una meta para una fecha muy próxima: {nombre}, {cantidad}, {fecha_normal}"
+                label_siguiente = tk.Label(frame, text=resultado_texto, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_siguiente.pack()
+
+                # Agregar mensaje de confirmación para cambiar la fecha
+                mensaje_confirmacion = "¿Desea cambiar la fecha de la meta?"
+                label_confirmacion = tk.Label(frame, text=mensaje_confirmacion, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_confirmacion.pack()
+
+                # Crear botones "Sí" y "No" centrados
+                botones_frame = tk.Frame(frame, bg="white")
+                botones_frame.pack()
+
+                boton_si = tk.Button(botones_frame, text="Sí", command=mostrar_campo_fecha, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_si.pack(side=tk.LEFT, padx=10)
+
+                boton_no = tk.Button(botones_frame, text="No", command=no_cambiar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_no.pack(side=tk.LEFT, padx=10)
+
+
+            def mostrar_campo_fecha():
+                global entry_fecha
+
+                # Eliminar widgets existentes
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Mostrar mensaje y campo de texto para la fecha
+                mensaje_fecha = "Ingrese la nueva fecha de la meta:"
+                label_fecha = tk.Label(frame, text=mensaje_fecha, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_fecha.pack()
+
+                entry_fecha = tk.Entry(frame, font=font.Font(family="Times New Roman", size=16), bg="white")
+                entry_fecha.pack()
+
+                # Crear botón "Guardar"
+                boton_guardar = tk.Button(frame, text="Guardar", command=guardar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_guardar.pack()
+
+
+            def guardar_fecha_meta():
+                Metas.cambio_fecha(Metas.revision_metas(user), entry_fecha.get())
+                nueva_fecha = entry_fecha.get()
+                plazo_inversion = Metas.determinar_plazo(Metas.revision_metas(user))
+
+                mensaje_confirmacion = f"La fecha de la meta ha sido cambiada a: {nueva_fecha}\n"
+                mensaje_confirmacion += f"Plazo de inversión: {plazo_inversion}"
+
+                # Mostrar mensaje de confirmación
+                messagebox.showinfo("Mensaje", mensaje_confirmacion)
+                mostrar_advertencia()
+
+
+            def no_cambiar_fecha_meta():
+                plazo_inversion = Metas.determinar_plazo(Metas.revision_metas(user))
+
+                mensaje_confirmacion = f"La fecha de la meta no ha sido cambiada.\n"
+                mensaje_confirmacion += f"Plazo de inversión: {plazo_inversion}"
+
+                # Mostrar mensaje de confirmación
+                messagebox.showinfo("Mensaje", mensaje_confirmacion)
+                mostrar_advertencia()
+
+
+            def mostrar_advertencia():
+                # Eliminar widgets existentesa
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                mensaje_advertencia = "Advertencia: Con el fin de hacer un buen asesoramiento analizaremos sus movimientos para encontrar la categoría en la que más dinero ha gastado."
+                label_advertencia = tk.Label(frame, text=mensaje_advertencia, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_advertencia.pack()
+
+                # Mostrar la categoría en la que más dinero se ha gastado
+                mensaje_categoria = "La categoría en la que más dinero ha gastado es: " + Movimientos._nombre_categoria
+                mensaje_categoria += " que suma un total de " + str(Movimientos._cantidad_categoria)
+                mensaje_categoria += "\n¿Deseas crear una meta con el fin de ahorrar la misma cantidad que has gastado en esta categoría?"
+                label_categoria = tk.Label(frame, text=mensaje_categoria, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_categoria.pack()
+
+                # Crear botones "Sí" y "No"
+                botones_frame = tk.Frame(frame, bg="white")
+                botones_frame.pack()
+
+                boton_si = tk.Button(botones_frame, text="Sí", command=crear_meta_ahorro, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_si.pack(side=tk.LEFT, padx=10)
+
+                boton_no = tk.Button(botones_frame, text="No", command=mostrar_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_no.pack(side=tk.LEFT, padx=10)
+
+            def crear_meta_ahorro():
+                messagebox.showinfo("Mensaje", "Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas")
+                Movimientos.analizar_categoria(Metas.determinar_plazo(Metas.revision_metas(user)))
+                messagebox.showinfo("Mensaje", "La meta ha sido creada y puesta como prioridad en tu lista de metas")
+                # LLAMAR A VER_METAS
+                mostrar_recomendaciones()
+
+            def mostrar_recomendaciones():
+                # Eliminar widgets existentes
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Mostrar mensaje de recomendaciones
+
+                mensaje_recomendaciones = "En base a los datos recolectados, deberías invertir tu dinero en estos sectores:"
+                if numero_portafolio == 1:
+                    recomendaciones = "- Servicios de comunicación\n- Consumo discrecional\n- Bienes raíces"
+                elif numero_portafolio == 2:
+                    recomendaciones = -"- Productos básicos de consumo\n- Energía\n- Compañías de inteligencia artificial"
+                elif numero_portafolio == 3:
+                    recomendaciones = "- Finanzas\n- Cuidado de la salud\n- Servicios de comunicación"
+                elif numero_portafolio == 4:
+                    recomendaciones = "- Oro\n- Acciones industriales\n- Información tecnológica\n"
+                elif numero_portafolio == 5:
+                    recomendaciones = "- Materiales de construcción\n- Bienes raíces\n- Finanzas\n"
+                elif numero_portafolio == 6:
+                    recomendaciones = "- Cuidado de la salud\n- Utilidades\n- Comodidades\n"
+                elif numero_portafolio == 7:
+                    recomendaciones = "- Oro\n- Bonos gubernamentales a mediano plazo\n- Información tecnológica\n"
+                elif numero_portafolio == 8:
+                    recomendaciones = "- Compañías de inteligencia artificial\n- Bonos gubernamentales a largo plazo\n- Productos básicos de consumo\n"
+                else:
+                    recomendaciones = "No tenemos una recomendación para ti"
+
+                label_recomendaciones = tk.Label(frame, text=mensaje_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_recomendaciones.pack()
+
+                label_sectores = tk.Label(frame, text=recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_sectores.pack()
+
+                # Mostrar mensaje adicional
+                nombre_banco = Banco.banco_portafolio(user).getNombre()
+                interes_portafolio = Banco.intereses_portafolio(Banco.banco_portafolio(user), user)
+                mensaje_adicional = "Nota: Hay un banco asociado al portafolio: " + nombre_banco + ", con una tasa de interés del " + str(interes_portafolio) +"%"
+                label_adicional = tk.Label(frame, text=mensaje_adicional, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_adicional.pack()
+
+                # Mostrar botón "Siguiente"
+                boton_siguiente = tk.Button(frame, text="Siguiente", command=mostrar_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_siguiente.pack()
+
+
+            def mostrar_prestamo():
+                # Eliminar widgets existentes
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Mostrar mensaje de préstamo
+                mensaje_prestamo = "Finalmente, para mejorar aún más tu inversión te recomendamos hacer un préstamo. ¿Deseas hacer el préstamo?"
+                label_prestamo = tk.Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_prestamo.pack()
+
+                # Crear botones "Sí" y "No" centrados
+                botones_frame = tk.Frame(frame, bg="white")
+                botones_frame.pack()
+
+                boton_si = tk.Button(botones_frame, text="Sí", command=hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_si.pack(side=tk.LEFT, padx=10)
+
+                boton_no = tk.Button(botones_frame, text="No", command=no_hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_no.pack(side=tk.LEFT, padx=10)
+
+            def hacer_prestamo():
+                # Eliminar widgets existentes
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Mostrar mensaje de solicitud de préstamo
+                mensaje_prestamo = "Las tasas de interés de los préstamos están muy altas, pero tenemos la solución perfecta para ti, aunque no sea la más correcta... Vas a hacer un préstamo con el usuario gota a gota."
+                label_prestamo = tk.Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white", wraplength=frame.winfo_width())
+                label_prestamo.pack()
+
+                # Mostrar campo de texto para ingresar el monto del préstamo
+                label_monto = tk.Label(frame, text="Ingrese el monto que desea solicitar prestado:", font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_monto.pack()
+
+                texto_monto = tk.StringVar()
+                entry_monto = tk.Entry(frame, textvariable=texto_monto, font=font.Font(family="Times New Roman", size=16), bg="white")
+                entry_monto.pack()
+                
+                # Crear botón "Guardar"
+                boton_guardar = tk.Button(frame, text="Guardar", command=guardar_monto_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_guardar.pack()
+
+                global prestamo
+                prestamo = entry_monto
+
+            def guardar_monto_prestamo():
+                cuenta_gota = Usuario.getUsuariosTotales()[Usuario.hallarUsuariogotaGota()].getCuentasAsociadas()[0]
+                Cuenta.gotaGota(prestamo, user, cuenta_gota)
+                messagebox.showinfo("Mensaje", "Era una trampa, ahora el usuario gota a gota vació tu cuenta")
+                no_hacer_prestamo()
+
+            def no_hacer_prestamo():
+                # Eliminar widgets existentes
+                for widget in frame.winfo_children():
+                    widget.destroy()
+
+                # Mostrar mensaje de despedida
+                mensaje_despedida = "Ha sido un placer asesorarte en este proceso, espero que nuestra recomendación haya sido de ayuda."
+                label_despedida = tk.Label(frame, text=mensaje_despedida, font=font.Font(family="Times New Roman", size=16), bg="white")
+                label_despedida.pack()
+
+                boton_cerrar = tk.Button(frame, text="Cerrar", command=frame.destroy, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_cerrar.pack()
+
+            frame = tk.Frame(cls.subframe_main, width=200, height=200, bg="white")
+            frame.pack(expand=True)
+
+            # Crear botón "Comenzar"
+            comenzar = tk.Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
+            comenzar.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         def compra_cartera(cuenta = None):
 
@@ -616,275 +926,6 @@ class App():
             label_title.config(text="Funcionalidad - Pagar Prestamo")
             label_description.config(
                 text="Es importante pagar tus deudas para poder confiando en ti.\n En esta sección puedes pagar tus prestamos, si no has realizado ningun prestamos y quieres hacerlo ingresa a la sección Pedir Prestamo")
-
-        def interfaz_asesoramiento_inversiones():
-            # FALRA IMPLEMENTAR TODA LA LOGICA
-            tolerancia_riesgos = ""
-            monto_inversion = ""
-
-            class Metas:
-                @staticmethod
-                def revisionMetas():
-                    pass
-                
-                @staticmethod
-                def determinar_plazo():
-                    return "Medio"
-
-
-            class Movimientos:
-                nombre_categoria = "Comida"
-                cantidad_categoria = 500
-
-
-            def mostrar_siguiente():
-                global tolerancia_riesgos, monto_inversion
-
-                # Obtener los valores seleccionados o ingresados
-                tolerancia_riesgos = texto1.get()
-                monto_inversion = texto2.get()
-
-                # Ocultar el botón "Siguiente"
-                boton_siguiente.pack_forget()
-
-                # Eliminar todos los widgets del contenedor
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                # Obtener los datos de la revisión de metas
-                resultado = Metas.revisionMetas()
-                # nombre = resultado.getNombre()
-                # cantidad = resultado.getCantidad()
-                # fecha = resultado.getFechaNormal()
-                nombre = "pepito"
-                cantidad = 100
-                fecha_normal = "10/10/2025"
-                # Mostrar el resultado por pantalla
-                resultado_texto = f"Tienes una meta para una fecha muy próxima: {nombre}, {cantidad}, {fecha_normal}"
-                label_siguiente = tk.Label(frame, text=resultado_texto, font=font.Font(family="Times New Roman", size=12))
-                label_siguiente.pack()
-
-                # Agregar mensaje de confirmación para cambiar la fecha
-                mensaje_confirmacion = "¿Desea cambiar la fecha de la meta?"
-                label_confirmacion = tk.Label(frame, text=mensaje_confirmacion, font=font.Font(family="Times New Roman", size=12))
-                label_confirmacion.pack()
-
-                # Crear botones "Sí" y "No" centrados
-                botones_frame = tk.Frame(frame)
-                botones_frame.pack()
-
-                boton_si = tk.Button(botones_frame, text="Sí", command=mostrar_campo_fecha, font=font.Font(family="Times New Roman", size=12))
-                boton_si.pack(side=tk.LEFT, padx=10)
-
-                boton_no = tk.Button(botones_frame, text="No", command=no_cambiar_fecha_meta, font=font.Font(family="Times New Roman", size=12))
-                boton_no.pack(side=tk.LEFT, padx=10)
-
-
-            def mostrar_campo_fecha():
-                global entry_fecha
-
-                # Eliminar widgets existentes
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                # Mostrar mensaje y campo de texto para la fecha
-                mensaje_fecha = "Ingrese la nueva fecha de la meta:"
-                label_fecha = tk.Label(frame, text=mensaje_fecha, font=font.Font(family="Times New Roman", size=12))
-                label_fecha.pack()
-
-                entry_fecha = tk.Entry(frame, font=font.Font(family="Times New Roman", size=12))
-                entry_fecha.pack()
-
-                # Crear botón "Guardar"
-                boton_guardar = tk.Button(frame, text="Guardar", command=guardar_fecha_meta, font=font.Font(family="Times New Roman", size=12))
-                boton_guardar.pack()
-
-
-            def guardar_fecha_meta():
-                nueva_fecha = entry_fecha.get()
-                plazo_inversion = Metas.determinar_plazo()
-
-                mensaje_confirmacion = f"La fecha de la meta ha sido cambiada a: {nueva_fecha}\n"
-                mensaje_confirmacion += f"Plazo de inversión: {plazo_inversion}"
-
-                # Mostrar mensaje de confirmación
-                messagebox.showinfo("Mensaje", mensaje_confirmacion)
-                mostrar_advertencia()
-
-
-            def no_cambiar_fecha_meta():
-                plazo_inversion = Metas.determinar_plazo()
-
-                mensaje_confirmacion = f"La fecha de la meta no ha sido cambiada.\n"
-                mensaje_confirmacion += f"Plazo de inversión: {plazo_inversion}"
-
-                # Mostrar mensaje de confirmación
-                messagebox.showinfo("Mensaje", mensaje_confirmacion)
-                mostrar_advertencia()
-
-
-            def mostrar_advertencia():
-                # Eliminar widgets existentes
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                mensaje_advertencia = "Advertencia: Con el fin de hacer un buen asesoramiento analizaremos sus movimientos para encontrar la categoría en la que más dinero ha gastado."
-                label_advertencia = tk.Label(frame, text=mensaje_advertencia, font=font.Font(family="Times New Roman", size=12))
-                label_advertencia.pack()
-
-                # Mostrar la categoría en la que más dinero se ha gastado
-                mensaje_categoria = "La categoría en la que más dinero ha gastado es: " + Movimientos.nombre_categoria
-                mensaje_categoria += " que suma un total de " + str(Movimientos.cantidad_categoria)
-                label_categoria = tk.Label(frame, text=mensaje_categoria, font=font.Font(family="Times New Roman", size=12))
-                label_categoria.pack()
-
-                # Crear botones "Sí" y "No"
-                botones_frame = tk.Frame(frame)
-                botones_frame.pack()
-
-                boton_si = tk.Button(botones_frame, text="Sí", command=crear_meta_ahorro, font=font.Font(family="Times New Roman", size=12))
-                boton_si.pack(side=tk.LEFT, padx=10)
-
-                boton_no = tk.Button(botones_frame, text="No", command=no_crear_meta_ahorro, font=font.Font(family="Times New Roman", size=12))
-                boton_no.pack(side=tk.LEFT, padx=10)
-
-            def crear_meta_ahorro():
-                messagebox.showinfo("Mensaje", "Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas")
-                messagebox.showinfo("Mensaje", "La meta ha sido creada y puesta como prioridad en tu lista de metas")
-                # LLAMAR A VER_METAS
-                mostrar_recomendaciones()
-
-            def no_crear_meta_ahorro():
-                mostrar_recomendaciones()
-
-            def mostrar_recomendaciones():
-                # Eliminar widgets existentes
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                # Mostrar mensaje de recomendaciones
-                mensaje_recomendaciones = "En base a los datos recolectados, deberías invertir tu dinero en estos sectores:"
-                recomendaciones = "- Servicios de comunicación\n- Consumo discrecional\n- Bienes raíces"
-
-                label_recomendaciones = tk.Label(frame, text=mensaje_recomendaciones, font=font.Font(family="Times New Roman", size=12))
-                label_recomendaciones.pack()
-
-                label_sectores = tk.Label(frame, text=recomendaciones, font=font.Font(family="Times New Roman", size=12))
-                label_sectores.pack()
-
-                # Mostrar mensaje adicional
-                mensaje_adicional = "Nota: Hay un banco asociado al portafolio: Banco de Colombia, con una tasa de interés del 5%"
-                label_adicional = tk.Label(frame, text=mensaje_adicional, font=font.Font(family="Times New Roman", size=12))
-                label_adicional.pack()
-
-                # Mostrar botón "Siguiente"
-                boton_siguiente = tk.Button(frame, text="Siguiente", command=mostrar_prestamo, font=font.Font(family="Times New Roman", size=12))
-                boton_siguiente.pack()
-
-
-            def mostrar_prestamo():
-                # Eliminar widgets existentes
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                # Mostrar mensaje de préstamo
-                mensaje_prestamo = "Finalmente, para mejorar aún más tu inversión te recomendamos hacer un préstamo. ¿Deseas hacer el préstamo?"
-                label_prestamo = tk.Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=12))
-                label_prestamo.pack()
-
-                # Crear botones "Sí" y "No" centrados
-                botones_frame = tk.Frame(frame)
-                botones_frame.pack()
-
-                boton_si = tk.Button(botones_frame, text="Sí", command=hacer_prestamo, font=font.Font(family="Times New Roman", size=12))
-                boton_si.pack(side=tk.LEFT, padx=10)
-
-                boton_no = tk.Button(botones_frame, text="No", command=no_hacer_prestamo, font=font.Font(family="Times New Roman", size=12))
-                boton_no.pack(side=tk.LEFT, padx=10)
-
-            def hacer_prestamo():
-                # Eliminar widgets existentes
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                # Mostrar mensaje de solicitud de préstamo
-                mensaje_prestamo = "Las tasas de interés de los préstamos están muy altas, pero tenemos la solución perfecta para ti, aunque no sea la más correcta... Vas a hacer un préstamo con el usuario gota a gota."
-                label_prestamo = tk.Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=12), wraplength=ventana.winfo_width())
-                label_prestamo.pack()
-
-                # Mostrar campo de texto para ingresar el monto del préstamo
-                label_monto = tk.Label(frame, text="Ingrese el monto que desea solicitar prestado:", font=font.Font(family="Times New Roman", size=12))
-                label_monto.pack()
-
-                texto_monto = tk.StringVar()
-                entry_monto = tk.Entry(frame, textvariable=texto_monto, font=font.Font(family="Times New Roman", size=12))
-                entry_monto.pack()
-
-                # Crear botón "Guardar"
-                boton_guardar = tk.Button(frame, text="Guardar", command=guardar_monto_prestamo, font=font.Font(family="Times New Roman", size=12))
-                boton_guardar.pack()
-
-            def guardar_monto_prestamo():
-                messagebox.showinfo("Mensaje", "Era una trampa, ahora el usuario gota a gota vació tu cuenta")
-                no_hacer_prestamo()
-
-            def no_hacer_prestamo():
-                # Eliminar widgets existentes
-                for widget in frame.winfo_children():
-                    widget.destroy()
-
-                # Mostrar mensaje de despedida
-                mensaje_despedida = "Ha sido un placer asesorarte en este proceso, espero que nuestra recomendación haya sido de ayuda."
-                label_despedida = tk.Label(frame, text=mensaje_despedida, font=font.Font(family="Times New Roman", size=12))
-                label_despedida.pack()
-
-                boton_cerrar = tk.Button(ventana, text="Cerrar", command=ventana.destroy)
-                boton_cerrar.pack()
-
-                ventana.mainloop()
-
-
-            # Crear ventana principal
-            ventana = tk.Tk()
-            ventana.title("Aplicación de Campos de Texto")
-
-            # Obtener el tamaño de la pantalla
-            ancho_pantalla = ventana.winfo_screenwidth()
-            alto_pantalla = ventana.winfo_screenheight()
-
-            # Establecer el tamaño de la ventana
-            ventana.geometry(f"{int(ancho_pantalla * 0.6)}x{int(alto_pantalla * 0.6)}")
-
-            # Crear contenedor de campos de texto
-            frame = tk.Frame(ventana, bd=2, relief=tk.GROOVE, padx=10, pady=10)
-            frame.pack(fill=tk.BOTH, expand=True)
-
-            # Crear etiqueta y menú desplegable
-            label1 = tk.Label(frame, text="Tolerancia a Riesgos:", font=font.Font(family="Times New Roman", size=12))
-            label1.pack()
-
-            texto1 = tk.StringVar()
-            combobox = Combobox(frame, textvariable=texto1, font=font.Font(family="Times New Roman", size=12))
-            combobox['values'] = ('', 'Baja', 'Media', 'Alta')
-            combobox.current(0)
-            combobox.pack()
-
-            # Crear etiqueta y campo de texto
-            label2 = tk.Label(frame, text="¿Cuánto dinero deseas invertir?:", font=font.Font(family="Times New Roman", size=12))
-            label2.pack()
-
-            texto2 = tk.StringVar()
-            entry2 = tk.Entry(frame, textvariable=texto2, font=font.Font(family="Times New Roman", size=12))
-            entry2.pack()
-
-            # Crear botón "Siguiente"
-            boton_siguiente = tk.Button(ventana, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=12))
-            boton_siguiente.pack()
-
-            # Configurar el comportamiento de ajuste al cambio de tamaño
-            ventana.pack_propagate(False)
-
-            ventana.mainloop()
 
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()

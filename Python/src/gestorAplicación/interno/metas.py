@@ -1,9 +1,9 @@
 from datetime import date
+from datetime import datetime
 
 class Metas:
     _metasTotales = []
     _metaProxima = None
-    _plazo = ""
     def __init__(self,**kwargs):
         self._nombre = None
         self.cantidad = None
@@ -24,10 +24,10 @@ class Metas:
 
     # Metodos asesoramiento Inversiones
     def revision_metas(user):
-        proximaFecha = date.now()
+        proximaFecha = datetime.strptime("01/01/0001", "%d/%m/%Y")
         proximaMeta = None
 
-        if user.getMetasAsociadas().size()==1:
+        if len(user.getMetasAsociadas()) == 1:
             return user.getMetasAsociadas()[0]
         else:
             for meta in user.getMetasAsociadas():
@@ -39,12 +39,14 @@ class Metas:
 
             for meta1 in user.getMetasAsociadas():
                 for meta2 in user.getMetasAsociadas():
-                    if meta2.getFecha() is None or meta1.getFecha() is None:
+                    fecha1 = datetime.strptime(str(meta1.getFecha()), "%d/%m/%Y")
+                    fecha2 = datetime.strptime(str(meta2.getFecha()), "%d/%m/%Y")
+                    if fecha1 is None or fecha2 is None:
                         continue
                     else:
-                        if meta2.getFecha() < meta1.getFecha():
-                            if meta2.getFecha() < proximaFecha:
-                                proximaFecha = meta2.getFecha()
+                        if fecha2 < fecha1:
+                            if fecha2 < proximaFecha or proximaFecha == None:
+                                proximaFecha = fecha2
                                 proximaMeta = meta2
                             else:
                                 continue
@@ -55,25 +57,25 @@ class Metas:
 
     @staticmethod
     def cambio_fecha(meta, fecha):
-        nuevaFecha = date.date.strptime(fecha, "%d/%m/%Y")
-        meta.setFecha(nuevaFecha)
+        meta.setFecha(fecha)
         return meta
 
     @staticmethod
     def determinar_plazo(meta):
-        date1 = date.strptime("01/01/2024", "%d/%m/%Y")
-        date2 = date.strptime("01/01/2026", "%d/%m/%Y")
+        date1 = datetime.strptime("01/01/2024", "%d/%m/%Y")
+        date2 = datetime.strptime("01/01/2026", "%d/%m/%Y")
+        fecha = datetime.strptime(meta.getFecha(), "%d/%m/%Y")
 
-        if meta.getFecha() < date1:
-            Metas.plazo = "Corto"
-        elif date1 < meta.getFecha() < date2:
-            Metas.plazo = "Mediano"
+        if fecha < date1:
+            return "Corto"
+        elif date1 < fecha < date2:
+            return "Mediano"
         else:
-            Metas.plazo = "Largo"
+            return "Largo"
 
     @staticmethod
     def prioridad_metas(user, meta):
-        user.getMetasAsociadas().pop(len(user.getMetasAsociadas) - 1)
+        user.getMetasAsociadas().pop(len(user.getMetasAsociadas()) - 1)
         user.getMetasAsociadas().insert(0, meta)
 
     @staticmethod
@@ -83,17 +85,16 @@ class Metas:
         arreglo.remove("metasTotales")
         arreglo.remove("DATE_FORMAT")
         arreglo.remove("metaProxima")
-        arreglo.remove("plazo")
         
 # Sets Y Gets
     
-    def getNombre(self):
+    def getNombre(self) -> str:
         return self._nombre
     def getCantidad(self):
         return self.cantidad
-    def getFecha(self):
+    def getFecha(self) -> str:
         return self._fecha
-    def getDueno(self):
+    def getDueno(self) -> str:
         return self.dueno
     def getMetasTotales():
         return Metas._metasTotales
@@ -101,8 +102,6 @@ class Metas:
         return self._id
     def getMetaProxima():
         return Metas._metaProxima
-    def getPlazo():
-        return Metas._plazo
 
     def setNombre(self,nombre):
         self._nombre = nombre 
@@ -118,7 +117,5 @@ class Metas:
         self._id = id
     def setMetaProxima(metaProxima):
         Metas._metaProxima = metaProxima
-    def setPlazo(plazo):
-        Metas._plazo = plazo
 
         

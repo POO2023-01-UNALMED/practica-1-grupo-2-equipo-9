@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from .metas import Metas
 from .ahorros import Ahorros
 from .corriente import Corriente
@@ -10,6 +10,13 @@ from gestorAplicación.externo.divisas import Divisas
 
 class Movimientos():
     _movimientosTotales = []
+
+    # Atributos de clase para la funiconalidad Asesoramiento de inversiones
+    _owner= None
+    _nombre_categoria = "Ninguna"
+    _fecha_categoria = "01/01/2024"
+    _cantidad_categoria = 0
+    
     def __init__(self,**kwargs):
         Movimientos._movimientosTotales.append(self)
         self._id = len(Movimientos._movimientosTotales)
@@ -22,12 +29,6 @@ class Movimientos():
         self._divisaAux = None
         self._banco = None
         self._cuotaManejo = None
-    # Atributos de clase para la funiconalidad Asesoramiento de inversiones
-
-        self._owner= None
-        self._nombreCategoria = None
-        self._cantidadCategoria = 0.0
-        self._recomendarFecha = None
 
         for key in kwargs:
             if key == "cantidad":
@@ -48,17 +49,12 @@ class Movimientos():
                 self._banco = kwargs[key]
             if key == "cuotaManejo":
                 self._cuotaManejo = kwargs[key]
-            if key == "owner":
-                self._owner = kwargs[key]
-            if key == "nombreCategoria":
-                self._nombreCategoria = kwargs[key]
-            if key == 'cantidadCategoria':
-                self._cantidadCategoria = kwargs[key]
-            if key == "recomendarFecha":
-                self._recomendarFecha = kwargs[key]
+
             
     # Métodos de la funiconalidad Asesoramiento de inversiones
-    def analizarCategoria(self, user, plazo): 
+    def analizar_categoria(plazo):
+        from .usuario import Usuario
+        user = Usuario.getUsuariosTotales()[0]
         transporte = 0 
         comida = 0 
         educacion = 0 
@@ -70,6 +66,7 @@ class Movimientos():
         big = 0 
         posicion = 0 
         mayor = []
+        _cantidad_categoria = 0
 
         # Buscar la categoría en la que más dinero ha gastado el usuario
         for i in range(len(user.getMovimientosAsociados())):
@@ -99,92 +96,97 @@ class Movimientos():
                 posicion = e
 
         if posicion == 0:
-            self.self.setNombreCategoria("Transporte")
+            Movimientos.setNombreCategoria("Transporte")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.TRANSPORTE == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 1:
-            self.setNombreCategoria("Comida")
+            Movimientos.setNombreCategoria("Comida")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.COMIDA == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 2:
-            self.setNombreCategoria("Educacion")
+            Movimientos.setNombreCategoria("Educacion")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.EDUCACION == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 3:
-            self.setNombreCategoria("Salud")
+            Movimientos.setNombreCategoria("Salud")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.SALUD == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 4:
-            self.setNombreCategoria("Regalos")
+            Movimientos.setNombreCategoria("Regalos")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.REGALOS == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 5:
-            self.setNombreCategoria("Finanzas")
+            Movimientos.setNombreCategoria("Finanzas")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.FINANZAS == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 6:
-            self.setNombreCategoria("Otros")
+            Movimientos.setNombreCategoria("Otros")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.OTROS == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         elif posicion == 7:
-            self.setNombreCategoria("Prestamos")
+            Movimientos.setNombreCategoria("Prestamos")
             for i in range(len(user.getMovimientosAsociados())):
                 if Categoria.OTROS == user.getMovimientosAsociados()[i].getCategoria():
-                    cantidadCategoria += user.getMovimientosAsociados()[i].getCantidad()
+                    _cantidad_categoria += user.getMovimientosAsociados()[i].getCantidad()
 
         # Recomendadar fecha
-        if plazo == "Corto":
-            if user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].getFecha() < Metas.revisionMetas(user).getFecha():
-                self.self.setRecomendarFecha("01/01/2024")
-            else:
-                self.setRecomendarFecha("01/06/2025")
-        elif plazo == "Mediano":
-            if user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].getFecha() < Metas.revisionMetas(user).getFecha():
-                self.setRecomendarFecha("01/01/2026")
-            else:
-                self.setRecomendarFecha("01/06/2027")
-        elif plazo == "Largo":
-            if user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].getFecha() < Metas.revisionMetas(user).getFecha():
-                self.setRecomendarFecha("01/01/2028")
-            else:
-                self.setRecomendarFecha("01/06/2029")
-        else:
-            self.setRecomendarFecha(None)
+        if len(user.getMovimientosAsociados()) != 0:
+            fecha_meta = datetime.strptime(Metas.revision_metas(user).getFecha(), "%d/%m/%Y")
+            fecha_movimiento = user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].getFecha()
+            if plazo == "Corto":
+                if  fecha_movimiento < fecha_meta:
+                    Movimientos.setFechaCategoria("01/01/2024")
+                else:
+                    Movimientos.setFechaCategoria("01/06/2025")
+            elif plazo == "Mediano":
+                if fecha_movimiento < fecha_meta:
+                    Movimientos.setFechaCategoria("01/01/2026")
+                else:
+                    Movimientos.setFechaCategoria("01/06/2027")
+            elif plazo == "Largo":
+                if fecha_movimiento < fecha_meta:
+                    Movimientos.setFechaCategoria("01/01/2028")
+                else:
+                    Movimientos.setFechaCategoria("01/06/2029")
+
+        meta_categoria = Metas(nombre = Movimientos.getNombreCategoria(), cantidad = Movimientos.get_cantidad_categoria(), fecha = Movimientos.getFechaCategoria())
+        Usuario.getUsuariosTotales()[0].asociarMeta(meta_categoria)
+        Metas.prioridad_metas(user, meta_categoria)
 
     def impuestosMovimiento(self, interes):
-        impuestosBanco = Ahorros(self.getOrigen().getBanco(), 1234, Divisas.COP, "Ahorros", 10.0)
+        impuestosBanco = Ahorros(banco = self.getOrigen().getBanco(), clave = 1234, divisa = Divisas.COP, nombre = "Ahorros", saldo = 10.0)
         if self.getOrigen().getBanco() == self.getDestino().getBanco():
             if isinstance(self.getOrigen(), Corriente):
-                movimiento1 = Movimientos(self.getOrigen(), impuestosBanco, interes, Categoria.OTROS, date.now())
+                movimiento1 = Movimientos(origen = self.getOrigen(), destino = impuestosBanco, cantidad = interes, categoria = Categoria.OTROS, fecha = datetime.now())
                 Movimientos.getMovimientosTotales().remove(movimiento1)
             else:
-                movimiento1 = Movimientos(self.getOrigen(), impuestosBanco, interes, Categoria.OTROS, date.now())
+                movimiento1 = Movimientos(origen = self.getOrigen(), destino = impuestosBanco, cantidad = interes, categoria = Categoria.OTROS, fecha = datetime.now())
                 Movimientos.getMovimientosTotales().remove(movimiento1)
-            Ahorros.getCuentasAhorroTotales().remove(impuestosBanco)
+            Ahorros.getCuentasAhorrosTotales().remove(impuestosBanco)
             Cuenta.getCuentasTotales().remove(impuestosBanco)
             return True
         else:
             if isinstance(self.getOrigen(), Corriente):
-                movimiento1 = Movimientos(self.getOrigen(), impuestosBanco, interes + 1, Categoria.OTROS, date.now())
+                movimiento1 = Movimientos(origen = self.getOrigen(), destino = impuestosBanco, cantidad = interes + 1, categoria = Categoria.OTROS, fecha = datetime.now())
                 Movimientos.getMovimientosTotales().remove(movimiento1)
             else:
-                movimiento1 = Movimientos(self.getOrigen(), impuestosBanco, interes + 1, Categoria.OTROS, date.now())
+                movimiento1 = Movimientos(origen = self.getOrigen(), destino = impuestosBanco, cantidad = interes + 1, categoria = Categoria.OTROS, fecha = datetime.now())
                 Movimientos.getMovimientosTotales().remove(movimiento1)
-            Ahorros.getCuentasAhorroTotales().remove(impuestosBanco)
+            Ahorros.getCuentasAhorrosTotales().remove(impuestosBanco)
             Cuenta.getCuentasTotales().remove(impuestosBanco)
             return False
 
@@ -198,7 +200,7 @@ class Movimientos():
             return None
         else:
             deuda = Deuda(_cantidad,_cuenta,titular,banco)
-            return(Movimientos.crearMovimiento(_cuenta,_cantidad,Categoria.Prestamos,date.now()))
+            return(Movimientos.crearMovimiento(_cuenta,_cantidad,Categoria.Prestamos,datetime.now()))
         
     @classmethod
     def pagarDeuda(_usuario,_deuda,_cantidad):
@@ -208,12 +210,12 @@ class Movimientos():
             Metas.getMetasTotales().remove(_deuda)
             _deuda.getCantidad(0)
             cantidad= - _cantidad
-            return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO, date.now())
+            return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO, datetime.now())
         else:
             _deuda.setCantidad(_deuda.getCantidad()-_cantidad)
             cuenta = _deuda.getCantidad()
             cantidad = -_cantidad
-            return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,date.now())
+            return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,datetime.now())
         
     # Funcionalidad de cambio de divisa
     @classmethod
@@ -230,27 +232,69 @@ class Movimientos():
 
         return existe_cambio
 
+    @classmethod
+    def getMovimientosTotales(cls):
+        return cls._movimientosTotales
+    @classmethod
+    def setMovimientosTotales(cls, _movimientosTotales):
+        cls._movimientosTotales = _movimientosTotales
+    @classmethod
+    def getOwner(cls):
+        return cls._owner
+    @classmethod
+    def setOwner(cls, owner):
+        cls._owner = owner
+    @classmethod
+    def getNombreCategoria(cls):
+        return cls._nombre_categoria
+    @classmethod
+    def setNombreCategoria(cls, _nombre_categoria):
+        cls._nombre_categoria = _nombre_categoria
+    @classmethod
+    def get_cantidad_categoria(cls):
+        return cls._cantidad_categoria
+    @classmethod
+    def set_cantidad_categoria(cls, _cantidad_categoria):
+        cls._cantidad_categoria = _cantidad_categoria
+    @classmethod
+    def getFechaCategoria(cls):
+        return cls._fecha_categoria
+    @classmethod
+    def setFechaCategoria(cls, _fecha_categoria):
+        cls._fecha_categoria = _fecha_categoria
 
-    def getOwner(self):
-        return self._owner
+    def getCategoria(self):
+        return self._categoria
+    
+    def setCategoria(self, _categoria):
+        self._categoria = _categoria
 
-    def setOwner(self, owner):
-        self._owner = owner
+    def getDestino(self):
+        return self._destino
+    
+    def setDestino(self, _destino):
+        self._destino = _destino
 
-    def getNombreCategoria(self):
-        return self._nombreCategoria
+    def getOrigen(self):
+        return self._origen
+    
+    def setOrigen(self, _origen):
+        self._origen = _origen
 
-    def setNombreCategoria(self, nombreCategoria):
-        self._nombreCategoria = nombreCategoria
+    def getDestino(self):
+        return self._destino
+    
+    def setDestino(self, _destino):
+        self._destino = _destino
 
-    def getCantidadCategoria(self):
-        return self._cantidadCategoria
+    def getCantidad(self):
+        return self._cantidad
+    
+    def setCantidad(self, _cantidad):
+        self._cantidad = _cantidad
 
-    def setCantidadCategoria(self, cantidadCategoria):
-        self._cantidadCategoria = cantidadCategoria
-
-    def getRecomendarFecha(self):
-        return self._recomendarFecha
-
-    def setRecomendarFecha(self, recomendarFecha):
-        self._recomendarFecha = recomendarFecha
+    def getFecha(self):
+        return self._fecha
+    
+    def setFecha(self, _fecha):
+        self._fecha = _fecha

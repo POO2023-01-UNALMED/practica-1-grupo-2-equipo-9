@@ -88,111 +88,111 @@ class Banco():
 
 
     # Métodos de la funcionalidad Asesoramiento de inversiones
-    def retornoPortafolio(riesgo, invertir, plazo, user):
+    def retorno_portafolio(riesgo, invertir):
+        from gestorAplicación.interno.ahorros import Ahorros
         from gestorAplicación.interno.usuario import Usuario
         from gestorAplicación.interno.movimientos import Movimientos
-        interes = random.random() + riesgo
 
-        if len(user.cuentasAhorrosAsociadas) != 0 and user.cuentasAhorrosAsociadas[0].saldo > invertir:
-            cobro = user.cuentasAhorrosAsociadas[0].saldo / 32
-            movimiento = Movimientos(
-                user.cuentasAhorrosAsociadas[0],
-                Usuario.getUsuariosTotales()[Usuario.hallarUsuarioImpuestosPortafolio()].cuentasAhorrosAsociadas[0],
-                cobro, Categoria.OTROS, datetime.now()
-            )
-            if movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo < invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+        user = Usuario.getUsuariosTotales()[0]
+        numero_riesgo = 0
+        
+        if riesgo == "Baja":
+            numero_riesgo = 1
+        elif riesgo == "Media":
+            numero_riesgo = 2
+        elif riesgo == "Alta":
+            numero_riesgo = 3
+
+        for i in range (len(user.getCuentasAsociadas())):
+            if isinstance(user.getCuentasAsociadas()[i], Ahorros):
+                valor = True
+                user_cuenta = user.getCuentasAsociadas()[i]
+                cobro = user_cuenta.getSaldo() / 32
+                break
+            else:
+                user_cuenta = user.getCuentasAsociadas()[i]
+                cobro = user_cuenta.getDisponible() / 32
+        
+        movimiento = Movimientos(origen = user_cuenta, destino = Usuario.getUsuariosTotales()[Usuario.hallarUsuarioImpuestosPortafolio()].getCuentasAsociadas()[0], cantidad = cobro, categoria = Categoria.OTROS, fecha = datetime.now())
+        invest = int(invertir)
+        booleano = movimiento.impuestosMovimiento(random.random() + numero_riesgo)
+
+        if valor and user_cuenta.getSaldo() > invest:
+            if booleano and user_cuenta.getSaldo() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 1
-            elif not movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo < invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+            elif not booleano and user_cuenta.getSaldo() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 2
-            elif movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo > invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+            elif booleano and user_cuenta.getSaldo() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 3
-            elif not movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo > invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+            elif not booleano and user_cuenta.getSaldo() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 4
 
-        elif len(user.cuentasAhorrosAsociadas) != 0 and user.cuentasAhorrosAsociadas[0].saldo < invertir:
-            cobro = user.cuentasAhorrosAsociadas[0].saldo / 32
-            movimiento = Movimientos(
-                user.cuentasAhorrosAsociadas[0],
-                Usuario.getUsuariosTotales()[Usuario.hallarUsuarioImpuestosPortafolio()].cuentasAhorrosAsociadas[0],
-                cobro, Categoria.OTROS, datetime.now()
-            )
-            if movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo < invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+        elif valor and user_cuenta.getSaldo() < invest:
+            if booleano and user_cuenta.getSaldo() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 5
-            elif not movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo < invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+            elif not booleano and user_cuenta.getSaldo() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 6
-            elif movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo > invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+            elif booleano and user_cuenta.getSaldo() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 7
-            elif not movimiento.impuestosMovimiento(interes) and user.cuentasAhorrosAsociadas[0].saldo > invertir:
-                Movimientos.movimientosTotales.remove(movimiento)
+            elif not booleano and user_cuenta.getSaldo() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 8
 
-        elif len(user.cuentasCorrienteAsociadas) != 0 and user.cuentasCorrienteAsociadas[0].disponible > invertir:
-            cobroCorriente = user.cuentasCorrienteAsociadas[0].disponible / 32
-            movimientoCorriente = Movimientos(
-                user.cuentasCorrienteAsociadas[0],
-                Usuario.getUsuariosTotales()[Usuario.hallarUsuarioImpuestosPortafolio()].cuentasCorrienteAsociadas[0],
-                cobroCorriente, Categoria.OTROS, datetime.now()
-            )
-            if movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible < invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
+        elif not valor and user_cuenta.getDisponible()() > invest:
+            if booleano and user_cuenta.getDisponible() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 1
-            elif not movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible < invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
+            elif not booleano and user_cuenta.getDisponible() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 2
-            elif movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible > invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
+            elif booleano and user_cuenta.getDisponible() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 3
-            elif not movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible > invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
+            elif not booleano and user_cuenta.getDisponible() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
                 return 4
 
+        elif not valor and user_cuenta.getDisponible() < invest:
+            if booleano and user_cuenta.getDisponible() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
+                return 5
+            elif not booleano and user_cuenta.getDisponible() < invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
+                return 6
+            elif booleano and user_cuenta.getDisponible() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
+                return 7
+            elif not booleano and user_cuenta.getDisponible() > invest:
+                Movimientos.getMovimientosTotales().remove(movimiento)
+                return 8
         else:
-            cobroCorriente = user.cuentasCorrienteAsociadas[0].disponible / 32
-            movimientoCorriente = Movimientos(
-                user.cuentasCorrienteAsociadas[0],
-                Usuario.getUsuariosTotales()[Usuario.hallarUsuarioImpuestosPortafolio()].cuentasCorrienteAsociadas[0],
-                cobroCorriente, Categoria.OTROS, datetime.now()
-            )
-            if movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible < invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
-                return 5
-            elif not movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible < invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
-                return 6
-            elif movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible > invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
-                return 7
-            elif not movimientoCorriente.impuestosMovimiento(interes) and user.cuentasCorrienteAsociadas[0].disponible > invertir:
-                Movimientos.movimientosTotales.remove(movimientoCorriente)
-                return 8
-
-        return 0
+            return 0
     
-    def bancoPortafolio(user):
+    def banco_portafolio(user):
         banco = None
-        if len(user.bancosAsociados) == 1:
-            banco = user.bancosAsociados[0]
+        if len(user.getBancosAsociados()) == 1:
+            banco = user.getBancosAsociados()[0]
         else:
-            for i in range(1, len(user.bancosAsociados)):
-                if user.bancosAsociados[i - 1] != user.bancosAsociados[i]:
-                    banco = user.bancosAsociados[i]
+            for i in range(1, len(user.getBancosAsociados())):
+                if user.getBancosAsociados()[i - 1] != user.getBancosAsociados()[i]:
+                    banco = user.getBancosAsociados()[i]
                 else:
                     continue
         return banco
 
 
-    def interesesPortafolio(banco, user):
+    def intereses_portafolio(banco, user):
         interes = 0.0
 
-        for i in range(len(user.bancosAsociados)):
-            if user.bancosAsociados[i] == banco:
+        for i in range(len(user.getBancosAsociados())):
+            if user.getBancosAsociados()[i] == banco:
                 interes = round((interes + random.random() + i), 2)
         return interes
 
@@ -210,3 +210,10 @@ class Banco():
     
     def getNombre(self):
         return self._nombre
+
+    @classmethod
+    def getBancosTotales(cls):
+        return cls._bancosTotales
+    @classmethod
+    def setBancosTotales(cls, _bancosTotales):
+        cls._bancosTotales = _bancosTotales

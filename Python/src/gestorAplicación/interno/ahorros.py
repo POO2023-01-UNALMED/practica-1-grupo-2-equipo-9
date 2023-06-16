@@ -12,7 +12,7 @@ class Ahorros(Cuenta):
         Ahorros._cuentasAhorroTotales.append(self)
         if "saldo" in kwargs:
             self._saldo = kwargs.pop("saldo")
-        super.__init__(kwargs)
+        super().__init__(**kwargs)
 
 #REVISAR SOBRECARGA
 

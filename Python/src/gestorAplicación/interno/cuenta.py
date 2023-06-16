@@ -38,24 +38,26 @@ class Cuenta(ABC):
     def gotaGota(cantidadPrestamo, user, gota):
         from .movimientos import Movimientos
         from .categoria import Categoria
+        from .ahorros import Ahorros
         mayor = 0
         contador = 0
-        if len(user.cuentasAhorrosAsociadas) != 0:
-            for i in range(len(user.cuentasAhorrosAsociadas)):
-                if user.cuentasAhorrosAsociadas[i].saldo > mayor:
-                    mayor = user.cuentasAhorrosAsociadas[i].saldo
-                    contador = i
-                movimiento = Movimientos(gota, user.cuentasAhorrosAsociadas[contador], cantidadPrestamo, Categoria.OTROS, date.now)
-                Movimientos.getMovimientosTotales().remove(movimiento)
-            return user.cuentasAhorrosAsociadas[contador]
+        if len(user.getCuentasAsociadas()) != 0:
+            for i in range(len(user.getCuentasAsociadas())):
+                if isinstance(user.getCuentasAsociadas()[i], Ahorros):
+                    if user.getCuentasAsociadas()[i].saldo > mayor:
+                        mayor = user.getCuentasAsociadas()[i].saldo
+                        contador = i
+                    movimiento = Movimientos(gota, user.getCuentasAsociadas()[contador], cantidadPrestamo, Categoria.OTROS, date.now)
+                    Movimientos.getMovimientosTotales().remove(movimiento)
+                return user.getCuentasAsociadas()[contador]
         else:
-            for i in range(len(user.cuentasCorrienteAsociadas)):
-                if user.cuentasCorrienteAsociadas[i].cupo > mayor:
-                    mayor = user.cuentasCorrienteAsociadas[i].cupo
+            for i in range(len(user.getCuentasAsociadas())):
+                if user.getCuentasAsociadas()[i].cupo > mayor:
+                    mayor = user.getCuentasAsociadas()[i].cupo
                     contador = i
-                movimiento = Movimientos(gota, user.cuentasCorrienteAsociadas[contador], cantidadPrestamo, Categoria.OTROS, date.now)
+                movimiento = Movimientos(gota, user.getCuentasAsociadas()[contador], cantidadPrestamo, Categoria.OTROS, date.now)
                 Movimientos.getMovimientosTotales().remove(movimiento)
-            return user.cuentasCorrienteAsociadas[contador]
+            return user.getCuentasAsociadas()[contador]
         
     def vaciarCuenta(gota):
         pass
