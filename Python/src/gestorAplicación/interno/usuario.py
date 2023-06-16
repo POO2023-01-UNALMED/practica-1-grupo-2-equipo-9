@@ -202,8 +202,9 @@ class Usuario():
     def retornarDeudas(self):
         cuentasConDeuda = []
         for cuenta in self.getCuentasAsociadas():
-            if cuenta.getDisponible() != cuenta.getCupo():
-                cuentasConDeuda.append(cuenta)
+            if isinstance(cuenta, Corriente):
+                if cuenta.getDisponible() != cuenta.getCupo():
+                    cuentasConDeuda.append(cuenta)
         
         return cuentasConDeuda
 

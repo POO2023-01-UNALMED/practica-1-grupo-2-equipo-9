@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import font, messagebox, Button
+from tkinter import font, messagebox, Button, StringVar
 from tkinter.ttk import Combobox
 import os
 from datetime import datetime
@@ -886,13 +886,15 @@ class App():
                     Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
 
                     cuen_comb = []
-                    for cuent in cuentasEnDeuda:
-                        cadena = str()
+                    i = 1
+                    for cuenta_deuda in cuentasEnDeuda:
+                        cadena = str(i) + ". ID:" + str(cuenta_deuda.getId()) + " " + cuenta_deuda.getNombre()
+                        cuen_comb.append(cadena)
+                        i += 1
 
-                    valor_defecto_ec = tk.StringVar(value="Cuenta")
-                    eleccion_cuenta = Combobox(framecc, values = cuen_comb, textVariable = valor_defecto_ec)
+                    eleccion_cuenta = Combobox(framecc, values= cuen_comb, textvariable=StringVar(value="Cuenta"))
                     eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
-                    eleccion_cuenta.grid(row = 12, column = len(cuentasEnDeuda)//2, columnspan=2)
+                    eleccion_cuenta.grid(row = len(cuentasEnDeuda)//2 + 2, columnspan=2, column = 12)
 
                     #i=1
                     #for cuenta_1 in cuentasEnDeuda:
