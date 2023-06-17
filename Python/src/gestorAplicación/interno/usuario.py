@@ -203,12 +203,29 @@ class Usuario():
     #Métodos funcionalidad Compra de Cartera
     def retornarDeudas(self):
         cuentasConDeuda = []
+        print()
+        print(self.getCuentasAsociadas())
+        print()
         for cuenta in self.getCuentasAsociadas():
             if isinstance(cuenta, Corriente):
+                print(cuenta.getDisponible())
+                print(cuenta.getCupo())
                 if cuenta.getDisponible() != cuenta.getCupo():
                     cuentasConDeuda.append(cuenta)
         
         return cuentasConDeuda
+    
+    def capacidad_endeudamiento(cuentas, cuenta_a_aplicar):
+        cuentas_capaces_deuda = []
+        for cuenta in cuentas:
+            if isinstance(cuenta, Corriente):
+                deuda_validar = cuenta.getCupo() - cuenta.getDisponible()
+                if cuenta.getDivisa() != cuenta_a_aplicar.getDivisa():
+                    deuda_validar = Cuenta.dineroATenerDisponible(cuenta_a_aplicar, cuenta.getDivisa())
+                if cuenta.getDisponible() >= deuda_validar and deuda_validar != 0:
+                    cuentas_capaces_deuda.append(cuenta)
+        
+        return cuentas_capaces_deuda
 
     #Métodos Get & Set
     @classmethod

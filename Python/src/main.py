@@ -15,6 +15,8 @@ from gestorAplicación.externo.banco import Banco
 from gestorAplicación.interno.corriente import Corriente
 from gestorAplicación.interno.ahorros import Ahorros
 from gestorAplicación.externo.divisas import Divisas
+from gestorAplicación.externo.tablas import Tablas
+from gestorAplicación.externo.cuotas import Cuotas
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS. CODIFICAR EXCEPCIONES EN EL PAQUETE EXCEPCIONES
 
@@ -108,9 +110,11 @@ class App():
     user1.asociarCuenta(cuenta1)
     user1.asociarCuenta(cuenta2)
     user1.asociarCuenta(cuenta3)
+
+    
+
     Serializador.serializar([cuenta1, cuenta2, cuenta3])
     Serializador.serializar([user1])
-    cuenta2.setDisponible(500000)
 
     #print (cuenta1)
 
@@ -127,6 +131,7 @@ class App():
     user = None
     subframe_main = None
     image_index = 0  # Variable para realizar un seguimiento del índice del pack de imagenes de los desarrolladores
+    conf = True
 
     # ----------------- VENTANA INICIAL ----------------
     @classmethod
@@ -142,19 +147,18 @@ class App():
         def login(event):
             name_email_user = str(user_email_entry.get())
             password_user = str(password_entry.get())
-            try:
-                possible_user = Usuario.verificarCredenciales(name_email_user, password_user)
-            except usersException.NoUserFoundException:
-                confirmation = messagebox.askretrycancel("Mis finanzas", usersException.NoUserFoundException.show_message())
-                if confirmation:
-                    pass
-                else:
-                    exit_initial_window()
-            else:
+            possible_user = Usuario.verificarCredenciales(
+                name_email_user, password_user)
+            if (isinstance(possible_user, Usuario)):
                 cls.user = possible_user
                 exit_initial_window()
                 App.start_main_window()
-                
+            else:
+                messagebox.showerror(
+                    "Mis finanzas", "Error: No se encuentra un usuario con estos datos. Inténtelo de nuevo.")
+                password_entry.delete(0, tk.END)
+                user_email_entry.delete(0, tk.END)
+
         def format_entry_user_email(event):
             if int(event.type) == 9:
                 user_email_entry.config(bg="gray", fg="black")
@@ -484,142 +488,94 @@ class App():
     @classmethod
     def start_main_window(cls):
         # Métodos de funcionamiento de la ventana principal
-        # Método para salir de la ventana principal
         def exit_principal_window():
             cls.user = None
             cls.main_window.destroy()
             App.start_initial_window()
 
-        # Método que muestra la descripción del sistema.
         def show_description():
             messagebox.showinfo("Mis Finanzas", "Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
-        
-        # Metódo que muestra información adicional del sistema
-        def about():
-            messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa")
 
-        # Método que destruye el frame pasado por parámetro
-        def back_menu_frame_destroy(frame):
+        def acerca_de():
+            messagebox.showinfo("Mis Finanzas", "Mis Finanzas es una plataforma de gestión financiera digital que brinda a los usuarios la capacidad de administrar y controlar sus recursos monetarios de manera eficiente. El propósito fundamental de Mis Finanzas es mejorar la relación que las personas tienen con su dinero, proporcionando diversas funcionalidades diseñadas para ofrecer a los usuarios una amplia gama de opciones sobre cómo utilizar sus fondos y obtener el máximo beneficio de ellos. Esta plataforma permite a los usuarios realizar un seguimiento detallado de sus ingresos, gastos y ahorros, brindando una visión integral de su situación financiera. Además, ofrece herramientas para establecer y monitorear metas financieras, como ahorros para un objetivo específico o la realización de préstamos.")
+
+        def volver_main_window(frame):
             frame.destroy()
-            welcome_text_reset()
-
-        # Método para volver al menú inicial
-        def back_menu_main():
-            for frame in cls.subframe_main.winfo_children(): 
-                if str(type(frame).__name__) == "Frame" and frame.winfo_name() != "subframe_description":
-                    back_menu_frame_destroy(frame)
-
-        # Método para reestablecer el mensaje de bienvenida de la ventana principal
-        def welcome_text_reset():
             titulo_funcionalidad.set("Bienvenido " + cls.user.getNombre() + " a Mis Finanzas")
-            descripcion_funcionalidad.set("Estamos encantados de ayudarte a aprovechar al máximo todas las funcionalidades que ofrecemos. A continuación, te enumeramos las disponibles: 1. Comprobar tu suscripción. 2. Invertir tu saldo. 3. Consignar saldo a tu cuenta. 4. Transferir saldo entre tus cuentas. 5. Compra con tu cuenta corriente. 6. Pedir un prestamo 7. Pagar un prestamo. 8. Asesoramiento de inversiones. 9. Compra de cartera.")
+            descripcion_funcionalidad.set("")
 
         # Metodos de las funcionalidades del menú
         def comprobar_suscripcion():
+            def select_bank_suscription_main():
+                def modify_suscription_main():
+                    selected_suscription = Suscripcion.__getitem__(suscription_options_combobox.get()) 
+                    try:
+                        if(selected_suscription.getLimiteCuentas() < len(cls.user.getCuentasAsociadas())):
+                            raise suscriptionException.underAccountsLimitException("Error. El nivel de suscripción que escogiste tiene un limite de cuentas para asociar de " + str(selected_suscription.getLimiteCuentas()) + " y el número de cuentas que tienes asociadas actualmente es de " + str(len(cls.user.getCuentasAsociadas())) + ".")
+                    except suscriptionException.underAccountsLimitException:
+                        messagebox.showerror("Mis finanzas", "Debes eliminar cuentas para escoger este nivel de suscripción.\nVolviendo al menú anterior.")
+                        volver_main_window(suscription_frame)
+                    else:
+                        cls.user.setSuscripcion(selected_suscription)
+                        cls.user.setLimiteCuentas(selected_suscription.getLimiteCuentas())
+                        label_suscription_options.destroy()
+                        suscription_options_combobox.destroy()
+                        button_select.destroy()
+                        button_delete.destroy()
+                        label_result = tk.Label(suscription_frame, text="El nivel de suscripción del usuario " + cls.user.getNombre() + " se ha actualizado a " + cls.user.getSuscripcion().name, font=style_label)
+                        label_result.pack(expand=1, fill="both", padx=2, pady=2)
+                        button_result = tk.Button(suscription_frame, text="Volver al menú principal", font=style_label, command=lambda: volver_main_window(suscription_frame))
+                        button_result.pack(expand=1, fill="both", padx=2, pady=2)
+
+                selected_bank = banks_options_combobox.get()
+                message = str(Banco(selected_bank).comprobarSuscripcion(cls.user))
+                label_banks_options.destroy()
+                banks_options_combobox.destroy()
+                button_select.grid_forget()
+                button_delete.grid_forget()
+
+                confirmation = messagebox.askyesno("Mis finanzas", message + "\n¿Desea cambiar su nivel de suscripción? (Y/N):")
+                if(confirmation):
+                    label_suscription_options = tk.Label(master = suscription_frame, text = "Seleccione un nivel de suscripción: ", font = style_label)
+                    label_suscription_options.grid(row=0, column=0, columnspan=3, padx=2, pady=2, sticky="NSEW")
+                    selected_suscription = tk.StringVar(suscription_frame)
+                    suscription_options_combobox = Combobox(master = suscription_frame, textvariable=selected_suscription)
+                    suscription_options_combobox["values"] = [Suscripcion.getNivelesSuscripcion()[m].name for m in range(0, len(Suscripcion.getNivelesSuscripcion())) if Suscripcion.getNivelesSuscripcion()[m] != cls.user.getSuscripcion()]
+                    suscription_options_combobox['state'] = 'readonly'
+                    suscription_options_combobox.grid(row=1, column=0, columnspan=3, padx=2, pady=2, sticky="NSEW")
+                    button_select.config(command=modify_suscription_main)
+                    button_select.grid(row=0, column=3, rowspan=2, padx=2, pady=2, sticky="NSEW")
+                    button_delete.grid(row=0, column=4, rowspan=2, padx=2, pady=2, sticky="NSEW")
+                else:
+                    volver_main_window(suscription_frame)
+                    
+            # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Modificar Suscripcion")
             descripcion_funcionalidad.set("(REVISAR)El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario. El atributo comision se invoca haciendo uso del self, luego, este valor se multiplica por K, donde K es un factor que varía con base en el atributo suscripcion del Usuario pasado por parámetro en el método.")
             style_label=font.Font(cls.main_window, family="Times New Roman", size=12)
             suscription_frame = tk.Frame(cls.subframe_main, bg="white", borderwidth=1, relief="solid")
             suscription_frame.place(relheight=0.75, relwidth=0.6, rely=0.25, relx=0.2)
-            
-            def start_functionality():
-                def functionality_logic():
-                    def yes_no_confirmation():
-                        def modify_suscription_main():
-                            selected_suscription = suscription_options_combobox.get()
-                            label_suscription_options.destroy()
-                            suscription_options_combobox.destroy()
-                            button_select_yes_no.destroy()
-                            try:
-                                if(selected_suscription is None or selected_suscription == ""):
-                                    raise suscriptionException.NoSuscriptionSelectedException
-                                else:
-                                    selected_suscription = Suscripcion.__getitem__(selected_suscription) 
-                                    if(selected_suscription.getLimiteCuentas() < len(cls.user.getCuentasAsociadas())):
-                                        raise suscriptionException.UnderAccountsLimitException
-                            except suscriptionException.NoSuscriptionSelectedException:
-                                confirmation = messagebox.askretrycancel("Mis finanzas", suscriptionException.NoSuscriptionSelectedException.show_message())
-                                if confirmation:
-                                    yes_no_confirmation()
-                                else:
-                                    back_menu_frame_destroy(suscription_frame)
-                            except suscriptionException.UnderAccountsLimitException:
-                                messagebox.showerror("Mis finanzas", suscriptionException.UnderAccountsLimitException(selected_suscription, cls.user).show_message())
-                                back_menu_frame_destroy(suscription_frame)
-                            else:
-                                suscription_frame.columnconfigure(0, weight=1)
-                                suscription_frame.columnconfigure(1, weight=0)
-                                cls.user.setSuscripcion(selected_suscription)
-                                cls.user.setLimiteCuentas(selected_suscription.getLimiteCuentas())
-                                label_suscription_options.destroy()
-                                suscription_options_combobox.destroy()
-                                button_select_yes_no.destroy()
-                                label_result = tk.Label(suscription_frame, text="El nivel de suscripción del usuario " + cls.user.getNombre() + " se ha actualizado a " + cls.user.getSuscripcion().name, font=style_label)
-                                label_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                                button_result = tk.Button(suscription_frame, text="Volver al menú principal", font=style_label, command=lambda: back_menu_frame_destroy(suscription_frame))
-                                button_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)    
-                        
-                        suscription_frame.columnconfigure(0, weight=1)
-                        suscription_frame.columnconfigure(1, weight=1)
-                        label_message.destroy()
-                        button_yes.destroy()
-                        button_no.destroy()
-                        label_suscription_options = tk.Label(master = suscription_frame, text = "Seleccione un nivel de suscripción: ", font = style_label)
-                        label_suscription_options.grid(row=0, column=0, padx=2, pady=2, sticky="NSEW")
-                        selected_suscription = tk.StringVar(suscription_frame)
-                        suscription_options_combobox = Combobox(master = suscription_frame, textvariable=selected_suscription)
-                        suscription_options_combobox["values"] = [Suscripcion.getNivelesSuscripcion()[m].name for m in range(0, len(Suscripcion.getNivelesSuscripcion())) if Suscripcion.getNivelesSuscripcion()[m] != cls.user.getSuscripcion()]
-                        suscription_options_combobox['state'] = 'readonly'
-                        suscription_options_combobox.grid(row=1, column=0, padx=2, pady=2, sticky="NSEW")
-                        button_select_yes_no = tk.Button(master=suscription_frame, text="Aceptar", command=modify_suscription_main)
-                        button_select_yes_no.grid(row=0, column=1, rowspan=2, padx=2, pady=2, sticky="NSEW")
-        
-                    selected_bank = banks_options_combobox.get()
-                    label_banks_options.destroy()
-                    banks_options_combobox.destroy()
-                    button_select.destroy()
-                    try:
-                        if(selected_bank == "" or selected_bank is None):
-                            raise banksException.NoBankSelectedException
-                    except banksException.NoBankSelectedException:
-                        confirmation = messagebox.askretrycancel("Mis finanzas", banksException.NoBankSelectedException.show_message())
-                        if confirmation:
-                            start_functionality()
-                        else:
-                            back_menu_frame_destroy(suscription_frame)         
-                    else:
-                        suscription_frame.columnconfigure(0, weight=1)
-                        suscription_frame.columnconfigure(1, weight=1)
-                        suscription_frame.columnconfigure(2, weight=0)
-                        message = str(Banco(selected_bank).comprobarSuscripcion(cls.user))
-                        label_message = tk.Label(suscription_frame, text=message + "\n¿Desea cambiar su nivel de suscripción? (Y/N): ", font=style_label)
-                        label_message.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
-                        button_yes = tk.Button(suscription_frame, text="Si", font=style_label, command=yes_no_confirmation)
-                        button_yes.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                        button_no = tk.Button(suscription_frame, text="No", font=style_label, command=lambda: back_menu_frame_destroy(suscription_frame))
-                        button_no.grid(row=1, column=1, sticky="NSEW", padx=2, pady=2)
-        
-                try:
-                    asociated_banks_user = cls.user.mostrarBancosAsociados()
-                except banksException.NoBanksException:
-                    messagebox.showerror("Mis finanzas", banksException.NoBanksException(cls.user).show_message())
-                    back_menu_frame_destroy(suscription_frame)
-                else:
-                    suscription_frame.columnconfigure(2, weight=1)
-                    suscription_frame.columnconfigure(0, weight=1)
-                    label_banks_options = tk.Label(master = suscription_frame, text = "Seleccione un banco de la lista de bancos asociados al usuario {}:".format(cls.user.getNombre()), font = style_label)
-                    label_banks_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    selected_bank = tk.StringVar(suscription_frame)
-                    banks_options_combobox = Combobox(master = suscription_frame, textvariable=selected_bank)
-                    banks_options_combobox["values"] = [asociated_banks_user[m].getNombre() for m in range(0, len(asociated_banks_user))]
-                    banks_options_combobox['state'] = 'readonly'
-                    banks_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    button_select = tk.Button(master=suscription_frame, text="Aceptar", command=functionality_logic)
-                    button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")       
-            
-            start_functionality()
+            try:
+                asociated_banks_user = cls.user.mostrarBancosAsociados()
+            except banksException.NoBanksException:
+                messagebox.showerror("Mis finanzas", "No existen bancos asociados a este usuario. Inténtelo de nuevo más tarde.")
+                volver_main_window(suscription_frame)
 
-          
+            else:
+                label_banks_options = tk.Label(master = suscription_frame, text = "Seleccione un banco de la lista de bancos asociados al usuario {}:".format(cls.user.getNombre()), font = style_label)
+                label_banks_options.grid(row=0, column=0, columnspan=3, padx=2, pady=2, sticky="NSEW")
+                selected_bank = tk.StringVar(suscription_frame)
+                banks_options_combobox = Combobox(master = suscription_frame, textvariable=selected_bank)
+                banks_options_combobox["values"] = [asociated_banks_user[m].getNombre() for m in range(0, len(asociated_banks_user))]
+                banks_options_combobox['state'] = 'readonly'
+                banks_options_combobox.grid(row=1, column=0, columnspan=3, padx=2, pady=2, sticky="NSEW")
+                button_select = tk.Button(master=suscription_frame, text="Aceptar", command=select_bank_suscription_main)
+                button_select.grid(row=0, column=3, rowspan=2, padx=2, pady=2, sticky="NSEW")
+                button_delete = tk.Button(master=suscription_frame, text="Borrar")
+                button_delete.grid(row=0, column=4, rowspan=2, padx=2, pady=2, sticky="NSEW")
+
+            #suscripcion_forms = FieldFrame(tituloCriterios = "Prueba Criterio", criterios = ["prueba 1", "prueba 2", "prueba 3"], tituloValores = "Prueba Valor", valores = [1, 2])
+
         def invertir_saldo():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Invertir Saldo")
@@ -655,6 +611,10 @@ class App():
             #Desarrollo de la funcionalidad
 
             if cuenta == None:
+
+                #Cambio prueba, a espera confirmación de la SERIALIZACIÓN
+                cls.user.getCuentasCorrienteAsociadas()[0].setDisponible(500000)
+
                 #Arreglo que almacena las cuentas con deuda alguna
                 cuentasEnDeuda = cls.user.retornarDeudas()
 
@@ -678,61 +638,171 @@ class App():
                 framecc = tk.Frame(cls.subframe_main)
                 framecc.pack(expand=True, fill="both")
 
+                confirmacion_Compra = False
                 cuenta_Compra = 0
-                seleccion_Cuenta = True
 
                 def eleccion(evento):
+                    global confirmacion_Compra
                     eleccion = eleccion_cuenta.get()
-                    eleccion = str(eleccion)
-                    cuenta_Compra = int(eleccion[0])
+                    if eleccion == "Seleccionar Cuenta":
+                        messagebox.showerror("Mala elección", "Por favor, selecciona una cuenta válida")
+                    else:
+                        message = "Información de la cuenta: \n" + str(cuentasEnDeuda[int(eleccion[0])-1]) + "\nConfirme por favor si es la cuenta deseada"
+                        confirmacion_Compra = messagebox.askyesno("Confirmación", message= message)
+                        if confirmacion_Compra:
+                            global cuenta_Compra
+                            cuenta_Compra = int(eleccion[0])
 
-                while seleccion_Cuenta:
-                    impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
-                    label_impresion = tk.Label(framecc, text=impresion_1)
-                    label_impresion.grid(row=0, column=0, columnspan=10)
+                impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
+                label_impresion = tk.Label(framecc, text=impresion_1)
+                label_impresion.grid(row=0, column=0, columnspan=10)
 
-                    Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
+                Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
 
-                    cuen_comb = []
-                    for cuent in cuentasEnDeuda:
-                        cadena = str()
-                    i = 1
-                    for cuenta_deuda in cuentasEnDeuda:
-                        cadena = str(i) + ". ID:" + str(cuenta_deuda.getId()) + " " + cuenta_deuda.getNombre()
-                        cuen_comb.append(cadena)
-                        i += 1
+                cuen_comb = ["Seleccionar Cuenta"]
+                    
+                i = 1
+                for cuenta_deuda in cuentasEnDeuda:
+                    cadena = str(i) + ". ID:" + str(cuenta_deuda.getId()) + " " + cuenta_deuda.getNombre()
+                    cuen_comb.append(cadena)
+                    i += 1
 
-                    valor_defecto_ec = tk.StringVar(value="Cuenta")
-                    eleccion_cuenta = Combobox(framecc, values = cuen_comb, textVariable = valor_defecto_ec)
-                    eleccion_cuenta = Combobox(framecc, values= cuen_comb, textvariable=StringVar(value="Cuenta"))
-                    eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
-                    eleccion_cuenta.grid(row = 12, column = len(cuentasEnDeuda)//2, columnspan=2)
-                    eleccion_cuenta.grid(row = len(cuentasEnDeuda)//2 + 2, columnspan=2, column = 12)
+                eleccion_cuenta = Combobox(framecc, values= cuen_comb)
+                eleccion_cuenta.set("Seleccionar Cuenta")
+                eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
+                eleccion_cuenta.grid(row = len(cuentasEnDeuda) + 2, column= 20, padx=10)
 
-                    #i=1
-                    #for cuenta_1 in cuentasEnDeuda:
-                    #    boton_el = tk.Button(framecc, text=str(i))
-                    #    boton_el.grid(row=1, column=0)
+                while not confirmacion_Compra:
+                    cls.subframe_main.update()
+                
+                cuentasAux.remove(cuentasEnDeuda[cuenta_Compra - 1])
 
-                    #    ver_cuenta = tk.Label(framecc, text = cuenta_1)
-                    #    ver_cuenta.grid(row=1, column=1)
+                #Arreglo que almacena las cuentas capaces de recibir la deuda
+                cuentas_capaces_deuda = cls.user.capacidad_endeudamiento(cuentasAux, cuentasEnDeuda[cuenta_Compra-1])
 
-                    #Impresión Cuentas con Préstamo Asociado
-                    #Verificar impresión cuentas
+                #Arreglo que almacena las tasas de interes aplicables con orden del arreglo anterior
+                tasacion_cuentas = Banco.verificar_tasas_de_interes(cls.user, cuentas_capaces_deuda)
 
-                    #Atributo para validación entrada Cuenta_Compra
-                    validación_Cuenta_Compra = False
-                    while validación_Cuenta_Compra:
-                        print("Revisar impresión")
-                        #Revisar entrada
+                cuentasAux.append(cuentasEnDeuda[cuenta_Compra-1])
 
-                        #Verificar entrada
+                if len(cuentas_capaces_deuda) == 0:
+                    messagebox.showerror("Error", "Ninguna de las cuentas Corriente que posees tiene la capacidad de recibir la deuda de la cuenta escogida.")
+                    return
+                
+                for widget in framecc.winfo_children():
+                    widget.destroy()
 
-                    break
+                confirmacion_Destino = False
+                cuenta_Destino = 0
+
+                def eleccion_2(evento):
+                    global confirmacion_Destino
+                    eleccion = eleccion_cuenta.get()
+                    if eleccion == "Seleccionar Cuenta":
+                        messagebox.showerror("Mala elección", "Por favor, selecciona una cuenta válida")
+                    else:
+                        message = "Información de la cuenta: \n" + str(cuentas_capaces_deuda[int(eleccion[0])-1]) + "\nConfirme por favor si es la cuenta deseada"
+                        confirmacion_Destino = messagebox.askyesno("Confirmación", message= message)
+                        if confirmacion_Destino:
+                            global cuenta_Destino
+                            cuenta_Destino = int(eleccion[0])
+
+                impresion_2 = "Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: "
+                label_impresion_2 = tk.Label(framecc, text=impresion_2)
+                label_impresion_2.grid(row=0, column=0, columnspan=11)
+
+                Tablas.impresionCuentasCorrienteInteres(cuentas_capaces_deuda, tasacion_cuentas, framecc, 1)
+
+                cuen_comb_2 = ["Seleccionar Cuenta"]
+                    
+                j = 1
+                for cuenta_capaz in cuentas_capaces_deuda:
+                    cadena = str(i) + ". ID:" + str(cuenta_capaz.getId()) + " " + cuenta_capaz.getNombre()
+                    cuen_comb_2.append(cadena)
+                    j += 1
+
+                eleccion_cuenta_compra = Combobox(framecc, values= cuen_comb_2)
+                eleccion_cuenta_compra.set("Seleccionar Cuenta")
+                eleccion_cuenta_compra.bind("<<ComboboxSelected>>", eleccion_2)
+                eleccion_cuenta_compra.grid(row = len(cuentas_capaces_deuda) + 2, column= 20, padx=10)
+
+                while not confirmacion_Destino:
+                    cls.subframe_main.update()
+
+                deuda = Cuenta.dineroATenerDisponible(cuentas_capaces_deuda[cuenta_Destino - 1], cuentasEnDeuda[cuenta_Compra - 1].getDivisa())
+
+                #Atributo auxiliar para almacenar decision de periodicidad
+                eleccion_periodicidad = Cuotas.C1
+
+                message_per = "¿Desea mantener la periodicidad del pago de la deuda?"
+                validacion_periodicidad = messagebox.askyesno("Elección", message= message_per)
+                if validacion_periodicidad:
+                    message_info_per = "Perfecto, la deuda mantendrá un plazo de pago a " + cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago() + "."
+                    messagebox.showinfo("Anuncio", message_info_per)
+                    eleccion_periodicidad = cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()
+                else:
+                    #Atributo de validacion de la seleccion de periodicidad
+                    for widget in framecc.winfo_children():
+                        widget.destroy()
+                    
+                    confirmacion_Periodicidad = False
+                    def eleccion_3(evento):
+                        global confirmacion_Periodicidad
+                        eleccion = eleccion_cuenta.get()
+                        if eleccion == "Seleccionar Cuotas":
+                            messagebox.showerror("Mala elección", "Por favor, selecciona una cantidad de cuotas válida")
+                        else:
+                            eleccion_aux = eleccion.split()
+                            message = "Cantidad de cuotas escogida: " + eleccion_aux[0]
+                            confirmacion_Periodicidad = messagebox.askyesno("Confirmación", message= message)
+                            if confirmacion_Periodicidad:
+                                eleccion_asignar = int(eleccion_aux[0])
+                                global eleccion_periodicidad
+                                if eleccion_asignar == 1:
+                                    eleccion_periodicidad = Cuotas.C1
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C1 + ".")
+                                elif eleccion_asignar == 6:
+                                    eleccion_periodicidad = Cuotas.C6
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C6 + ".")
+                                elif eleccion_asignar == 12:
+                                    eleccion_periodicidad = Cuotas.C12
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C12 + ".")
+                                elif eleccion_asignar == 18:
+                                    eleccion_periodicidad = Cuotas.C18
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C18 + ".")
+                                elif eleccion_asignar == 24:
+                                    eleccion_periodicidad = Cuotas.C24
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C24 + ".")
+                                elif eleccion_asignar == 36:
+                                    eleccion_periodicidad = Cuotas.C36
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C36 + ".")
+                                else:
+                                    eleccion_periodicidad = Cuotas.C48
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C48 + ".")
+
+                    impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
+                    label_impresion_3 = tk.Label(framecc, text=impresion_3)
+                    label_impresion_3.grid(row=0, column=0, columnspan=5)
+
+                    cuen_comb_3 = ["Seleccionar Cuotas", "1 Cuota", "6 Cuotas", "12 Cuotas", "18 Cuotas", "24 Cuotas", "36 Cuotas", "48 Cuotas"]
+
+                    eleccion_cuenta_compra = Combobox(framecc, values= cuen_comb_3)
+                    eleccion_cuenta_compra.set("Seleccionar Cuotas")
+                    eleccion_cuenta_compra.bind("<<ComboboxSelected>>", eleccion_3)
+                    eleccion_cuenta_compra.grid(row = 3, column= 2)
+
+                    while not confirmacion_Periodicidad:
+                        cls.subframe_main.update()
+                
+                vistaPrevia = Corriente.vistaPreviaMovimiento(cuentas_capaces_deuda[cuenta_Destino - 1], eleccion_periodicidad, deuda, tasacion_cuentas[cuenta_Destino - 1])
+
+                #Lo mismo de arriba para pago de primer mes
+
+
 
                 #password_entry.delete(0, tk.END)
                 #user_email_entry.delete(0, tk.END)
-            
+                print("hola")
             else:
                 pass
 
@@ -1024,7 +1094,7 @@ class App():
 
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()
-        cls.main_window.geometry("1400x800")
+        cls.main_window.geometry("1390x800")
         cls.main_window.title("Mis Finanzas")
         #cls.main_window.resizable(0, 0)
         current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -1049,12 +1119,12 @@ class App():
             relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
 
         # Opciones dentro del menú procesos y consultas
-        proceso1 = "Modificar mi suscripcion"
+        proceso1 = "Modificar suscripcion"
         proceso2 = "Invertir saldo de mi cuenta"
         proceso3 = "Consignar saldo a mi cuenta"
-        proceso4 = "Transferir saldo entre mis cuentas"
+        proceso4 = "Transferir saldo entre cuentas"
         proceso5 = "Compra con cuenta corriente"
-        proceso6 = "Gestionar mis prestamos"
+        proceso6 = "Gestionar prestamos"
         proceso7 = "Asesoramiento de inversiones"
         proceso8 = "Compra de cartera"
         proceso9 = "Calculadora financiera"
@@ -1071,7 +1141,7 @@ class App():
 
         # Configuración del menú de ayuda
         ayuda_menu = tk.Menu(home_menu, tearoff=0)
-        ayuda_menu.add_command(label="Acerca de", command=about,
+        ayuda_menu.add_command(label="Acerca de", command=acerca_de,
                              activebackground="gray", activeforeground="white")
 
         # Configuración del menú de Procesos y Consultas
@@ -1079,13 +1149,12 @@ class App():
 
         # Agregamos los submenús al gestionar prestamos.
         prestamos_menu = tk.Menu(procesos_consultas, tearoff=0)
-        prestamos_menu.add_command(label="Pedir prestamos", command=pedir_prestamo,
+        prestamos_menu.add_command(label="Pedir Prestamos", command=pedir_prestamo,
                                    activebackground="gray", activeforeground="white")
-        prestamos_menu.add_command(label="Pagar prestamos", command=pagar_prestamo,
+        prestamos_menu.add_command(label="Pagar Prestamos", command=pagar_prestamo,
                                    activebackground="gray", activeforeground="white")
 
         # Agregamos los submenús a la barra de menú.
-        procesos_consultas.add_command(label="Volver al menú principal", command=lambda: back_menu_main(), activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso1, command=comprobar_suscripcion,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso2, command=invertir_saldo,
@@ -1132,14 +1201,13 @@ class App():
 
         # ------------Descripcion de la funcionalidad
         subframe_description = tk.Frame(
-            cls.subframe_main, bg="gray", borderwidth=1, relief="solid", name="subframe_description")
+            cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
         subframe_description.place(
             relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
-        descripcion_font_style = font.Font(size=12, family="Alegreya Sans", weight="bold", slant="italic")
-        descripcion_funcionalidad = tk.StringVar(main_frame)
-        welcome_text_reset()
+        descripcion_font_style = font.Font(size=12, family="Alegreya Sans")
+        descripcion_funcionalidad = tk.StringVar(main_frame, value="Ad cillum enim occaecat aliqua ad ad sit. Reprehenderit laboris elit veniam minim esse elit. Anim deserunt officia irure proident non velit duis sint quis aute Lorem id.")
         label_description = tk.Label(subframe_description, textvariable=descripcion_funcionalidad,
-                                    fg="black", bg="gray", font=descripcion_font_style, wraplength=1300, cursor="cross")
+                                    fg="white", bg="gray", font=descripcion_font_style, wraplength=800)
         label_description.pack(fill="both", expand=True)
 
         cls.main_window.mainloop()
@@ -1156,6 +1224,14 @@ class App():
     @classmethod
     def getSubframeMain(cls):
         return cls.subframe_main
+    
+    @classmethod
+    def getConf(cls):
+        return cls.conf
+    
+    @classmethod
+    def setConf(cls, conf):
+        cls.conf = conf
 # --------------------------------------------------
 
 if __name__ == "__main__":

@@ -16,6 +16,7 @@ class Corriente(Cuenta):
         self._plazo_Pago = plazo_pago
         self._intereses = intereses
         self._cupo = 0.0
+        self._disponible = 0.0
         self._primerMensualidad = False
 
 #REVISAR SOBRECARGA

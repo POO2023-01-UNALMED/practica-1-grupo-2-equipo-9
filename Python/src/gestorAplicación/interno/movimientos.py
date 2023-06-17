@@ -12,7 +12,7 @@ class Movimientos():
     _movimientosTotales = []
 
     # Atributos de clase para la funiconalidad Asesoramiento de inversiones
-    _owner= None
+    #_owner= None
     _nombre_categoria = "Ninguna"
     _fecha_categoria = "01/01/2024"
     _cantidad_categoria = 0
@@ -29,6 +29,7 @@ class Movimientos():
         self._divisaAux = None
         self._banco = None
         self._cuotaManejo = None
+        self._owner = None
 
         for key in kwargs:
             if key == "cantidad":
@@ -49,6 +50,9 @@ class Movimientos():
                 self._banco = kwargs[key]
             if key == "cuotaManejo":
                 self._cuotaManejo = kwargs[key]
+            if key == "owner":
+                self._owner = kwargs[key]
+                
 
             
     # Métodos de la funiconalidad Asesoramiento de inversiones
@@ -231,6 +235,32 @@ class Movimientos():
                     existe_cambio.append(Banco.get_bancos_totales()[j])
 
         return existe_cambio
+    
+    @staticmethod
+    def verificar_movimientos_usuario_banco(usuario, banco):
+        movimientos_asociados = usuario.getMovimientosAsociados()
+        cuentas_asociadas = usuario.getCuentasAsociadas()
+        cuentas_asociadas_a_banco = []
+        movimientos_usuario_banco = []
+        for cuenta in cuentas_asociadas:
+            if cuenta.getBanco() == banco:
+                cuentas_asociadas_a_banco.append(cuenta)
+        
+        for cuenta in cuentas_asociadas_a_banco:
+            movimientos_aux = Movimientos.verificar_origen_movimientos(movimientos_asociados, cuenta)
+            for movimiento in movimientos_aux:
+                movimientos_usuario_banco.append(movimiento)
+
+        return movimientos_usuario_banco
+
+    @staticmethod
+    def verificar_origen_movimientos(movimientos_asociados, cuenta):
+        movimientos_originarios_cuenta = []
+        for movimiento in movimientos_asociados:
+            if movimiento.getOrigen() == cuenta:
+                movimientos_originarios_cuenta.append(movimiento)
+
+        return movimientos_originarios_cuenta
 
     @classmethod
     def getMovimientosTotales(cls):

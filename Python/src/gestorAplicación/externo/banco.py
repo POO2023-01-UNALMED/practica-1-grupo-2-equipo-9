@@ -4,6 +4,8 @@ from datetime import datetime
 from gestorAplicación.interno.suscripcion import Suscripcion
 from gestorAplicación.interno.categoria import Categoria
 from .estado import Estado
+from gestorAplicación.interno.movimientos import Movimientos
+#from main import App
 
 class Banco():
     _bancosTotales = []
@@ -229,6 +231,65 @@ class Banco():
             cupo = self._cupo_base
         return cupo
     
+    @staticmethod
+    def verificar_tasas_de_interes(usuario, cuentas):
+        tasas_de_interes = []
+        suscripcion = usuario.getSuscripcion()
+        for cuenta in cuentas:
+            interes = Banco.verificar_tasas_de_interes_1(suscripcion, cuenta)
+            tasas_de_interes.append(interes)
+        
+        return tasas_de_interes
+
+    @staticmethod
+    def verificar_tasas_de_interes_1(suscripcion, cuenta):
+        interes = 0
+        descuento_movimientos = cuenta.getBanco().retornar_descuentos_movimientos(cuenta)
+        descuento_suscripcion = cuenta.getBanco().retornar_descuentos_suscripcion()
+        descuento_total = Banco.descuento_total(descuento_movimientos, descuento_suscripcion)
+        if suscripcion == Suscripcion.DIAMANTE:
+            if cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[3]:
+                interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[3]
+            else:
+                interes = 0.0
+        elif suscripcion == Suscripcion.ORO:
+            if cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[2]:
+                interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[2]
+            else:
+                interes = 0.0
+        elif suscripcion == Suscripcion.PLATA:
+            if cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[1]:
+                interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[1]
+            else:
+                interes = 0.0
+        else:
+            if cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() >= descuento_total[0]:
+                interes = cuenta.getBanco().getEstadoAsociado().getInteres_bancario_corriente() - descuento_total[0]
+            else:
+                interes = 0.0
+        
+        return interes
+    
+    def retornar_descuentos_movimientos(self, cuenta):
+        movimientos_originarios_con_banco = Movimientos.verificar_movimientos_usuario_banco(cuenta.getTitular(), cuenta.getBanco())
+        descuento = (len(movimientos_originarios_con_banco) // (self._desc_movimientos_cantidad * self._desc_movimientos_porcentaje))
+        return descuento
+    
+    def retornar_descuentos_suscripcion(self):
+        descuento = []
+        for i in range(5):
+            descuento[i-1] = self._desc_suscripcion * i
+
+        return descuento
+    
+    @staticmethod
+    def descuento_total(movimientos, suscripcion):
+        descuento_total = suscripcion
+        for descuento in descuento_total:
+            descuento = descuento + movimientos
+        
+        return descuento_total
+
     def getNombre(self):
         return self._nombre
     

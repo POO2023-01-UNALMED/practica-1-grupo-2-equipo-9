@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import date, datetime
 from gestorAplicación.externo.banco import Banco
+from .movimientos import Movimientos
 import math
 
 
@@ -143,14 +144,34 @@ class Cuenta(ABC):
             return False
 
     @staticmethod
-    def limpiarPropiedades(cls, arreglo):
+    def limpiarPropiedades(arreglo):
         arreglo.remove("cuentasTotales")
         #Verificar que otras variables se crean
     #Verificar su uso
 
     @staticmethod
-    def dineroATenerDisponible(cls, cuenta, divisas):
-        pass
+    def dineroATenerDisponible(cuenta, divisaB):
+        deuda = cuenta.getCupo() - cuenta.getDisponible()
+        cambio_div = Movimientos(divisa=cuenta.getDivisa(), divisaAux=divisaB, owner = cuenta.getTitular())
+        existe_cambio = Movimientos.facilitar_informacion(cambio_div)
+        if len(existe_cambio) == 0:
+            return 0
+        
+        cuentas_posibles = []
+        for conta in cuenta.getTitular().getCuentasCorrienteAsociadas():
+            if conta.getDivisa() == cuenta.getDivisa():
+                cuentas_posibles.append(conta)
+        
+        cadena = cuenta.getDivisa().__name__() + divisaB.__name__()
+        imprimir = Banco.cotizar_taza_aux(cuenta.getTitular(), existe_cambio, cadena, cuentas_posibles)
+        cambio_max = 0
+        valor = 999999999
+        for cotizacion in imprimir:
+            valor = cotizacion.getCantidad() / ((1-cotizacion.getCuotaManejo()) * (1 - cotizacion.getBanco().getEstadoAsociado().getTasa_impuestos()))
+            if valor > cambio_max:
+                cambio_max = valor
+
+        return cambio_max * deuda
 
     def __str__(self):
         return "Cuenta: " + self._nombre + "\n# " + self._id + "\nTitular: " + self.getTitular.getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa
