@@ -5,7 +5,7 @@ from .corriente import Corriente
 from .cuenta import Cuenta
 from .ahorros import Ahorros
 from .metas import Metas
-from excepciones import banksExcepcion
+from excepciones import banksException
 
 class Usuario():
     #Atributos de clase
@@ -149,7 +149,7 @@ class Usuario():
         if(len(bancos) != 0):
             return bancos
         else:
-            raise banksExcepcion.NoBanksException("Error. No hay bancos asociados a este usuario.")
+            raise banksException.NoBanksException("Error. No hay bancos asociados a este usuario.")
         
     def mostrarCuentasAsociadas(self) -> object:
         cuentas = self.getCuentasAsociadas()

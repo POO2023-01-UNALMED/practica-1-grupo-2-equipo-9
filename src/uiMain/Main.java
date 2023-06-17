@@ -2675,10 +2675,8 @@ public final class Main {
 				listaSuscripcion.add(Suscripcion.PLATA);
 				listaSuscripcion.add(Suscripcion.BRONCE);	
 				int i = 1;
-				int j = 0;
 				for(Suscripcion suscripcion : listaSuscripcion) {
 					if(suscripcion.equals(user.getSuscripcion())) {
-						j = listaSuscripcion.indexOf(suscripcion);
 					}else {
 						System.out.println(i + ". " + suscripcion.name());
 						i++;
@@ -2691,7 +2689,6 @@ public final class Main {
 						System.out.print("Debes seleccionar un nivel de suscripción válido. Inténtalo de nuevo:");
 						opcion_suscripcion = Integer.parseInt(sc.nextLine());						
 					}else {
-						listaSuscripcion.remove(j);
 						System.out.println("");
 						if(listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() < user.getCuentasAsociadas().size()) {
 							System.out.println("El nivel de suscripción que escogiste tiene un limite de cuentas para asociar de " + listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas() + " y el número de cuentas que tienes asociadas actualmente es de " + user.getCuentasAsociadas().size() + ".");
@@ -2702,7 +2699,6 @@ public final class Main {
 							user.setLimiteCuentas(listaSuscripcion.get(opcion_suscripcion - 1).getLimiteCuentas());
 							System.out.println("El nivel de suscripción del usuario " + user.getNombre() + " se ha actualizado a " + user.getSuscripcion().name());
 						}	
-						listaSuscripcion.add(j, s);
 						break;
 					}
 				}

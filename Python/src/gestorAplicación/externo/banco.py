@@ -4,10 +4,11 @@ from datetime import datetime
 from gestorAplicación.interno.suscripcion import Suscripcion
 from gestorAplicación.interno.categoria import Categoria
 from .estado import Estado
-#from main import App
 
 class Banco():
     _bancosTotales = []
+    conf = True
+
 
     def __init__(self, nombre = "Banco de Colombia", comision = 0.3, estado = Estado(), prestamo = 200, **kwargs):
         #Revisar ingreso de atributo Estado, para que su defecto sea el primero como en Java
@@ -91,19 +92,19 @@ class Banco():
         user.setLimiteCuentas(user.getSuscripcion().getLimiteCuentas())
         suscripcion = user.getSuscripcion()
         if(suscripcion == Suscripcion.DIAMANTE):
-            if(App.getConf()):
+            if(Banco.getConf()):
                 self.setComision(self.getComision() * 0.50)
-                App.setConf(False)
+                Banco.setConf(False)
             return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
         elif(suscripcion == Suscripcion.ORO):
-            if(App.getConf()):
+            if(Banco.getConf()):
                 self.setComision(self.getComision() * 0.65)
-                App.setConf(False)
+                Banco.setConf(False)
             return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
         elif(suscripcion == Suscripcion.PLATA):
-            if(App.getConf()):
+            if(Banco.getConf()):
                 self.setComision(self.getComision() * 0.85)
-                App.setConf(False)
+                Banco.setConf(False)
             return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
         elif(suscripcion == Suscripcion.BRONCE):
             return ("Bienvenido " + user.getNombre() + ", eres un cliente " + user.getSuscripcion().name + " de nuestro banco, " + "por eso te cobramos " + str(self.getComision()) + " de comision")
@@ -243,3 +244,11 @@ class Banco():
     @classmethod
     def setBancosTotales(cls, _bancosTotales):
         cls._bancosTotales = _bancosTotales
+
+    @classmethod
+    def getConf(cls):
+        return cls.conf
+    
+    @classmethod
+    def setConf(cls, conf):
+        cls.conf = conf
