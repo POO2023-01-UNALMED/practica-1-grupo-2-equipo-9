@@ -5,7 +5,7 @@ from .corriente import Corriente
 from .cuenta import Cuenta
 from .ahorros import Ahorros
 from .metas import Metas
-from excepciones import banksException
+from excepciones import banksException, usersException
 
 class Usuario():
     #Atributos de clase
@@ -62,7 +62,7 @@ class Usuario():
             if(usuario.getNombre() == _nombre or usuario.getCorreo() == _nombre):
                 if(usuario.getContrasena() == _contrasena):
                     return usuario
-        return None
+        raise usersException.NoUserFoundException
     
     #Métodos de instancia
     def verificarContadorMovimientos(self):

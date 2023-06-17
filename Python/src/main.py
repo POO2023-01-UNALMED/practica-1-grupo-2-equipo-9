@@ -110,8 +110,6 @@ class App():
     user1.asociarCuenta(cuenta3)
     Serializador.serializar([cuenta1, cuenta2, cuenta3])
     Serializador.serializar([user1])
-
-
     cuenta2.setDisponible(500000)
 
     #print (cuenta1)
@@ -129,6 +127,7 @@ class App():
     user = None
     subframe_main = None
     image_index = 0  # Variable para realizar un seguimiento del índice del pack de imagenes de los desarrolladores
+
     # ----------------- VENTANA INICIAL ----------------
     @classmethod
     def start_initial_window(cls):
@@ -143,18 +142,19 @@ class App():
         def login(event):
             name_email_user = str(user_email_entry.get())
             password_user = str(password_entry.get())
-            possible_user = Usuario.verificarCredenciales(
-                name_email_user, password_user)
-            if (isinstance(possible_user, Usuario)):
+            try:
+                possible_user = Usuario.verificarCredenciales(name_email_user, password_user)
+            except usersException.NoUserFoundException:
+                confirmation = messagebox.askretrycancel("Mis finanzas", usersException.NoUserFoundException.show_message())
+                if confirmation:
+                    pass
+                else:
+                    exit_initial_window()
+            else:
                 cls.user = possible_user
                 exit_initial_window()
                 App.start_main_window()
-            else:
-                messagebox.showerror(
-                    "Mis finanzas", "Error: No se encuentra un usuario con estos datos. Inténtelo de nuevo.")
-                password_entry.delete(0, tk.END)
-                user_email_entry.delete(0, tk.END)
-
+                
         def format_entry_user_email(event):
             if int(event.type) == 9:
                 user_email_entry.config(bg="gray", fg="black")
