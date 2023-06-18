@@ -10,11 +10,6 @@ from excepciones import banksException, usersException
 class Usuario():
     #Atributos de clase
     _usuariosTotales = []
-    _metasAsociadas = []
-    _movimientosAsociados = []
-    _cuentasAhorroAsociadas = []
-    _cuentasCorrienteAsociadas = []
-    _bancosAsociados = []
 
     #Constructor
     def __init__(self, **kwargs) -> None:
@@ -38,22 +33,6 @@ class Usuario():
                 self.setContrasena(kwargs[key])
             if key == "_suscripcion":
                 self.setSuscripcion(kwargs[key])
-
-        """ if(_nombre == "" and _correo == "" and _contrasena == ""):
-            self.setNombre("Pepe Morales")
-            self.setCorreo("PepeMorales@mail.com")
-            self.setContrasena("12345")
-            self.setSuscripcion(Suscripcion.DIAMANTE)
-        else:
-            if(_suscripcion == ""):
-                self.setSuscripcion(Suscripcion.BRONCE)
-                self.setLimiteCuentas(self.getSuscripcion.getLimiteCuentas())
-            else:
-                self.setSuscripcion(_suscripcion)
-                self.setLimiteCuentas(_suscripcion.getLimiteCuentas())
-            self.setNombre(_nombre)
-            self.setContrasena(_contrasena)
-            self.setCorreo(_correo) """
 
     #Métodos de clase
     @classmethod

@@ -124,7 +124,6 @@ class App():
     cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
     cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
     cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
-
     user1.asociarCuenta(cuenta1)
     user1.asociarCuenta(cuenta2)
     user1.asociarCuenta(cuenta3)
@@ -137,7 +136,7 @@ class App():
     Deserializador.deserializar("Cuentas")
     Deserializador.deserializar("Estados")
     Deserializador.deserializar("Bancos")
-    Deserializador.deserializar("Estados")
+    Deserializador.deserializar("Metas")
 
     # Variables de clase para funcionamiento de la app
     initial_window = None
