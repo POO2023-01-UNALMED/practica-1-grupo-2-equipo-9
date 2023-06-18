@@ -156,8 +156,8 @@ class Movimientos():
 
         # Recomendadar fecha
         if len(user.getMovimientosAsociados()) != 0:
-            fecha_meta = datetime.strptime(Metas.revision_metas(user).str(self.getFecha()), "%d/%m/%Y")
-            fecha_movimiento = user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].str(self.getFecha())
+            fecha_meta = datetime.strptime(str(Metas.revision_metas(user).getFecha()), "%d/%m/%Y")
+            fecha_movimiento = user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].getFecha()
             if plazo == "Corto":
                 if  fecha_movimiento < fecha_meta:
                     Movimientos.setFechaCategoria("01/01/2024")

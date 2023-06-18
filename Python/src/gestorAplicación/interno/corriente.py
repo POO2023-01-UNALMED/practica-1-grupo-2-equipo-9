@@ -1,6 +1,6 @@
 from .cuenta import Cuenta
 from gestorAplicación.externo.banco import Banco
-from datetime import date
+from datetime import datetime
 from gestorAplicación.externo.cuotas import Cuotas
 import math
 
@@ -34,9 +34,9 @@ class Corriente(Cuenta):
     def vaciarCuenta(self, gota):
         from .movimientos import Movimientos
         from .categoria import Categoria
-        movimiento = Movimientos(self, gota, self.getDisponible(), Categoria.OTROS, date.now())
-        self.getTitular().getMovimientosAsociados().append(movimiento)
+        movimiento = Movimientos(origen = self, destino = gota, cantidad = self.getDisponible(), categoria = Categoria.OTROS, fecha = datetime.now())
         Movimientos.getMovimientosTotales().remove(movimiento)
+        self.setDisponible(0)
 
     def retornoCuotaMensual(self, deudaActual, mes = 0):
         cuotaMensual = []

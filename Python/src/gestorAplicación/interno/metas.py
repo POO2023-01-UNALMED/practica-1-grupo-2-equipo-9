@@ -25,7 +25,7 @@ class Metas:
     # Metodos asesoramiento Inversiones
     def revision_metas(user):
         proximaFecha = datetime.strptime("01/01/0001", "%d/%m/%Y")
-        proximaMeta = None
+        proximaMeta = user.getMetasAsociadas()[0]
 
         if len(user.getMetasAsociadas()) == 1:
             return user.getMetasAsociadas()[0]

@@ -1,6 +1,6 @@
 from .cuenta import Cuenta
 from excepciones import accountsException
-from datetime import date
+from datetime import datetime
 import random
 
 class Ahorros(Cuenta):
@@ -30,9 +30,9 @@ class Ahorros(Cuenta):
     def vaciarCuenta(self, gota):
         from .movimientos import Movimientos
         from .categoria import Categoria
-        movimiento = Movimientos(self, gota, self.getSaldo(), Categoria.OTROS, date.now())
-        self.getTitular().getMovimientosAsociados().append(movimiento)
+        movimiento = Movimientos(origen = self, destino = gota, cantidad = self.getSaldo(), categoria = Categoria.OTROS, fecha = datetime.now())
         Movimientos.getMovimientosTotales().remove(movimiento)
+        self.setSaldo(0)
 
     # Funcionalidad de Suscripciones de Usuarios
     def invertirSaldo(self):
@@ -41,7 +41,7 @@ class Ahorros(Cuenta):
         probabilidad = self.getTitular().getSuscripcion().getProbabilidadInversion()
         rand = random.random()+probabilidad
         if(rand >= 1):
-            return(Movimientos.crearMovimiento(self, self.getSaldo() + self.getSaldo() * probabilidad, Categoria.FINANZAS, date.today()))
+            return(Movimientos.crearMovimiento(self, self.getSaldo() + self.getSaldo() * probabilidad, Categoria.FINANZAS, datetime.now()))
         else:
             raise accountsException.FailedInvestmentException(self.getTitular())
 

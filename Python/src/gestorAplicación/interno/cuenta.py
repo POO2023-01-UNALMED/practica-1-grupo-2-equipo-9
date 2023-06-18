@@ -42,22 +42,20 @@ class Cuenta(ABC):
         from .ahorros import Ahorros
         mayor = 0
         contador = 0
-        if len(user.getCuentasAsociadas()) != 0:
-            for i in range(len(user.getCuentasAsociadas())):
-                if isinstance(user.getCuentasAsociadas()[i], Ahorros):
-                    if user.getCuentasAsociadas()[i].saldo > mayor:
-                        mayor = user.getCuentasAsociadas()[i].saldo
-                        contador = i
-                    movimiento = Movimientos(gota, user.getCuentasAsociadas()[contador], cantidadPrestamo, Categoria.OTROS, date.now)
-                    Movimientos.getMovimientosTotales().remove(movimiento)
-                return user.getCuentasAsociadas()[contador]
-        else:
-            for i in range(len(user.getCuentasAsociadas())):
-                if user.getCuentasAsociadas()[i].cupo > mayor:
-                    mayor = user.getCuentasAsociadas()[i].cupo
+        for i in range(len(user.getCuentasAsociadas())):
+            if isinstance(user.getCuentasAsociadas()[i], Ahorros):
+                if user.getCuentasAsociadas()[i].getSaldo() > mayor:
+                    mayor = user.getCuentasAsociadas()[i].getSaldo()
                     contador = i
-                movimiento = Movimientos(gota, user.getCuentasAsociadas()[contador], cantidadPrestamo, Categoria.OTROS, date.now)
-                Movimientos.getMovimientosTotales().remove(movimiento)
+                else:
+                    continue
+            else:
+                if user.getCuentasAsociadas()[i].getDisponible() > mayor:
+                    mayor = user.getCuentasAsociadas()[i].getDisponible()
+                    contador = i
+            
+            movimiento = Movimientos(destino = user.getCuentasAsociadas()[contador], cantidad = cantidadPrestamo, categoria = Categoria.OTROS, fecha = datetime.now())
+            Movimientos.getMovimientosTotales().remove(movimiento)
             return user.getCuentasAsociadas()[contador]
         
     def vaciarCuenta(gota):
