@@ -513,6 +513,48 @@ class App():
         # Metódo que muestra información adicional del sistema
         def about():
             messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa")
+        
+        # Método que muestra las cuentas de ahorro asociadas al cls.user
+        def show_saving_accounts_user(master, function, style):
+            try:
+                asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
+            except accountsException.NoSavingAccountsAssociatedException:
+                    messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
+                    back_menu_main()
+            else:
+                    master.columnconfigure(2, weight=1)
+                    master.columnconfigure(0, weight=1)
+                    label_accounts_options = tk.Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
+                    label_accounts_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                    selected_account = tk.StringVar(master)
+                    accounts_options_combobox = Combobox(master = master, textvariable=selected_account, cursor="cross", font=style)
+                    accounts_options_combobox["values"] = [asociated_accounts_user[m].getNombre() for m in range(0, len(asociated_accounts_user))]
+                    accounts_options_combobox['state'] = 'readonly'
+                    accounts_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                    button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
+                    button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
+            return [selected_account, label_accounts_options, accounts_options_combobox, button_select]
+            
+        # Método que muestra los bancos asociados al cls.user
+        def show_banks_user(master, function, style):
+            try:
+                asociated_banks_user = cls.user.mostrarBancosAsociados()
+            except banksException.NoBanksAssociatedException:
+                messagebox.showerror("Mis finanzas", banksException.NoBanksAssociatedException(cls.user).show_message())
+                back_menu_main()
+            else:
+                master.columnconfigure(2, weight=1)
+                master.columnconfigure(0, weight=1)
+                label_banks_options = tk.Label(master = master, text = "Seleccione un banco de la lista de bancos asociados al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
+                label_banks_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                selected_bank = tk.StringVar(master)
+                banks_options_combobox = Combobox(master = master, textvariable=selected_bank, cursor="cross", font=style)
+                banks_options_combobox["values"] = [asociated_banks_user[m].getNombre() for m in range(0, len(asociated_banks_user))]
+                banks_options_combobox['state'] = 'readonly'
+                banks_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
+                button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
+            return [selected_bank, label_banks_options, banks_options_combobox, button_select]
 
         # Método para volver al menú inicial
         def back_menu_main():
@@ -610,25 +652,13 @@ class App():
                         button_yes.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
                         button_no = tk.Button(suscription_frame, text="No", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_no.grid(row=1, column=1, sticky="NSEW", padx=2, pady=2)
-        
-                try:
-                    asociated_banks_user = cls.user.mostrarBancosAsociados()
-                except banksException.NoBanksAssociatedException:
-                    messagebox.showerror("Mis finanzas", banksException.NoBanksAssociatedException(cls.user).show_message())
-                    back_menu_main()
-                else:
-                    suscription_frame.columnconfigure(2, weight=1)
-                    suscription_frame.columnconfigure(0, weight=1)
-                    label_banks_options = tk.Label(master = suscription_frame, text = "Seleccione un banco de la lista de bancos asociados al usuario {}:".format(cls.user.getNombre()), font = style_suscription, border=1, relief="solid", bg="#8C7566", fg="white")
-                    label_banks_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    selected_bank = tk.StringVar(suscription_frame)
-                    banks_options_combobox = Combobox(master = suscription_frame, textvariable=selected_bank, cursor="cross", font=style_suscription)
-                    banks_options_combobox["values"] = [asociated_banks_user[m].getNombre() for m in range(0, len(asociated_banks_user))]
-                    banks_options_combobox['state'] = 'readonly'
-                    banks_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    button_select = tk.Button(master=suscription_frame, text="Aceptar", command=functionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_suscription)
-                    button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")       
-            
+                
+                objects = show_banks_user(suscription_frame, functionality_logic, style_suscription)
+                selected_bank = objects[0]
+                label_banks_options = objects[1]
+                banks_options_combobox = objects[2]
+                button_select = objects[3]
+
             start_functionality()
    
         def invertir_saldo():
@@ -670,25 +700,13 @@ class App():
                         label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
                         button_result = tk.Button(balance_investment_frame, text="Volver al menú principal", font=style_balance_investment, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
-              
-                try:
-                        asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
-                except accountsException.NoSavingAccountsAssociatedException:
-                        messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
-                        back_menu_main()
-                else:
-                        balance_investment_frame.columnconfigure(2, weight=1)
-                        balance_investment_frame.columnconfigure(0, weight=1)
-                        label_accounts_options = tk.Label(master = balance_investment_frame, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = style_balance_investment, border=1, relief="solid", bg="#8C7566", fg="white")
-                        label_accounts_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                        selected_account = tk.StringVar(balance_investment_frame)
-                        accounts_options_combobox = Combobox(master = balance_investment_frame, textvariable=selected_account, cursor="cross", font=style_balance_investment)
-                        accounts_options_combobox["values"] = [asociated_accounts_user[m].getNombre() for m in range(0, len(asociated_accounts_user))]
-                        accounts_options_combobox['state'] = 'readonly'
-                        accounts_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                        button_select = tk.Button(master=balance_investment_frame, text="Aceptar", command=functionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_balance_investment)
-                        button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")       
-            
+                
+                objects = show_saving_accounts_user(balance_investment_frame, functionality_logic, style_balance_investment)
+                selected_account = objects[0]
+                label_accounts_options = objects[1]
+                accounts_options_combobox = objects[2]
+                button_select = objects[3]
+
             start_functionality()
 
         def consignar_saldo():
@@ -772,23 +790,12 @@ class App():
                         button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
                         button_back = tk.Button(balance_consign_frame, text="Volver", font=style_consign_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
-                try:
-                        asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
-                except accountsException.NoSavingAccountsAssociatedException:
-                        messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
-                        back_menu_main()
-                else:
-                        balance_consign_frame.columnconfigure(2, weight=1)
-                        balance_consign_frame.columnconfigure(0, weight=1)
-                        label_accounts_options = tk.Label(master = balance_consign_frame, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = balance_consign_frame, border=1, relief="solid", bg="#8C7566", fg="white")
-                        label_accounts_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                        selected_account = tk.StringVar(balance_consign_frame)
-                        accounts_options_combobox = Combobox(master = balance_consign_frame, textvariable=selected_account, cursor="cross", font=style_consign_balance)
-                        accounts_options_combobox["values"] = [asociated_accounts_user[m].getNombre() for m in range(0, len(asociated_accounts_user))]
-                        accounts_options_combobox['state'] = 'readonly'
-                        accounts_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                        button_select = tk.Button(master=balance_consign_frame, text="Aceptar", command=functionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=balance_consign_frame)
-                        button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")       
+                
+                objects = show_saving_accounts_user(balance_consign_frame, functionality_logic, style_consign_balance)
+                selected_account = objects[0]
+                label_accounts_options = objects[1]
+                accounts_options_combobox = objects[2]
+                button_select = objects[3]       
             
             start_functionality()
             
@@ -796,6 +803,26 @@ class App():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Transferir Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
+            style_transfer_balance = font.Font(cls.main_window, family="Times New Roman", size=15)
+            balance_transfer_frame = tk.Frame(cls.subframe_main, bg="#C7F1FF", borderwidth=1, relief="solid")
+            balance_transfer_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0) 
+
+            def start_functionality():
+                def own_account_logic():
+                    pass
+                def another_account_logic():
+                    pass
+
+                balance_transfer_frame.columnconfigure(1, weight=1)
+                balance_transfer_frame.columnconfigure(0, weight=1)
+                label_transfer_options = tk.Label(master = balance_transfer_frame, text = "Por favor, elija el destino de la transferencia: ", font=style_transfer_balance, border=1, relief="solid", bg="#8C7566", fg="white")
+                label_transfer_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                button_own_account = tk.Button(master=balance_transfer_frame, text="1. Cuenta propia", command=own_account_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_transfer_balance)
+                button_own_account.grid(row=1, column=0, padx=2, pady=2, sticky="NSEW")  
+                button_another_account = tk.Button(master=balance_transfer_frame, text="2. Cuenta externa", command=another_account_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_transfer_balance)
+                button_another_account.grid(row=1, column=1, padx=2, pady=2, sticky="NSEW")  
+
+            start_functionality()
 
         def compra_corriente():
             # Editar la descripcion de su funcionalidad
