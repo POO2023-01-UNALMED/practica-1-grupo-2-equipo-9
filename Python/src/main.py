@@ -689,7 +689,7 @@ class App():
             titulo_funcionalidad.set("Funcionalidad - Invertir Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método de instancia invertirSaldo que se encuentra en la clase Ahorros consulta el atributo de instancia titular de tipo Usuario, de la instancia de Ahorros utilizada para ejecutar el método, usando el operador self y el método de instancia getTitular, posteriormente, verifica el atributo de instancia suscripcion de la instancia titular y obtiene la constante probabilidad_Inversion de tipo float asociada a este. Esta última constante se utiliza para realizar un cálculo aritmético que se almacena dentro de una variable de tipo double llamada rand y se evalúa que rand sea mayor ó igual a uno. Posteriormente, si la condición es true: se realiza un Movimiento ó si la condición es false: retorna un String.")
             style_balance_investment=font.Font(cls.main_window, family="Helvetica", size=14)
-            balance_investment_frame = tk.Frame(cls.subframe_main, bg="#E4E4C7", borderwidth=1, relief="solid")
+            balance_investment_frame = tk.Frame(cls.subframe_main, bg="#FFDBE1", borderwidth=1, relief="solid")
             balance_investment_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)    
 
             def start_functionality():
@@ -828,7 +828,7 @@ class App():
             titulo_funcionalidad.set("Funcionalidad - Transferir Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
             style_transfer_balance = font.Font(cls.main_window, family="Times New Roman", size=15)
-            balance_transfer_frame = tk.Frame(cls.subframe_main, bg="#C7F1FF", borderwidth=1, relief="solid")
+            balance_transfer_frame = tk.Frame(cls.subframe_main, bg="#F6FBD0", borderwidth=1, relief="solid")
             balance_transfer_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0) 
 
             def start_functionality():

@@ -1905,7 +1905,7 @@ public final class Main {
 					} else {
 						System.out.println("");
 						cuentas.remove(opcion_cuenta_origen - 1);
-						Main.verCuentasCorrienteAsociadas();
+						Main.verCuentasAhorroAsociadas();
 						System.out.print("A cual de sus cuentas desea transferir su saldo: ");
 						int opcion_cuenta_destino = Integer.parseInt(sc.nextLine());
 						while(true) {
