@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import font, messagebox, Button, StringVar
 from tkinter.ttk import Combobox, Style
 import os
-from excepciones import banksException, suscriptionException, usersException, accountsException
+from excepciones import banksException, suscriptionException, usersException, accountsException, genericException
 from baseDatos.deserializador import Deserializador
 from baseDatos.serializador import Serializador
 from gestorAplicación.interno.usuario import Usuario
@@ -15,12 +15,14 @@ from gestorAplicación.externo.banco import Banco
 from gestorAplicación.interno.corriente import Corriente
 from gestorAplicación.interno.ahorros import Ahorros
 from gestorAplicación.externo.divisas import Divisas
+from gestorAplicación.interno.categoria import Categoria
+from datetime import date
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS. CODIFICAR EXCEPCIONES EN EL PAQUETE EXCEPCIONES
 
 # ------ FIELD FRAME PARA DIÁLOGOS DE TEXTO --------
 class FieldFrame(tk.Frame):
-    def __init__(self, tituloCriterios, criterios, tituloValores,**kwargs):
+    def __init__(self, tituloCriterios, criterios, tituloValores, frame,**kwargs):
         self.setTituloCriterios(tituloCriterios)
         self.setCriterios(criterios)
         self.setTituloValores(tituloValores)
@@ -32,10 +34,13 @@ class FieldFrame(tk.Frame):
                 self.setValores(kwargs[key])
             if key == "habilitado":
                 self.setHabilitado(kwargs[key])
+        self.field_frame = tk.Frame(frame[0], bg="white", borderwidth=1, relief="solid")
+        if frame[0].winfo_name() == "subframe_main":
+            self.field_frame.place(relheight=0.75, relwidth=0.6, rely=0.25, relx=0.2)
+        else:
+            self.field_frame.grid(row=frame[1], column=frame[2], columnspan=frame[3], rowspan=frame[4], padx=2, pady=2, sticky="NSEW")
+            frame[0].columnconfigure(0, weight=1)
 
-        self.field_frame = tk.Frame(App.getSubframeMain(), bg="white", borderwidth=1, relief="solid")
-        self.field_frame.place(
-            relheight=0.75, relwidth=0.6, rely=0.25, relx=0.2)
         title_style = font.Font(family="Times New Roman", size=13, weight="bold")
         criteria_style = font.Font(family="Times New Roman", size=13, underline=1)
         entry_style = font.Font(family="Times New Roman", size=13)
@@ -59,6 +64,8 @@ class FieldFrame(tk.Frame):
 
             entry.grid(column=1, row=i + 1, padx=3, pady=3)
             label.grid(column=0, row=i + 1, padx=3, pady=3)
+        self.field_frame.columnconfigure(1, weight=1)
+        self.field_frame.columnconfigure(0, weight=1)
 
     #Gets & Sets
     def setValue(self, criterio, value):
@@ -93,6 +100,8 @@ class FieldFrame(tk.Frame):
             if type(m).__name__ == "Entry":
                 l.append(m)
         return (l)
+    def getFieldFrameObject(self):
+        return self.field_frame
 # --------------------------------------------------
 
 # ----------------- APP ----------------
@@ -525,7 +534,7 @@ class App():
         def comprobar_suscripcion():
             titulo_funcionalidad.set("Funcionalidad - Modificar Suscripcion")
             descripcion_funcionalidad.set("(REVISAR)El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario. El atributo comision se invoca haciendo uso del self, luego, este valor se multiplica por K, donde K es un factor que varía con base en el atributo suscripcion del Usuario pasado por parámetro en el método.")
-            style_suscription=font.Font(cls.main_window, family="Times New Roman", size=12)
+            style_suscription=font.Font(cls.main_window, family="Times New Roman", size=15)
             suscription_frame = tk.Frame(cls.subframe_main, bg="#B3AF9B", borderwidth=1, relief="solid")
             suscription_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)
             
@@ -563,7 +572,7 @@ class App():
                                 button_select_yes_no.destroy()
                                 label_result = tk.Label(suscription_frame, text="El nivel de suscripción del usuario " + cls.user.getNombre() + " se ha actualizado a " + cls.user.getSuscripcion().name, font=style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                 label_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                                button_result = tk.Button(suscription_frame, text="Volver al menú principal", font=style_suscription, command=lambda: back_menu_frame_destroy(suscription_frame), activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                button_result = tk.Button(suscription_frame, text="Volver al menú principal", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                 button_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)    
                         
                         suscription_frame.columnconfigure(0, weight=1)
@@ -629,7 +638,7 @@ class App():
         def invertir_saldo():
             titulo_funcionalidad.set("Funcionalidad - Invertir Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método de instancia invertirSaldo que se encuentra en la clase Ahorros consulta el atributo de instancia titular de tipo Usuario, de la instancia de Ahorros utilizada para ejecutar el método, usando el operador self y el método de instancia getTitular, posteriormente, verifica el atributo de instancia suscripcion de la instancia titular y obtiene la constante probabilidad_Inversion de tipo float asociada a este. Esta última constante se utiliza para realizar un cálculo aritmético que se almacena dentro de una variable de tipo double llamada rand y se evalúa que rand sea mayor ó igual a uno. Posteriormente, si la condición es true: se realiza un Movimiento ó si la condición es false: retorna un String.")
-            style_balance_investment=font.Font(cls.main_window, family="Helvetica", size=12)
+            style_balance_investment=font.Font(cls.main_window, family="Helvetica", size=14)
             balance_investment_frame = tk.Frame(cls.subframe_main, bg="#E4E4C7", borderwidth=1, relief="solid")
             balance_investment_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)    
 
@@ -658,14 +667,14 @@ class App():
                     else:
                         balance_investment_frame.columnconfigure(0, weight=1)
                         balance_investment_frame.columnconfigure(2, weight=0)
-                        print(cls.user.asociarMovimiento(c))
+                        cls.user.asociarMovimiento(c)
                         label_investment_result = tk.Label(balance_investment_frame, text="La inversion de saldo ha sido exitosa " + str(c), font=style_balance_investment, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_investment_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
                         label_movements_result = tk.Label(balance_investment_frame, text=cls.user.verificarContadorMovimientos(), font=style_balance_investment, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                        button_result = tk.Button(balance_investment_frame, text="Volver al menú principal", font=style_balance_investment, command=lambda: back_menu_frame_destroy(balance_investment_frame), activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_result = tk.Button(balance_investment_frame, text="Volver al menú principal", font=style_balance_investment, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
-                       
+              
                 try:
                         asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
                 except accountsException.NoSavingAccountsAssociatedException:
@@ -690,9 +699,103 @@ class App():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Consignar Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros una instancia de Ahorros, un enum de Categoria, un dato de tipo double llamado saldo_consignar y un objeto de tipo date. Este método consulta el atributo de clase cuentasTotales de tipo list de la clase Cuenta, posteriormente se crea una instancia de la clase Movimientos que se asocia a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
-            balance_investment_ff = FieldFrame("Datos", ["Saldo"], "Valores", valores=[0])
-            print(balance_investment_ff.getValoresInsertados()[0])
+            style_consign_balance=font.Font(cls.main_window, family="Garamond", size=15)
+            balance_consign_frame = tk.Frame(cls.subframe_main, bg="#C7F1FF", borderwidth=1, relief="solid")
+            balance_consign_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
+            
+            def start_functionality():
+                def functionality_logic():
+                    def restart_functionality():
+                        label_ask_balance.destroy()
+                        balance_investment_ff.getFieldFrameObject().destroy()
+                        button_continue.destroy()
+                        button_back.destroy()
+                        balance_consign_frame.columnconfigure(1, weight=0)
+                        start_functionality()
+                    
+                    def consign_balance_main():
+                        selected_balance = balance_investment_ff.getValoresInsertados()[0].get()
+                        label_ask_balance.destroy()
+                        button_continue.destroy()
+                        button_back.destroy()
+                        balance_investment_ff.getFieldFrameObject().destroy()
+                        try:
+                            if (selected_balance is None or selected_balance == ""):
+                                raise genericException.NoValueInsertedException(int)
+                            selected_balance = int(selected_balance)
+                        except ValueError:
+                            confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? (Y/N): ")
+                            if confirmation:
+                                functionality_logic()
+                            else:
+                                back_menu_frame_destroy(balance_consign_frame)
+                        except genericException.NoValueInsertedException:
+                            confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
+                            if confirmation:
+                                functionality_logic()
+                            else:
+                                back_menu_frame_destroy(balance_consign_frame)
+                        else:
+                            balance_consign_frame.columnconfigure(0, weight=1)
+                            balance_consign_frame.columnconfigure(1, weight=0)
+                            balance_consign_frame.columnconfigure(2, weight=0)
+                            consign_movement = Movimientos.crearMovimiento(selected_account, selected_balance, Categoria.OTROS, date.today())
+                            cls.user.asociarMovimiento(consign_movement)
+                            label_consign_result = tk.Label(balance_consign_frame, text="La consignación de saldo ha sido exitosa: \n" + str(consign_movement), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
+                            label_movements_result = tk.Label(balance_consign_frame, text=cls.user.verificarContadorMovimientos(), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
+                            button_result = tk.Button(balance_consign_frame, text="Volver al menú principal", font=style_consign_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
 
+                    if accounts_options_combobox is not None:
+                        selected_account = accounts_options_combobox.get()
+                    label_accounts_options.destroy()
+                    accounts_options_combobox.grid_forget()
+                    button_select.destroy()
+                    try:
+                        if(selected_account == "" or selected_account is None):
+                            raise accountsException.NoAccountSelectedException
+                        for account in Ahorros.getCuentasAhorrosTotales():
+                            if(selected_account == account.getNombre()):
+                                selected_account = account
+                    except accountsException.NoAccountSelectedException:
+                        confirmation = messagebox.askretrycancel("Mis finanzas", accountsException.NoAccountSelectedException.show_message())
+                        if confirmation:
+                            start_functionality()
+                        else:
+                            back_menu_frame_destroy(balance_consign_frame)
+                    else:
+                        balance_consign_frame.columnconfigure(0, weight=1)
+                        balance_consign_frame.columnconfigure(1, weight=1)
+                        balance_consign_frame.columnconfigure(2, weight=0)
+                        label_ask_balance = tk.Label(balance_consign_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_ask_balance.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                        balance_investment_ff = FieldFrame("Datos", ["Saldo"], "Valores", frame=[balance_consign_frame, 1, 0, 2, 1])
+                        button_continue = tk.Button(balance_consign_frame, text="Continuar", font=style_consign_balance, command=consign_balance_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
+                        button_back = tk.Button(balance_consign_frame, text="Volver", font=style_consign_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
+                try:
+                        asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
+                except accountsException.NoSavingAccountsAssociatedException:
+                        messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
+                        back_menu_frame_destroy(balance_consign_frame)
+                else:
+                        balance_consign_frame.columnconfigure(2, weight=1)
+                        balance_consign_frame.columnconfigure(0, weight=1)
+                        label_accounts_options = tk.Label(master = balance_consign_frame, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = balance_consign_frame, border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_accounts_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                        selected_account = tk.StringVar(balance_consign_frame)
+                        accounts_options_combobox = Combobox(master = balance_consign_frame, textvariable=selected_account, cursor="cross", font=style_consign_balance)
+                        accounts_options_combobox["values"] = [asociated_accounts_user[m].getNombre() for m in range(0, len(asociated_accounts_user))]
+                        accounts_options_combobox['state'] = 'readonly'
+                        accounts_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                        button_select = tk.Button(master=balance_consign_frame, text="Aceptar", command=functionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=balance_consign_frame)
+                        button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")       
+            
+            start_functionality()
+            
         def transferir_saldo():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Transferir Saldo")
@@ -1107,7 +1210,7 @@ class App():
                              borderwidth=1, relief="solid")
         subframe_title.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03)
         cls.subframe_main = tk.Frame(
-            main_frame, bg="#222426", borderwidth=1, relief="solid")
+            main_frame, bg="#222426", borderwidth=1, relief="solid", name="subframe_main")
         cls.subframe_main.place(
             relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
 

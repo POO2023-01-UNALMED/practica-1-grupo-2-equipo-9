@@ -69,22 +69,22 @@ class Usuario():
         self.setContadorMovimientos(len(self.getMovimientosAsociados()))
         if(self.getContadorMovimientos() - self.getContadorMovimientosAux() == 5):
             self.setContadorMovimientosAux(self.getContadorMovimientosAux() + 5)
-            match self.getSuscripcion:
+            match self.getSuscripcion():
                 case Suscripcion.DIAMANTE:
                     self.setContadorMovimientos(0)
                     return("Felicidades, has alcanzado el nivel máximo de suscripción")
                 case Suscripcion.ORO:
                     self.setContadorMovimientos(0)
                     self.setSuscripcion(Suscripcion.DIAMANTE)
-                    return("Felicidades, has sido promovido al nivel de DIAMANTE, estos son tus beneficios: \nPuedes asociar un máximo de " + Suscripcion.DIAMANTE.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.DIAMANTE.getProbabilidad_Inversion())
+                    return("Felicidades, has sido promovido al nivel de DIAMANTE, estos son tus beneficios: \nPuedes asociar un máximo de " + str(Suscripcion.DIAMANTE.getLimiteCuentas()) + " cuentas, la probabilidad de ganar en tu inversión es de " + str(Suscripcion.DIAMANTE.getProbabilidadInversion()))
                 case Suscripcion.PLATA:
                     self.setContadorMovimientos(0)
                     self.setSuscripcion(Suscripcion.ORO)
-                    return("Felicidades, has sido promovido al nivel de ORO, estos son tus beneficios: \nPuedes asociar un máximo de " + Suscripcion.ORO.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.ORO.getProbabilidad_Inversion())
+                    return("Felicidades, has sido promovido al nivel de ORO, estos son tus beneficios: \nPuedes asociar un máximo de " + str(Suscripcion.ORO.getLimiteCuentas()) + " cuentas, la probabilidad de ganar en tu inversión es de " + str(Suscripcion.ORO.getProbabilidadInversion()))
                 case Suscripcion.BRONCE:
                     self.setContadorMovimientos(0)
                     self.setSuscripcion(Suscripcion.PLATA)
-                    return("Felicidades, has sido promovido al nivel de PLATA, estos son tus beneficios: \nPuedes asociar un máximo de " + Suscripcion.PLATA.getLimiteCuentas() + " cuentas, la probabilidad de ganar en tu inversión es de " + Suscripcion.PLATA.getProbabilidad_Inversion())
+                    return("Felicidades, has sido promovido al nivel de PLATA, estos son tus beneficios: \nPuedes asociar un máximo de " + str(Suscripcion.PLATA.getLimiteCuentas()) + " cuentas, la probabilidad de ganar en tu inversión es de " + str(Suscripcion.PLATA.getProbabilidadInversion()))
         else:
             return("Debes completar 5 movimientos para ser promovido de nivel, llevas " + str((self.getContadorMovimientos() - self.getContadorMovimientosAux())) + " movimiento(s)")
         

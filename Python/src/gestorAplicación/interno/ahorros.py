@@ -34,12 +34,12 @@ class Ahorros(Cuenta):
         self.getTitular().getMovimientosAsociados().append(movimiento)
         Movimientos.getMovimientosTotales().remove(movimiento)
 
-    #Funcionalidad de Suscripciones de Usuarios
+    # Funcionalidad de Suscripciones de Usuarios
     def invertirSaldo(self):
         from .movimientos import Movimientos
         from .categoria import Categoria
         probabilidad = self.getTitular().getSuscripcion().getProbabilidadInversion()
-        rand=random.random()+probabilidad
+        rand = random.random()+probabilidad
         if(rand >= 1):
             return(Movimientos.crearMovimiento(self, self.getSaldo() + self.getSaldo() * probabilidad, Categoria.FINANZAS, date.today()))
         else:

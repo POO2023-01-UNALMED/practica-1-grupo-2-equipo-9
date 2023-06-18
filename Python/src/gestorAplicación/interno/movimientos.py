@@ -60,7 +60,6 @@ class Movimientos():
         else:
             return(Movimientos(destino=destino, cantidad = cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
 
-
     # Métodos de la funiconalidad Asesoramiento de inversiones
     def analizar_categoria(plazo):
         from .usuario import Usuario

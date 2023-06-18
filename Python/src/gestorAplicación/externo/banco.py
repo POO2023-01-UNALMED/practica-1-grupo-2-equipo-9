@@ -297,6 +297,12 @@ class Banco():
     def setComision(self, _comision):
         self._comision = _comision
 
+    def getEstadoAsociado(self):
+        return self._estado
+    
+    def setEstadoAsociado(self, _estado):
+        self._estado = _estado
+
     @classmethod
     def getBancosTotales(cls):
         return cls._bancosTotales
