@@ -514,16 +514,12 @@ class App():
         def about():
             messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa")
 
-        # Método que destruye el frame pasado por parámetro
-        def back_menu_frame_destroy(frame):
-            frame.destroy()
-            welcome_text_reset()
-
         # Método para volver al menú inicial
         def back_menu_main():
             for frame in cls.subframe_main.winfo_children(): 
                 if str(type(frame).__name__) == "Frame" and frame.winfo_name() != "subframe_description":
-                    back_menu_frame_destroy(frame)
+                    frame.destroy()
+                    welcome_text_reset()
 
         # Método para reestablecer el mensaje de bienvenida de la ventana principal
         def welcome_text_reset():
@@ -558,10 +554,10 @@ class App():
                                 if confirmation:
                                     yes_no_confirmation()
                                 else:
-                                    back_menu_frame_destroy(suscription_frame)
+                                    back_menu_main()
                             except suscriptionException.UnderAccountsLimitException:
                                 messagebox.showerror("Mis finanzas", suscriptionException.UnderAccountsLimitException(selected_suscription, cls.user).show_message())
-                                back_menu_frame_destroy(suscription_frame)
+                                back_menu_main()
                             else:
                                 suscription_frame.columnconfigure(0, weight=1)
                                 suscription_frame.columnconfigure(1, weight=0)
@@ -602,7 +598,7 @@ class App():
                         if confirmation:
                             start_functionality()
                         else:
-                            back_menu_frame_destroy(suscription_frame)         
+                            back_menu_main()       
                     else:
                         suscription_frame.columnconfigure(0, weight=1)
                         suscription_frame.columnconfigure(1, weight=1)
@@ -612,14 +608,14 @@ class App():
                         label_message.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
                         button_yes = tk.Button(suscription_frame, text="Si", font=style_suscription, command=yes_no_confirmation, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_yes.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                        button_no = tk.Button(suscription_frame, text="No", font=style_suscription, command=lambda: back_menu_frame_destroy(suscription_frame), activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_no = tk.Button(suscription_frame, text="No", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_no.grid(row=1, column=1, sticky="NSEW", padx=2, pady=2)
         
                 try:
                     asociated_banks_user = cls.user.mostrarBancosAsociados()
                 except banksException.NoBanksAssociatedException:
                     messagebox.showerror("Mis finanzas", banksException.NoBanksAssociatedException(cls.user).show_message())
-                    back_menu_frame_destroy(suscription_frame)
+                    back_menu_main()
                 else:
                     suscription_frame.columnconfigure(2, weight=1)
                     suscription_frame.columnconfigure(0, weight=1)
@@ -657,13 +653,13 @@ class App():
                         c = selected_account.invertirSaldo()
                     except accountsException.FailedInvestmentException:
                         messagebox.showwarning("Mis finanzas", accountsException.FailedInvestmentException(cls.user).show_message())
-                        back_menu_frame_destroy(balance_investment_frame)
+                        back_menu_main()
                     except accountsException.NoAccountSelectedException:
                         confirmation = messagebox.askretrycancel("Mis finanzas", accountsException.NoAccountSelectedException.show_message())
                         if confirmation:
                             start_functionality()
                         else:
-                            back_menu_frame_destroy(balance_investment_frame)
+                            back_menu_main()
                     else:
                         balance_investment_frame.columnconfigure(0, weight=1)
                         balance_investment_frame.columnconfigure(2, weight=0)
@@ -679,7 +675,7 @@ class App():
                         asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
                 except accountsException.NoSavingAccountsAssociatedException:
                         messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
-                        back_menu_frame_destroy(balance_investment_frame)
+                        back_menu_main()
                 else:
                         balance_investment_frame.columnconfigure(2, weight=1)
                         balance_investment_frame.columnconfigure(0, weight=1)
@@ -728,13 +724,13 @@ class App():
                             if confirmation:
                                 functionality_logic()
                             else:
-                                back_menu_frame_destroy(balance_consign_frame)
+                                back_menu_main()
                         except genericException.NoValueInsertedException:
                             confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
                             if confirmation:
                                 functionality_logic()
                             else:
-                                back_menu_frame_destroy(balance_consign_frame)
+                                back_menu_main()
                         else:
                             balance_consign_frame.columnconfigure(0, weight=1)
                             balance_consign_frame.columnconfigure(1, weight=0)
@@ -764,7 +760,7 @@ class App():
                         if confirmation:
                             start_functionality()
                         else:
-                            back_menu_frame_destroy(balance_consign_frame)
+                            back_menu_main()
                     else:
                         balance_consign_frame.columnconfigure(0, weight=1)
                         balance_consign_frame.columnconfigure(1, weight=1)
@@ -780,7 +776,7 @@ class App():
                         asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
                 except accountsException.NoSavingAccountsAssociatedException:
                         messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
-                        back_menu_frame_destroy(balance_consign_frame)
+                        back_menu_main()
                 else:
                         balance_consign_frame.columnconfigure(2, weight=1)
                         balance_consign_frame.columnconfigure(0, weight=1)
