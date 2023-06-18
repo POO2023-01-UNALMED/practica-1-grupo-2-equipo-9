@@ -52,8 +52,8 @@ class FieldFrame(tk.Frame):
         title_value.grid(row=0, column=1, padx=3, pady=3)
 
         for i in range(0, len(self.getCriterios())):
-            entry = tk.Entry(master=self.field_frame, width=35, bg="white", fg="black", font=entry_style, border=1, relief="groove", name=i)
-            label = tk.Label(master=self.field_frame, text = self.getCriterios()[i], width=35, bg="white", fg="black", font=criteria_style, border=1, relief="groove")
+            entry = tk.Entry(master=self.field_frame, width=35, bg="white", fg="black", font=entry_style, border=1, relief="groove", name=str(self.getCriterios()[i]).lower().replace(" ", ""))
+            label = tk.Label(master=self.field_frame, text = str(self.getCriterios()[i]), width=35, bg="white", fg="black", font=criteria_style, border=1, relief="groove")
     
             if(self.getValores() != None):
                 try:
@@ -107,18 +107,16 @@ class FieldFrame(tk.Frame):
 
 # ----------------- APP ----------------
 class App():
-    # Guardar objetos al sistema
-    """ user1 = Usuario(_nombre="pepe", _correo="pepe@mail", _contrasena="123", _suscripcion=Suscripcion.BRONCE)
-    Serializador.serializar([user1]) """
-     
+    # Guardar objetos al sistema       
     estado1 = Estado()
     Serializador.serializar([estado1])
     banco1 = Banco(estado=estado1)
     banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
     banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
     Serializador.serializar([banco1, banco2, banco3])
-    user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
+    user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
     user1.asociarBanco(banco1)
+    user1.setSuscripcion(Suscripcion.BRONCE)
     cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
     cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
     cuenta2.setDisponible(500000)
@@ -126,10 +124,13 @@ class App():
     cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
     cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
     cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
+    metas1 = Metas()
+    user1.asociarMeta(metas1)
     user1.asociarCuenta(cuenta1)
     user1.asociarCuenta(cuenta2)
     user1.asociarCuenta(cuenta3)
     user1.asociarCuenta(cuenta4)
+    Serializador.serializar([metas1])
     Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4])
     Serializador.serializar([user1])
 
@@ -531,6 +532,131 @@ class App():
     @classmethod
     def start_main_window(cls):
         # Métodos de funcionamiento de la ventana principal
+        
+        # Método para crear cuenta en la ventana principal
+        def create_account_user():
+            def create_account_fuctionality_logic():
+                inserted_values_entries = account_creation_ff.getValoresInsertados()
+                label_account.destroy()
+                button_continue.destroy()
+                try:
+                    for inserted_value_entry in inserted_values_entries:
+                        if(inserted_value_entry.winfo_name() == "nombredelbanco"):
+                            selected_bank = inserted_value_entry.get()
+                            c = True
+                            try:
+                                for bank in Banco.getBancosTotales():
+                                    if(selected_bank == bank.getNombre()):
+                                        selected_bank = bank
+                                        c = False
+                                        break
+                                if c:
+                                    raise genericException.ValueNotFoundException()
+                            except genericException.ValueNotFoundException:
+                                confirmation = messagebox.askyesno("Mis finanzas", genericException.ValueNotFoundException.show_message())
+                                if confirmation:
+                                    create_account_user()
+                                    break
+                                else:
+                                    back_menu_main()
+                                    break
+                        elif(inserted_value_entry.winfo_name() == "ahorrosócorriente"):
+                            selected_account_type = inserted_value_entry.get()
+                            try:
+                                if(selected_account_type.lower().replace(" ", "") == "ahorros"):
+                                    selected_account_type = Ahorros
+                                elif(selected_account_type.lower().replace(" ", "") == "corriente"):
+                                    selected_account_type = Corriente
+                                else:
+                                    raise genericException.ValueNotFoundException()
+                            except genericException.ValueNotFoundException: 
+                                confirmation = messagebox.askyesno("Mis finanzas", genericException.ValueNotFoundException.show_message())
+                                if confirmation:
+                                    create_account_user()
+                                    break
+                                else:
+                                    back_menu_main()
+                                    break
+                        elif(inserted_value_entry.winfo_name() == "clavedelacuenta"):
+                            selected_password = str(inserted_value_entry.get())
+                            try:
+                                if(len(selected_password) == 0 or selected_password.count(" ") != 0):
+                                    raise genericException.BadFormatException()
+                            except genericException.BadFormatException:
+                                confirmation = messagebox.askyesno("Mis finanzas", genericException.BadFormatException.show_message())
+                                if confirmation:
+                                    create_account_user()
+                                    break
+                                else:
+                                    back_menu_main()
+                                    break
+                        elif(inserted_value_entry.winfo_name() == "divisa"):
+                            selected_currency = str(inserted_value_entry.get()).upper()
+                            currencies_list = Divisas.getDivisas()
+                            c = True
+                            try:
+                                for currency in currencies_list:
+                                    if(selected_currency == currency.value):
+                                        selected_currency = currency
+                                        c = False
+                                        break
+                                if c:
+                                    raise genericException.ValueNotFoundException()
+                            except genericException.ValueNotFoundException:
+                                confirmation = messagebox.askyesno("Mis finanzas", genericException.ValueNotFoundException.show_message())
+                                if confirmation:
+                                    create_account_user()
+                                    break
+                                else:
+                                    back_menu_main()
+                                    break
+                        elif(inserted_value_entry.winfo_name() == "nombredelacuenta"):
+                            selected_name = str(inserted_value_entry.get())
+                            try:
+                                if(len(selected_name) == 0):
+                                    raise genericException.BadFormatException()
+                            except genericException.BadFormatException:
+                                confirmation = messagebox.askyesno("Mis finanzas", genericException.BadFormatException.show_message())
+                                if confirmation:
+                                    create_account_user()
+                                    break
+                                else:
+                                    back_menu_main()
+                                    break
+
+                    account_creation_ff.getFieldFrameObject().destroy()
+                    if(selected_account_type == Ahorros):
+                        label_account_result = tk.Label(account_creation_frame, text="La cuenta se ha creado exitosamente: " + str(cls.user.asociarCuenta(Ahorros(banco=selected_bank, clave=selected_password, divisa=selected_currency, nombre=selected_name))), font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                    elif(selected_account_type == Corriente):
+                         label_account_result = tk.Label(account_creation_frame, text="La cuenta se ha creado exitosamente: " + str(cls.user.asociarCuenta(Corriente(banco=selected_bank, clave=selected_password, divisa=selected_currency, nombre=selected_name))), font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                    label_account_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
+                    button_result = tk.Button(account_creation_frame, text="Volver al menú principal", font=style_account_creation, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                    button_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
+                except UnboundLocalError:
+                    pass
+
+            titulo_funcionalidad.set("Creación de cuenta.")
+            descripcion_funcionalidad.set("¡Hola! {} anímate a crear una cuenta.".format(cls.user.getNombre()))
+            style_account_creation=font.Font(cls.main_window, family="Times New Roman", size=14)
+            account_creation_frame = tk.Frame(cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
+            account_creation_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
+            try:
+                if(len(cls.user.getCuentasAsociadas()) >= cls.user.getLimiteCuentas()):
+                    raise accountsException.MaxLimitAccountsReached(cls.user)
+            except accountsException.MaxLimitAccountsReached:
+                confirmation = messagebox.askyesno("Mis finanzas", accountsException.MaxLimitAccountsReached(cls.user).show_message())
+                if confirmation:
+                    back_menu_main()
+                    comprobar_suscripcion()
+                else:
+                    back_menu_main
+            else:       
+                label_account = tk.Label(account_creation_frame, text="Para crear una nueva cuenta, favor diligencie los siguientes datos: ", font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                label_account.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                account_creation_ff = FieldFrame(tituloCriterios="Datos", criterios=["Nombre del banco", "Ahorros ó corriente", "Clave de la cuenta", "Divisa", "Nombre de la cuenta"], tituloValores="Valores", frame=[account_creation_frame, 1, 0, 2, 1])
+                button_continue = tk.Button(account_creation_frame, text="Continuar", font=style_account_creation, command=create_account_fuctionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
+
         # Método para salir de la ventana principal
         def exit_principal_window():
             cls.user = None
@@ -1582,7 +1708,8 @@ class App():
                                    activebackground="gray", activeforeground="white")
 
         # Agregamos los submenús a la barra de menú.
-        procesos_consultas.add_command(label="Volver al menú principal", command=lambda: back_menu_main(), activebackground="gray", activeforeground="white")
+        procesos_consultas.add_command(label="Volver al menú principal", command=back_menu_main, activebackground="gray", activeforeground="white")
+        procesos_consultas.add_command(label="Crear una cuenta", command=create_account_user, activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso1, command=comprobar_suscripcion,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso2, command=invertir_saldo,

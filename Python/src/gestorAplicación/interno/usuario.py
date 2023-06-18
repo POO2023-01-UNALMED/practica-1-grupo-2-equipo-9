@@ -24,6 +24,7 @@ class Usuario():
         self._contadorMovimientos = 0
         self._contadorMovimientosAux = 0
         self._movimientosAsociados = []
+        self._limiteCuentas = 0
         for key in kwargs:
             if key == "_nombre":
                 self.setNombre(kwargs[key])
@@ -248,6 +249,7 @@ class Usuario():
         return self._suscripcion
     def setSuscripcion(self, _suscripcion) -> None:
         self._suscripcion = _suscripcion
+        self.setLimiteCuentas(self.getSuscripcion().getLimiteCuentas())
     def getCuentasAsociadas(self) -> list:
         return self._cuentasAsociadas
     def setCuentasAsociadas(self, _cuentasAsociadas) -> None:

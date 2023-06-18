@@ -5,5 +5,5 @@ class Divisas(Enum):
     COP="COP"
     
     def getDivisas():
-        return [Divisas.EUR.value,Divisas.USD.value,Divisas.COP.value]
+        return [Divisas.EUR,Divisas.USD,Divisas.COP]
     

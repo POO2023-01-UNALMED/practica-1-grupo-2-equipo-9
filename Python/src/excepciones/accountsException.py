@@ -37,3 +37,11 @@ class NoAccountSelectedException(Exception):
     @staticmethod
     def show_message():
         return ("Debes seleccionar una cuenta para continuar. \n¿Desea intentarlo de nuevo? ")
+    
+class MaxLimitAccountsReached(Exception):
+    def __init__(self, _user, *args: object) -> None:
+        super().__init__(*args)
+        self._user = _user
+
+    def show_message(self):
+        return ("Debes verificar que no hayas alcanzado el máximo de cuentas que puede crear el usuario. El máximo de cuentas que puede asociar el usuario " + self._user.getNombre()  + " es " + str(self._user.getLimiteCuentas()) + " y la cantidad de cuentas asociadas es " + str(len(self._user.getCuentasAsociadas())) + " \n¿Desea cambiar su nivel de suscripción?")
