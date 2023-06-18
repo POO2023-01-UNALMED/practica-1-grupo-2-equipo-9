@@ -4,8 +4,6 @@ from datetime import datetime
 from gestorAplicación.interno.suscripcion import Suscripcion
 from gestorAplicación.interno.categoria import Categoria
 from .estado import Estado
-from gestorAplicación.interno.movimientos import Movimientos
-#from main import App
 
 class Banco():
     _bancosTotales = []

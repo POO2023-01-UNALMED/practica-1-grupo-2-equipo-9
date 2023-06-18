@@ -57,6 +57,9 @@ class Estado():
     def setTasa_usura(self,tasa_usura):
         self._tasa_usura= tasa_usura
 
+    def getTasa_impuestos(self):
+        return self._tasa_impuestos
+
     def setTasa_impuestos(self,tasa_impuestos):
         self._tasa_impuestos= tasa_impuestos
         

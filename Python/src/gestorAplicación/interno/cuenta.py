@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import date, datetime
 from gestorAplicación.externo.banco import Banco
-from .movimientos import Movimientos
 import math
 
 

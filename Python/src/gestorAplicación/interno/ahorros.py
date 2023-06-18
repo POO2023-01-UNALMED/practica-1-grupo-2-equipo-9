@@ -1,6 +1,7 @@
 from .cuenta import Cuenta
-from gestorAplicación.externo.banco import Banco
+from excepciones import accountsException
 from datetime import date
+import random
 
 class Ahorros(Cuenta):
     #Atributos de clase
@@ -35,7 +36,14 @@ class Ahorros(Cuenta):
 
     #Funcionalidad de Suscripciones de Usuarios
     def invertirSaldo(self):
-        pass
+        from .movimientos import Movimientos
+        from .categoria import Categoria
+        probabilidad = self.getTitular().getSuscripcion().getProbabilidadInversion()
+        rand=random.random()+probabilidad
+        if(rand >= 1):
+            return(Movimientos.crearMovimiento(self, self.getSaldo() + self.getSaldo() * probabilidad, Categoria.FINANZAS, date.today()))
+        else:
+            raise accountsException.FailedInvestmentException(self.getTitular())
 
     # Funcionalidad Prestamos
     @classmethod

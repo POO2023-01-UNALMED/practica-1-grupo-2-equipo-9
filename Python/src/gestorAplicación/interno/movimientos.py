@@ -52,9 +52,15 @@ class Movimientos():
                 self._cuotaManejo = kwargs[key]
             if key == "owner":
                 self._owner = kwargs[key]
-                
 
-            
+    @staticmethod
+    def crearMovimiento(destino, cantidad, categoria, fecha):
+        if(categoria == Categoria.PRESTAMO):
+            return(Movimientos(destino=destino, cantidad=cantidad, categoria=categoria, fecha=fecha))
+        else:
+            return(Movimientos(destino=destino, cantidad = cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
+
+
     # Métodos de la funiconalidad Asesoramiento de inversiones
     def analizar_categoria(plazo):
         from .usuario import Usuario
@@ -149,8 +155,8 @@ class Movimientos():
 
         # Recomendadar fecha
         if len(user.getMovimientosAsociados()) != 0:
-            fecha_meta = datetime.strptime(Metas.revision_metas(user).getFecha(), "%d/%m/%Y")
-            fecha_movimiento = user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].getFecha()
+            fecha_meta = datetime.strptime(Metas.revision_metas(user).str(self.getFecha()), "%d/%m/%Y")
+            fecha_movimiento = user.getMovimientosAsociados()[len(user.getMovimientosAsociados()) - 1].str(self.getFecha())
             if plazo == "Corto":
                 if  fecha_movimiento < fecha_meta:
                     Movimientos.setFechaCategoria("01/01/2024")
@@ -262,6 +268,17 @@ class Movimientos():
 
         return movimientos_originarios_cuenta
 
+    def __str__(self):
+        if self.getOrigen() == None:
+            return("Movimiento creado \nFecha: " + str(self.getFecha()) + "\nID: " + str(self.getId()) + "\nDestino: " + str(self.getDestino().getId()) + "\nCantidad: " +
+					str(self.getCantidad()) + "\nCategoria: " + str(self.getCategoria().name))
+        elif(self.getDestino() == None):
+            return("Movimiento creado \nFecha: " + str(self.getFecha()) + "\nID: " + str(self.getId()) + "\nOrigen: " + str(self.getOrigen().getId()) + "\nCantidad: " +
+					str(self.getCantidad()) + "\nCategoria: " + str(self.getCategoria().name))
+        else:
+            return("Movimiento creado \nFecha: " + str(self.getFecha()) + "\nID: " + str(self.getId()) + "\nOrigen: " + str(self.getOrigen().getId()) + "\nDestino: " + str(self.getDestino().getId()) + "\nCantidad: " +
+					str(self.getCantidad()) + "\nCategoria: " + str(self.getCategoria().name))
+
     @classmethod
     def getMovimientosTotales(cls):
         return cls._movimientosTotales
@@ -328,3 +345,9 @@ class Movimientos():
     
     def setFecha(self, _fecha):
         self._fecha = _fecha
+
+    def getId(self):
+        return self._id
+    
+    def setId(self, _id):
+        self._id = _id
