@@ -4,4 +4,4 @@ class NoValueInsertedException(Exception):
         self._type = _type
 
     def show_message(self):
-        return("Error. Se esperaba la inserción de un valor de tipo {}. \n¿Desea intentarlo de nuevo? (Y/N):".format(self._type.__name__))
+        return("Error. Se esperaba la inserción de un valor de tipo {}. \n¿Desea intentarlo de nuevo? ".format(self._type.__name__))

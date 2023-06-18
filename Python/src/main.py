@@ -117,18 +117,21 @@ class App():
     banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
     Serializador.serializar([banco1, banco2, banco3])
     user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345", _suscripcion=Suscripcion.BRONCE)
-    cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
     cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
     cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
+    cuenta2.setDisponible(500000)
+    cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
+    cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
+    cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
+    cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
+
     user1.asociarCuenta(cuenta1)
     user1.asociarCuenta(cuenta2)
     user1.asociarCuenta(cuenta3)
-    Serializador.serializar([cuenta1, cuenta2, cuenta3])
+    user1.asociarCuenta(cuenta4)
+    Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4])
     Serializador.serializar([user1])
-    cuenta2.setDisponible(500000)
-
-    #print (cuenta1)
-
+    
     # Cargar objetos al sistema
     Deserializador.deserializar("Usuarios")
     Deserializador.deserializar("Cuentas")
@@ -515,7 +518,7 @@ class App():
             messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa")
         
         # Método que muestra las cuentas de ahorro asociadas al cls.user
-        def show_saving_accounts_user(master, function, style):
+        def show_saving_accounts_user(master, function, style, row_number):
             try:
                 asociated_accounts_user = cls.user.mostrarCuentasAhorroAsociadas()
             except accountsException.NoSavingAccountsAssociatedException:
@@ -525,16 +528,37 @@ class App():
                     master.columnconfigure(2, weight=1)
                     master.columnconfigure(0, weight=1)
                     label_accounts_options = tk.Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
-                    label_accounts_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                    label_accounts_options.grid(row=row_number, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
                     selected_account = tk.StringVar(master)
                     accounts_options_combobox = Combobox(master = master, textvariable=selected_account, cursor="cross", font=style)
                     accounts_options_combobox["values"] = [asociated_accounts_user[m].getNombre() for m in range(0, len(asociated_accounts_user))]
                     accounts_options_combobox['state'] = 'readonly'
-                    accounts_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                    accounts_options_combobox.grid(row=row_number + 1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
                     button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
-                    button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
+                    button_select.grid(row=row_number, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
             return [selected_account, label_accounts_options, accounts_options_combobox, button_select]
             
+        # Método que muestra las cuentas de ahorro totales del sistema
+        def show_saving_accounts_total(master, function, style, row_number):
+            try:
+                accounts_total = Ahorros.getCuentasAhorrosTotales()
+            except accountsException.NoSavingAccountsAssociatedException:
+                    messagebox.showerror("Mis finanzas", accountsException.NoSavingAccountsAssociatedException(cls.user).show_message())
+                    back_menu_main()
+            else:
+                    master.columnconfigure(2, weight=1)
+                    master.columnconfigure(0, weight=1)
+                    label_accounts_options = tk.Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro totales del sistema:", font = style, border=1, relief="solid", bg="#8C7566", fg="white")
+                    label_accounts_options.grid(row=row_number, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                    selected_account = tk.StringVar(master)
+                    accounts_options_combobox = Combobox(master = master, textvariable=selected_account, cursor="cross", font=style)
+                    accounts_options_combobox["values"] = [accounts_total[m].getNombre() for m in range(0, len(accounts_total))]
+                    accounts_options_combobox['state'] = 'readonly'
+                    accounts_options_combobox.grid(row=row_number + 1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
+                    button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
+                    button_select.grid(row=row_number, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
+            return [selected_account, label_accounts_options, accounts_options_combobox, button_select]
+        
         # Método que muestra los bancos asociados al cls.user
         def show_banks_user(master, function, style):
             try:
@@ -701,7 +725,7 @@ class App():
                         button_result = tk.Button(balance_investment_frame, text="Volver al menú principal", font=style_balance_investment, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
                 
-                objects = show_saving_accounts_user(balance_investment_frame, functionality_logic, style_balance_investment)
+                objects = show_saving_accounts_user(balance_investment_frame, functionality_logic, style_balance_investment, 0)
                 selected_account = objects[0]
                 label_accounts_options = objects[1]
                 accounts_options_combobox = objects[2]
@@ -738,7 +762,7 @@ class App():
                                 raise genericException.NoValueInsertedException(int)
                             selected_balance = int(selected_balance)
                         except ValueError:
-                            confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? (Y/N): ")
+                            confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? ")
                             if confirmation:
                                 functionality_logic()
                             else:
@@ -791,7 +815,7 @@ class App():
                         button_back = tk.Button(balance_consign_frame, text="Volver", font=style_consign_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
                 
-                objects = show_saving_accounts_user(balance_consign_frame, functionality_logic, style_consign_balance)
+                objects = show_saving_accounts_user(balance_consign_frame, functionality_logic, style_consign_balance, 0)
                 selected_account = objects[0]
                 label_accounts_options = objects[1]
                 accounts_options_combobox = objects[2]
@@ -808,10 +832,238 @@ class App():
             balance_transfer_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0) 
 
             def start_functionality():
+
                 def own_account_logic():
-                    pass
+                    label_transfer_options.destroy()
+                    button_own_account.destroy()
+                    button_another_account.destroy()
+                  
+                    def own_account_functionality_logic():
+                        def own_account_functionality_logic_destination():
+                            def restart_functionality():
+                                label_ask_transfer.destroy()
+                                balance_transfer_ff.getFieldFrameObject().destroy()
+                                button_continue.destroy()
+                                button_back.destroy()
+                                balance_transfer_frame.columnconfigure(1, weight=0)
+                                start_functionality()
+                                
+                            def own_account_functionality_logic_transfer():
+                                selected_balance = balance_transfer_ff.getValoresInsertados()[0].get()
+                                label_ask_transfer.destroy()
+                                button_continue.destroy()
+                                button_back.destroy()
+                                balance_transfer_ff.getFieldFrameObject().destroy()
+                                try:
+                                    if (selected_balance is None or selected_balance == ""):
+                                        raise genericException.NoValueInsertedException(int)
+                                    selected_balance = int(selected_balance)
+                                except ValueError:
+                                    confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? ")
+                                    if confirmation:
+                                        own_account_logic()
+                                    else:
+                                        back_menu_main()
+                                except genericException.NoValueInsertedException:
+                                    confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
+                                    if confirmation:
+                                        own_account_logic()
+                                    else:
+                                        back_menu_main()
+                                else:
+                                    balance_transfer_frame.columnconfigure(0, weight=1)
+                                    balance_transfer_frame.columnconfigure(1, weight=0)
+                                    balance_transfer_frame.columnconfigure(2, weight=0)
+                                    consign_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, date.today(), selected_account_origin)
+                                    cls.user.asociarMovimiento(consign_movement)
+                                    label_consign_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(consign_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
+                                    label_movements_result = tk.Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
+                                    button_result = tk.Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
+
+                            balance_transfer_frame.columnconfigure(2, weight=0)
+                            selected_account_destination = accounts_options_combobox_local.get()
+                            label_account_destination.destroy()
+                            label_accounts_options_local.destroy()
+                            accounts_options_combobox_local.destroy()
+                            button_select_local.destroy()
+
+                            for account_user in accounts_user:
+                                if selected_account_destination == account_user.getNombre():
+                                        selected_account_destination = account_user
+
+                            label_ask_transfer = tk.Label(balance_transfer_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_ask_transfer.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                            balance_transfer_ff = FieldFrame("Datos", ["Saldo"], "Valores", frame=[balance_transfer_frame, 1, 0, 2, 1])
+                            button_continue = tk.Button(balance_transfer_frame, text="Continuar", font=style_transfer_balance, command=own_account_functionality_logic_transfer, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
+                            button_back = tk.Button(balance_transfer_frame, text="Volver", font=style_transfer_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
+          
+                        selected_account_origin = accounts_options_combobox.get()
+                        label_accounts_options.destroy()
+                        accounts_options_combobox.destroy()
+                        button_select.destroy()
+                        for account in Ahorros.getCuentasAhorrosTotales():
+                                if(selected_account_origin == account.getNombre()):
+                                    selected_account_origin = account
+
+                        try:
+                            if(selected_account_origin.getSaldo() == 0):
+                                raise accountsException.NoBalanceinSavingAccountException(selected_account_origin)
+                        except accountsException.NoBalanceinSavingAccountException:
+                            confirmation = messagebox.askyesno("Mis finanzas", accountsException.NoBalanceinSavingAccountException(selected_account_origin).show_message())
+                            if(confirmation):
+                                back_menu_main()
+                                consignar_saldo()
+                            else:
+                                own_account_functionality_logic()
+                        else:
+                            accounts_user = cls.user.getCuentasAhorroAsociadas()
+                            for account_user in accounts_user:
+                                if selected_account_origin.getId() == account_user.getId():
+                                        accounts_user.remove(account_user)
+                            label_account_destination = tk.Label(balance_transfer_frame, text="A cual de sus cuentas desea transferir su saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_account_destination.grid(row=0, column=0, columnspan=3, sticky="NSEW", padx=2, pady=2)
+                            objects = show_saving_accounts_user(balance_transfer_frame, own_account_functionality_logic_destination, style_transfer_balance, 1)
+                            label_accounts_options_local = objects[1]
+                            accounts_options_combobox_local = objects[2]
+                            button_select_local = objects[3]
+                            accounts_user.append(selected_account_origin)
+                    
+                    try:
+                        if(len(cls.user.getCuentasAhorroAsociadas()) < 2):
+                            raise accountsException.NotEnoughSavingAccountsException(cls.user)
+                    except accountsException.NotEnoughSavingAccountsException:
+                        confirmation = messagebox.askyesno("Mis finanzas", accountsException.NotEnoughSavingAccountsException(cls.user).show_message())    
+                        if(confirmation):
+                            back_menu_main()
+                            create_account_user()
+                        else:
+                             back_menu_main()
+                    else:
+                        objects = show_saving_accounts_user(balance_transfer_frame, own_account_functionality_logic, style_transfer_balance, 0)
+                        label_accounts_options = objects[1]
+                        accounts_options_combobox = objects[2]
+                        button_select = objects[3]
+
                 def another_account_logic():
-                    pass
+                    label_transfer_options.destroy()
+                    button_own_account.destroy()
+                    button_another_account.destroy()
+
+                    def another_account_functionality_logic():
+                        def another_account_functionality_logic_destination():
+                            def restart_functionality():
+                                label_ask_transfer.destroy()
+                                balance_transfer_ff.getFieldFrameObject().destroy()
+                                button_continue.destroy()
+                                button_back.destroy()
+                                balance_transfer_frame.columnconfigure(1, weight=0)
+                                start_functionality()
+
+                            def another_account_functionality_logic_transfer():
+                                selected_balance = balance_transfer_ff.getValoresInsertados()[0].get()
+                                label_ask_transfer.destroy()
+                                button_continue.destroy()
+                                button_back.destroy()
+                                balance_transfer_ff.getFieldFrameObject().destroy()
+                                try:
+                                    if (selected_balance is None or selected_balance == ""):
+                                        raise genericException.NoValueInsertedException(int)
+                                    selected_balance = int(selected_balance)
+                                except ValueError:
+                                    confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? ")
+                                    if confirmation:
+                                        own_account_logic()
+                                    else:
+                                        back_menu_main()
+                                except genericException.NoValueInsertedException:
+                                    confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
+                                    if confirmation:
+                                        own_account_logic()
+                                    else:
+                                        back_menu_main()
+                                else:
+                                    balance_transfer_frame.columnconfigure(0, weight=1)
+                                    balance_transfer_frame.columnconfigure(1, weight=0)
+                                    balance_transfer_frame.columnconfigure(2, weight=0)
+                                    consign_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, date.today(), selected_account_origin)
+                                    cls.user.asociarMovimiento(consign_movement)
+                                    label_consign_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(consign_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
+                                    label_movements_result = tk.Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
+                                    button_result = tk.Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
+
+                            balance_transfer_frame.columnconfigure(2, weight=0)
+                            selected_account_destination = accounts_options_combobox_local.get()
+                            label_account_destination.destroy()
+                            label_accounts_options_local.destroy()
+                            accounts_options_combobox_local.destroy()
+                            button_select_local.destroy()
+
+                            for account in accounts_total:
+                                if selected_account_destination == account.getNombre():
+                                        selected_account_destination = account
+
+                            label_ask_transfer = tk.Label(balance_transfer_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_ask_transfer.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                            balance_transfer_ff = FieldFrame("Datos", ["Saldo"], "Valores", frame=[balance_transfer_frame, 1, 0, 2, 1])
+                            button_continue = tk.Button(balance_transfer_frame, text="Continuar", font=style_transfer_balance, command=another_account_functionality_logic_transfer, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
+                            button_back = tk.Button(balance_transfer_frame, text="Volver", font=style_transfer_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
+                        
+                        selected_account_origin = accounts_options_combobox.get()
+                        label_accounts_options.destroy()
+                        accounts_options_combobox.destroy()
+                        button_select.destroy()
+                        for account in Ahorros.getCuentasAhorrosTotales():
+                                if(selected_account_origin == account.getNombre()):
+                                    selected_account_origin = account
+
+                        try:
+                            if(selected_account_origin.getSaldo() == 0):
+                                raise accountsException.NoBalanceinSavingAccountException(selected_account_origin)
+                        except accountsException.NoBalanceinSavingAccountException:
+                            confirmation = messagebox.askyesno("Mis finanzas", accountsException.NoBalanceinSavingAccountException(selected_account_origin).show_message())
+                            if(confirmation):
+                                back_menu_main()
+                                consignar_saldo()
+                            else:
+                                another_account_functionality_logic()
+                        else:
+                            accounts_total = Ahorros.getCuentasAhorrosTotales()
+                            for account in accounts_total:
+                                if selected_account_origin.getId() == account.getId():
+                                        accounts_total.remove(account)
+                            label_account_destination = tk.Label(balance_transfer_frame, text="Seleccione la cuenta de ahorros destino donde deseas transferir saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_account_destination.grid(row=0, column=0, columnspan=3, sticky="NSEW", padx=2, pady=2)
+                            objects = show_saving_accounts_total(balance_transfer_frame, another_account_functionality_logic_destination, style_transfer_balance, 1)
+                            label_accounts_options_local = objects[1]
+                            accounts_options_combobox_local = objects[2]
+                            button_select_local = objects[3]
+                            accounts_total.append(selected_account_origin)
+
+                    try:
+                        if(len(cls.user.getCuentasAhorroAsociadas()) < 2):
+                            raise accountsException.NotEnoughSavingAccountsException(cls.user)
+                    except accountsException.NotEnoughSavingAccountsException:
+                        confirmation = messagebox.askyesno("Mis finanzas", accountsException.NotEnoughSavingAccountsException(cls.user).show_message())    
+                        if(confirmation):
+                            back_menu_main()
+                            create_account_user()
+                        else:
+                             back_menu_main()
+                    else:
+                        objects = show_saving_accounts_user(balance_transfer_frame, another_account_functionality_logic, style_transfer_balance, 0)
+                        label_accounts_options = objects[1]
+                        accounts_options_combobox = objects[2]
+                        button_select = objects[3]
 
                 balance_transfer_frame.columnconfigure(1, weight=1)
                 balance_transfer_frame.columnconfigure(0, weight=1)

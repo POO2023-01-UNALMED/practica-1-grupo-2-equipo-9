@@ -54,8 +54,10 @@ class Movimientos():
                 self._owner = kwargs[key]
 
     @staticmethod
-    def crearMovimiento(destino, cantidad, categoria, fecha):
-        if(categoria == Categoria.PRESTAMO):
+    def crearMovimiento(destino, cantidad, categoria, fecha, origen = None, **kwargs):
+        if(origen != None):
+            return(Movimientos(origen=origen, destino=destino, cantidad=cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
+        if(categoria == Categoria.PRESTAMO and origen == None):
             return(Movimientos(destino=destino, cantidad=cantidad, categoria=categoria, fecha=fecha))
         else:
             return(Movimientos(destino=destino, cantidad = cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
@@ -198,6 +200,12 @@ class Movimientos():
             Ahorros.getCuentasAhorrosTotales().remove(impuestosBanco)
             Cuenta.getCuentasTotales().remove(impuestosBanco)
             return False
+
+    # Funcionalidad de Suscripciones de Usuarios
+    def modificarSaldo(origen, destino, cantidad, usuario, categoria):
+        m = Movimientos.crearMovimiento(destino, cantidad, categoria, datetime.today(), origen)
+        usuario.asociarMovimiento(m)
+        return(m)
 
     # Funcionlidad Prestamo
     @classmethod

@@ -4,4 +4,4 @@ class NoUserFoundException(Exception):
 
     @staticmethod
     def show_message():
-        return("Error, no se ha encontrado un usuario con estos datos. \n¿Desea intentarlo de nuevo? (Y/N): ")
+        return("Error, no se ha encontrado un usuario con estos datos. \n¿Desea intentarlo de nuevo? ")

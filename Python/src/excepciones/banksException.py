@@ -12,4 +12,4 @@ class NoBankSelectedException(Exception):
 
     @staticmethod
     def show_message():
-        return ("Debes seleccionar un banco para continuar. \n¿Desea intentarlo de nuevo? (Y/N):")
+        return ("Debes seleccionar un banco para continuar. \n¿Desea intentarlo de nuevo? ")

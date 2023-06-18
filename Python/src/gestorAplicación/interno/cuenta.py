@@ -13,6 +13,7 @@ class Cuenta(ABC):
         self._clave = None
         self._nombre = ""
         self._divisa = None
+        self._titular = None
         #Atributos de instancia
         Cuenta._cuentasTotales.append(self)
         self._id = len(Cuenta._cuentasTotales)
