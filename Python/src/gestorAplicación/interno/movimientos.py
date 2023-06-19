@@ -58,6 +58,7 @@ class Movimientos():
         if(origen != None):
             return(Movimientos(origen=origen, destino=destino, cantidad=cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
         if(categoria == Categoria.PRESTAMO and origen == None):
+            destino.setSaldo(destino.getSaldo() + cantidad)
             return(Movimientos(destino=destino, cantidad=cantidad, categoria=categoria, fecha=fecha))
         else:
             return(Movimientos(destino=destino, cantidad = cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
@@ -213,11 +214,8 @@ class Movimientos():
         banco = _cuenta.getBanco()
         titular = _cuenta.getTitular()
         maxCantidad = banco.getPrestamo() * titular.getSuscripcion().getPorcentajePrestamo()
-        if(_cantidad > maxCantidad or _cantidad<=0):
-            return None
-        else:
-            deuda = Deuda(_cantidad,_cuenta,titular,banco)
-            return(Movimientos.crearMovimiento(_cuenta,_cantidad,Categoria.Prestamos,datetime.now()))
+        deuda = Deuda(_cantidad,_cuenta,titular,banco)
+        return(Movimientos.crearMovimiento(_cuenta,_cantidad,categoria=Categoria.PRESTAMO,fecha=datetime.now()))
         
     @classmethod
     def pagarDeuda(_usuario,_deuda,_cantidad):

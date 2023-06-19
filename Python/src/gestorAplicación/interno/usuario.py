@@ -1,5 +1,4 @@
 from .suscripcion import Suscripcion
-from .deuda import Deuda
 from .movimientos import Movimientos
 from .corriente import Corriente
 from .cuenta import Cuenta
@@ -180,14 +179,17 @@ class Usuario():
 				"\nSuscripción: " + str(self.getSuscripcion()))
 
     # Metodos funcionalidad de prestamos
+# Metodos funcionalidad de prestamos
     def comprobarConfiabilidad(self):
+        from .deuda import Deuda
+
         cuentasUsuario = self.getCuentasAhorroAsociadas()
         # conseguir la suscripcion
         suscripcion = self.getSuscripcion()
         # Comprobamos y contamos las deudas que estan asociadas al usuario
-        deudasUsuario = Deuda.conseguirDeudas(self)
+        deudasUsuario = Deuda.conseguirDeuda(self)
         if len(deudasUsuario)<suscripcion.getMaxDeudas():
-            if len(cuentasUsuario !=0):
+            if len(cuentasUsuario) !=0:
                 return cuentasUsuario
             else:
                 return "¡Error! Usted no tiene ninguna cuenta Ahorros creada"

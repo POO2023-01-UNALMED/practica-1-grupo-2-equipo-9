@@ -45,6 +45,7 @@ class Ahorros(Cuenta):
         else:
             raise accountsException.FailedInvestmentException(self.getTitular())
 
+
     # Funcionalidad Prestamos
     @classmethod
     def comprobarPrestamo(cls,_cuentas):
@@ -52,7 +53,7 @@ class Ahorros(Cuenta):
         bancos = []
 
         for cuenta in _cuentas:
-            prestamos = cuenta.getBanco().getPrestamos()
+            prestamos = cuenta.getBanco().getPrestamo()
             if(prestamos>0):
                 cuentasPrestamos.append(cuenta)
             else:

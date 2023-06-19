@@ -1813,11 +1813,92 @@ class App():
             label_description.config(
                 text="Agregar la descripcion en el metodo calculadora_financiera y agregar aca el funcionamiento de su funcionalidad")
 
+        
         def pedir_prestamo():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Pedir Prestamo")
-            label_description.config(
-                text="¿Necesitas dinero? realiza un prestamo con tu banco.\nPara pedir un prestamo es necesario que cuentes con una cuenta de ahorros, la cantidad de dinero que puedes prestar va a depender de tu nivel de suscripción y del banco asociado a tu cuenta")
+            descripcion_funcionalidad.set("¿Necesitas dinero? realiza un prestamo con tu banco.\nPara pedir un prestamo es necesario que cuentes con una cuenta de ahorros, la cantidad de dinero que puedes prestar va a depender de tu nivel de suscripción y del banco asociado a tu cuenta")
+            
+            # Creamos el subframe para agregar la funcionalidad
+            subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
+            subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
+
+
+            # Empezamos logica de la funcionalidad
+            cuentas = cls.user.comprobarConfiabilidad()
+            if isinstance(cuentas,list):
+                # El usuario tiene cunetas y puede realizar un prestamo
+                # Le mostramos al usuario las cuentas con las que puede hacer prestamo
+                cuentas = Ahorros.comprobarPrestamo(cuentas)
+                if isinstance(cuentas[0],Ahorros):
+                    cuentaSeleccionada=None
+                    # Funciones para el funcionamiento
+
+                    def cuentaCambiada(event):
+                        def realizarPrestamo():
+                            cantidad = cantidadFF.getValoresInsertados()[0].get()
+                            try:
+                                if(cantidad is None or cantidad == ""):
+                                    raise genericException.NoValueInsertedException(int)
+                                cantidad = int(cantidad)
+                                if cantidad <=0 or cantidad>cuentaSeleccionada.getBanco().getPrestamo():
+                                    raise genericException.ValuePrestamoException(cantidad,cuentaSeleccionada.getBanco().getPrestamo())
+                            except ValueError:
+                                confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? (Y/N): ")
+                                if confirmation:
+                                    pedir_prestamo()
+                                else:
+                                    back_menu_main()
+                            except genericException.ValuePrestamoException:
+                                confirmation =messagebox.askretrycancel("Mis finanzas", genericException.ValuePrestamoException(cantidad,cuentaSeleccionada.getBanco().getPrestamo()).show_message())
+                                if confirmation:
+                                    pedir_prestamo()
+                                else:
+                                    back_menu_main()
+                            except genericException.NoValueInsertedException:
+                                confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
+                                if confirmation:
+                                    pedir_prestamo()
+
+                                else:
+                                    back_menu_main()
+                            # Se realiza el prestamo   
+                            prestamo =Movimientos.realizarPrestamo(cuentaSeleccionada,cantidad)
+                            print(prestamo)
+                            
+                        def cancelar():
+                            back_menu_main()
+                        cuentaSeleccionada = cuentas[cuentasCombobox.current()]
+                        label2= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"El banco {cuentaSeleccionada.getBanco().getNombre()} le presta como maximo $ {cuentaSeleccionada.getBanco().getPrestamo()}. Ingrese la cantiadad que desea prestar")
+                        label2.place(anchor="w",rely=0.35,relx=0.02)
+                        
+                        subframeCantidad = tk.Frame(subframeFuncionalidad,bg="#222426")
+                        subframeCantidad.place(relheight=0.75,relwidth=0.88,relx=0.02,rely=0.4)
+
+                        cantidadFF = FieldFrame("Info", ["Cantidad Prestamo:"],f"Maximo ${cuentaSeleccionada.getBanco().getPrestamo()}",  frame=[subframeCantidad,1, 0, 2, 1])
+                        button_continue = tk.Button(subframeCantidad, text="Confirmar Prestamo", font=fuente, command=realizarPrestamo, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="gray", fg="white")
+                        button_continue.place(rely=0.2,relwidth=0.49)
+                        button_back = tk.Button(subframeCantidad, text="Volver", font=fuente, command=cancelar, activebackground="white", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white", fg="black")
+                        button_back.place(relx=0.51,rely=0.2,relwidth=0.49)
+
+
+                    # Le mostramos al usuario las cuentas
+                    fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+                    label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="A continuacion se le mostraran las cuentas con las que puede pedir prestamo,seleccione una para conocer la cantidad de dinero que le presta su banco:")
+                    label1.place(anchor="w",rely=0.1,relx=0.02,relheight=0.1)
+                    labelCuenta= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text="Cuenta:")
+                    labelCuenta.place(anchor="w",rely=0.25,relx=0.02)
+                    
+                    # Creamos selecctor
+                    cuentasCombobox = Combobox(subframeFuncionalidad, cursor="cross",font=fuente)
+                    cuentasCombobox["values"] = [cuentas[m].getNombre() for m in range(0, len(cuentas))]
+                    cuentasCombobox['state'] = 'readonly'
+                    cuentasCombobox.place(relwidth=0.75,relx=0.1,rely=0.2,relheight=0.1)
+                    cuentasCombobox.bind("<<ComboboxSelected>>",cuentaCambiada)
+                else:
+                    print("es cuentas de ahorros pero no presat dinero")
+            else:
+                print("no son cuentas")
 
         def pagar_prestamo():
             # Editar la descripcion de su funcionalidad

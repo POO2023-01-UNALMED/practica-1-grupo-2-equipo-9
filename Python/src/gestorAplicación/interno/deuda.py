@@ -8,8 +8,8 @@ class Deuda(Metas):
         self._banco = banco
         Deuda._deudasTotales.append(self)        
         Metas._metasTotales.append(self)
-
-    def conseguirDeuda(self,usuario):
+    @classmethod
+    def conseguirDeuda(cls,usuario):
         deudas = Deuda.getDeudasTotales();
         deudasUsuario = []
         for deuda in deudas:
@@ -17,7 +17,6 @@ class Deuda(Metas):
                 deudasUsuario.append(deuda)
         
         return deudasUsuario
-    
     def getCuenta(self):
         return self._cuenta
     def getBanco(self):

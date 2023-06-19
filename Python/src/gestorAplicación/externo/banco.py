@@ -294,7 +294,8 @@ class Banco():
     
     def getComision(self):
         return self._comision
-
+    def getPrestamo(self):
+        return self._prestamo
     def setComision(self, _comision):
         self._comision = _comision
 
