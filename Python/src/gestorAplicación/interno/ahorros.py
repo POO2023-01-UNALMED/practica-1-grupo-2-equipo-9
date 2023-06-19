@@ -47,10 +47,9 @@ class Ahorros(Cuenta):
         from .categoria import Categoria
         probabilidad = self.getTitular().getSuscripcion().getProbabilidadInversion()
         rand = random.random()+probabilidad
+        print()
         if(rand >= 1 and self.getSaldo() != 0):
             return(Movimientos.crearMovimiento(self, self.getSaldo() + self.getSaldo() * probabilidad, Categoria.FINANZAS, datetime.now()))
-        elif(self.getSaldo == 0):
-            raise accountsException.NoBalanceinSavingAccountException(self)
         else:
             raise accountsException.FailedInvestmentException(self.getTitular())
 

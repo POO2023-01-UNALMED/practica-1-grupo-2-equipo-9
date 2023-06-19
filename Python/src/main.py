@@ -885,9 +885,11 @@ class App():
                         for account in cls.user.getCuentasAhorroAsociadas():
                             if(selected_account == account.getNombre()):
                                 selected_account = account
+                        if(selected_account.getSaldo() == 0.0):
+                            raise accountsException.NoBalanceinSavingAccountException(selected_account)
                         c = selected_account.invertirSaldo()
                     except accountsException.NoBalanceinSavingAccountException:
-                        confirmation = messagebox.askyesno("Mis finanzas", accountsException.NoBalanceinSavingAccountException(c).show_message())
+                        confirmation = messagebox.askyesno("Mis finanzas", accountsException.NoBalanceinSavingAccountException(selected_account).show_message())
                         if confirmation:
                             consignar_saldo()
                         else:
