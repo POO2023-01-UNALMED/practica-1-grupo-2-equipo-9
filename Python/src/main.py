@@ -2092,7 +2092,7 @@ class App():
             subframeFuncionalidad = Frame(cls.subframe_main,bg="#222426")
             subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
 
-            fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+            fuente = font.Font(size=12, family="Times New Roman")
             labelNombre = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
             labelNombre.place(relx= 0, rely=0,relwidth=0.2, relheight=0.2)
             labelTipo = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Tipo de Cuenta")
@@ -2152,7 +2152,7 @@ class App():
         
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = Tk()
-        cls.main_window.geometry("1400x500")
+        cls.main_window.geometry("1100x800")
         cls.main_window.title("Mis Finanzas")
         #cls.main_window.resizable(0, 0)
         route_logo = os.path.join(cls.current_directory + "\static", "logo.png")
@@ -2265,7 +2265,7 @@ class App():
             cls.subframe_main, bg="gray", borderwidth=1, relief="solid", name="subframe_description_title")
         subframe_description_title.place(
             relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
-        descripcion_font_style = font.Font(size=12, family="Alegreya Sans", slant="italic")
+        descripcion_font_style = font.Font(size=13, family="Alegreya Sans", slant="italic")
         descripcion_funcionalidad = StringVar(main_frame)
         text_description_title = Text(subframe_description_title, cursor="cross", fg="white", bg="#565A5C", font=descripcion_font_style, wrap="word", spacing1=8, border=1, relief="groove")
         text_description_title.pack(fill="both", expand=True)
@@ -2274,10 +2274,10 @@ class App():
         subframe_description_component = Frame(
             cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid", name="subframe_description_component")
         subframe_description_component.place(
-            relheight=0.75, relwidth=1, rely=0.25, relx=0.0)
+            relheight=0.5, relwidth=1, rely=0.25, relx=0.0)
         basic_instructions = StringVar(main_frame)
         text_description_component = Text(subframe_description_component, cursor="cross", fg="black", bg="#B1B2B0", font=(
-            "Alegreya Sans", 12), wrap="word", spacing1=8, border=1, relief="groove")
+            "Alegreya Sans", 13), wrap="word", spacing1=8, border=1, relief="groove")
         text_description_component.pack(fill="both", expand=True, anchor="center")
         welcome_text_reset()
     # --------------------------------------------------
