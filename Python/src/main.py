@@ -229,6 +229,15 @@ class App():
                                    "\static\\david_photos", "3.jpg")
             david_4 = os.path.join(cls.current_directory +
                                    "\static\\david_photos", "4.jpg")
+            
+            jorge_1 = os.path.join(cls.current_directory +
+                                   "\static\\jorge_photos", "1.png")
+            jorge_2 = os.path.join(cls.current_directory +
+                                   "\static\\jorge_photos", "2.png")
+            jorge_3 = os.path.join(cls.current_directory +
+                                   "\static\\jorge_photos", "3.png")
+            jorge_4 = os.path.join(cls.current_directory +
+                                   "\static\\jorge_photos", "4.png")
 
             image_paths = [
                 # Pack de imagenes 1
@@ -247,10 +256,10 @@ class App():
                 route_image,
                 route_logo,
                 # Pack de imagenes 4
-                route_logo,
-                route_logo,
-                route_logo,
-                route_image,
+                jorge_1,
+                jorge_2,
+                jorge_3,
+                jorge_4,
                 # Pack de imagenes 5
                 pablo_1,
                 pablo_2,
@@ -1999,7 +2008,7 @@ class App():
                     cuentasCombobox.place(relwidth=0.75,relx=0.1,rely=0.2,relheight=0.1)
                     cuentasCombobox.bind("<<ComboboxSelected>>",cuentaCambiada)
                 else:
-                    messagebox.showinfo("Mis Finanzas","Lastimosamente sus cuentas de ahorros no prestan dinero, intente cambiarse de banco para poder solicitar un prestamo")
+                    messagebox.showinfo("Mis Finanzas",cuentas)
                     back_menu_main()
             else:
                 messagebox.showinfo("Mis Finanzas","Usted no tiene Cuentas de ahorros,por favor intente crear una antes de solicitar un prestamo")
@@ -2066,13 +2075,14 @@ class App():
                         print(error)
                         if error == None:
                             # Se realiza el prestamo   
-                            print("todo bien")
-                            prestamo = Movimientos.pagarDeuda(cls.user,deudaSeleccionada,int(cantidad))
-                            if cantidad == deudaSeleccionada.getCantidad():
+                            if cantidad < deudaSeleccionada.getCantidad():
+                                prestamo = Movimientos.pagarDeuda(cls.user,deudaSeleccionada,int(cantidad))
                                 messagebox.showinfo("Mis Finanzasa",f"Has pagado ${cantidad}. \n Su deuda ahora es de ${deudaSeleccionada.getCantidad()}")
+
                                 pagar_prestamo()
                             else:
                                 messagebox.showinfo("Mis Finanzasa",f"¡FELICIDADES!\nHas pagado por completo tu deuda")
+                                prestamo = Movimientos.pagarDeuda(cls.user,deudaSeleccionada,int(cantidad))
                                 pagar_prestamo()
 
                         elif error == "continuar":
