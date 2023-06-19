@@ -13,10 +13,11 @@ class Deuda(Metas):
         deudas = Deuda.getDeudasTotales();
         deudasUsuario = []
         for deuda in deudas:
-            if deuda.getTitular == usuario:
+            if deuda.getDueno() == usuario:
                 deudasUsuario.append(deuda)
-        
         return deudasUsuario
+    
+
     def getCuenta(self):
         return self._cuenta
     def getBanco(self):
@@ -28,6 +29,7 @@ class Deuda(Metas):
         self._cuenta = cuenta
     def setBanco(self,banco):
         self._banco = banco
+
 
     def __str__(self) -> str:
         return f"Dueno:{self.getDueno} \n Cuenta:{self.getCuenta} \n Cantida:{self.getCantidad} \n banco:{self.getBanco} \n"

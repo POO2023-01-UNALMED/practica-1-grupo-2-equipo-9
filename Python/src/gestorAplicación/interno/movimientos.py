@@ -218,18 +218,18 @@ class Movimientos():
         return(Movimientos.crearMovimiento(_cuenta,_cantidad,categoria=Categoria.PRESTAMO,fecha=datetime.now()))
         
     @classmethod
-    def pagarDeuda(_usuario,_deuda,_cantidad):
-        if _deuda.getCantidad()==_cantidad:
+    def pagarDeuda(cls,_usuario,_deuda,cantidad):
+        if _deuda.getCantidad()==cantidad:
             cuenta = _deuda.getCuenta()
             Deuda.getDeudasTotales().remove(_deuda)
             Metas.getMetasTotales().remove(_deuda)
-            _deuda.getCantidad(0)
-            cantidad= - _cantidad
+            _deuda.setCantidad(0)
+            cantidad= -cantidad
             return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO, datetime.now())
         else:
-            _deuda.setCantidad(_deuda.getCantidad()-_cantidad)
-            cuenta = _deuda.getCantidad()
-            cantidad = -_cantidad
+            _deuda.setCantidad(_deuda.getCantidad()-cantidad)
+            cuenta = _deuda.getCuenta()
+            cantidad = -cantidad
             return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,datetime.now())
         
     # Funcionalidad de cambio de divisa

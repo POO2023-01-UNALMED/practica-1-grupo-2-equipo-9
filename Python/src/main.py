@@ -17,6 +17,7 @@ from gestorAplicación.interno.ahorros import Ahorros
 from gestorAplicación.externo.divisas import Divisas
 from gestorAplicación.interno.categoria import Categoria
 from gestorAplicación.interno.categoria import Categoria
+from gestorAplicación.interno.deuda import Deuda
 from datetime import datetime
 from gestorAplicación.externo.cuotas import Cuotas
 from gestorAplicación.externo.tablas import Tablas
@@ -1874,7 +1875,9 @@ class App():
                                 # Se realiza el prestamo   
                                 print("todo bien")
                                 prestamo =Movimientos.realizarPrestamo(cuentaSeleccionada,cantidad)
-                                print(prestamo)
+                                messagebox.showinfo("Mis Finanzas",f"¡Prestamo Creado!\n{prestamo}")
+                                back_menu_main()
+                                
                             elif error == "continuar":
                                 pedir_prestamo()
                             else:
@@ -1909,14 +1912,117 @@ class App():
                     cuentasCombobox.place(relwidth=0.75,relx=0.1,rely=0.2,relheight=0.1)
                     cuentasCombobox.bind("<<ComboboxSelected>>",cuentaCambiada)
                 else:
-                    print("es cuentas de ahorros pero no presat dinero")
+                    messagebox.showinfo("Mis Finanzas","Lastimosamente sus cuentas de ahorros no prestan dinero, intente cambiarse de banco para poder solicitar un prestamo")
+                    back_menu_main()
             else:
-                print("no son cuentas")
+                messagebox.showinfo("Mis Finanzas","Usted no tiene Cuentas de ahorros,por favor intente crear una antes de solicitar un prestamo")
+                back_menu_main()
 
         def pagar_prestamo():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Pagar Prestamo")
             descripcion_funcionalidad.set("Es importante pagar tus deudas para poder confiando en ti.\n En esta sección puedes pagar tus prestamos, si no has realizado ningun prestamos y quieres hacerlo ingresa a la sección Pedir Prestamo")
+
+            # Creamos el subframe para agregar la funcionalidad
+            subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
+            subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
+
+
+            # Empezamos logica de la funcionalidad
+            deudas = Deuda.conseguirDeuda(cls.user)
+            if len(deudas) !=0:
+                # El usuario tiene cunetas y puede realizar un prestamo
+                # Le mostramos al usuario las cuentas con las que puede hacer prestamo
+                deudaSeleccionada=None
+                # Funciones para el funcionamiento
+                def deudaCambiada(event):
+                    deudaSeleccionada = deudas[deudasCombobox.current()]
+                    def pagarPrestamo():
+                        error = None
+                        cantidad = cantidadFF.getValoresInsertados()[0].get()
+                        try:
+                            if(cantidad is None or cantidad == ""):
+                                raise genericException.NoValueInsertedException(int)
+                            cantidad = int(cantidad)
+                            if cantidad <=0 or cantidad>deudaSeleccionada.getCantidad():
+                                raise genericException.ValuePagarException(cantidad,deudaSeleccionada.getCantidad())
+                        except ValueError:
+                            error= "continuar"
+                            confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? (Y/N): ")
+                            if confirmation:
+                                error ="continuar"
+                            else:
+                                error = "cancelar"
+
+                        except genericException.ValuePrestamoException:
+                            error= "continuar"
+                            confirmation =messagebox.askretrycancel("Mis finanzas", genericException.ValuePrestamoException(cantidad,deudaSeleccionada.getCantidad()).show_message())
+                            if confirmation:
+                                error ="continuar"
+                            else:
+                                error = "cancelar"
+
+                        except genericException.NoValueInsertedException:
+                            error= "continuar"
+                            confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
+                            if confirmation:
+                                error ="continuar"
+
+                            else:
+                                error = "cancelar"
+                        print(error)
+                        if error == None:
+                            # Se realiza el prestamo   
+                            print("todo bien")
+                            prestamo = Movimientos.pagarDeuda(cls.user,deudaSeleccionada,int(cantidad))
+                            if cantidad == deudaSeleccionada.getCantidad():
+                                messagebox.showinfo("Mis Finanzasa",f"Has pagado ${cantidad}. \n Su deuda ahora es de ${deudaSeleccionada.getCantidad()}")
+                                pagar_prestamo()
+                            else:
+                                messagebox.showinfo("Mis Finanzasa",f"¡FELICIDADES!\nHas pagado por completo tu deuda")
+                                pagar_prestamo()
+
+                        elif error == "continuar":
+                            pagar_prestamo()
+                        else:
+                            back_menu_main()
+
+
+                    def cancelar():
+                        back_menu_main()
+                    deudaSeleccionada = deudas[deudasCombobox.current()]
+                    label2= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"Su deuda es de $ {deudaSeleccionada.getCantidad()}. Ingrese la cantiadad que desea pagar")
+                    label2.place(anchor="w",rely=0.35,relx=0.02)
+                    
+                    subframeCantidad = tk.Frame(subframeFuncionalidad,bg="#222426")
+                    subframeCantidad.place(relheight=0.75,relwidth=0.88,relx=0.02,rely=0.4)
+
+                    cantidadFF = FieldFrame("Info", ["Pagar:"],f"Total ${deudaSeleccionada.getCantidad()}",  frame=[subframeCantidad,1, 0, 2, 1])
+                    button_continue = tk.Button(subframeCantidad, text="Pagar Prestamo", command=pagarPrestamo, font=fuente, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="gray", fg="white")
+                    button_continue.place(rely=0.2,relwidth=0.49)
+                    button_back = tk.Button(subframeCantidad, text="Volver", font=fuente,command=back_menu_main, activebackground="white", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white", fg="black")
+                    button_back.place(relx=0.51,rely=0.2,relwidth=0.49)
+
+
+                # Le mostramos al usuario las cuentas
+                fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="A continuacion se le mostraran sus deudas,seleccione la que desee pagar:")
+                label1.place(anchor="w",rely=0.1,relx=0.02,relheight=0.1)
+                labelCuenta= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text="Cuenta:")
+                labelCuenta.place(anchor="w",rely=0.25,relx=0.02)
+                
+                # Creamos selecctor
+                deudasCombobox = Combobox(subframeFuncionalidad, cursor="cross",font=fuente)
+                deudasCombobox["values"] = [f"{deudas[m].getCuenta().getNombre()} cantidad: ${deudas[m].getCantidad()}" for m in range(0, len(deudas))]
+                deudasCombobox['state'] = 'readonly'
+                deudasCombobox.place(relwidth=0.75,relx=0.1,rely=0.2,relheight=0.1)
+                deudasCombobox.bind("<<ComboboxSelected>>",deudaCambiada)
+            else:
+                messagebox.showinfo("Mis Finanzasa","Usted no tiene deudas por pagar")
+                back_menu_main()
+                
+
+
 
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()

@@ -33,3 +33,14 @@ class ValuePrestamoException(Exception):
             return("Error. El valor debe ser mayor a 0. \n¿Desea intentarlo de nuevo?:")
         else:
             return(f"Error. Su banco le presta maximo ${self._prestamo}. \n¿Desea intentarlo de nuevo?:")
+        
+class ValuePrestamoException(Exception):
+    def __init__(self,cantidad,prestamo,*args: object) -> None:
+        super().__init__(*args)
+        self._cantidad = cantidad
+        self._prestamo = prestamo
+    def show_message(self):
+        if self._cantidad <=0:
+            return("Error. El valor debe ser mayor a 0. \n¿Desea intentarlo de nuevo?:")
+        else:
+            return(f"Error. Su deuda es de ${self._prestamo}. \n¿Desea intentarlo de nuevo?:")
