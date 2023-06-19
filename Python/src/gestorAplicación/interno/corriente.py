@@ -92,7 +92,7 @@ class Corriente(Cuenta):
     #Revisar necesidad del clonado
 
     @staticmethod
-    def calculadoraCuotas(cls, cuotas, deuda, intereses, auxiliar):
+    def calculadoraCuotas(cls, cuotas, deuda, intereses, auxiliar = False):
         cuotasTotales = cuotas.getCantidad_Cuotas()
         cuota = []
         interesMensual = Corriente.calculoInteresNominalMensual(intereses)

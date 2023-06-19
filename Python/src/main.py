@@ -18,6 +18,8 @@ from gestorAplicación.externo.divisas import Divisas
 from gestorAplicación.interno.categoria import Categoria
 from gestorAplicación.interno.categoria import Categoria
 from datetime import datetime
+from gestorAplicación.externo.cuotas import Cuotas
+from gestorAplicación.externo.tablas import Tablas
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS. CODIFICAR EXCEPCIONES EN EL PAQUETE EXCEPCIONES
 
@@ -1547,6 +1549,10 @@ class App():
             #Desarrollo de la funcionalidad
 
             if cuenta == None:
+
+                #Cambio prueba, a espera confirmación de la SERIALIZACIÓN
+                cls.user.getCuentasCorrienteAsociadas()[0].setDisponible(500000)
+
                 #Arreglo que almacena las cuentas con deuda alguna
                 cuentasEnDeuda = cls.user.retornarDeudas()
 
@@ -1570,61 +1576,234 @@ class App():
                 framecc = tk.Frame(cls.subframe_main)
                 framecc.pack(expand=True, fill="both")
 
+                confirmacion_Compra = False
                 cuenta_Compra = 0
-                seleccion_Cuenta = True
 
                 def eleccion(evento):
+                    global confirmacion_Compra
                     eleccion = eleccion_cuenta.get()
-                    eleccion = str(eleccion)
-                    cuenta_Compra = int(eleccion[0])
+                    if eleccion == "Seleccionar Cuenta":
+                        messagebox.showerror("Mala elección", "Por favor, selecciona una cuenta válida")
+                    else:
+                        message = "Información de la cuenta: \n" + str(cuentasEnDeuda[int(eleccion[0])-1]) + "\nConfirme por favor si es la cuenta deseada"
+                        confirmacion_Compra = messagebox.askyesno("Confirmación", message= message)
+                        if confirmacion_Compra:
+                            global cuenta_Compra
+                            cuenta_Compra = int(eleccion[0])
+                    print(confirmacion_Compra)
 
-                while seleccion_Cuenta:
-                    impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
-                    label_impresion = tk.Label(framecc, text=impresion_1)
-                    label_impresion.grid(row=0, column=0, columnspan=10)
+                impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
+                label_impresion = tk.Label(framecc, text=impresion_1)
+                label_impresion.grid(row=0, column=0, columnspan=10)
 
-                    Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
+                Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
 
-                    cuen_comb = []
-                    for cuent in cuentasEnDeuda:
-                        cadena = str()
-                    i = 1
-                    for cuenta_deuda in cuentasEnDeuda:
-                        cadena = str(i) + ". ID:" + str(cuenta_deuda.getId()) + " " + cuenta_deuda.getNombre()
-                        cuen_comb.append(cadena)
-                        i += 1
+                cuen_comb = ["Seleccionar Cuenta"]
+                    
+                i = 1
+                for cuenta_deuda in cuentasEnDeuda:
+                    cadena = str(i) + ". ID:" + str(cuenta_deuda.getId()) + " " + cuenta_deuda.getNombre()
+                    cuen_comb.append(cadena)
+                    i += 1
 
-                    valor_defecto_ec = tk.StringVar(value="Cuenta")
-                    eleccion_cuenta = Combobox(framecc, values = cuen_comb, textVariable = valor_defecto_ec)
-                    eleccion_cuenta = Combobox(framecc, values= cuen_comb, textvariable=StringVar(value="Cuenta"))
-                    eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
-                    eleccion_cuenta.grid(row = 12, column = len(cuentasEnDeuda)//2, columnspan=2)
-                    eleccion_cuenta.grid(row = len(cuentasEnDeuda)//2 + 2, columnspan=2, column = 12)
+                eleccion_cuenta = Combobox(framecc, values= cuen_comb)
+                eleccion_cuenta.set("Seleccionar Cuenta")
+                eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
+                eleccion_cuenta.grid(row = len(cuentasEnDeuda) + 2, column= 20, padx=10)
 
-                    #i=1
-                    #for cuenta_1 in cuentasEnDeuda:
-                    #    boton_el = tk.Button(framecc, text=str(i))
-                    #    boton_el.grid(row=1, column=0)
+                while not confirmacion_Compra:
+                    cls.subframe_main.update()
+                
+                cuentasAux.remove(cuentasEnDeuda[cuenta_Compra - 1])
 
-                    #    ver_cuenta = tk.Label(framecc, text = cuenta_1)
-                    #    ver_cuenta.grid(row=1, column=1)
+                #Arreglo que almacena las cuentas capaces de recibir la deuda
+                cuentas_capaces_deuda = cls.user.capacidad_endeudamiento(cuentasAux, cuentasEnDeuda[cuenta_Compra-1])
 
-                    #Impresión Cuentas con Préstamo Asociado
-                    #Verificar impresión cuentas
+                #Arreglo que almacena las tasas de interes aplicables con orden del arreglo anterior
+                tasacion_cuentas = Banco.verificar_tasas_de_interes(cls.user, cuentas_capaces_deuda)
 
-                    #Atributo para validación entrada Cuenta_Compra
-                    validación_Cuenta_Compra = False
-                    while validación_Cuenta_Compra:
-                        print("Revisar impresión")
-                        #Revisar entrada
+                cuentasAux.append(cuentasEnDeuda[cuenta_Compra-1])
 
-                        #Verificar entrada
+                if len(cuentas_capaces_deuda) == 0:
+                    messagebox.showerror("Error", "Ninguna de las cuentas Corriente que posees tiene la capacidad de recibir la deuda de la cuenta escogida.")
+                    return
+                
+                for widget in framecc.winfo_children():
+                    widget.destroy()
 
-                    break
+                confirmacion_Destino = False
+                cuenta_Destino = 0
 
-                #password_entry.delete(0, tk.END)
-                #user_email_entry.delete(0, tk.END)
-            
+                def eleccion_2(evento):
+                    global confirmacion_Destino
+                    eleccion = eleccion_cuenta.get()
+                    if eleccion == "Seleccionar Cuenta":
+                        messagebox.showerror("Mala elección", "Por favor, selecciona una cuenta válida")
+                    else:
+                        message = "Información de la cuenta: \n" + str(cuentas_capaces_deuda[int(eleccion[0])-1]) + "\nConfirme por favor si es la cuenta deseada"
+                        confirmacion_Destino = messagebox.askyesno("Confirmación", message= message)
+                        if confirmacion_Destino:
+                            global cuenta_Destino
+                            cuenta_Destino = int(eleccion[0])
+
+                impresion_2 = "Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: "
+                label_impresion_2 = tk.Label(framecc, text=impresion_2)
+                label_impresion_2.grid(row=0, column=0, columnspan=11)
+
+                Tablas.impresionCuentasCorrienteInteres(cuentas_capaces_deuda, tasacion_cuentas, framecc, 1)
+
+                cuen_comb_2 = ["Seleccionar Cuenta"]
+                    
+                j = 1
+                for cuenta_capaz in cuentas_capaces_deuda:
+                    cadena = str(i) + ". ID:" + str(cuenta_capaz.getId()) + " " + cuenta_capaz.getNombre()
+                    cuen_comb_2.append(cadena)
+                    j += 1
+
+                eleccion_cuenta_compra = Combobox(framecc, values= cuen_comb_2)
+                eleccion_cuenta_compra.set("Seleccionar Cuenta")
+                eleccion_cuenta_compra.bind("<<ComboboxSelected>>", eleccion_2)
+                eleccion_cuenta_compra.grid(row = len(cuentas_capaces_deuda) + 2, column= 20, padx=10)
+
+                while not confirmacion_Destino:
+                    cls.subframe_main.update()
+
+                deuda = Cuenta.dineroATenerDisponible(cuentas_capaces_deuda[cuenta_Destino - 1], cuentasEnDeuda[cuenta_Compra - 1].getDivisa())
+
+                #Atributo auxiliar para almacenar decision de periodicidad
+                eleccion_periodicidad = Cuotas.C1
+
+                message_per = "¿Desea mantener la periodicidad del pago de la deuda?"
+                validacion_periodicidad = messagebox.askyesno("Elección", message= message_per)
+                if validacion_periodicidad:
+                    message_info_per = "Perfecto, la deuda mantendrá un plazo de pago a " + cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago() + "."
+                    messagebox.showinfo("Anuncio", message_info_per)
+                    eleccion_periodicidad = cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()
+                else:
+                    #Atributo de validacion de la seleccion de periodicidad
+                    for widget in framecc.winfo_children():
+                        widget.destroy()
+                    
+                    confirmacion_Periodicidad = False
+                    def eleccion_3(evento):
+                        global confirmacion_Periodicidad
+                        eleccion = eleccion_cuenta.get()
+                        if eleccion == "Seleccionar Cuotas":
+                            messagebox.showerror("Mala elección", "Por favor, selecciona una cantidad de cuotas válida")
+                        else:
+                            eleccion_aux = eleccion.split()
+                            message = "Cantidad de cuotas escogida: " + eleccion_aux[0]
+                            confirmacion_Periodicidad = messagebox.askyesno("Confirmación", message= message)
+                            if confirmacion_Periodicidad:
+                                eleccion_asignar = int(eleccion_aux[0])
+                                global eleccion_periodicidad
+                                if eleccion_asignar == 1:
+                                    eleccion_periodicidad = Cuotas.C1
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C1 + ".")
+                                elif eleccion_asignar == 6:
+                                    eleccion_periodicidad = Cuotas.C6
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C6 + ".")
+                                elif eleccion_asignar == 12:
+                                    eleccion_periodicidad = Cuotas.C12
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C12 + ".")
+                                elif eleccion_asignar == 18:
+                                    eleccion_periodicidad = Cuotas.C18
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C18 + ".")
+                                elif eleccion_asignar == 24:
+                                    eleccion_periodicidad = Cuotas.C24
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C24 + ".")
+                                elif eleccion_asignar == 36:
+                                    eleccion_periodicidad = Cuotas.C36
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C36 + ".")
+                                else:
+                                    eleccion_periodicidad = Cuotas.C48
+                                    messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C48 + ".")
+
+                        impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
+                        label_impresion_3 = tk.Label(framecc, text=impresion_3)
+                        label_impresion_3.grid(row=0, column=0, columnspan=5)
+
+                    cuen_comb_3 = ["Seleccionar Cuotas", "1 Cuota", "6 Cuotas", "12 Cuotas", "18 Cuotas", "24 Cuotas", "36 Cuotas", "48 Cuotas"]
+
+                    eleccion_cuenta_compra = Combobox(framecc, values= cuen_comb_3)
+                    eleccion_cuenta_compra.set("Seleccionar Cuotas")
+                    eleccion_cuenta_compra.bind("<<ComboboxSelected>>", eleccion_3)
+                    eleccion_cuenta_compra.grid(row = 3, column= 2)
+
+                    while not confirmacion_Periodicidad:
+                        cls.subframe_main.update()
+                
+                vistaPrevia = Corriente.vistaPreviaMovimiento(cuentas_capaces_deuda[cuenta_Destino - 1], eleccion_periodicidad, deuda, tasacion_cuentas[cuenta_Destino - 1])
+
+                cuota = []
+                message_pago = "¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes deberá pagar su valor correspondiente."
+                validacion_pago = messagebox.askyesno("Elección", message= message_pago)
+                if validacion_pago:
+                    cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible())
+                    vistaPrevia.setPrimerMensualidad(True)
+                else:
+                    cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible(), 1)
+                    vistaPrevia.setPrimerMensualidad(False)
+                
+                for widget in framecc.winfo_children():
+                    widget.destroy()
+                
+                #Vista Previa de los resultados del cambio
+                impresion_4 = "Vista previa de como quedaría la cuenta escogida para recibir la deuda: "
+                label_impresion_4 = tk.Label(framecc, text=impresion_4)
+                label_impresion_4.grid(row=0, column=0, columnspan=11)
+
+                label_impresion_5 = tk.Label(framecc, text=vistaPrevia)
+                label_impresion_5.grid(row=2, column=0, columnspan=11)
+
+                cuotaMensual = Corriente.imprimirCuotaMensual(cuota)
+
+                label_impresion_6 = tk.Label(framecc, text="Primer Cuota: ")
+                label_impresion_6.grid(row=3, column=0, columnspan=11)
+
+                impresion_8 = cuotaMensual + " " + vistaPrevia.getDivisa()
+                label_impresion_7 = tk.Label(framecc, text=impresion_8)
+                label_impresion_7.grid(row=4, column=0, columnspan=11)
+
+                message_pago = "¿Desea un resumen completo de las cuotas a pagar?"
+                validacion_resumen = messagebox.askyesno("Elección", message= message_pago)
+                if validacion_resumen:
+                    cuota_calculadora = []
+                    if vistaPrevia.getPrimerMensualidad():
+                        cuota_calculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses())
+                    else:
+                        cuota_calculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses(), True)
+                    info_adicional = Corriente.informacionAdicionalCalculadora(cuota_calculadora, vistaPrevia.getCupo() - vistaPrevia.getDisponible())
+                    calculadora_financiera(cuota_calculadora, info_adicional, vistaPrevia.getDivisa())
+                
+                message_confirmacion = "¿Desea confirmar la realización del movimiento?"
+                validacion_confirmacion = messagebox.askyesno("Elección", message= message_confirmacion)
+                if validacion_confirmacion:
+                    #Cambios para la cuenta origen
+                    cuentasEnDeuda[cuenta_Compra - 1].setDisponible(cuentasEnDeuda[cuenta_Compra - 1].getCupo())
+                    cuentasEnDeuda[cuenta_Compra - 1].setPlazo_Pago(Cuotas.C1)
+
+                    #Cambios para la cuenta destino
+                    Cuenta.getCuentasTotales().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
+                    cls.user.getCuentasAsociadas().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
+                    cls.user.getCuentasCorrienteAsociadas().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
+                    Corriente.getCuentasCorrienteTotales().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
+
+                    cls.user.asociarCuenta(vistaPrevia)
+
+                    messagebox.showinfo("Finalizado", "Compra de cartera realizada con éxito")
+                
+                else:
+                    Cuenta.getCuentasTotales().remove(vistaPrevia)
+                    Corriente.getCuentasCorrienteTotales().remove(vistaPrevia)
+                    vistaPrevia = None
+
+                    messagebox.showinfo("Cancelación", "Movimiento cancelado.")
+
+                return
+
+                
+
             else:
                 pass
 

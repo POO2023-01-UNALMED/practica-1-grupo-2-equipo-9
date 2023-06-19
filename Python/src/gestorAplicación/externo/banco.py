@@ -269,6 +269,7 @@ class Banco():
         return interes
     
     def retornar_descuentos_movimientos(self, cuenta):
+        from gestorAplicación.interno.movimientos import Movimientos
         movimientos_originarios_con_banco = Movimientos.verificar_movimientos_usuario_banco(cuenta.getTitular(), cuenta.getBanco())
         descuento = (len(movimientos_originarios_con_banco) // (self._desc_movimientos_cantidad * self._desc_movimientos_porcentaje))
         return descuento
