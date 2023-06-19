@@ -111,13 +111,11 @@ class FieldFrame(tk.Frame):
 
 # ----------------- APP ----------------
 class App():
-    # Guardar objetos al sistema       
+    # Guardar objetos al sistema (LOS OBJETOS NO SE SOBREESCRIBEN, TODOS LOS OBJETOS DE LA MISMA CLASE QUE SE VAYAN A SERIALIZAR DEBEN SER INCLUIDOS EN UNA SOLA LISTA CUANDO SE LLAMA AL MÉTODO SERIALIZAR. LAS LLAMADAS A SERIALIZAR SIEMPRE DEBEN SER LO ÚLTIMO)       
     estado1 = Estado()
-    Serializador.serializar([estado1])
     banco1 = Banco(estado=estado1)
     banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
     banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
-    Serializador.serializar([banco1, banco2, banco3])
     user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
     user1.asociarBanco(banco1)
     user1.setSuscripcion(Suscripcion.BRONCE)
@@ -128,30 +126,27 @@ class App():
     cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
     cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
     cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
-    metas1 = Metas()
-    user1.asociarMeta(metas1)
     user1.asociarCuenta(cuenta1)
     user1.asociarCuenta(cuenta2)
     user1.asociarCuenta(cuenta3)
     user1.asociarCuenta(cuenta4)
-    Serializador.serializar([metas1])
-    Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4])
-    Serializador.serializar([user1])
-
     userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
     userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-    Serializador.serializar([userGota, userImpuestosPortafolio])
     cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
     cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
     userGota.asociarCuenta(cuenta7)
     userImpuestosPortafolio.asociarCuenta(cuenta8)
-    Serializador.serializar([cuenta7, cuenta8])
     meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
     user1.asociarMeta(meta1)
-    Serializador.serializar([meta1])
     movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
     user1.asociarMovimiento(movimiento1)
     Serializador.serializar([movimiento1])
+    Serializador.serializar([user1, userGota, userImpuestosPortafolio])
+    Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4, cuenta7, cuenta8])
+    Serializador.serializar([meta1])
+    Serializador.serializar([banco1, banco2, banco3])
+    Serializador.serializar([estado1])
+
 
     # Cargar objetos al sistema
     Deserializador.deserializar("Usuarios")
@@ -160,8 +155,6 @@ class App():
     Deserializador.deserializar("Bancos")
     Deserializador.deserializar("Metas")
     Deserializador.deserializar("Movimientos")
-
-    #print (cuenta1)
 
     # Variables de clase para funcionamiento de la app
     initial_window = None
@@ -211,7 +204,7 @@ class App():
                 password_entry.config(fg="white", bg="black")
 
         def change_button_text():
-            # Poner estilo particular para cada uno
+            #CAMBIAR LA VARIABLE STYLE PARA DARLE UN ESTILO PARTICULAR A CADA UNO
             if button_developers_text.get()[0:1] == "1":
                 button_developers_text.set(
                     "2. Leonard David Vivas Dallos.\n PONER HOJA DE VIDA")
@@ -255,13 +248,13 @@ class App():
                                    "\static\pablo_photos", "4.png")
             
             tomas_1 = os.path.join(current_directory +
-                                   "\static\ptomas", "1.png")
+                                   "\static\\tomas_photos", "1.png")
             tomas_2 = os.path.join(current_directory +
-                                   "\static\ptomas", "2.png")
+                                   "\static\\tomas_photos", "2.png")
             tomas_3 = os.path.join(current_directory +
-                                   "\static\ptomas", "3.png")
+                                   "\static\\tomas_photos", "3.png")
             tomas_4 = os.path.join(current_directory +
-                                   "\static\ptomas", "4.png")
+                                   "\static\\tomas_photos", "4.png")
 
             image_paths = [
                 # Pack de imagenes 1
@@ -303,7 +296,7 @@ class App():
             # Crear sub-frames para las imágenes superiores
             for i in range(0, 2):
                 # Calcular el índice de la imagen actual
-                current_image_index = (cls.image_index + i) % len(image_paths)
+                current_image_index = (cls.image_index + i)
 
                 # Cargar la imagen actual
                 image_path = image_paths[current_image_index]
@@ -322,8 +315,7 @@ class App():
             # Crear sub-frame para las imágenes inferiores
             for i in range(0, 2):
                 # Calcular el índice de la imagen actual
-                current_image_index = (
-                    cls.image_index + i + 2) % len(image_paths)
+                current_image_index = (cls.image_index + i + 2)
 
                 # Cargar la imagen actual
                 image_path = image_paths[current_image_index]
@@ -892,7 +884,6 @@ class App():
             start_functionality()
 
         def consignar_saldo():
-            # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Consignar Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros una instancia de Ahorros, un enum de Categoria, un dato de tipo double llamado saldo_consignar y un objeto de tipo date. Este método consulta el atributo de clase cuentasTotales de tipo list de la clase Cuenta, posteriormente se crea una instancia de la clase Movimientos que se asocia a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
             style_consign_balance=font.Font(cls.main_window, family="Garamond", size=15)
@@ -982,7 +973,6 @@ class App():
             start_functionality()
             
         def transferir_saldo():
-            # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Transferir Saldo")
             descripcion_funcionalidad.set("(REVISAR)El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
             style_transfer_balance = font.Font(cls.main_window, family="Times New Roman", size=15)
@@ -1814,8 +1804,7 @@ class App():
             titulo_funcionalidad.set("Funcionalidad - Calculadora Financiera")
             label_description.config(
                 text="Agregar la descripcion en el metodo calculadora_financiera y agregar aca el funcionamiento de su funcionalidad")
-
-        
+    
         def pedir_prestamo():
 
             # Editar la descripcion de su funcionalidad
@@ -2025,8 +2014,8 @@ class App():
         def verCuentas():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Ver Cuentas")
-            descripcion_funcionalidad.set("En este apartado podras ver la información de tus cuentas")
-                # Creamos el subframe para agregar la funcionalidad
+            descripcion_funcionalidad.set("En este apartado podrás ver la información de tus cuentas: ")
+            # Creamos el subframe para agregar la funcionalidad
             subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
             subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
 
@@ -2041,50 +2030,53 @@ class App():
             labelBanco.place(relx= 0.6, rely=0,relwidth=0.2, relheight=0.2)
             labelSaldo = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Saldo/Disponible")
             labelSaldo.place(relx= 0.8, rely=0,relwidth=0.2, relheight=0.2)
+
             # Nombre
             i=0
-            while i< len(cls.user.getCuentasAsociadas())  :
+            while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
                 label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getNombre())
-                label1.place(relx= 0, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                label1.place(relx=0, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Tipo
             i=0
-            while i< len(cls.user.getCuentasAsociadas())  :
+            while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
                 if isinstance(cuenta,Ahorros):
                     tipo= "Ahorros"
                 else:
                     tipo= "Corriente"
                 label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=tipo)
-                label1.place(relx= 0.2, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                label1.place(relx=0.2, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Divisa 
             i=0
-            while i< len(cls.user.getCuentasAsociadas())  :
+            while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
                 label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getDivisa().value)
-                label1.place(relx= 0.4, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                label1.place(relx=0.4, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Banco 
             i=0
-            while i< len(cls.user.getCuentasAsociadas())  :
+            while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
                 label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getBanco().getNombre())
-                label1.place(relx= 0.6, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                label1.place(relx=0.6, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Saldo
-
             i=0
-            while i< len(cls.user.getCuentasAsociadas())  :
+            while i < len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
                 if isinstance(cuenta,Ahorros):
                     saldo = cuenta.getSaldo()
                 else:
                     saldo = cuenta.getDisponible()
                 label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=saldo)
-                label1.place(relx= 0.8, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                label1.place(relx=0.8, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
+            button_back_main = tk.Button(subframeFuncionalidad, text="Volver al menú principal", font=fuente, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+            button_back_main.place(relx=0, rely=0.2+(len(cls.user.getCuentasAsociadas()))*0.1, relwidth=1, relheight=0.15)  
+        
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()
         cls.main_window.geometry("1400x700")
