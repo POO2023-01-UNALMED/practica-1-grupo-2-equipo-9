@@ -25,25 +25,14 @@ class Metas:
     # Metodos asesoramiento Inversiones
     def revision_metas(user):
         proximaFecha = datetime.strptime("01/01/0001", "%d/%m/%Y")
-        proximaMeta = user.getMetasAsociadas()[0]
-
-        if len(user.getMetasAsociadas()) == 1:
-            return user.getMetasAsociadas()[0]
-        else:
-            for meta in user.getMetasAsociadas():
-                if meta.getFecha() != None:
-                    proximaMeta = meta
-                    break
-                else:
-                        continue
-
-            for meta1 in user.getMetasAsociadas():
+        proximaMeta = None
+        for meta1 in user.getMetasAsociadas():
+            if meta1.getFecha() != None:
+                proximaMeta = meta1
                 for meta2 in user.getMetasAsociadas():
-                    fecha1 = datetime.strptime(str(meta1.getFecha()), "%d/%m/%Y")
-                    fecha2 = datetime.strptime(str(meta2.getFecha()), "%d/%m/%Y")
-                    if fecha1 is None or fecha2 is None:
-                        continue
-                    else:
+                    if not meta2.getFecha() is None:
+                        fecha1 = datetime.strptime(str(meta1.getFecha()), "%d/%m/%Y")
+                        fecha2 = datetime.strptime(str(meta2.getFecha()), "%d/%m/%Y")
                         if fecha2 < fecha1:
                             if fecha2 < proximaFecha or proximaFecha == None:
                                 proximaFecha = fecha2
@@ -52,8 +41,12 @@ class Metas:
                                 continue
                         else:
                             continue
+                    else:
+                        continue
+            else:
+                continue
 
-            return proximaMeta
+        return proximaMeta
 
     @staticmethod
     def cambio_fecha(meta, fecha):
