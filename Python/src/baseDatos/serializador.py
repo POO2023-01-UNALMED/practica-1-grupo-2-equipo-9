@@ -15,28 +15,28 @@ class Serializador():
 
     #Método para serializar las listas con objetos de cualquier clase
     @classmethod
-    def serializar(cls, lista_objetos) -> None:
-        if(isinstance(lista_objetos[0], Usuario)):
+    def serializar(cls, nombre_clase) -> None:
+        if(nombre_clase == "Usuarios"):
             objects_file = open(cls.route_db + "\lista_usuarios.pkl", "wb")
-            pk.dump(lista_objetos, objects_file)
+            pk.dump(Usuario.getUsuariosTotales(), objects_file)
             objects_file.close()
-        if(isinstance(lista_objetos[0], Banco)):
+        if(nombre_clase == "Bancos"):
             objects_file = open(cls.route_db + "\lista_bancos.pkl", "wb")
-            pk.dump(lista_objetos, objects_file)
+            pk.dump(Banco.getBancosTotales(), objects_file)
             objects_file.close()
-        if(isinstance(lista_objetos[0], Estado)):
+        if(nombre_clase == "Estados"):
             objects_file = open(cls.route_db + "\lista_estados.pkl", "wb")
-            pk.dump(lista_objetos, objects_file)
+            pk.dump(Estado.getEstadoTotales(), objects_file)
             objects_file.close()
-        if(isinstance(lista_objetos[0], Cuenta)):
+        if(nombre_clase == "Cuentas"):
             objects_file = open(cls.route_db + "\lista_cuentas.pkl", "wb")
-            pk.dump(lista_objetos, objects_file)
+            pk.dump(Cuenta.getCuentasTotales(), objects_file)
             objects_file.close()
-        if(isinstance(lista_objetos[0], Movimientos)):
+        if(nombre_clase == "Movimientos"):
             objects_file = open(cls.route_db + "\lista_movimientos.pkl", "wb")
-            pk.dump(lista_objetos, objects_file)
+            pk.dump(Movimientos.getMovimientosTotales(), objects_file)
             objects_file.close()
-        if(isinstance(lista_objetos[0], Metas)):
+        if(nombre_clase == "Metas"):
             objects_file = open(cls.route_db + "\lista_metas.pkl", "wb")
-            pk.dump(lista_objetos, objects_file)
+            pk.dump(Metas.getMetasTotales(), objects_file)
             objects_file.close()

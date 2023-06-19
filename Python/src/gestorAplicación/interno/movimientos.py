@@ -61,7 +61,6 @@ class Movimientos():
             return(Movimientos(cantidad=cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), origen=origen, destino=destino, categoria=categoria, fecha=fecha))
         if(categoria == Categoria.PRESTAMO and origen == None):
             destino.setSaldo(destino.getSaldo() + cantidad)
-            print(destino.getSaldo())
             return(Movimientos(cantidad=cantidad,destino=destino, categoria=categoria, fecha=fecha))
         else:
             destino.setSaldo(destino.getSaldo() + (cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision())))

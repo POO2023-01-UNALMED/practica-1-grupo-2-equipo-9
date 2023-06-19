@@ -110,49 +110,7 @@ class FieldFrame(Frame):
 # ----------------- APP ----------------
 class App():
     # Guardar objetos al sistema (LOS OBJETOS NO SE SOBREESCRIBEN, TODOS LOS OBJETOS DE LA MISMA CLASE QUE SE VAYAN A SERIALIZAR DEBEN SER INCLUIDOS EN UNA SOLA LISTA CUANDO SE LLAMA AL MÉTODO SERIALIZAR. LAS LLAMADAS A SERIALIZAR SIEMPRE DEBEN SER LO ÚLTIMO)       
-    # estado1 = Estado()
-    # banco1 = Banco(estado=estado1)
-    # banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
-    # banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
-    # user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
-    # user1.asociarBanco(banco1)
-    # user1.setSuscripcion(Suscripcion.BRONCE)
-    # cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
-    # cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
-    # cuenta2.setDisponible(500000)
-    # cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
-    # cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
-    # cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
-    # cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
-    # user1.asociarCuenta(cuenta1)
-    # user1.asociarCuenta(cuenta2)
-    # user1.asociarCuenta(cuenta3)
-    # user1.asociarCuenta(cuenta4)
-    # userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-    # userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-    # cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
-    # cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
-    # userGota.asociarCuenta(cuenta7)
-    # userImpuestosPortafolio.asociarCuenta(cuenta8)
-    # meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
-    # user1.asociarMeta(meta1)
-    # movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
-    # user1.asociarMovimiento(movimiento1)
-    # Serializador.serializar([movimiento1])
-    # Serializador.serializar([user1, userGota, userImpuestosPortafolio])
-    # Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4, cuenta7, cuenta8])
-    # Serializador.serializar([meta1])
-    # Serializador.serializar([banco1, banco2, banco3])
-    # Serializador.serializar([estado1])
-
-
-    # Cargar objetos al sistema
-    Deserializador.deserializar("Usuarios")
-    Deserializador.deserializar("Cuentas")
-    Deserializador.deserializar("Estados")
-    Deserializador.deserializar("Bancos")
-    Deserializador.deserializar("Metas")
-    Deserializador.deserializar("Movimientos")
+    
 
     # Variables de clase para funcionamiento de la app
     initial_window = None
@@ -168,6 +126,14 @@ class App():
         
         # Métodos de funcionamiento de la ventana de inicio
         def exit_initial_window():
+            # Guardar objetos del sistema
+            Serializador.serializar("Usuarios")
+            Serializador.serializar("Cuentas")
+            Serializador.serializar("Estados")
+            Serializador.serializar("Bancos")
+            Serializador.serializar("Metas")
+            Serializador.serializar("Movimientos")
+
             cls.initial_window.destroy()
 
         def show_description():
@@ -340,6 +306,47 @@ class App():
             current_image_index = (current_image_index + 1) % len(images)
             current_image = images[current_image_index]
             system_image_label.config(image=current_image)
+
+        # Cargar objetos al sistema
+        Deserializador.deserializar("Usuarios")
+        Deserializador.deserializar("Cuentas")
+        Deserializador.deserializar("Estados")
+        Deserializador.deserializar("Bancos")
+        Deserializador.deserializar("Metas")
+        Deserializador.deserializar("Movimientos")
+
+        estado1 = Estado()
+        banco1 = Banco(estado=estado1)
+        banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
+        banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
+        user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
+        user1.asociarBanco(banco1)
+        user1.setSuscripcion(Suscripcion.BRONCE)
+        cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
+        cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
+        cuenta2.setDisponible(500000)
+        cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
+        cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
+        user1.asociarCuenta(cuenta1)
+        user1.asociarCuenta(cuenta2)
+        user1.asociarCuenta(cuenta3)
+        user1.asociarCuenta(cuenta4)
+        userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+        userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+        cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
+        cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
+        userGota.asociarCuenta(cuenta7)
+        userImpuestosPortafolio.asociarCuenta(cuenta8)
+        meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
+        user1.asociarMeta(meta1)
+        movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
+        user1.asociarMovimiento(movimiento1)
+        Serializador.serializar("Usuarios")
+        Serializador.serializar("Bancos")
+        Serializador.serializar("Estados")
+        Serializador.serializar("Cuentas")
+        Serializador.serializar("Movimientos")
+        Serializador.serializar("Metas")
 
         # Configuración básica de parámetros de la ventana de inicio
         cls.initial_window = Tk()
@@ -643,6 +650,14 @@ class App():
 
         # Método para salir de la ventana principal
         def exit_principal_window():
+            # Guardar objetos del sistema
+            Serializador.serializar("Usuarios")
+            Serializador.serializar("Cuentas")
+            Serializador.serializar("Estados")
+            Serializador.serializar("Bancos")
+            Serializador.serializar("Metas")
+            Serializador.serializar("Movimientos")
+
             cls.user = None
             cls.main_window.destroy()
             App.start_initial_window()
@@ -1103,7 +1118,7 @@ class App():
                                 back_menu_main()
                                 consignar_saldo()
                             else:
-                                own_account_functionality_logic()
+                                own_account_logic()
                         else:
                             accounts_user = cls.user.getCuentasAhorroAsociadas()
                             for account_user in accounts_user:
@@ -1219,30 +1234,27 @@ class App():
                                 back_menu_main()
                                 consignar_saldo()
                             else:
-                                another_account_functionality_logic()
+                                another_account_logic()
                         else:
                             accounts_total = Ahorros.getCuentasAhorrosTotales()
-                            for account in accounts_total:
-                                if selected_account_origin.getId() == account.getId():
-                                        accounts_total.remove(account)
+                            for account in cls.user.getCuentasAhorroAsociadas():
+                                conf = account.__contains__(accounts_total)
+                                if conf != None:
+                                        accounts_total.pop(conf)
                             label_account_destination = Label(balance_transfer_frame, text="Seleccione la cuenta de ahorros destino donde deseas transferir saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_account_destination.grid(row=0, column=0, columnspan=3, sticky="NSEW", padx=2, pady=2)
                             objects = show_saving_accounts_total(balance_transfer_frame, another_account_functionality_logic_destination, style_transfer_balance, 1)
                             label_accounts_options_local = objects[1]
                             accounts_options_combobox_local = objects[2]
                             button_select_local = objects[3]
-                            accounts_total.append(selected_account_origin)
-
+                            for account in cls.user.getCuentasAhorroAsociadas():
+                                accounts_total.append(account)
                     try:
-                        if(len(cls.user.getCuentasAhorroAsociadas()) < 2):
-                            raise accountsException.NotEnoughSavingAccountsException(cls.user)
-                    except accountsException.NotEnoughSavingAccountsException:
-                        confirmation = messagebox.askyesno("Mis finanzas", accountsException.NotEnoughSavingAccountsException(cls.user).show_message())    
-                        if(confirmation):
-                            back_menu_main()
-                            create_account_user()
-                        else:
-                             back_menu_main()
+                        if(len(Ahorros.getCuentasAhorrosTotales()) < 2):
+                            raise accountsException.NotEnoughTotalSavingAccountsException()
+                    except accountsException.NotEnoughTotalSavingAccountsException:
+                        messagebox.showerror("Mis finanzas", accountsException.NotEnoughTotalSavingAccountsException().show_message())    
+                        back_menu_main()
                     else:
                         objects = show_saving_accounts_user(balance_transfer_frame, another_account_functionality_logic, style_transfer_balance, 0)
                         label_accounts_options = objects[1]

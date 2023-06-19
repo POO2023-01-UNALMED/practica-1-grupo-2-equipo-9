@@ -29,6 +29,14 @@ class NotEnoughSavingAccountsException(Exception):
     
     def show_message(self):
         return("Error. {} debes tener más de una cuenta de ahorros asociada. \n¿Deseas crear una cuenta de ahorros? ".format(self._User.getNombre()))
+
+class NotEnoughTotalSavingAccountsException(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+    
+    @staticmethod
+    def show_message():
+        return("Error. En el sistema debe existir más de una cuenta de ahorros.")
     
 class NoAccountSelectedException(Exception):
     def __init__(self, *args: object) -> None:

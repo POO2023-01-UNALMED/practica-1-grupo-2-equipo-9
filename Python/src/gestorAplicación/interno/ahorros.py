@@ -26,6 +26,13 @@ class Ahorros(Cuenta):
     def __str__(self):
         return "Cuenta: " + self._nombre + "\nCuentas de Ahorros # " + str(self._id) + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + str(self._divisa.value) + "\nSaldo: " + str(self._saldo) + " " + str(self._divisa.value)
     
+    def __contains__(self, elementos):
+        for elemento in elementos:
+            if self.getId() == elemento.getId():
+                return elementos.index(elemento)
+        else:
+            return None
+        
     # Método de la funcionalidad asesoramiento de inversiones
     def vaciar_cuenta(self, gota):
         from .movimientos import Movimientos
