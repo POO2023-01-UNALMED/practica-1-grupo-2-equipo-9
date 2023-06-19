@@ -1815,6 +1815,7 @@ class App():
 
         
         def pedir_prestamo():
+
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Pedir Prestamo")
             descripcion_funcionalidad.set("¿Necesitas dinero? realiza un prestamo con tu banco.\nPara pedir un prestamo es necesario que cuentes con una cuenta de ahorros, la cantidad de dinero que puedes prestar va a depender de tu nivel de suscripción y del banco asociado a tu cuenta")
@@ -1836,6 +1837,7 @@ class App():
 
                     def cuentaCambiada(event):
                         def realizarPrestamo():
+                            error = None
                             cantidad = cantidadFF.getValoresInsertados()[0].get()
                             try:
                                 if(cantidad is None or cantidad == ""):
@@ -1844,28 +1846,39 @@ class App():
                                 if cantidad <=0 or cantidad>cuentaSeleccionada.getBanco().getPrestamo():
                                     raise genericException.ValuePrestamoException(cantidad,cuentaSeleccionada.getBanco().getPrestamo())
                             except ValueError:
+                                error= "continuar"
                                 confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? (Y/N): ")
                                 if confirmation:
-                                    pedir_prestamo()
+                                    error ="continuar"
                                 else:
-                                    back_menu_main()
+                                    error = "cancelar"
+
                             except genericException.ValuePrestamoException:
+                                error= "continuar"
                                 confirmation =messagebox.askretrycancel("Mis finanzas", genericException.ValuePrestamoException(cantidad,cuentaSeleccionada.getBanco().getPrestamo()).show_message())
                                 if confirmation:
-                                    pedir_prestamo()
+                                    error ="continuar"
                                 else:
-                                    back_menu_main()
+                                    error = "cancelar"
+
                             except genericException.NoValueInsertedException:
+                                error= "continuar"
                                 confirmation = messagebox.askretrycancel("Mis finanzas", genericException.NoValueInsertedException(int).show_message())
                                 if confirmation:
-                                    pedir_prestamo()
+                                    error ="continuar"
 
                                 else:
-                                    back_menu_main()
-                            # Se realiza el prestamo   
-                            prestamo =Movimientos.realizarPrestamo(cuentaSeleccionada,cantidad)
-                            print(prestamo)
-                            
+                                    error = "cancelar"
+                            print(error)
+                            if error == None:
+                                # Se realiza el prestamo   
+                                print("todo bien")
+                                prestamo =Movimientos.realizarPrestamo(cuentaSeleccionada,cantidad)
+                                print(prestamo)
+                            elif error == "continuar":
+                                pedir_prestamo()
+                            else:
+                                back_menu_main()
                         def cancelar():
                             back_menu_main()
                         cuentaSeleccionada = cuentas[cuentasCombobox.current()]
