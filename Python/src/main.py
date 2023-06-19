@@ -368,11 +368,6 @@ class App():
                                  activebackground="gray", activeforeground="white")
         menu_options.add_command(label="Salir de la aplicación", command=exit_initial_window,
                                  activebackground="gray", activeforeground="white")
-        menu_options.add_separator()
-        menu_options.add_command(
-            label="Guardar objetos", activebackground="gray", activeforeground="white")
-        menu_options.add_command(
-            label="Cargar objetos", activebackground="gray", activeforeground="white")
         home_menu.add_cascade(label="Inicio", menu=menu_options,
                               activebackground="gray", activeforeground="white")
         cls.initial_window.config(menu=home_menu)
@@ -389,9 +384,9 @@ class App():
 
         # Configuración de los sub-frames anidados a cada uno de los sub-frames anidados a main_frame de la ventana de inicio
         upper_left_frame = tk.Frame(
-            left_frame, bg="white", borderwidth=1, relief="groove")
+            left_frame, bg="#DFDEDE", borderwidth=1, relief="groove")
         upper_left_frame.place(anchor="n", relheight=0.35,
-                             relwidth=0.993, rely=0.002, relx=0.5)
+                             relwidth=0.993, rely=0, relx=0.5)
 
         bottom_left_frame = tk.Frame(
             left_frame, bg="white", borderwidth=1, relief="groove")
@@ -430,13 +425,13 @@ class App():
         # -------Texto de bienvenida(P3 - upper_left_frame)---------------------
         welcome_label_text_variable = "Bienvenidos al sistema de gestión financiera Mis Finanzas programado por: \n->Juan Pablo Mejía Gómez.\n->Leonard David Vivas Dallos.\n->José Daniel Moreno Ceballos.\n->Tomás Escobar Rivera.\n->Jorge Humberto García Botero."
         welcome_label = tk.Text(upper_left_frame, cursor="cross", fg="black", bg="white", font=(
-            "Alegreya Sans", 12), wrap="word", spacing1=8, border=0)
+            "Alegreya Sans", 12), wrap="word", spacing1=8, border=1, relief="groove")
         welcome_label.insert(tk.INSERT, welcome_label_text_variable)
         welcome_label.tag_configure("justifying", justify="center")
         welcome_label.tag_add("justifying", "1.0", tk.END)
         welcome_label.config(state="disabled")
         welcome_label.pack(expand=True, fill="both",
-                           anchor="s", padx=1, pady=20)
+                           anchor="s")
         # --------------------------------------------------
         # -------Hoja de vida de los desarrolladores(P5 - upper_right_frame)---------------------
         # Crear el botón y asociar la función change_button_text con él
@@ -463,11 +458,7 @@ class App():
 
         # Lista de las imágenes asociadas al sistema
         image_paths = [
-            route_logo,
             route_image,
-            route_logo,
-            route_image,
-            route_logo
         ]
 
         # Cargar las imágenes
@@ -642,10 +633,9 @@ class App():
             except accountsException.MaxLimitAccountsReached:
                 confirmation = messagebox.askyesno("Mis finanzas", accountsException.MaxLimitAccountsReached(cls.user).show_message())
                 if confirmation:
-                    back_menu_main()
                     comprobar_suscripcion()
                 else:
-                    back_menu_main
+                    back_menu_main()
             else:       
                 label_account = tk.Label(account_creation_frame, text="Para crear una nueva cuenta, favor diligencie los siguientes datos: ", font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                 label_account.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
@@ -665,7 +655,7 @@ class App():
         
         # Metódo que muestra información adicional del sistema
         def about():
-            messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa")
+            messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa.")
         
         # Método que muestra las cuentas de ahorro asociadas al cls.user
         def show_saving_accounts_user(master, function, style, row_number):
@@ -745,7 +735,7 @@ class App():
         # Metodos de las funcionalidades del menú
         def comprobar_suscripcion():
             titulo_funcionalidad.set("Funcionalidad - Modificar Suscripcion")
-            descripcion_funcionalidad.set("(REVISAR)El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario. El atributo comision se invoca haciendo uso del self, luego, este valor se multiplica por K, donde K es un factor que varía con base en el atributo suscripcion del Usuario pasado por parámetro en el método.")
+            descripcion_funcionalidad.set("El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario.")
             style_suscription=font.Font(cls.main_window, family="Times New Roman", size=15)
             suscription_frame = tk.Frame(cls.subframe_main, bg="#B3AF9B", borderwidth=1, relief="solid")
             suscription_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)
@@ -837,9 +827,9 @@ class App():
    
         def invertir_saldo():
             titulo_funcionalidad.set("Funcionalidad - Invertir Saldo")
-            descripcion_funcionalidad.set("(REVISAR)El método de instancia invertirSaldo que se encuentra en la clase Ahorros consulta el atributo de instancia titular de tipo Usuario, de la instancia de Ahorros utilizada para ejecutar el método, usando el operador self y el método de instancia getTitular, posteriormente, verifica el atributo de instancia suscripcion de la instancia titular y obtiene la constante probabilidad_Inversion de tipo float asociada a este. Esta última constante se utiliza para realizar un cálculo aritmético que se almacena dentro de una variable de tipo double llamada rand y se evalúa que rand sea mayor ó igual a uno. Posteriormente, si la condición es true: se realiza un Movimiento ó si la condición es false: retorna un String.")
+            descripcion_funcionalidad.set("El método de instancia invertirSaldo que se encuentra en la clase Ahorros consulta el atributo de instancia titular de tipo Usuario, de la instancia de Ahorros utilizada para ejecutar el método, usando el operador self y el método de instancia getTitular. Posteriormente, verifica el atributo de instancia suscripcion de la instancia titular y obtiene la constante _PROBABILIDADINVERSION de tipo float asociada a este. Esta última constante se utiliza para realizar un cálculo aritmético que se almacena dentro de una variable de tipo double llamada rand, luego se evalúa que rand sea mayor ó igual a uno. Posteriormente, si la condición es true, entonces se retorna una instancia de la clase Movimientos, pero si la condición es false, entonces se levanta una excepción de tipo accountsException.FailedInvestmentException.")
             style_balance_investment=font.Font(cls.main_window, family="Helvetica", size=14)
-            balance_investment_frame = tk.Frame(cls.subframe_main, bg="#FFDBE1", borderwidth=1, relief="solid")
+            balance_investment_frame = tk.Frame(cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid")
             balance_investment_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)    
 
             def start_functionality():
@@ -885,9 +875,9 @@ class App():
 
         def consignar_saldo():
             titulo_funcionalidad.set("Funcionalidad - Consignar Saldo")
-            descripcion_funcionalidad.set("(REVISAR)El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros una instancia de Ahorros, un enum de Categoria, un dato de tipo double llamado saldo_consignar y un objeto de tipo date. Este método consulta el atributo de clase cuentasTotales de tipo list de la clase Cuenta, posteriormente se crea una instancia de la clase Movimientos que se asocia a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
+            descripcion_funcionalidad.set("El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros dos instancias de la clase Ahorros llamadas destino y origen, un enum de Categoria, un dato de tipo double llamado cantidad y un objeto de tipo datetime llamado fecha. Este método verifica que origen sea None y que la categoría sea diferente de Categoria.PRESTAMO, de ser así, entonces se retorna una instancia de la clase Movimientos que es luego asociada a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario.")
             style_consign_balance=font.Font(cls.main_window, family="Garamond", size=15)
-            balance_consign_frame = tk.Frame(cls.subframe_main, bg="#C7F1FF", borderwidth=1, relief="solid")
+            balance_consign_frame = tk.Frame(cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid")
             balance_consign_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
             
             def start_functionality():
@@ -926,7 +916,7 @@ class App():
                             balance_consign_frame.columnconfigure(0, weight=1)
                             balance_consign_frame.columnconfigure(1, weight=0)
                             balance_consign_frame.columnconfigure(2, weight=0)
-                            consign_movement = Movimientos.crearMovimiento(selected_account, selected_balance, Categoria.OTROS, datetime.now    ())
+                            consign_movement = Movimientos.crearMovimiento(selected_account, selected_balance, Categoria.OTROS, datetime.now())
                             cls.user.asociarMovimiento(consign_movement)
                             label_consign_result = tk.Label(balance_consign_frame, text="La consignación de saldo ha sido exitosa: \n" + str(consign_movement), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
@@ -974,7 +964,7 @@ class App():
             
         def transferir_saldo():
             titulo_funcionalidad.set("Funcionalidad - Transferir Saldo")
-            descripcion_funcionalidad.set("(REVISAR)El método estático modificarSaldo que se encuentra en la clase Movimientos recibe como parámetros una instancia de Usuario, dos instancias de Ahorros, un enum de Categoria y un dato de tipo double llamado cantidad. Este método consulta el atributo de instancia cuentasAsociadas de tipo list de la instancia de Usuario pasada por parámetro, posteriormente comprueba que el atributo de instancia llamado origen de tipo Ahorros pasado por parámetro se encuentre dentro de la lista cuentasAsociadas. Posteriormente se llama al método crearMovimiento de la clase Movimientos y éste último es asociado a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario, finalmente, se retorna la instancia de Movimientos.")
+            descripcion_funcionalidad.set("El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros dos instancias de la clase Ahorros llamadas destino y origen, un enum de Categoria, un dato de tipo double llamado cantidad y un objeto de tipo datetime llamado fecha. Este método verifica que origen no sea None, de ser así, entonces se retorna una instancia de la clase Movimientos que es luego asociada a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario.")
             style_transfer_balance = font.Font(cls.main_window, family="Times New Roman", size=15)
             balance_transfer_frame = tk.Frame(cls.subframe_main, bg="#F6FBD0", borderwidth=1, relief="solid")
             balance_transfer_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0) 
@@ -1022,10 +1012,10 @@ class App():
                                     balance_transfer_frame.columnconfigure(0, weight=1)
                                     balance_transfer_frame.columnconfigure(1, weight=0)
                                     balance_transfer_frame.columnconfigure(2, weight=0)
-                                    consign_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, datetime.today(), selected_account_origin)
-                                    cls.user.asociarMovimiento(consign_movement)
-                                    label_consign_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(consign_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
-                                    label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
+                                    transfer_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, datetime.today(), selected_account_origin)
+                                    cls.user.asociarMovimiento(transfer_movement)
+                                    label_transfer_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(transfer_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_transfer_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
                                     label_movements_result = tk.Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
                                     button_result = tk.Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
@@ -1138,10 +1128,10 @@ class App():
                                     balance_transfer_frame.columnconfigure(0, weight=1)
                                     balance_transfer_frame.columnconfigure(1, weight=0)
                                     balance_transfer_frame.columnconfigure(2, weight=0)
-                                    consign_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, datetime.today(), selected_account_origin)
-                                    cls.user.asociarMovimiento(consign_movement)
-                                    label_consign_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(consign_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
-                                    label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
+                                    transfer_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, datetime.today(), selected_account_origin)
+                                    cls.user.asociarMovimiento(transfer_movement)
+                                    label_transfer_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(transfer_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_transfer_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
                                     label_movements_result = tk.Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
                                     button_result = tk.Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
@@ -2079,7 +2069,7 @@ class App():
         
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()
-        cls.main_window.geometry("1400x700")
+        cls.main_window.geometry("1400x500")
         cls.main_window.title("Mis Finanzas")
         #cls.main_window.resizable(0, 0)
         current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -2099,7 +2089,7 @@ class App():
                              borderwidth=1, relief="solid")
         subframe_title.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03)
         cls.subframe_main = tk.Frame(
-            main_frame, bg="#222426", borderwidth=1, relief="solid", name="subframe_main")
+            main_frame, bg="#DFDEDE", borderwidth=1, relief="solid", name="subframe_main")
         cls.subframe_main.place(
             relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
 

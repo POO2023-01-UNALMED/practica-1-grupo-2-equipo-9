@@ -202,12 +202,6 @@ class Movimientos():
             Cuenta.getCuentasTotales().remove(impuestosBanco)
             return False
 
-    # Funcionalidad de Suscripciones de Usuarios
-    def modificarSaldo(origen, destino, cantidad, usuario, categoria):
-        m = Movimientos.crearMovimiento(destino, cantidad, categoria, datetime.today(), origen)
-        usuario.asociarMovimiento(m)
-        return(m)
-
     # Funcionlidad Prestamo
     @classmethod
     def realizarPrestamo(cls,_cuenta,_cantidad):
