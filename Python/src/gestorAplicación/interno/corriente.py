@@ -31,7 +31,7 @@ class Corriente(Cuenta):
         return "Cuenta: " + self._nombre + "\nCuenta Corriente # " + str(self._id) + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + str(self._divisa) + "\nCupo: " + str(self._cupo) + " " + str(self._divisa) + "\nCupo disponible: " + str(self._disponible) + " " + str(self._divisa) + "\nCuotas: " + str(self._plazo_Pago.getCantidad_Cuotas) + "\nIntereses: " + str(self._intereses)
     
     # Método para la funcionalidad asesoramiento de inversiones
-    def vaciarCuenta(self, gota):
+    def vaciar_cuenta(self, gota):
         from .movimientos import Movimientos
         from .categoria import Categoria
         movimiento = Movimientos(origen = self, destino = gota, cantidad = self.getDisponible(), categoria = Categoria.OTROS, fecha = datetime.now())

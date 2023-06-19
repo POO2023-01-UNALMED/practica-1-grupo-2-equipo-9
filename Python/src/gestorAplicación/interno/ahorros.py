@@ -27,7 +27,7 @@ class Ahorros(Cuenta):
         return "Cuenta: " + self._nombre + "\nCuentas de Ahorros # " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa + "\nSaldo: " + self._saldo + " " + self._divisa
     
     # Método de la funcionalidad asesoramiento de inversiones
-    def vaciarCuenta(self, gota):
+    def vaciar_cuenta(self, gota):
         from .movimientos import Movimientos
         from .categoria import Categoria
         movimiento = Movimientos(origen = self, destino = gota, cantidad = self.getSaldo(), categoria = Categoria.OTROS, fecha = datetime.now())

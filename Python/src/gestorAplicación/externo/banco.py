@@ -137,7 +137,7 @@ class Banco():
         
         movimiento = Movimientos(origen = user_cuenta, destino = Usuario.getUsuariosTotales()[Usuario.hallarUsuarioImpuestosPortafolio()].getCuentasAsociadas()[0], cantidad = cobro, categoria = Categoria.OTROS, fecha = datetime.now())
         invest = int(invertir)
-        booleano = movimiento.impuestosMovimiento(random.random() + numero_riesgo)
+        booleano = movimiento.impuestos_movimiento(random.random() + numero_riesgo)
 
         if valor and user_cuenta.getSaldo() > invest:
             if booleano and user_cuenta.getSaldo() < invest:

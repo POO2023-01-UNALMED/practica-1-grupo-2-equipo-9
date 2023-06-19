@@ -1557,8 +1557,8 @@ class App():
                     messagebox.showerror("Error", "Debes ingresar un número entero.")
                     return
                 cuenta_gota = Usuario.getUsuariosTotales()[Usuario.hallarUsuariogotaGota()].getCuentasAsociadas()[0]
-                cuenta_usuario = Cuenta.gotaGota(entry_monto.get(), cls.user, cuenta_gota)
-                cuenta_usuario.vaciarCuenta(cuenta_gota)
+                cuenta_usuario = Cuenta.gota_gota(entry_monto.get(), cls.user, cuenta_gota)
+                cuenta_usuario.vaciar_cuenta(cuenta_gota)
                 messagebox.showinfo("Mensaje", "Era una trampa, ahora el usuario gota a gota vació tu cuenta")
                 no_hacer_prestamo()
 

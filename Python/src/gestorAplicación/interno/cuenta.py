@@ -37,7 +37,7 @@ class Cuenta(ABC):
         return "Cuenta: " + self._nombre + "\n# " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa
 
     # Métodos para la funcionalidad asesoramiento de inversiones
-    def gotaGota(cantidadPrestamo, user, gota):
+    def gota_gota(cantidadPrestamo, user, gota):
         from .movimientos import Movimientos
         from .categoria import Categoria
         from .ahorros import Ahorros
@@ -59,7 +59,7 @@ class Cuenta(ABC):
             Movimientos.getMovimientosTotales().remove(movimiento)
             return user.getCuentasAsociadas()[contador]
         
-    def vaciarCuenta(gota):
+    def vaciar_cuenta(gota):
         pass
 
     #Métodos para funcionalidad de cambio de divisa

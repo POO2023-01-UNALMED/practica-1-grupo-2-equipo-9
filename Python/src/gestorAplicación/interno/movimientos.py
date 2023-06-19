@@ -179,7 +179,7 @@ class Movimientos():
         Usuario.getUsuariosTotales()[0].asociarMeta(meta_categoria)
         Metas.prioridad_metas(user, meta_categoria)
 
-    def impuestosMovimiento(self, interes):
+    def impuestos_movimiento(self, interes):
         impuestosBanco = Ahorros(banco = self.getOrigen().getBanco(), clave = 1234, divisa = Divisas.COP, nombre = "Ahorros", saldo = 10.0)
         if self.getOrigen().getBanco() == self.getDestino().getBanco():
             if isinstance(self.getOrigen(), Corriente):
