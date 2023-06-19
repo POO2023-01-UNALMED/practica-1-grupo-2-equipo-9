@@ -20,7 +20,7 @@ class Movimientos():
     def __init__(self,**kwargs):
         Movimientos._movimientosTotales.append(self)
         self._id = len(Movimientos._movimientosTotales)
-        self._cantidad = None
+        self._cantidad = 0
         self._categoria = None
         self._fecha = None
         self._destino = None
@@ -56,12 +56,16 @@ class Movimientos():
     @staticmethod
     def crearMovimiento(destino, cantidad, categoria, fecha, origen = None, **kwargs):
         if(origen != None):
-            return(Movimientos(origen=origen, destino=destino, cantidad=cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
+            origen.setSaldo(origen.getSaldo() - cantidad)
+            destino.setSaldo(destino.getSaldo() + (cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision())))
+            return(Movimientos(cantidad=cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), origen=origen, destino=destino, categoria=categoria, fecha=fecha))
         if(categoria == Categoria.PRESTAMO and origen == None):
             destino.setSaldo(destino.getSaldo() + cantidad)
-            return(Movimientos(destino=destino, cantidad=cantidad, categoria=categoria, fecha=fecha))
+            print(destino.getSaldo())
+            return(Movimientos(cantidad=cantidad,destino=destino, categoria=categoria, fecha=fecha))
         else:
-            return(Movimientos(destino=destino, cantidad = cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), categoria=categoria, fecha=fecha))
+            destino.setSaldo(destino.getSaldo() + (cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision())))
+            return(Movimientos(cantidad = cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), destino=destino, categoria=categoria, fecha=fecha))
 
     # Métodos de la funiconalidad Asesoramiento de inversiones
     def analizar_categoria(plazo):

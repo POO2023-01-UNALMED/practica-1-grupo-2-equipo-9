@@ -24,7 +24,7 @@ class Ahorros(Cuenta):
             return Ahorros(banco = banco, clave = clave, nombre = nombre)
     
     def __str__(self):
-        return "Cuenta: " + self._nombre + "\nCuentas de Ahorros # " + self._id + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa + "\nSaldo: " + self._saldo + " " + self._divisa
+        return "Cuenta: " + self._nombre + "\nCuentas de Ahorros # " + str(self._id) + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + str(self._divisa.value) + "\nSaldo: " + str(self._saldo) + " " + str(self._divisa.value)
     
     # Método de la funcionalidad asesoramiento de inversiones
     def vaciar_cuenta(self, gota):
@@ -40,8 +40,10 @@ class Ahorros(Cuenta):
         from .categoria import Categoria
         probabilidad = self.getTitular().getSuscripcion().getProbabilidadInversion()
         rand = random.random()+probabilidad
-        if(rand >= 1):
+        if(rand >= 1 and self.getSaldo() != 0):
             return(Movimientos.crearMovimiento(self, self.getSaldo() + self.getSaldo() * probabilidad, Categoria.FINANZAS, datetime.now()))
+        elif(self.getSaldo == 0):
+            raise accountsException.NoBalanceinSavingAccountException(self)
         else:
             raise accountsException.FailedInvestmentException(self.getTitular())
 

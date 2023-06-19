@@ -2,11 +2,12 @@ import pickle as pk
 import os
 import os.path as os_query
 from gestorAplicación.interno.usuario import Usuario
-from gestorAplicación.interno.cuenta import Cuenta
-from gestorAplicación.interno.metas import Metas
 from gestorAplicación.interno.movimientos import Movimientos
 from gestorAplicación.externo.estado import Estado
 from gestorAplicación.externo.banco import Banco
+from gestorAplicación.interno.ahorros import Ahorros, Cuenta
+from gestorAplicación.interno.corriente import Corriente
+from gestorAplicación.interno.deuda import Deuda, Metas
 
 class Deserializador():
     # Método para deserializar las listas con objetos de cualquier clase, que añade automáticamente los objetos a las listas de clase respectiva para cada clase
@@ -41,6 +42,11 @@ class Deserializador():
                 objects_list = pk.load(objects_file)
                 objects_file.close()
                 Cuenta.setCuentasTotales(objects_list)
+                for account in Cuenta.getCuentasTotales():
+                    if(isinstance(account, Ahorros)):
+                        Ahorros.getCuentasAhorrosTotales().append(account)
+                    else:
+                        Corriente.getCuentasCorrienteTotales().append(account)
         if(clase == "Movimientos"):
             if(os_query.isfile(cls.route_db + "/lista_movimientos.pkl")):
                 objects_file = open(cls.route_db + "/lista_movimientos.pkl", "rb")
@@ -53,3 +59,6 @@ class Deserializador():
                 objects_list = pk.load(objects_file)
                 objects_file.close()
                 Metas.setMetasTotales(objects_list)
+                for meta in Metas.getMetasTotales():
+                    if(isinstance(meta, Deuda)):
+                        Deuda.getDeudasTotales().append(meta)

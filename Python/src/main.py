@@ -110,40 +110,40 @@ class FieldFrame(Frame):
 # ----------------- APP ----------------
 class App():
     # Guardar objetos al sistema (LOS OBJETOS NO SE SOBREESCRIBEN, TODOS LOS OBJETOS DE LA MISMA CLASE QUE SE VAYAN A SERIALIZAR DEBEN SER INCLUIDOS EN UNA SOLA LISTA CUANDO SE LLAMA AL MÉTODO SERIALIZAR. LAS LLAMADAS A SERIALIZAR SIEMPRE DEBEN SER LO ÚLTIMO)       
-    estado1 = Estado()
-    banco1 = Banco(estado=estado1)
-    banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
-    banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
-    user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
-    user1.asociarBanco(banco1)
-    user1.setSuscripcion(Suscripcion.BRONCE)
-    cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
-    cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
-    cuenta2.setDisponible(500000)
-    cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
-    cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
-    cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
-    cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
-    user1.asociarCuenta(cuenta1)
-    user1.asociarCuenta(cuenta2)
-    user1.asociarCuenta(cuenta3)
-    user1.asociarCuenta(cuenta4)
-    userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-    userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-    cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
-    cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
-    userGota.asociarCuenta(cuenta7)
-    userImpuestosPortafolio.asociarCuenta(cuenta8)
-    meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
-    user1.asociarMeta(meta1)
-    movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
-    user1.asociarMovimiento(movimiento1)
-    Serializador.serializar([movimiento1])
-    Serializador.serializar([user1, userGota, userImpuestosPortafolio])
-    Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4, cuenta7, cuenta8])
-    Serializador.serializar([meta1])
-    Serializador.serializar([banco1, banco2, banco3])
-    Serializador.serializar([estado1])
+    # estado1 = Estado()
+    # banco1 = Banco(estado=estado1)
+    # banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
+    # banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
+    # user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
+    # user1.asociarBanco(banco1)
+    # user1.setSuscripcion(Suscripcion.BRONCE)
+    # cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
+    # cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
+    # cuenta2.setDisponible(500000)
+    # cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
+    # cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
+    # cuenta5 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 2", divisa = Divisas.COP, saldo = 1500)
+    # cuenta6 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 3", divisa = Divisas.COP, saldo = 2500)
+    # user1.asociarCuenta(cuenta1)
+    # user1.asociarCuenta(cuenta2)
+    # user1.asociarCuenta(cuenta3)
+    # user1.asociarCuenta(cuenta4)
+    # userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+    # userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+    # cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
+    # cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
+    # userGota.asociarCuenta(cuenta7)
+    # userImpuestosPortafolio.asociarCuenta(cuenta8)
+    # meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
+    # user1.asociarMeta(meta1)
+    # movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
+    # user1.asociarMovimiento(movimiento1)
+    # Serializador.serializar([movimiento1])
+    # Serializador.serializar([user1, userGota, userImpuestosPortafolio])
+    # Serializador.serializar([cuenta1, cuenta2, cuenta3, cuenta4, cuenta7, cuenta8])
+    # Serializador.serializar([meta1])
+    # Serializador.serializar([banco1, banco2, banco3])
+    # Serializador.serializar([estado1])
 
 
     # Cargar objetos al sistema
@@ -867,10 +867,16 @@ class App():
                     try:
                         if(selected_account == "" or selected_account is None):
                             raise accountsException.NoAccountSelectedException
-                        for account in Ahorros.getCuentasAhorrosTotales():
+                        for account in cls.user.getCuentasAhorroAsociadas():
                             if(selected_account == account.getNombre()):
                                 selected_account = account
                         c = selected_account.invertirSaldo()
+                    except accountsException.NoBalanceinSavingAccountException:
+                        confirmation = messagebox.askyesno("Mis finanzas", accountsException.NoBalanceinSavingAccountException(c).show_message())
+                        if confirmation:
+                            consignar_saldo()
+                        else:
+                            back_menu_main()
                     except accountsException.FailedInvestmentException:
                         messagebox.showwarning("Mis finanzas", accountsException.FailedInvestmentException(cls.user).show_message())
                         back_menu_main()
@@ -931,8 +937,8 @@ class App():
                         balance_investment_ff.getFieldFrameObject().destroy()
                         try:
                             if (selected_balance is None or selected_balance == ""):
-                                raise genericException.NoValueInsertedException(int)
-                            selected_balance = int(selected_balance)
+                                raise genericException.NoValueInsertedException(float)
+                            selected_balance = float(selected_balance)
                         except ValueError:
                             confirmation = messagebox.askretrycancel("Mis finanzas", "Debes insertar un número. ¿Deseas intentarlo de nuevo? ")
                             if confirmation:
@@ -949,7 +955,7 @@ class App():
                             balance_consign_frame.columnconfigure(0, weight=1)
                             balance_consign_frame.columnconfigure(1, weight=0)
                             balance_consign_frame.columnconfigure(2, weight=0)
-                            consign_movement = Movimientos.crearMovimiento(selected_account, selected_balance, Categoria.OTROS, datetime.now())
+                            consign_movement = Movimientos.crearMovimiento(selected_account, selected_balance, Categoria.OTROS, datetime.today())
                             cls.user.asociarMovimiento(consign_movement)
                             label_consign_result = Label(balance_consign_frame, text="La consignación de saldo ha sido exitosa: \n" + str(consign_movement), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
@@ -964,11 +970,11 @@ class App():
                     accounts_options_combobox.grid_forget()
                     button_select.destroy()
                     try:
-                        if(selected_account == "" or selected_account is None):
-                            raise accountsException.NoAccountSelectedException
-                        for account in Ahorros.getCuentasAhorrosTotales():
+                        for account in cls.user.getCuentasAhorroAsociadas():
                             if(selected_account == account.getNombre()):
                                 selected_account = account
+                        if(selected_account == "" or selected_account is None):
+                            raise accountsException.NoAccountSelectedException
                     except accountsException.NoAccountSelectedException:
                         confirmation = messagebox.askretrycancel("Mis finanzas", accountsException.NoAccountSelectedException.show_message())
                         if confirmation:
@@ -1084,7 +1090,7 @@ class App():
                         label_accounts_options.destroy()
                         accounts_options_combobox.destroy()
                         button_select.destroy()
-                        for account in Ahorros.getCuentasAhorrosTotales():
+                        for account in cls.user.getCuentasAhorroAsociadas():
                                 if(selected_account_origin == account.getNombre()):
                                     selected_account_origin = account
 
@@ -1200,7 +1206,7 @@ class App():
                         label_accounts_options.destroy()
                         accounts_options_combobox.destroy()
                         button_select.destroy()
-                        for account in Ahorros.getCuentasAhorrosTotales():
+                        for account in cls.user.getCuentasAhorroAsociadas():
                                 if(selected_account_origin == account.getNombre()):
                                     selected_account_origin = account
 
@@ -2144,7 +2150,7 @@ class App():
                     saldo = cuenta.getSaldo()
                 else:
                     saldo = cuenta.getDisponible()
-                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=saldo)
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=str(saldo))
                 label1.place(relx=0.8, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             button_back_main = Button(subframeFuncionalidad, text="Volver al menú principal", font=fuente, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
@@ -2179,7 +2185,7 @@ class App():
         proceso1 = "Modificar mi suscripcion"
         proceso2 = "Invertir saldo de mi cuenta"
         proceso3 = "Consignar saldo a mi cuenta"
-        proceso4 = "Transferir saldo entre mis cuentas"
+        proceso4 = "Transferir saldo entre cuentas"
         proceso5 = "Compra con cuenta corriente"
         proceso6 = "Gestionar mis prestamos"
         proceso7 = "Asesoramiento de inversiones"
@@ -2214,7 +2220,7 @@ class App():
         # Agregamos los submenús a la barra de menú.
         procesos_consultas.add_command(label="Volver al menú principal", command=back_menu_main, activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label="Crear una cuenta", command=create_account_user, activebackground="gray", activeforeground="white")
-        procesos_consultas.add_command(label="Ver cuentas", command=verCuentas, activebackground="gray", activeforeground="white")
+        procesos_consultas.add_command(label="Ver mis cuentas", command=verCuentas, activebackground="gray", activeforeground="white")
 
         procesos_consultas.add_command(label=proceso1, command=comprobar_suscripcion,
                              activebackground="gray", activeforeground="white")
