@@ -1,7 +1,5 @@
-import tkinter as tk
-from tkinter import font, messagebox, Button, StringVar
-from tkinter.ttk import Combobox, Style
-from tkinter import *
+from tkinter import font, messagebox, Button, Frame, Label, Entry, Text, StringVar, END, PhotoImage, Tk, Menu, INSERT, CENTER, LEFT
+from tkinter.ttk import Combobox
 import os
 from excepciones import banksException, suscriptionException, usersException, accountsException, genericException
 from baseDatos.deserializador import Deserializador
@@ -19,14 +17,14 @@ from gestorAplicación.externo.divisas import Divisas
 from gestorAplicación.interno.categoria import Categoria
 from gestorAplicación.interno.categoria import Categoria
 from gestorAplicación.interno.deuda import Deuda
-from datetime import datetime
 from gestorAplicación.externo.cuotas import Cuotas
 from gestorAplicación.externo.tablas import Tablas
+from datetime import datetime
 
 # FAVOR SER ORDENADOS CON EL CÓDIGO Y COMENTAR TODO BIEN. USAR SNAKECASE. NOMBRAR VARIABLES Y MÉTODOS EN INGLÉS. CODIFICAR EXCEPCIONES EN EL PAQUETE EXCEPCIONES
 
 # ------ FIELD FRAME PARA DIÁLOGOS DE TEXTO --------
-class FieldFrame(tk.Frame):
+class FieldFrame(Frame):
     def __init__(self, tituloCriterios, criterios, tituloValores, frame,**kwargs):
         self.setTituloCriterios(tituloCriterios)
         self.setCriterios(criterios)
@@ -39,7 +37,7 @@ class FieldFrame(tk.Frame):
                 self.setValores(kwargs[key])
             if key == "habilitado":
                 self.setHabilitado(kwargs[key])
-        self.field_frame = tk.Frame(frame[0], bg="white", borderwidth=1, relief="solid")
+        self.field_frame = Frame(frame[0], bg="white", borderwidth=1, relief="solid")
         if frame[0].winfo_name() == "subframe_main":
             self.field_frame.place(relheight=0.75, relwidth=0.6, rely=0.25, relx=0.2)
         else:
@@ -50,14 +48,14 @@ class FieldFrame(tk.Frame):
         criteria_style = font.Font(family="Times New Roman", size=13, underline=1)
         entry_style = font.Font(family="Times New Roman", size=13)
 
-        title_criteria = tk.Label(master=self.field_frame, textvariable = self.tituloCriterios, width=35, bg="white", fg="black", font=title_style, border=1, relief="ridge")
+        title_criteria = Label(master=self.field_frame, textvariable = self.tituloCriterios, width=35, bg="white", fg="black", font=title_style, border=1, relief="ridge")
         title_criteria.grid(row=0, column=0, padx=3, pady=3)
-        title_value = tk.Label(master=self.field_frame, textvariable = self.tituloValores, width=35, bg="white", fg="black", font=title_style, border=1, relief="ridge")
+        title_value = Label(master=self.field_frame, textvariable = self.tituloValores, width=35, bg="white", fg="black", font=title_style, border=1, relief="ridge")
         title_value.grid(row=0, column=1, padx=3, pady=3)
 
         for i in range(0, len(self.getCriterios())):
-            entry = tk.Entry(master=self.field_frame, width=35, bg="white", fg="black", font=entry_style, border=1, relief="groove", name=str(self.getCriterios()[i]).lower().replace(" ", ""))
-            label = tk.Label(master=self.field_frame, text = str(self.getCriterios()[i]), width=35, bg="white", fg="black", font=criteria_style, border=1, relief="groove")
+            entry = Entry(master=self.field_frame, width=35, bg="white", fg="black", font=entry_style, border=1, relief="groove", name=str(self.getCriterios()[i]).lower().replace(" ", ""))
+            label = Label(master=self.field_frame, text = str(self.getCriterios()[i]), width=35, bg="white", fg="black", font=criteria_style, border=1, relief="groove")
     
             if(self.getValores() != None):
                 try:
@@ -78,7 +76,7 @@ class FieldFrame(tk.Frame):
     def getValue(self, criterio):
         return self.criterios[criterio]
     def setTituloCriterios(self, tituloCriterios):
-        self.tituloCriterios = tk.StringVar()
+        self.tituloCriterios = StringVar()
         self.tituloCriterios.set(tituloCriterios)
     def getTituloCriterios(self):
         return self.tituloCriterios
@@ -87,7 +85,7 @@ class FieldFrame(tk.Frame):
     def getCriterios(self):
         return self.criterios
     def setTituloValores(self, tituloValores):
-        self.tituloValores = tk.StringVar()
+        self.tituloValores = StringVar()
         self.tituloValores.set(tituloValores) 
     def getTituloValores(self):
         return self.tituloValores
@@ -162,6 +160,7 @@ class App():
     user = None
     subframe_main = None
     image_index = 0  # Variable para realizar un seguimiento del índice del pack de imagenes de los desarrolladores
+    current_directory = os.path.dirname(os.path.abspath(__file__))
 
     # ----------------- VENTANA INICIAL ----------------
     @classmethod
@@ -182,8 +181,8 @@ class App():
             except usersException.NoUserFoundException:
                 confirmation = messagebox.askretrycancel("Mis finanzas", usersException.NoUserFoundException.show_message())
                 if confirmation:
-                    user_email_entry.delete(0, tk.END)
-                    password_entry.delete(0, tk.END)
+                    user_email_entry.delete(0, END)
+                    password_entry.delete(0, END)
                 else:
                     exit_initial_window()
             else:
@@ -238,22 +237,22 @@ class App():
 
         def update_image():
             # Añadir las rutas para cada imágen
-            pablo_1 = os.path.join(current_directory +
+            pablo_1 = os.path.join(cls.current_directory +
                                    "\static\pablo_photos", "1.png")
-            pablo_2 = os.path.join(current_directory +
+            pablo_2 = os.path.join(cls.current_directory +
                                    "\static\pablo_photos", "2.png")
-            pablo_3 = os.path.join(current_directory +
+            pablo_3 = os.path.join(cls.current_directory +
                                    "\static\pablo_photos", "3.png")
-            pablo_4 = os.path.join(current_directory +
+            pablo_4 = os.path.join(cls.current_directory +
                                    "\static\pablo_photos", "4.png")
             
-            tomas_1 = os.path.join(current_directory +
+            tomas_1 = os.path.join(cls.current_directory +
                                    "\static\\tomas_photos", "1.png")
-            tomas_2 = os.path.join(current_directory +
+            tomas_2 = os.path.join(cls.current_directory +
                                    "\static\\tomas_photos", "2.png")
-            tomas_3 = os.path.join(current_directory +
+            tomas_3 = os.path.join(cls.current_directory +
                                    "\static\\tomas_photos", "3.png")
-            tomas_4 = os.path.join(current_directory +
+            tomas_4 = os.path.join(cls.current_directory +
                                    "\static\\tomas_photos", "4.png")
 
             image_paths = [
@@ -300,15 +299,15 @@ class App():
 
                 # Cargar la imagen actual
                 image_path = image_paths[current_image_index]
-                image = tk.PhotoImage(file=image_path)
+                image = PhotoImage(file=image_path)
 
                 # Crear un sub-frame para mostrar la imagen
-                subframe = tk.Frame(
+                subframe = Frame(
                     bottom_right_frame, bg="white", borderwidth=1, relief="groove")
                 subframe.grid(row=0, column=i, sticky="nsew")
 
                 # Crear un label para mostrar la imagen
-                image_label = tk.Label(subframe, image=image, cursor="cross")
+                image_label = Label(subframe, image=image, cursor="cross")
                 image_label.image = image
                 image_label.pack(expand=True, fill="both")
 
@@ -319,15 +318,15 @@ class App():
 
                 # Cargar la imagen actual
                 image_path = image_paths[current_image_index]
-                image = tk.PhotoImage(file=image_path)
+                image = PhotoImage(file=image_path)
 
                 # Crear un sub-frame para mostrar la imagen
-                subframe = tk.Frame(
+                subframe = Frame(
                     bottom_right_frame, bg="white", borderwidth=1, relief="groove")
                 subframe.grid(row=1, column=i, sticky="nsew")
 
                 # Crear un label para mostrar la imagen
-                image_label = tk.Label(subframe, image=image, cursor="cross")
+                image_label = Label(subframe, image=image, cursor="cross")
                 # Keep a reference to the image to prevent it from being garbage collected
                 image_label.image = image
                 image_label.pack(expand=True, fill="both")
@@ -343,27 +342,27 @@ class App():
             system_image_label.config(image=current_image)
 
         # Configuración básica de parámetros de la ventana de inicio
-        cls.initial_window = tk.Tk()
+        cls.initial_window = Tk()
         cls.initial_window.geometry("1000x800")
         cls.initial_window.title("Mis Finanzas")
         #cls.initial_window.resizable(0, 0)
-        current_directory = os.path.dirname(os.path.abspath(__file__))
-        route_logo = os.path.join(current_directory + "\static", "logo.png")
-        logo = tk.PhotoImage(file=route_logo)
+        route_logo = os.path.join(cls.current_directory + "\static", "logo.png")
+        logo = PhotoImage(file=route_logo)
         cls.initial_window.iconphoto(True, logo)
 
+
         # Configuración básica de los parámetros del main_frame en la ventana de inicio
-        main_frame = tk.Frame(cls.initial_window, bg="#DFDEDE")
+        main_frame = Frame(cls.initial_window, bg="#DFDEDE")
         main_frame.pack(fill="both", expand=True)
 
         # Configuración de los sub-frames anidados al main_frame de la ventana de inicio
-        upper_frame = tk.Frame(main_frame, bg="black",
+        upper_frame = Frame(main_frame, bg="black",
                               borderwidth=1, relief="solid")
         upper_frame.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03)
 
         # Configuración de menú de inicio
-        home_menu = tk.Menu(upper_frame, cursor="cross")
-        menu_options = tk.Menu(home_menu, tearoff=0)
+        home_menu = Menu(upper_frame, cursor="cross")
+        menu_options = Menu(home_menu, tearoff=0)
         menu_options.add_command(label="Descripción del sistema", command=show_description,
                                  activebackground="gray", activeforeground="white")
         menu_options.add_command(label="Salir de la aplicación", command=exit_initial_window,
@@ -372,33 +371,33 @@ class App():
                               activebackground="gray", activeforeground="white")
         cls.initial_window.config(menu=home_menu)
 
-        left_frame = tk.Frame(main_frame, bg="white",
+        left_frame = Frame(main_frame, bg="white",
                              borderwidth=1, relief="solid")
         left_frame.place(anchor="w", relheight=0.85,
                         relwidth=0.46, rely=0.55, relx=0.03)
 
-        right_frame = tk.Frame(main_frame, bg="white",
+        right_frame = Frame(main_frame, bg="white",
                               borderwidth=1, relief="solid")
         right_frame.place(anchor="e", relheight=0.85,
                          relwidth=0.46, relx=0.97, rely=0.55)
 
         # Configuración de los sub-frames anidados a cada uno de los sub-frames anidados a main_frame de la ventana de inicio
-        upper_left_frame = tk.Frame(
+        upper_left_frame = Frame(
             left_frame, bg="#DFDEDE", borderwidth=1, relief="groove")
         upper_left_frame.place(anchor="n", relheight=0.35,
                              relwidth=0.993, rely=0, relx=0.5)
 
-        bottom_left_frame = tk.Frame(
+        bottom_left_frame = Frame(
             left_frame, bg="white", borderwidth=1, relief="groove")
         bottom_left_frame.place(anchor="s", relheight=0.642,
                               relwidth=0.993, rely=0.998, relx=0.5)
 
-        upper_right_frame = tk.Frame(
+        upper_right_frame = Frame(
             right_frame, bg="white", borderwidth=1, relief="groove")
         upper_right_frame.place(anchor="n", relheight=0.35,
                               relwidth=0.993, rely=0.002, relx=0.5)
 
-        bottom_right_frame = tk.Frame(
+        bottom_right_frame = Frame(
             right_frame, bg="white", borderwidth=1, relief="groove")
         bottom_right_frame.place(anchor="s", relheight=0.642,
                                relwidth=0.993, rely=0.998, relx=0.5)
@@ -409,33 +408,32 @@ class App():
         upper_label_text_variable = "Mis Finanzas"
         upper_text_font_style = font.Font(
             weight="bold", size=12, family="Alegreya Sans")
-        title_label = tk.Label(upper_frame, text=upper_label_text_variable, fg="white",
-                               bg="gray", wraplength=400, font=upper_text_font_style, width=50)
+        title_label = Label(upper_frame, text=upper_label_text_variable, fg="white",
+                               bg="#94B43B", wraplength=400, font=upper_text_font_style, width=50)
         title_label.place(anchor="w", relheight=0.97,
                           relwidth=0.8945, rely=0.5, relx=0.001)
         # --------------------------------------------------
         # -------Imágen del título(upper_frame)---------------------
-        route_image = os.path.join(current_directory + "\static", "unal.png")
-        upper_image = tk.PhotoImage(file=route_image)
+        route_image = os.path.join(cls.current_directory + "\static", "unal.png")
+        upper_image = PhotoImage(file=route_image)
         upper_image = upper_image.subsample(4)
-        upper_image_label = tk.Label(upper_frame, image=upper_image)
+        upper_image_label = Label(upper_frame, image=upper_image)
         upper_image_label.place(
             anchor="e", relheight=0.97, relwidth=0.101, rely=0.5, relx=0.999)
         # --------------------------------------------------
         # -------Texto de bienvenida(P3 - upper_left_frame)---------------------
-        welcome_label_text_variable = "Bienvenidos al sistema de gestión financiera Mis Finanzas programado por: \n->Juan Pablo Mejía Gómez.\n->Leonard David Vivas Dallos.\n->José Daniel Moreno Ceballos.\n->Tomás Escobar Rivera.\n->Jorge Humberto García Botero."
-        welcome_label = tk.Text(upper_left_frame, cursor="cross", fg="black", bg="white", font=(
-            "Alegreya Sans", 12), wrap="word", spacing1=8, border=1, relief="groove")
-        welcome_label.insert(tk.INSERT, welcome_label_text_variable)
-        welcome_label.tag_configure("justifying", justify="center")
-        welcome_label.tag_add("justifying", "1.0", tk.END)
-        welcome_label.config(state="disabled")
-        welcome_label.pack(expand=True, fill="both",
+        welcome_text_text_variable = "Bienvenidos al sistema de gestión financiera Mis Finanzas programado por: \n->Juan Pablo Mejía Gómez.\n->Leonard David Vivas Dallos.\n->José Daniel Moreno Ceballos.\n->Tomás Escobar Rivera.\n->Jorge Humberto García Botero."
+        welcome_text = Text(upper_left_frame, cursor="cross", fg="black", bg="white", font=("Alegreya Sans", 12), wrap="word", spacing1=8, border=1, relief="groove")
+        welcome_text.insert(INSERT, welcome_text_text_variable)
+        welcome_text.tag_configure("justifying", justify="center")
+        welcome_text.tag_add("justifying", "1.0", END)
+        welcome_text.config(state="disabled")
+        welcome_text.pack(expand=True, fill="both",
                            anchor="s")
         # --------------------------------------------------
         # -------Hoja de vida de los desarrolladores(P5 - upper_right_frame)---------------------
         # Crear el botón y asociar la función change_button_text con él
-        button_developers_text = tk.StringVar(
+        button_developers_text = StringVar(
             upper_right_frame, "1. Tomas Escobar Rivera.\n Soy un apasionado programador con experiencia en múltiples lenguajes de programación. Soy una persona comprometida, organizada y con habilidades de trabajo en equipo. Me adapto rápidamente a nuevos entornos y disfruto de los desafíos que suponen resolver problemas complejos mediante el uso de la programación.")
         button_developers = Button(upper_right_frame, textvariable=button_developers_text, bg="white", command=change_button_text, font=(
             "Alegreya Sans", 12), activebackground="gray", activeforeground="white", border=1, relief="groove", cursor="cross", wraplength=450)
@@ -445,13 +443,13 @@ class App():
         button_developers.pack(expand=True, fill="both")
         # --------------------------------------------------
         # -------Fotos de los desarrolladores(P6 - bottom_right_frame)---------------------
-        image_label = tk.Label(bottom_right_frame, cursor="cross")
+        image_label = Label(bottom_right_frame, cursor="cross")
         image_label.pack(expand=True, fill="both")
         update_image()
         # --------------------------------------------------
         # -------Imágenes asociadas al sistema(P4 - bottom_left_frame)---------------------
         # Crear un label para mostrar la imagen.
-        system_image_label = tk.Label(
+        system_image_label = Label(
             bottom_left_frame, border=2, relief="groove", cursor="cross")
         system_image_label.place(
             anchor="n", relheight=.5, relwidth=.99, relx=0.5, rely=0.01)
@@ -462,7 +460,7 @@ class App():
         ]
 
         # Cargar las imágenes
-        images = [tk.PhotoImage(file=image_path) for image_path in image_paths]
+        images = [PhotoImage(file=image_path) for image_path in image_paths]
 
         # Mostrar la imagen inicial
         current_image_index = 0
@@ -476,32 +474,32 @@ class App():
         # -------Interfaz de acceso al sistema(P4 - bottom_left_frame)---------------------
         # Crear un label para inicio de sesión.
         style = font.Font(family="Times New Roman", size=13)
-        login_label = tk.Label(bottom_left_frame, text="Ingresa tus datos para iniciar sesión: ",
+        login_label = Label(bottom_left_frame, text="Ingresa tus datos para iniciar sesión: ",
                                fg="white", bg="black", border=1, relief="sunken", font=style)
         login_label.place(anchor="n", relheight=.1,
                           relwidth=.99, relx=0.5, rely=0.51)
         # Crear un label con el usuario ó el correo.
-        user_email_label = tk.Label(bottom_left_frame, text="Usuario/Correo: ",
+        user_email_label = Label(bottom_left_frame, text="Usuario/Correo: ",
                                     fg="white", bg="black", border=1, relief="sunken", font=style)
         user_email_label.place(anchor="n", relheight=.20,
                                relwidth=.3, relx=0.156, rely=0.61)
         # Crear un entry para recibir el usuario ó el correo del usuario.
-        user_email_entry = tk.Entry(
+        user_email_entry = Entry(
             bottom_left_frame, fg="white", bg="black", border=1, relief="sunken", font=style)
         user_email_entry.place(anchor="n", relheight=.20,
                                relwidth=.45, relx=0.5, rely=0.61)
         # Crear un label con el usuario ó el correo.
-        password_label = tk.Label(bottom_left_frame, text="Contraseña: ",
+        password_label = Label(bottom_left_frame, text="Contraseña: ",
                                   fg="white", bg="black", border=1, relief="sunken", font=style)
         password_label.place(anchor="n", relheight=.19,
                              relwidth=.3, relx=0.156, rely=0.81)
         # Crear un entry para recibir la contraseña del usuario.
-        password_entry = tk.Entry(
+        password_entry = Entry(
             bottom_left_frame, fg="white", bg="black", border=1, relief="sunken", font=style)
         password_entry.place(anchor="n", relheight=.19,
                              relwidth=.45, relx=0.5, rely=0.81)
         # Crear un botón para iniciar sesión.
-        login_button = tk.Button(bottom_left_frame, fg="white", bg="black", border=1, relief="sunken",
+        login_button = Button(bottom_left_frame, fg="white", bg="black", border=1, relief="sunken",
                                  font=style, text="Ingresar", activebackground="gray", activeforeground="black", cursor="cross")
         login_button.place(anchor="s", relheight=.39,
                            relwidth=.269, relx=0.860, rely=0.9999999)
@@ -613,11 +611,11 @@ class App():
 
                     account_creation_ff.getFieldFrameObject().destroy()
                     if(selected_account_type == Ahorros):
-                        label_account_result = tk.Label(account_creation_frame, text="La cuenta se ha creado exitosamente: " + str(cls.user.asociarCuenta(Ahorros(banco=selected_bank, clave=selected_password, divisa=selected_currency, nombre=selected_name))), font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_account_result = Label(account_creation_frame, text="La cuenta se ha creado exitosamente: " + str(cls.user.asociarCuenta(Ahorros(banco=selected_bank, clave=selected_password, divisa=selected_currency, nombre=selected_name))), font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                     elif(selected_account_type == Corriente):
-                         label_account_result = tk.Label(account_creation_frame, text="La cuenta se ha creado exitosamente: " + str(cls.user.asociarCuenta(Corriente(banco=selected_bank, clave=selected_password, divisa=selected_currency, nombre=selected_name))), font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                         label_account_result = Label(account_creation_frame, text="La cuenta se ha creado exitosamente: " + str(cls.user.asociarCuenta(Corriente(banco=selected_bank, clave=selected_password, divisa=selected_currency, nombre=selected_name))), font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                     label_account_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                    button_result = tk.Button(account_creation_frame, text="Volver al menú principal", font=style_account_creation, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                    button_result = Button(account_creation_frame, text="Volver al menú principal", font=style_account_creation, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                     button_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
                 except UnboundLocalError:
                     pass
@@ -625,7 +623,7 @@ class App():
             titulo_funcionalidad.set("Creación de cuenta.")
             descripcion_funcionalidad.set("¡Hola! {} anímate a crear una cuenta.".format(cls.user.getNombre()))
             style_account_creation=font.Font(cls.main_window, family="Times New Roman", size=14)
-            account_creation_frame = tk.Frame(cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
+            account_creation_frame = Frame(cls.subframe_main, bg="gray", borderwidth=1, relief="solid")
             account_creation_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
             try:
                 if(len(cls.user.getCuentasAsociadas()) >= cls.user.getLimiteCuentas()):
@@ -637,10 +635,10 @@ class App():
                 else:
                     back_menu_main()
             else:       
-                label_account = tk.Label(account_creation_frame, text="Para crear una nueva cuenta, favor diligencie los siguientes datos: ", font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                label_account = Label(account_creation_frame, text="Para crear una nueva cuenta, favor diligencie los siguientes datos: ", font=style_account_creation, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                 label_account.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
                 account_creation_ff = FieldFrame(tituloCriterios="Datos", criterios=["Nombre del banco", "Ahorros ó corriente", "Clave de la cuenta", "Divisa", "Nombre de la cuenta"], tituloValores="Valores", frame=[account_creation_frame, 1, 0, 2, 1])
-                button_continue = tk.Button(account_creation_frame, text="Continuar", font=style_account_creation, command=create_account_fuctionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                button_continue = Button(account_creation_frame, text="Continuar", font=style_account_creation, command=create_account_fuctionality_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                 button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
 
         # Método para salir de la ventana principal
@@ -655,7 +653,7 @@ class App():
         
         # Metódo que muestra información adicional del sistema
         def about():
-            messagebox.showinfo("Mis Finanzas","\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa.")
+            messagebox.showinfo("Mis Finanzas","Desarrollado por Juan Pablo Mejía Gómez, Leonard David Vivas Dallos, José Daniel Moreno Ceballos, Tomás Escobar Rivera y Jorge Humberto García Botero.\nEste programa ha sido desarrollado por el equipo 9 del grupo 2 con el objetivo de aplicar los conceptos aprendidos para el manejo de excepciones e interfaces gráficas. \nAgradecemos su interés y confianza al utilizar nuestro programa. Hemos invertido tiempo y esfuerzo para brindarte una herramienta funcional y confiable que esperamos que satisfaga los requerimientos exigidos. \nNos encantaría recibir tus comentarios y sugerencias para mejorar aún más este programa.")
         
         # Método que muestra las cuentas de ahorro asociadas al cls.user
         def show_saving_accounts_user(master, function, style, row_number):
@@ -667,14 +665,14 @@ class App():
             else:
                     master.columnconfigure(2, weight=1)
                     master.columnconfigure(0, weight=1)
-                    label_accounts_options = tk.Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
+                    label_accounts_options = Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro asociadas al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
                     label_accounts_options.grid(row=row_number, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    selected_account = tk.StringVar(master)
+                    selected_account = StringVar(master)
                     accounts_options_combobox = Combobox(master = master, textvariable=selected_account, cursor="cross", font=style)
                     accounts_options_combobox["values"] = [asociated_accounts_user[m].getNombre() for m in range(0, len(asociated_accounts_user))]
                     accounts_options_combobox['state'] = 'readonly'
                     accounts_options_combobox.grid(row=row_number + 1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
+                    button_select = Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
                     button_select.grid(row=row_number, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
             return [selected_account, label_accounts_options, accounts_options_combobox, button_select]
             
@@ -688,14 +686,14 @@ class App():
             else:
                     master.columnconfigure(2, weight=1)
                     master.columnconfigure(0, weight=1)
-                    label_accounts_options = tk.Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro totales del sistema:", font = style, border=1, relief="solid", bg="#8C7566", fg="white")
+                    label_accounts_options = Label(master = master, text = "Seleccione una cuenta de la lista de cuentas de ahorro totales del sistema:", font = style, border=1, relief="solid", bg="#8C7566", fg="white")
                     label_accounts_options.grid(row=row_number, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    selected_account = tk.StringVar(master)
+                    selected_account = StringVar(master)
                     accounts_options_combobox = Combobox(master = master, textvariable=selected_account, cursor="cross", font=style)
                     accounts_options_combobox["values"] = [accounts_total[m].getNombre() for m in range(0, len(accounts_total))]
                     accounts_options_combobox['state'] = 'readonly'
                     accounts_options_combobox.grid(row=row_number + 1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                    button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
+                    button_select = Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
                     button_select.grid(row=row_number, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
             return [selected_account, label_accounts_options, accounts_options_combobox, button_select]
         
@@ -709,35 +707,56 @@ class App():
             else:
                 master.columnconfigure(2, weight=1)
                 master.columnconfigure(0, weight=1)
-                label_banks_options = tk.Label(master = master, text = "Seleccione un banco de la lista de bancos asociados al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
+                label_banks_options = Label(master = master, text = "Seleccione un banco de la lista de bancos asociados al usuario {}:".format(cls.user.getNombre()), font = style, border=1, relief="solid", bg="#8C7566", fg="white")
                 label_banks_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                selected_bank = tk.StringVar(master)
+                selected_bank = StringVar(master)
                 banks_options_combobox = Combobox(master = master, textvariable=selected_bank, cursor="cross", font=style)
                 banks_options_combobox["values"] = [asociated_banks_user[m].getNombre() for m in range(0, len(asociated_banks_user))]
                 banks_options_combobox['state'] = 'readonly'
                 banks_options_combobox.grid(row=1, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                button_select = tk.Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
+                button_select = Button(master=master, text="Aceptar", command=function, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style)
                 button_select.grid(row=0, column=2, rowspan=2, padx=2, pady=2, sticky="NSEW")
             return [selected_bank, label_banks_options, banks_options_combobox, button_select]
 
         # Método para volver al menú inicial
         def back_menu_main():
             for frame in cls.subframe_main.winfo_children(): 
-                if str(type(frame).__name__) == "Frame" and frame.winfo_name() != "subframe_description":
+                if str(type(frame).__name__) == "Frame" and frame.winfo_name() != "subframe_description_title" and frame.winfo_name() != "subframe_description_component":
                     frame.destroy()
                     welcome_text_reset()
 
         # Método para reestablecer el mensaje de bienvenida de la ventana principal
         def welcome_text_reset():
             titulo_funcionalidad.set("Bienvenido " + cls.user.getNombre() + " a Mis Finanzas")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("Estamos encantados de ayudarte a aprovechar al máximo todas las funcionalidades que ofrecemos. A continuación, te enumeramos las disponibles: 1. Comprobar tu suscripción. 2. Invertir tu saldo. 3. Consignar saldo a tu cuenta. 4. Transferir saldo entre tus cuentas. 5. Compra con tu cuenta corriente. 6. Pedir un prestamo 7. Pagar un prestamo. 8. Asesoramiento de inversiones. 9. Compra de cartera.")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+            
+            text_description_component.config(state="normal")
+            basic_instructions.set("Estimado Usuario {}. Las instrucciones para utilizar el programa 'Mis finanzas' son: \n1. Si deseas volver a la Ventana de Inicio debes dirigirte al menú superior y seleccionar la opción Archivo, posteriormente, debes seleccionar la opción Cerrar sesión.\n2. Si deseas conocer información referente al funcionamiento de la aplicación debes drigirte al menú superior y seleccionar la opción Archivo, posteriormente, debes seleccionar la opción Aplicación.\n3. Si deseas acceder a alguna de las funcionalidades ofrecidas debes dirigirte al menú superior y seleccionar la opción Procesos Y Consultas, posteriormente, debes seleccionar la funcionalidad de tu interés. \n4. Si deseas conocer información adicional debes dirigirte al menú superior y seleccionar la opción Ayuda, posteriormente, debes seleccionar la opción Acerca de.".format(cls.user.getNombre()))
+            text_description_component.delete("1.0", END)
+            text_description_component.insert("1.0", basic_instructions.get())
+            text_description_component.tag_configure("justifying", justify="center")
+            text_description_component.tag_add("justifying", "1.0", END)
+            text_description_component.config(state="disabled")
 
         # Metodos de las funcionalidades del menú
         def comprobar_suscripcion():
             titulo_funcionalidad.set("Funcionalidad - Modificar Suscripcion")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("El método de instancia comprobarSuscripcion que se encuentra en la clase Banco tiene como parámetro una instancia de la clase Usuario. En este método se consulta el atributo Suscripcion de la instancia de Usuario dada por parámetro y, con base en este, se modifica el atributo de instancia limiteCuentas de tipo int de la misma instancia de Usuario. Este atributo limiteCuentas se utiliza para establecer la cantidad de instancias diferentes de la clase Cuenta que se le pueden asociar a través del método de instancia asociarCuentas, que se encuentra dentro de la clase Usuario, a la misma instancia de Usuario pasada por parámetro. Estas cuentas son añadidas al atributo de instancia cuentasAsociadas de tipo list, que se encuentra dentro de la clase Usuario.")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+
             style_suscription=font.Font(cls.main_window, family="Times New Roman", size=15)
-            suscription_frame = tk.Frame(cls.subframe_main, bg="#B3AF9B", borderwidth=1, relief="solid")
+            suscription_frame = Frame(cls.subframe_main, bg="#B3AF9B", borderwidth=1, relief="solid")
             suscription_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)
             
             def start_functionality():
@@ -772,9 +791,9 @@ class App():
                                 label_suscription_options.destroy()
                                 suscription_options_combobox.destroy()
                                 button_select_yes_no.destroy()
-                                label_result = tk.Label(suscription_frame, text="El nivel de suscripción del usuario " + cls.user.getNombre() + " se ha actualizado a " + cls.user.getSuscripcion().name, font=style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                label_result = Label(suscription_frame, text="El nivel de suscripción del usuario " + cls.user.getNombre() + " se ha actualizado a " + cls.user.getSuscripcion().name, font=style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                 label_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                                button_result = tk.Button(suscription_frame, text="Volver al menú principal", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                button_result = Button(suscription_frame, text="Volver al menú principal", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                 button_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)    
                         
                         suscription_frame.columnconfigure(0, weight=1)
@@ -782,14 +801,14 @@ class App():
                         label_message.destroy()
                         button_yes.destroy()
                         button_no.destroy()
-                        label_suscription_options = tk.Label(master = suscription_frame, text = "Seleccione un nivel de suscripción: ", font = style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_suscription_options = Label(master = suscription_frame, text = "Seleccione un nivel de suscripción: ", font = style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_suscription_options.grid(row=0, column=0, padx=2, pady=2, sticky="NSEW")
-                        selected_suscription = tk.StringVar(suscription_frame)
+                        selected_suscription = StringVar(suscription_frame)
                         suscription_options_combobox = Combobox(master = suscription_frame, textvariable=selected_suscription, cursor="cross", font=style_suscription)
                         suscription_options_combobox["values"] = [Suscripcion.getNivelesSuscripcion()[m].name for m in range(0, len(Suscripcion.getNivelesSuscripcion())) if Suscripcion.getNivelesSuscripcion()[m] != cls.user.getSuscripcion()]
                         suscription_options_combobox['state'] = 'readonly'
                         suscription_options_combobox.grid(row=1, column=0, padx=2, pady=2, sticky="NSEW")
-                        button_select_yes_no = tk.Button(master=suscription_frame, text="Aceptar", command=modify_suscription_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_suscription)
+                        button_select_yes_no = Button(master=suscription_frame, text="Aceptar", command=modify_suscription_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_suscription)
                         button_select_yes_no.grid(row=0, column=1, rowspan=2, padx=2, pady=2, sticky="NSEW")
         
                     selected_bank = banks_options_combobox.get()
@@ -810,11 +829,11 @@ class App():
                         suscription_frame.columnconfigure(1, weight=1)
                         suscription_frame.columnconfigure(2, weight=0)
                         message = str(Banco(selected_bank).comprobarSuscripcion(cls.user))
-                        label_message = tk.Label(suscription_frame, text=message + "\n¿Desea cambiar su nivel de suscripción? (Y/N): ", font=style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_message = Label(suscription_frame, text=message + "\n¿Desea cambiar su nivel de suscripción? (Y/N): ", font=style_suscription, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_message.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
-                        button_yes = tk.Button(suscription_frame, text="Si", font=style_suscription, command=yes_no_confirmation, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_yes = Button(suscription_frame, text="Si", font=style_suscription, command=yes_no_confirmation, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_yes.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                        button_no = tk.Button(suscription_frame, text="No", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_no = Button(suscription_frame, text="No", font=style_suscription, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_no.grid(row=1, column=1, sticky="NSEW", padx=2, pady=2)
                 
                 objects = show_banks_user(suscription_frame, functionality_logic, style_suscription)
@@ -827,9 +846,16 @@ class App():
    
         def invertir_saldo():
             titulo_funcionalidad.set("Funcionalidad - Invertir Saldo")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("El método de instancia invertirSaldo que se encuentra en la clase Ahorros consulta el atributo de instancia titular de tipo Usuario, de la instancia de Ahorros utilizada para ejecutar el método, usando el operador self y el método de instancia getTitular. Posteriormente, verifica el atributo de instancia suscripcion de la instancia titular y obtiene la constante _PROBABILIDADINVERSION de tipo float asociada a este. Esta última constante se utiliza para realizar un cálculo aritmético que se almacena dentro de una variable de tipo double llamada rand, luego se evalúa que rand sea mayor ó igual a uno. Posteriormente, si la condición es true, entonces se retorna una instancia de la clase Movimientos, pero si la condición es false, entonces se levanta una excepción de tipo accountsException.FailedInvestmentException.")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+
             style_balance_investment=font.Font(cls.main_window, family="Helvetica", size=14)
-            balance_investment_frame = tk.Frame(cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid")
+            balance_investment_frame = Frame(cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid")
             balance_investment_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)    
 
             def start_functionality():
@@ -858,11 +884,11 @@ class App():
                         balance_investment_frame.columnconfigure(0, weight=1)
                         balance_investment_frame.columnconfigure(2, weight=0)
                         cls.user.asociarMovimiento(c)
-                        label_investment_result = tk.Label(balance_investment_frame, text="La inversion de saldo ha sido exitosa " + str(c), font=style_balance_investment, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_investment_result = Label(balance_investment_frame, text="La inversion de saldo ha sido exitosa " + str(c), font=style_balance_investment, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_investment_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                        label_movements_result = tk.Label(balance_investment_frame, text=cls.user.verificarContadorMovimientos(), font=style_balance_investment, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_movements_result = Label(balance_investment_frame, text=cls.user.verificarContadorMovimientos(), font=style_balance_investment, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                        button_result = tk.Button(balance_investment_frame, text="Volver al menú principal", font=style_balance_investment, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_result = Button(balance_investment_frame, text="Volver al menú principal", font=style_balance_investment, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
                 
                 objects = show_saving_accounts_user(balance_investment_frame, functionality_logic, style_balance_investment, 0)
@@ -875,9 +901,16 @@ class App():
 
         def consignar_saldo():
             titulo_funcionalidad.set("Funcionalidad - Consignar Saldo")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros dos instancias de la clase Ahorros llamadas destino y origen, un enum de Categoria, un dato de tipo double llamado cantidad y un objeto de tipo datetime llamado fecha. Este método verifica que origen sea None y que la categoría sea diferente de Categoria.PRESTAMO, de ser así, entonces se retorna una instancia de la clase Movimientos que es luego asociada a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario.")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+
             style_consign_balance=font.Font(cls.main_window, family="Garamond", size=15)
-            balance_consign_frame = tk.Frame(cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid")
+            balance_consign_frame = Frame(cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid")
             balance_consign_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
             
             def start_functionality():
@@ -918,11 +951,11 @@ class App():
                             balance_consign_frame.columnconfigure(2, weight=0)
                             consign_movement = Movimientos.crearMovimiento(selected_account, selected_balance, Categoria.OTROS, datetime.now())
                             cls.user.asociarMovimiento(consign_movement)
-                            label_consign_result = tk.Label(balance_consign_frame, text="La consignación de saldo ha sido exitosa: \n" + str(consign_movement), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_consign_result = Label(balance_consign_frame, text="La consignación de saldo ha sido exitosa: \n" + str(consign_movement), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_consign_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                            label_movements_result = tk.Label(balance_consign_frame, text=cls.user.verificarContadorMovimientos(), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_movements_result = Label(balance_consign_frame, text=cls.user.verificarContadorMovimientos(), font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                            button_result = tk.Button(balance_consign_frame, text="Volver al menú principal", font=style_consign_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_result = Button(balance_consign_frame, text="Volver al menú principal", font=style_consign_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
 
                     if accounts_options_combobox is not None:
@@ -946,12 +979,12 @@ class App():
                         balance_consign_frame.columnconfigure(0, weight=1)
                         balance_consign_frame.columnconfigure(1, weight=1)
                         balance_consign_frame.columnconfigure(2, weight=0)
-                        label_ask_balance = tk.Label(balance_consign_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        label_ask_balance = Label(balance_consign_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_consign_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         label_ask_balance.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
                         balance_investment_ff = FieldFrame("Datos", ["Saldo"], "Valores", frame=[balance_consign_frame, 1, 0, 2, 1])
-                        button_continue = tk.Button(balance_consign_frame, text="Continuar", font=style_consign_balance, command=consign_balance_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_continue = Button(balance_consign_frame, text="Continuar", font=style_consign_balance, command=consign_balance_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
-                        button_back = tk.Button(balance_consign_frame, text="Volver", font=style_consign_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                        button_back = Button(balance_consign_frame, text="Volver", font=style_consign_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                         button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
                 
                 objects = show_saving_accounts_user(balance_consign_frame, functionality_logic, style_consign_balance, 0)
@@ -963,10 +996,17 @@ class App():
             start_functionality()
             
         def transferir_saldo():
+            text_description_title.config(state="normal")
             titulo_funcionalidad.set("Funcionalidad - Transferir Saldo")
             descripcion_funcionalidad.set("El método estático crearMovimiento que se encuentra en la clase Movimientos recibe como parámetros dos instancias de la clase Ahorros llamadas destino y origen, un enum de Categoria, un dato de tipo double llamado cantidad y un objeto de tipo datetime llamado fecha. Este método verifica que origen no sea None, de ser así, entonces se retorna una instancia de la clase Movimientos que es luego asociada a la instancia de Usuario pasada por parámetro usando el método de instancia asociarMovimiento de la clase Usuario.")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+
             style_transfer_balance = font.Font(cls.main_window, family="Times New Roman", size=15)
-            balance_transfer_frame = tk.Frame(cls.subframe_main, bg="#F6FBD0", borderwidth=1, relief="solid")
+            balance_transfer_frame = Frame(cls.subframe_main, bg="#F6FBD0", borderwidth=1, relief="solid")
             balance_transfer_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0) 
 
             def start_functionality():
@@ -1014,11 +1054,11 @@ class App():
                                     balance_transfer_frame.columnconfigure(2, weight=0)
                                     transfer_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, datetime.today(), selected_account_origin)
                                     cls.user.asociarMovimiento(transfer_movement)
-                                    label_transfer_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(transfer_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_transfer_result = Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(transfer_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     label_transfer_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                                    label_movements_result = tk.Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_movements_result = Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                                    button_result = tk.Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    button_result = Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
 
                             balance_transfer_frame.columnconfigure(2, weight=0)
@@ -1032,12 +1072,12 @@ class App():
                                 if selected_account_destination == account_user.getNombre():
                                         selected_account_destination = account_user
 
-                            label_ask_transfer = tk.Label(balance_transfer_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_ask_transfer = Label(balance_transfer_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_ask_transfer.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
                             balance_transfer_ff = FieldFrame("Datos", ["Saldo"], "Valores", frame=[balance_transfer_frame, 1, 0, 2, 1])
-                            button_continue = tk.Button(balance_transfer_frame, text="Continuar", font=style_transfer_balance, command=own_account_functionality_logic_transfer, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_continue = Button(balance_transfer_frame, text="Continuar", font=style_transfer_balance, command=own_account_functionality_logic_transfer, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
-                            button_back = tk.Button(balance_transfer_frame, text="Volver", font=style_transfer_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_back = Button(balance_transfer_frame, text="Volver", font=style_transfer_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
           
                         selected_account_origin = accounts_options_combobox.get()
@@ -1063,7 +1103,7 @@ class App():
                             for account_user in accounts_user:
                                 if selected_account_origin.getId() == account_user.getId():
                                         accounts_user.remove(account_user)
-                            label_account_destination = tk.Label(balance_transfer_frame, text="A cual de sus cuentas desea transferir su saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_account_destination = Label(balance_transfer_frame, text="A cual de sus cuentas desea transferir su saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_account_destination.grid(row=0, column=0, columnspan=3, sticky="NSEW", padx=2, pady=2)
                             objects = show_saving_accounts_user(balance_transfer_frame, own_account_functionality_logic_destination, style_transfer_balance, 1)
                             label_accounts_options_local = objects[1]
@@ -1130,11 +1170,11 @@ class App():
                                     balance_transfer_frame.columnconfigure(2, weight=0)
                                     transfer_movement = Movimientos.crearMovimiento(selected_account_destination, selected_balance, Categoria.FINANZAS, datetime.today(), selected_account_origin)
                                     cls.user.asociarMovimiento(transfer_movement)
-                                    label_transfer_result = tk.Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(transfer_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_transfer_result = Label(balance_transfer_frame, text="La transferencia de saldo ha sido exitosa: \n" + str(transfer_movement), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     label_transfer_result.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-                                    label_movements_result = tk.Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    label_movements_result = Label(balance_transfer_frame, text=cls.user.verificarContadorMovimientos(), font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     label_movements_result.grid(row=1, column=0, sticky="NSEW", padx=2, pady=2)
-                                    button_result = tk.Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                                    button_result = Button(balance_transfer_frame, text="Volver al menú principal", font=style_transfer_balance, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                                     button_result.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
 
                             balance_transfer_frame.columnconfigure(2, weight=0)
@@ -1148,12 +1188,12 @@ class App():
                                 if selected_account_destination == account.getNombre():
                                         selected_account_destination = account
 
-                            label_ask_transfer = tk.Label(balance_transfer_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_ask_transfer = Label(balance_transfer_frame, text="Ingrese el monto de su consignación de saldo: ", font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_ask_transfer.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
                             balance_transfer_ff = FieldFrame("Datos", ["Saldo"], "Valores", frame=[balance_transfer_frame, 1, 0, 2, 1])
-                            button_continue = tk.Button(balance_transfer_frame, text="Continuar", font=style_transfer_balance, command=another_account_functionality_logic_transfer, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_continue = Button(balance_transfer_frame, text="Continuar", font=style_transfer_balance, command=another_account_functionality_logic_transfer, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             button_continue.grid(row=2, column=0, sticky="NSEW", padx=2, pady=2)
-                            button_back = tk.Button(balance_transfer_frame, text="Volver", font=style_transfer_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            button_back = Button(balance_transfer_frame, text="Volver", font=style_transfer_balance, command=restart_functionality, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             button_back.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
                         
                         selected_account_origin = accounts_options_combobox.get()
@@ -1179,7 +1219,7 @@ class App():
                             for account in accounts_total:
                                 if selected_account_origin.getId() == account.getId():
                                         accounts_total.remove(account)
-                            label_account_destination = tk.Label(balance_transfer_frame, text="Seleccione la cuenta de ahorros destino donde deseas transferir saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+                            label_account_destination = Label(balance_transfer_frame, text="Seleccione la cuenta de ahorros destino donde deseas transferir saldo: ",font=style_transfer_balance, cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
                             label_account_destination.grid(row=0, column=0, columnspan=3, sticky="NSEW", padx=2, pady=2)
                             objects = show_saving_accounts_total(balance_transfer_frame, another_account_functionality_logic_destination, style_transfer_balance, 1)
                             label_accounts_options_local = objects[1]
@@ -1205,11 +1245,11 @@ class App():
 
                 balance_transfer_frame.columnconfigure(1, weight=1)
                 balance_transfer_frame.columnconfigure(0, weight=1)
-                label_transfer_options = tk.Label(master = balance_transfer_frame, text = "Por favor, elija el destino de la transferencia: ", font=style_transfer_balance, border=1, relief="solid", bg="#8C7566", fg="white")
+                label_transfer_options = Label(master = balance_transfer_frame, text = "Por favor, elija el destino de la transferencia: ", font=style_transfer_balance, border=1, relief="solid", bg="#8C7566", fg="white")
                 label_transfer_options.grid(row=0, column=0, columnspan=2, padx=2, pady=2, sticky="NSEW")
-                button_own_account = tk.Button(master=balance_transfer_frame, text="1. Cuenta propia", command=own_account_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_transfer_balance)
+                button_own_account = Button(master=balance_transfer_frame, text="1. Cuenta propia", command=own_account_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_transfer_balance)
                 button_own_account.grid(row=1, column=0, padx=2, pady=2, sticky="NSEW")  
-                button_another_account = tk.Button(master=balance_transfer_frame, text="2. Cuenta externa", command=another_account_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_transfer_balance)
+                button_another_account = Button(master=balance_transfer_frame, text="2. Cuenta externa", command=another_account_logic, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white", font=style_transfer_balance)
                 button_another_account.grid(row=1, column=1, padx=2, pady=2, sticky="NSEW")  
 
             start_functionality()
@@ -1217,15 +1257,28 @@ class App():
         def compra_corriente():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Comprar con cuenta corriente")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("Agregar la descripcion en el metodo compra_corriente y agregar aca el funcionamiento de su funcionalidad")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
 
         def asesoramiento_inversiones():
             cls.user.asociarMeta(Metas.getMetasTotales()[0])
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Asesoramiento de Inversiones")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("La funcionalidad da una recomendación de un portafolio de inversiones en base a las preferencias y características del usuario, como las fechas de sus metas y sus movimientos o el dinero que hay en sus cuentas. Además, provee herramientas que pretenden mejorar aún más la inversión para la satisfacción del usuario.")
+            descripcion_funcionalidad.set("Agregar la descripcion en el metodo compra_corriente y agregar aca el funcionamiento de su funcionalidad")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
 
-            frame = tk.Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
+            frame = Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
             frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)
 
             def comienzo():
@@ -1237,35 +1290,35 @@ class App():
                     widget.destroy()
 
                 # Crear etiqueta y menú desplegable
-                label1 = tk.Label(frame, text="Tolerancia a Riesgos:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label1 = Label(frame, text="Tolerancia a Riesgos:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label1.pack()
                 
                 global combobox
-                texto1 = tk.StringVar()
+                texto1 = StringVar()
                 combobox = Combobox(frame, textvariable=texto1, font=font.Font(family="Times New Roman", size=16))
                 combobox['values'] = ('', 'Baja', 'Media', 'Alta')
                 combobox.current(0)
                 combobox.pack()
 
                 # Crear etiqueta y campo de texto
-                label2 = tk.Label(frame, text="¿Cuánto dinero deseas invertir?:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label2 = Label(frame, text="¿Cuánto dinero deseas invertir?:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label2.pack()
                 
                 global entry2
-                texto2 = tk.StringVar()
-                entry2 = tk.Entry(frame, textvariable=texto2, font=font.Font(family="Times New Roman", size=16), bg="white")
+                texto2 = StringVar()
+                entry2 = Entry(frame, textvariable=texto2, font=font.Font(family="Times New Roman", size=16), bg="white")
                 entry2.pack()
 
-                frame2 = tk.Frame(frame, width=200, height=100, bg="#B3B6B7")
+                frame2 = Frame(frame, width=200, height=100, bg="#B3B6B7")
                 frame2.pack()
 
                 # Crear botón "Siguiente"
-                Siguiente = tk.Button(frame2, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=16), bg="white")
+                Siguiente = Button(frame2, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=16), bg="white")
                 Siguiente.place(relx=0.5, rely=0.5, anchor='s')
 
             # Crear botón "Comenzar"
-            comenzar = tk.Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
-            comenzar.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+            comenzar = Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
+            comenzar.place(relx=0.5, rely=0.5, anchor=CENTER)
     
             def mostrar_siguiente():
                 tolerancia_riesgos = combobox.get()
@@ -1299,23 +1352,23 @@ class App():
 
                 # Mostrar el resultado por pantalla
                 resultado_texto = f"Tienes una meta para una fecha muy próxima: {nombre}, {cantidad}, {fecha_normal}"
-                label_siguiente = tk.Label(frame, text=resultado_texto, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_siguiente = Label(frame, text=resultado_texto, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_siguiente.pack()
 
                 # Agregar mensaje de confirmación para cambiar la fecha
                 mensaje_confirmacion = "¿Desea cambiar la fecha de la meta?"
-                label_confirmacion = tk.Label(frame, text=mensaje_confirmacion, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_confirmacion = Label(frame, text=mensaje_confirmacion, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_confirmacion.pack()
 
                 # Crear botones "Sí" y "No" centrados
-                botones_frame = tk.Frame(frame, bg="#B3B6B7")
+                botones_frame = Frame(frame, bg="#B3B6B7")
                 botones_frame.pack()
 
-                boton_si = tk.Button(botones_frame, text="Sí", command=mostrar_campo_fecha, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_si.pack(side=tk.LEFT, padx=10)
+                boton_si = Button(botones_frame, text="Sí", command=mostrar_campo_fecha, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_si.pack(side=LEFT, padx=10)
 
-                boton_no = tk.Button(botones_frame, text="No", command=no_cambiar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_no.pack(side=tk.LEFT, padx=10)
+                boton_no = Button(botones_frame, text="No", command=no_cambiar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_no.pack(side=LEFT, padx=10)
 
 
             def mostrar_campo_fecha():
@@ -1327,14 +1380,14 @@ class App():
 
                 # Mostrar mensaje y campo de texto para la fecha
                 mensaje_fecha = "Ingrese la nueva fecha de la meta (en el formato dd/mm/yyyy):"
-                label_fecha = tk.Label(frame, text=mensaje_fecha, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_fecha = Label(frame, text=mensaje_fecha, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_fecha.pack()
                 
-                entry_fecha = tk.Entry(frame, font=font.Font(family="Times New Roman", size=16), bg="white")
+                entry_fecha = Entry(frame, font=font.Font(family="Times New Roman", size=16), bg="white")
                 entry_fecha.pack()
 
                 # Crear botón "Guardar"
-                boton_guardar = tk.Button(frame, text="Guardar", command=guardar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_guardar = Button(frame, text="Guardar", command=guardar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
                 boton_guardar.pack()
 
             def guardar_fecha_meta():
@@ -1378,25 +1431,25 @@ class App():
                     widget.destroy()
 
                 mensaje_advertencia = "Advertencia: Con el fin de hacer un buen asesoramiento analizaremos sus movimientos para encontrar la categoría en la que más dinero ha gastado."
-                label_advertencia = tk.Label(frame, text=mensaje_advertencia, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_advertencia = Label(frame, text=mensaje_advertencia, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_advertencia.pack()
 
                 # Mostrar la categoría en la que más dinero se ha gastado
                 mensaje_categoria = "La categoría en la que más dinero ha gastado es: " + Movimientos._nombre_categoria
                 mensaje_categoria += " que suma un total de " + str(Movimientos._cantidad_categoria)
                 mensaje_categoria += "\n¿Deseas crear una meta con el fin de ahorrar la misma cantidad que has gastado en esta categoría?"
-                label_categoria = tk.Label(frame, text=mensaje_categoria, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_categoria = Label(frame, text=mensaje_categoria, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_categoria.pack()
 
                 # Crear botones "Sí" y "No"
-                botones_frame = tk.Frame(frame, bg="#B3B6B7")
+                botones_frame = Frame(frame, bg="#B3B6B7")
                 botones_frame.pack()
 
-                boton_si = tk.Button(botones_frame, text="Sí", command=crear_meta_ahorro, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_si.pack(side=tk.LEFT, padx=10)
+                boton_si = Button(botones_frame, text="Sí", command=crear_meta_ahorro, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_si.pack(side=LEFT, padx=10)
 
-                boton_no = tk.Button(botones_frame, text="No", command=mostrar_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_no.pack(side=tk.LEFT, padx=10)
+                boton_no = Button(botones_frame, text="No", command=mostrar_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_no.pack(side=LEFT, padx=10)
 
             def crear_meta_ahorro():
                 messagebox.showinfo("Mensaje", "Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas")
@@ -1432,21 +1485,21 @@ class App():
                 else:
                     recomendaciones = "No tenemos una recomendación para ti"
 
-                label_recomendaciones = tk.Label(frame, text=mensaje_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_recomendaciones = Label(frame, text=mensaje_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_recomendaciones.pack()
 
-                label_sectores = tk.Label(frame, text=recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_sectores = Label(frame, text=recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_sectores.pack()
 
                 # Mostrar mensaje adicional
                 nombre_banco = Banco.banco_portafolio(cls.user).getNombre()
                 interes_portafolio = Banco.intereses_portafolio(Banco.banco_portafolio(cls.user), cls.user)
                 mensaje_adicional = "Nota: Hay un banco asociado al portafolio: " + nombre_banco + ", con una tasa de interés del " + str(interes_portafolio) +"%"
-                label_adicional = tk.Label(frame, text=mensaje_adicional, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_adicional = Label(frame, text=mensaje_adicional, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_adicional.pack()
 
                 # Mostrar botón "Siguiente"
-                boton_siguiente = tk.Button(frame, text="Siguiente", command=mostrar_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_siguiente = Button(frame, text="Siguiente", command=mostrar_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
                 boton_siguiente.pack()
 
 
@@ -1457,18 +1510,18 @@ class App():
 
                 # Mostrar mensaje de préstamo
                 mensaje_prestamo = "Finalmente, para mejorar aún más tu inversión te recomendamos hacer un préstamo. ¿Deseas hacer el préstamo?"
-                label_prestamo = tk.Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_prestamo = Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_prestamo.pack()
 
                 # Crear botones "Sí" y "No" centrados
-                botones_frame = tk.Frame(frame, bg="#B3B6B7")
+                botones_frame = Frame(frame, bg="#B3B6B7")
                 botones_frame.pack()
 
-                boton_si = tk.Button(botones_frame, text="Sí", command=hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_si.pack(side=tk.LEFT, padx=10)
+                boton_si = Button(botones_frame, text="Sí", command=hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_si.pack(side=LEFT, padx=10)
 
-                boton_no = tk.Button(botones_frame, text="No", command=no_hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_no.pack(side=tk.LEFT, padx=10)
+                boton_no = Button(botones_frame, text="No", command=no_hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_no.pack(side=LEFT, padx=10)
 
             def hacer_prestamo():
                 # Eliminar widgets existentes
@@ -1477,20 +1530,20 @@ class App():
 
                 # Mostrar mensaje de solicitud de préstamo
                 mensaje_prestamo = "Las tasas de interés de los préstamos están muy altas, pero tenemos la solución perfecta para ti, aunque no sea la más correcta... Vas a hacer un préstamo con el usuario gota a gota."
-                label_prestamo = tk.Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7", wraplength=frame.winfo_width())
+                label_prestamo = Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7", wraplength=frame.winfo_width())
                 label_prestamo.pack()
 
                 # Mostrar campo de texto para ingresar el monto del préstamo
-                label_monto = tk.Label(frame, text="Ingrese el monto que desea solicitar prestado:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_monto = Label(frame, text="Ingrese el monto que desea solicitar prestado:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_monto.pack()
                 
                 global entry_monto
-                texto_monto = tk.StringVar()
-                entry_monto = tk.Entry(frame, textvariable=texto_monto, font=font.Font(family="Times New Roman", size=16), bg="white")
+                texto_monto = StringVar()
+                entry_monto = Entry(frame, textvariable=texto_monto, font=font.Font(family="Times New Roman", size=16), bg="white")
                 entry_monto.pack()
                 
                 # Crear botón "Guardar"
-                boton_guardar = tk.Button(frame, text="Guardar", command=guardar_monto_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_guardar = Button(frame, text="Guardar", command=guardar_monto_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
                 boton_guardar.pack()
 
             def guardar_monto_prestamo():
@@ -1516,18 +1569,24 @@ class App():
 
                 # Mostrar mensaje de despedida
                 mensaje_despedida = "Ha sido un placer asesorarte en este proceso, espero que nuestra recomendación haya sido de ayuda."
-                label_despedida = tk.Label(frame, text=mensaje_despedida, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_despedida = Label(frame, text=mensaje_despedida, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_despedida.pack()
 
-                boton_reiniciar = tk.Button(frame, text="Reiniciar", command=asesoramiento_inversiones, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_reiniciar = Button(frame, text="Reiniciar", command=asesoramiento_inversiones, font=font.Font(family="Times New Roman", size=16), bg="white")
                 boton_reiniciar.pack()
 
         def compra_cartera(cuenta = None):
             print(Corriente.__name__)
             # Editar la descripcion de su funcionalidad
-            label_title.config(text="Funcionalidad - Compra Catera")
-            label_description.config(
-                text="Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
+            titulo_funcionalidad.set("Funcionalidad - Compra Catera")
+            text_description_title.config(state="normal")
+            descripcion_funcionalidad.set("Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+
             #Desarrollo de la funcionalidad
 
             if cuenta == None:
@@ -1555,7 +1614,7 @@ class App():
                     messagebox.showerror("Error", "El usuario " + cls.user.getNombre() + " no tiene préstamos asociados, no es posible realizar la funcionalidad.")
                     return
                 
-                framecc = tk.Frame(cls.subframe_main)
+                framecc = Frame(cls.subframe_main)
                 framecc.pack(expand=True, fill="both")
 
                 confirmacion_Compra = False
@@ -1575,7 +1634,7 @@ class App():
                     print(confirmacion_Compra)
 
                 impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
-                label_impresion = tk.Label(framecc, text=impresion_1)
+                label_impresion = Label(framecc, text=impresion_1)
                 label_impresion.grid(row=0, column=0, columnspan=10)
 
                 Tablas.impresionCuentasCorriente(cuentasEnDeuda, framecc, 1)
@@ -1629,7 +1688,7 @@ class App():
                             cuenta_Destino = int(eleccion[0])
 
                 impresion_2 = "Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: "
-                label_impresion_2 = tk.Label(framecc, text=impresion_2)
+                label_impresion_2 = Label(framecc, text=impresion_2)
                 label_impresion_2.grid(row=0, column=0, columnspan=11)
 
                 Tablas.impresionCuentasCorrienteInteres(cuentas_capaces_deuda, tasacion_cuentas, framecc, 1)
@@ -1702,7 +1761,7 @@ class App():
                                     messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C48 + ".")
 
                         impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
-                        label_impresion_3 = tk.Label(framecc, text=impresion_3)
+                        label_impresion_3 = Label(framecc, text=impresion_3)
                         label_impresion_3.grid(row=0, column=0, columnspan=5)
 
                     cuen_comb_3 = ["Seleccionar Cuotas", "1 Cuota", "6 Cuotas", "12 Cuotas", "18 Cuotas", "24 Cuotas", "36 Cuotas", "48 Cuotas"]
@@ -1732,19 +1791,19 @@ class App():
                 
                 #Vista Previa de los resultados del cambio
                 impresion_4 = "Vista previa de como quedaría la cuenta escogida para recibir la deuda: "
-                label_impresion_4 = tk.Label(framecc, text=impresion_4)
+                label_impresion_4 = Label(framecc, text=impresion_4)
                 label_impresion_4.grid(row=0, column=0, columnspan=11)
 
-                label_impresion_5 = tk.Label(framecc, text=vistaPrevia)
+                label_impresion_5 = Label(framecc, text=vistaPrevia)
                 label_impresion_5.grid(row=2, column=0, columnspan=11)
 
                 cuotaMensual = Corriente.imprimirCuotaMensual(cuota)
 
-                label_impresion_6 = tk.Label(framecc, text="Primer Cuota: ")
+                label_impresion_6 = Label(framecc, text="Primer Cuota: ")
                 label_impresion_6.grid(row=3, column=0, columnspan=11)
 
                 impresion_8 = cuotaMensual + " " + vistaPrevia.getDivisa()
-                label_impresion_7 = tk.Label(framecc, text=impresion_8)
+                label_impresion_7 = Label(framecc, text=impresion_8)
                 label_impresion_7.grid(row=4, column=0, columnspan=11)
 
                 message_pago = "¿Desea un resumen completo de las cuotas a pagar?"
@@ -1792,17 +1851,28 @@ class App():
         def calculadora_financiera():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Calculadora Financiera")
-            label_description.config(
-                text="Agregar la descripcion en el metodo calculadora_financiera y agregar aca el funcionamiento de su funcionalidad")
+            text_description_title.config(state="normal")
+            descripcion_funcionalidad.set("Agregar la descripcion en el metodo calculadora_financiera y agregar aca el funcionamiento de su funcionalidad")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
     
         def pedir_prestamo():
 
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Pedir Prestamo")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("¿Necesitas dinero? realiza un prestamo con tu banco.\nPara pedir un prestamo es necesario que cuentes con una cuenta de ahorros, la cantidad de dinero que puedes prestar va a depender de tu nivel de suscripción y del banco asociado a tu cuenta")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
             
             # Creamos el subframe para agregar la funcionalidad
-            subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
+            subframeFuncionalidad = Frame(cls.subframe_main,bg="#222426")
             subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
 
 
@@ -1865,24 +1935,24 @@ class App():
                         def cancelar():
                             back_menu_main()
                         cuentaSeleccionada = cuentas[cuentasCombobox.current()]
-                        label2= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"El banco {cuentaSeleccionada.getBanco().getNombre()} le presta como maximo $ {cuentaSeleccionada.getBanco().getPrestamo()}. Ingrese la cantiadad que desea prestar")
+                        label2= Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"El banco {cuentaSeleccionada.getBanco().getNombre()} le presta como maximo $ {cuentaSeleccionada.getBanco().getPrestamo()}. Ingrese la cantiadad que desea prestar")
                         label2.place(anchor="w",rely=0.35,relx=0.02)
                         
-                        subframeCantidad = tk.Frame(subframeFuncionalidad,bg="#222426")
+                        subframeCantidad = Frame(subframeFuncionalidad,bg="#222426")
                         subframeCantidad.place(relheight=0.75,relwidth=0.88,relx=0.02,rely=0.4)
 
                         cantidadFF = FieldFrame("Info", ["Cantidad Prestamo:"],f"Maximo ${cuentaSeleccionada.getBanco().getPrestamo()}",  frame=[subframeCantidad,1, 0, 2, 1])
-                        button_continue = tk.Button(subframeCantidad, text="Confirmar Prestamo", font=fuente, command=realizarPrestamo, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="gray", fg="white")
+                        button_continue = Button(subframeCantidad, text="Confirmar Prestamo", font=fuente, command=realizarPrestamo, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="gray", fg="white")
                         button_continue.place(rely=0.2,relwidth=0.49)
-                        button_back = tk.Button(subframeCantidad, text="Volver", font=fuente, command=cancelar, activebackground="white", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white", fg="black")
+                        button_back = Button(subframeCantidad, text="Volver", font=fuente, command=cancelar, activebackground="white", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white", fg="black")
                         button_back.place(relx=0.51,rely=0.2,relwidth=0.49)
 
 
                     # Le mostramos al usuario las cuentas
                     fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
-                    label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="A continuacion se le mostraran las cuentas con las que puede pedir prestamo,seleccione una para conocer la cantidad de dinero que le presta su banco:")
+                    label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="A continuacion se le mostraran las cuentas con las que puede pedir prestamo,seleccione una para conocer la cantidad de dinero que le presta su banco:")
                     label1.place(anchor="w",rely=0.1,relx=0.02,relheight=0.1)
-                    labelCuenta= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text="Cuenta:")
+                    labelCuenta= Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text="Cuenta:")
                     labelCuenta.place(anchor="w",rely=0.25,relx=0.02)
                     
                     # Creamos selecctor
@@ -1901,10 +1971,16 @@ class App():
         def pagar_prestamo():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Pagar Prestamo")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("Es importante pagar tus deudas para poder confiando en ti.\n En esta sección puedes pagar tus prestamos, si no has realizado ningun prestamos y quieres hacerlo ingresa a la sección Pedir Prestamo")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
 
             # Creamos el subframe para agregar la funcionalidad
-            subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
+            subframeFuncionalidad = Frame(cls.subframe_main,bg="#222426")
             subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
 
 
@@ -1971,24 +2047,24 @@ class App():
                     def cancelar():
                         back_menu_main()
                     deudaSeleccionada = deudas[deudasCombobox.current()]
-                    label2= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"Su deuda es de $ {deudaSeleccionada.getCantidad()}. Ingrese la cantiadad que desea pagar")
+                    label2= Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"Su deuda es de $ {deudaSeleccionada.getCantidad()}. Ingrese la cantiadad que desea pagar")
                     label2.place(anchor="w",rely=0.35,relx=0.02)
                     
-                    subframeCantidad = tk.Frame(subframeFuncionalidad,bg="#222426")
+                    subframeCantidad = Frame(subframeFuncionalidad,bg="#222426")
                     subframeCantidad.place(relheight=0.75,relwidth=0.88,relx=0.02,rely=0.4)
 
                     cantidadFF = FieldFrame("Info", ["Pagar:"],f"Total ${deudaSeleccionada.getCantidad()}",  frame=[subframeCantidad,1, 0, 2, 1])
-                    button_continue = tk.Button(subframeCantidad, text="Pagar Prestamo", command=pagarPrestamo, font=fuente, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="gray", fg="white")
+                    button_continue = Button(subframeCantidad, text="Pagar Prestamo", command=pagarPrestamo, font=fuente, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="gray", fg="white")
                     button_continue.place(rely=0.2,relwidth=0.49)
-                    button_back = tk.Button(subframeCantidad, text="Volver", font=fuente,command=back_menu_main, activebackground="white", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white", fg="black")
+                    button_back = Button(subframeCantidad, text="Volver", font=fuente,command=back_menu_main, activebackground="white", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white", fg="black")
                     button_back.place(relx=0.51,rely=0.2,relwidth=0.49)
 
 
                 # Le mostramos al usuario las cuentas
                 fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
-                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="A continuacion se le mostraran sus deudas,seleccione la que desee pagar:")
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="A continuacion se le mostraran sus deudas,seleccione la que desee pagar:")
                 label1.place(anchor="w",rely=0.1,relx=0.02,relheight=0.1)
-                labelCuenta= tk.Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text="Cuenta:")
+                labelCuenta= Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text="Cuenta:")
                 labelCuenta.place(anchor="w",rely=0.25,relx=0.02)
                 
                 # Creamos selecctor
@@ -2004,28 +2080,35 @@ class App():
         def verCuentas():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Ver Cuentas")
+            text_description_title.config(state="normal")
             descripcion_funcionalidad.set("En este apartado podrás ver la información de tus cuentas: ")
+            text_description_title.delete("1.0", END)
+            text_description_title.insert("1.0", descripcion_funcionalidad.get())
+            text_description_title.tag_configure("justifying", justify="center")
+            text_description_title.tag_add("justifying", "1.0", END)
+            text_description_title.config(state="disabled")
+
             # Creamos el subframe para agregar la funcionalidad
-            subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
+            subframeFuncionalidad = Frame(cls.subframe_main,bg="#222426")
             subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
 
             fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
-            labelNombre = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
+            labelNombre = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
             labelNombre.place(relx= 0, rely=0,relwidth=0.2, relheight=0.2)
-            labelTipo = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Tipo de Cuenta")
+            labelTipo = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Tipo de Cuenta")
             labelTipo.place(relx= 0.2, rely=0,relwidth=0.2, relheight=0.2)
-            labelDivisa = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
+            labelDivisa = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
             labelDivisa.place(relx= 0.4, rely=0,relwidth=0.2, relheight=0.2)
-            labelBanco = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Banco")
+            labelBanco = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Banco")
             labelBanco.place(relx= 0.6, rely=0,relwidth=0.2, relheight=0.2)
-            labelSaldo = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Saldo/Disponible")
+            labelSaldo = Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Saldo/Disponible")
             labelSaldo.place(relx= 0.8, rely=0,relwidth=0.2, relheight=0.2)
 
             # Nombre
             i=0
             while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
-                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getNombre())
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getNombre())
                 label1.place(relx=0, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Tipo
@@ -2036,21 +2119,21 @@ class App():
                     tipo= "Ahorros"
                 else:
                     tipo= "Corriente"
-                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=tipo)
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=tipo)
                 label1.place(relx=0.2, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Divisa 
             i=0
             while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
-                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getDivisa().value)
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getDivisa().value)
                 label1.place(relx=0.4, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Banco 
             i=0
             while i< len(cls.user.getCuentasAsociadas()):
                 cuenta = cls.user.getCuentasAsociadas()[i]
-                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getBanco().getNombre())
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getBanco().getNombre())
                 label1.place(relx=0.6, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
             # Saldo
@@ -2061,34 +2144,33 @@ class App():
                     saldo = cuenta.getSaldo()
                 else:
                     saldo = cuenta.getDisponible()
-                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=saldo)
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=saldo)
                 label1.place(relx=0.8, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
                 i+=1
-            button_back_main = tk.Button(subframeFuncionalidad, text="Volver al menú principal", font=fuente, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
+            button_back_main = Button(subframeFuncionalidad, text="Volver al menú principal", font=fuente, command=back_menu_main, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#8C7566", fg="white")
             button_back_main.place(relx=0, rely=0.2+(len(cls.user.getCuentasAsociadas()))*0.1, relwidth=1, relheight=0.15)  
         
         # Configuración básica de parámetros de la ventana Principal
-        cls.main_window = tk.Tk()
+        cls.main_window = Tk()
         cls.main_window.geometry("1400x500")
         cls.main_window.title("Mis Finanzas")
         #cls.main_window.resizable(0, 0)
-        current_directory = os.path.dirname(os.path.abspath(__file__))
-        route_logo = os.path.join(current_directory + "\static", "logo.png")
-        logo = tk.PhotoImage(file=route_logo)
+        route_logo = os.path.join(cls.current_directory + "\static", "logo.png")
+        logo = PhotoImage(file=route_logo)
         cls.main_window.iconphoto(True, logo)
 
         # Configuración básica de los parámetros del main_frame en la ventana Principal
-        main_frame = tk.Frame(cls.main_window, bg="#DFDEDE")
+        main_frame = Frame(cls.main_window, bg="#DFDEDE")
         main_frame.pack(fill="both", expand=True)
-        titulo_funcionalidad = tk.StringVar(main_frame, value="Bienvenido " + cls.user.getNombre() + " a Mis Finanzas") 
+        titulo_funcionalidad = StringVar(main_frame, value="Bienvenido " + cls.user.getNombre() + " a Mis Finanzas") 
 
         # Configuración de los subs-frames
 
         # subframe del titulo
-        subframe_title = tk.Frame(main_frame, bg="black",
+        subframe_title = Frame(main_frame, bg="black",
                              borderwidth=1, relief="solid")
         subframe_title.place(anchor="nw", relwidth=0.94, relheight=0.1, relx=0.03)
-        cls.subframe_main = tk.Frame(
+        cls.subframe_main = Frame(
             main_frame, bg="#DFDEDE", borderwidth=1, relief="solid", name="subframe_main")
         cls.subframe_main.place(
             relheight=0.85, relwidth=0.94, rely=0.15, relx=0.03)
@@ -2105,25 +2187,25 @@ class App():
         proceso9 = "Calculadora financiera"
 
         # Configuración de barra de menú para ventana principal
-        home_menu = tk.Menu(subframe_title, cursor="cross")
+        home_menu = Menu(subframe_title, cursor="cross")
         
         # Configuración del menú archivo
-        archivo = tk.Menu(home_menu, tearoff=0)
+        archivo = Menu(home_menu, tearoff=0)
         archivo.add_command(label="Aplicación",
                             activebackground="gray", activeforeground="white", command=show_description)
         archivo.add_command(label="Cerrar sesión", command=exit_principal_window,
                             activebackground="gray", activeforeground="white")
 
         # Configuración del menú de ayuda
-        ayuda_menu = tk.Menu(home_menu, tearoff=0)
+        ayuda_menu = Menu(home_menu, tearoff=0)
         ayuda_menu.add_command(label="Acerca de", command=about,
                              activebackground="gray", activeforeground="white")
 
         # Configuración del menú de Procesos y Consultas
-        procesos_consultas = tk.Menu(home_menu, tearoff=0)
+        procesos_consultas = Menu(home_menu, tearoff=0)
 
         # Agregamos los submenús al gestionar prestamos.
-        prestamos_menu = tk.Menu(procesos_consultas, tearoff=0)
+        prestamos_menu = Menu(procesos_consultas, tearoff=0)
         prestamos_menu.add_command(label="Pedir prestamos", command=pedir_prestamo,
                                    activebackground="gray", activeforeground="white")
         prestamos_menu.add_command(label="Pagar prestamos", command=pagar_prestamo,
@@ -2165,33 +2247,41 @@ class App():
         # -------Texto de título(subframe_title)---------------------
         title_Font_Style = font.Font(
             weight="bold", size=12, family="Alegreya Sans")
-        label_title = tk.Label(subframe_title, textvariable=titulo_funcionalidad, fg="white",
-                               bg="gray", wraplength=400, font=title_Font_Style, width=50)
+        label_title = Label(subframe_title, textvariable=titulo_funcionalidad, fg="black",
+                               bg="#94B43B", wraplength=400, font=title_Font_Style, width=50)
         label_title.place(anchor="w", relheight=0.97,
                           relwidth=0.8945, rely=0.5, relx=0.001)
         
         # -------Imagen del titulo(subframe_title)
-        route_image = os.path.join(current_directory + "\static", "unal.png")
-        upper_image = tk.PhotoImage(file=route_image)
+        route_image = os.path.join(cls.current_directory + "\static", "unal.png")
+        upper_image = PhotoImage(file=route_image)
         upper_image = upper_image.subsample(4)
-        upper_image_label = tk.Label(subframe_title, image=upper_image)
+        upper_image_label = Label(subframe_title, image=upper_image)
         upper_image_label.place(
             anchor="e", relheight=0.97, relwidth=0.101, rely=0.5, relx=0.999)
 
         # ------------Descripcion de la funcionalidad
-        subframe_description = tk.Frame(
-            cls.subframe_main, bg="gray", borderwidth=1, relief="solid", name="subframe_description")
-        subframe_description.place(
+        subframe_description_title = Frame(
+            cls.subframe_main, bg="gray", borderwidth=1, relief="solid", name="subframe_description_title")
+        subframe_description_title.place(
             relheight=0.25, relwidth=1, rely=0.0, relx=0.0)
-        descripcion_font_style = font.Font(size=12, family="Alegreya Sans", weight="bold", slant="italic")
-        descripcion_funcionalidad = tk.StringVar(main_frame)
+        descripcion_font_style = font.Font(size=12, family="Alegreya Sans", slant="italic")
+        descripcion_funcionalidad = StringVar(main_frame)
+        text_description_title = Text(subframe_description_title, cursor="cross", fg="white", bg="#565A5C", font=descripcion_font_style, wrap="word", spacing1=8, border=1, relief="groove")
+        text_description_title.pack(fill="both", expand=True)
+        # --------------------------------------------------
+        # ------------Nota sobre la zona de componentes
+        subframe_description_component = Frame(
+            cls.subframe_main, bg="#DFDEDE", borderwidth=1, relief="solid", name="subframe_description_component")
+        subframe_description_component.place(
+            relheight=0.75, relwidth=1, rely=0.25, relx=0.0)
+        basic_instructions = StringVar(main_frame)
+        text_description_component = Text(subframe_description_component, cursor="cross", fg="black", bg="#B1B2B0", font=(
+            "Alegreya Sans", 12), wrap="word", spacing1=8, border=1, relief="groove")
+        text_description_component.pack(fill="both", expand=True)
         welcome_text_reset()
-        label_description = tk.Label(subframe_description, textvariable=descripcion_funcionalidad,
-                                    fg="black", bg="gray", font=descripcion_font_style, wraplength=1300, cursor="cross")
-        label_description.pack(fill="both", expand=True)
-
-        cls.main_window.mainloop()
     # --------------------------------------------------
+        cls.main_window.mainloop()
 
     @classmethod
     def getMainWindow(cls):
