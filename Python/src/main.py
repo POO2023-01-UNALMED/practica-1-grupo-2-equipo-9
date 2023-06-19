@@ -222,13 +222,13 @@ class App():
                                    "\static\\tomas_photos", "4.png")
             
             david_1 = os.path.join(cls.current_directory +
-                                   "\static\david_photos", "1.jpg")
+                                   "\static\\david_photos", "1.jpg")
             david_2 = os.path.join(cls.current_directory +
-                                   "\static\david_photos", "2.jpg")
+                                   "\static\\david_photos", "2.jpg")
             david_3 = os.path.join(cls.current_directory +
-                                   "\static\david_photos", "3.jpg")
+                                   "\static\\david_photos", "3.jpg")
             david_4 = os.path.join(cls.current_directory +
-                                   "\static\david_photos", "4.jpg")
+                                   "\static\\david_photos", "4.jpg")
 
             image_paths = [
                 # Pack de imagenes 1
