@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font, messagebox, Button, StringVar
 from tkinter.ttk import Combobox, Style
+from tkinter import *
 import os
 from excepciones import banksException, suscriptionException, usersException, accountsException, genericException
 from baseDatos.deserializador import Deserializador
@@ -225,7 +226,7 @@ class App():
                     font=style, bg="#f8e5c7", border=2, relief="raised")
             elif button_developers_text.get()[0:1] == "3":
                 button_developers_text.set(
-                    "4. Jorge Humberto García Botero.\n PONER HOJA DE VIDA")
+                    "4. Jorge Humberto Gaviria Botero.\n Estudiante de Ingeniería de Sistemas e Informática con pasión por la programación y el desarrollo de software. Me motiva el deseo constante de mejorar mis habilidades y conocimientos en este campo en constante evolución. A lo largo de mi trayectoria, he participado en diversos cursos y proyectos de software, que han contribuido significativamente a mi crecimiento profesional. ")
                 style = font.Font(family="Times New Roman", size=12)
                 button_developers.config(
                     font=style, bg="#f8e5c7", border=2, relief="raised")
@@ -2020,10 +2021,70 @@ class App():
             else:
                 messagebox.showinfo("Mis Finanzasa","Usted no tiene deudas por pagar")
                 back_menu_main()
-                
+        
+        def verCuentas():
+            # Editar la descripcion de su funcionalidad
+            titulo_funcionalidad.set("Ver Cuentas")
+            descripcion_funcionalidad.set("En este apartado podras ver la información de tus cuentas")
+                # Creamos el subframe para agregar la funcionalidad
+            subframeFuncionalidad = tk.Frame(cls.subframe_main,bg="#222426")
+            subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
 
+            fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+            labelNombre = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
+            labelNombre.place(relx= 0, rely=0,relwidth=0.2, relheight=0.2)
+            labelTipo = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Tipo de Cuenta")
+            labelTipo.place(relx= 0.2, rely=0,relwidth=0.2, relheight=0.2)
+            labelDivisa = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Nombre")
+            labelDivisa.place(relx= 0.4, rely=0,relwidth=0.2, relheight=0.2)
+            labelBanco = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Banco")
+            labelBanco.place(relx= 0.6, rely=0,relwidth=0.2, relheight=0.2)
+            labelSaldo = tk.Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text="Saldo/Disponible")
+            labelSaldo.place(relx= 0.8, rely=0,relwidth=0.2, relheight=0.2)
+            # Nombre
+            i=0
+            while i< len(cls.user.getCuentasAsociadas())  :
+                cuenta = cls.user.getCuentasAsociadas()[i]
+                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getNombre())
+                label1.place(relx= 0, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                i+=1
+            # Tipo
+            i=0
+            while i< len(cls.user.getCuentasAsociadas())  :
+                cuenta = cls.user.getCuentasAsociadas()[i]
+                if isinstance(cuenta,Ahorros):
+                    tipo= "Ahorros"
+                else:
+                    tipo= "Corriente"
+                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=tipo)
+                label1.place(relx= 0.2, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                i+=1
+            # Divisa 
+            i=0
+            while i< len(cls.user.getCuentasAsociadas())  :
+                cuenta = cls.user.getCuentasAsociadas()[i]
+                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getDivisa().value)
+                label1.place(relx= 0.4, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                i+=1
+            # Banco 
+            i=0
+            while i< len(cls.user.getCuentasAsociadas())  :
+                cuenta = cls.user.getCuentasAsociadas()[i]
+                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=cuenta.getBanco().getNombre())
+                label1.place(relx= 0.6, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                i+=1
+            # Saldo
 
-
+            i=0
+            while i< len(cls.user.getCuentasAsociadas())  :
+                cuenta = cls.user.getCuentasAsociadas()[i]
+                if isinstance(cuenta,Ahorros):
+                    saldo = cuenta.getSaldo()
+                else:
+                    saldo = cuenta.getDisponible()
+                label1= tk.Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text=saldo)
+                label1.place(relx= 0.8, rely=0.2+(i)*0.1,relwidth=0.2, relheight=0.1)
+                i+=1
         # Configuración básica de parámetros de la ventana Principal
         cls.main_window = tk.Tk()
         cls.main_window.geometry("1400x700")
@@ -2089,6 +2150,8 @@ class App():
         # Agregamos los submenús a la barra de menú.
         procesos_consultas.add_command(label="Volver al menú principal", command=back_menu_main, activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label="Crear una cuenta", command=create_account_user, activebackground="gray", activeforeground="white")
+        procesos_consultas.add_command(label="Ver cuentas", command=verCuentas, activebackground="gray", activeforeground="white")
+
         procesos_consultas.add_command(label=proceso1, command=comprobar_suscripcion,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso2, command=invertir_saldo,
