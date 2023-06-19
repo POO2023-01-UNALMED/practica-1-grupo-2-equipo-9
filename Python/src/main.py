@@ -384,12 +384,12 @@ class App():
         # Configuración de los sub-frames anidados a cada uno de los sub-frames anidados a main_frame de la ventana de inicio
         upper_left_frame = Frame(
             left_frame, bg="#DFDEDE", borderwidth=1, relief="groove")
-        upper_left_frame.place(anchor="n", relheight=0.35,
+        upper_left_frame.place(anchor="n", relheight=0.30,
                              relwidth=0.993, rely=0, relx=0.5)
 
         bottom_left_frame = Frame(
             left_frame, bg="white", borderwidth=1, relief="groove")
-        bottom_left_frame.place(anchor="s", relheight=0.642,
+        bottom_left_frame.place(anchor="s", relheight=0.70,
                               relwidth=0.993, rely=0.998, relx=0.5)
 
         upper_right_frame = Frame(
@@ -475,7 +475,7 @@ class App():
         # Crear un label para inicio de sesión.
         style = font.Font(family="Times New Roman", size=13)
         login_label = Label(bottom_left_frame, text="Ingresa tus datos para iniciar sesión: ",
-                               fg="white", bg="black", border=1, relief="sunken", font=style)
+                               fg="white", bg="#76232F", border=1, relief="sunken", font=style)
         login_label.place(anchor="n", relheight=.1,
                           relwidth=.99, relx=0.5, rely=0.51)
         # Crear un label con el usuario ó el correo.
@@ -2278,7 +2278,7 @@ class App():
         basic_instructions = StringVar(main_frame)
         text_description_component = Text(subframe_description_component, cursor="cross", fg="black", bg="#B1B2B0", font=(
             "Alegreya Sans", 12), wrap="word", spacing1=8, border=1, relief="groove")
-        text_description_component.pack(fill="both", expand=True)
+        text_description_component.pack(fill="both", expand=True, anchor="center")
         welcome_text_reset()
     # --------------------------------------------------
         cls.main_window.mainloop()
