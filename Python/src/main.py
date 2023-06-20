@@ -479,9 +479,20 @@ class App():
         system_image_label.place(
             anchor="n", relheight=.5, relwidth=.99, relx=0.5, rely=0.01)
 
+        # Rutas de imágenes asociadas al sistema
+        system_image_1 = os.path.join(cls.current_directory + "\static\system_images", "1.png")
+        system_image_2 = os.path.join(cls.current_directory + "\static\system_images", "2.png")
+        system_image_3 = os.path.join(cls.current_directory + "\static\system_images", "3.png")
+        system_image_4 = os.path.join(cls.current_directory + "\static\system_images", "4.png")
+        system_image_5 = os.path.join(cls.current_directory + "\static\system_images", "5.png")
+
         # Lista de las imágenes asociadas al sistema
         image_paths = [
-            route_image,
+            system_image_1,
+            system_image_2,
+            system_image_3,
+            system_image_4,
+            system_image_5,
         ]
 
         # Cargar las imágenes
