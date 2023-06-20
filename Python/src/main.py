@@ -1896,25 +1896,46 @@ class App():
                                     global eleccion_periodicidad
                                     if eleccion_asignar == 1:
                                         eleccion_periodicidad = Cuotas.C1
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C1) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C1) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     elif eleccion_asignar == 6:
                                         eleccion_periodicidad = Cuotas.C6
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C6) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C6) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     elif eleccion_asignar == 12:
                                         eleccion_periodicidad = Cuotas.C12
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C12) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C12) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     elif eleccion_asignar == 18:
                                         eleccion_periodicidad = Cuotas.C18
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C18) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C18) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     elif eleccion_asignar == 24:
                                         eleccion_periodicidad = Cuotas.C24
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C24) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C24) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     elif eleccion_asignar == 36:
                                         eleccion_periodicidad = Cuotas.C36
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C36) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C36) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     else:
                                         eleccion_periodicidad = Cuotas.C48
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C48) + ".")
+                                        
+                                        impresion_ad = "Deuda establecida a: " + str(Cuotas.C48) + "."
+                                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                                        label_impresion_ad.grid(row= 5, column=0, columnspan=11, pady=15)
                                     vista_previa()
 
                         impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
@@ -1980,14 +2001,18 @@ class App():
                         cuentasEnDeuda[cuenta_Compra - 1].setDisponible(cuentasEnDeuda[cuenta_Compra - 1].getCupo())
                         cuentasEnDeuda[cuenta_Compra - 1].setPlazo_Pago(Cuotas.C1)
 
-                        messagebox.showinfo("Finalizado", "Compra de cartera realizada con éxito")
+                        impresion_final = "COMPRA DE CARTERA REALIZADA CON ÉXITO"
+                        label_impresion_f = Label(framecc, text=impresion_final)
+                        label_impresion_f.grid(row= 6, column=0, columnspan=11, pady=15)
                     
                     else:
                         cuentas_capaces_deuda[cuenta_Destino - 1].setDisponible(disponible_anterior)
                         cuentas_capaces_deuda[cuenta_Destino - 1].setIntereses(intereses_anterior)
                         cuentas_capaces_deuda[cuenta_Destino - 1].setPlazo_Pago(plazo_anterior)
 
-                        messagebox.showinfo("Cancelación", "Movimiento cancelado.")
+                        impresion_final = "MOVIMIENTO CANCELADO"
+                        label_impresion_f = Label(framecc, text=impresion_final)
+                        label_impresion_f.grid(row=6, column=0, columnspan=11, pady=15)
 
                     return  
 
