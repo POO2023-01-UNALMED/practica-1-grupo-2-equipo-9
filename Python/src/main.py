@@ -2020,10 +2020,22 @@ class App():
             # Creamos el subframe para agregar la funcionalidad
             subframeFuncionalidad = Frame(cls.subframe_main,bg="#222426")
             subframeFuncionalidad.place(relheight=0.75,relwidth=1,relx=0,rely=0.25)
-
-
+            
             # Empezamos logica de la funcionalidad
             cuentas = cls.user.comprobarConfiabilidad()
+
+            def mostrarError(prestamo):
+                for widget in subframeFuncionalidad.winfo_children():
+                    widget.destroy()
+
+                fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="Su prestamo se ha creado con exito")
+                label1.place(anchor="w",rely=0.1,relx=0.4,relheight=0.1)
+                labelCuenta= Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text=prestamo)
+                labelCuenta.place(relx=0.2,rely=0.3)
+                button_back = Button(subframeFuncionalidad, text="Volver al Menu Principal", font=fuente, command=back_menu_main, activebackground="#94B43B", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#94B43B", fg="black")
+                button_back.place(relx=0.27,rely=0.6,relwidth=0.49)
+
             if isinstance(cuentas,list):
                 # El usuario tiene cunetas y puede realizar un prestamo
                 # Le mostramos al usuario las cuentas con las que puede hacer prestamo
@@ -2122,11 +2134,9 @@ class App():
                     cuentasCombobox.place(relwidth=0.75,relx=0.1,rely=0.2,relheight=0.1)
                     cuentasCombobox.bind("<<ComboboxSelected>>",cuentaCambiada)
                 else:
-                    messagebox.showinfo("Mis Finanzas",cuentas)
-                    back_menu_main()
+                    mostrarError(cuentas)
             else:
-                messagebox.showinfo("Mis Finanzas","Usted no tiene Cuentas de ahorros,por favor intente crear una antes de solicitar un prestamo")
-                back_menu_main()
+                mostrarError(cuentas)
 
         def pagar_prestamo():
             # Editar la descripcion de su funcionalidad
@@ -2146,6 +2156,20 @@ class App():
 
             # Empezamos logica de la funcionalidad
             deudas = Deuda.conseguirDeuda(cls.user)
+
+            
+            def mostrarError(prestamo):
+                for widget in subframeFuncionalidad.winfo_children():
+                    widget.destroy()
+
+                fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+                label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="Su prestamo se ha creado con exito")
+                label1.place(anchor="w",rely=0.1,relx=0.4,relheight=0.1)
+                labelCuenta= Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text=prestamo)
+                labelCuenta.place(relx=0.4,rely=0.3)
+                button_back = Button(subframeFuncionalidad, text="Volver al Menu Principal", font=fuente, command=back_menu_main, activebackground="#94B43B", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#94B43B", fg="black")
+                button_back.place(relx=0.27,rely=0.6,relwidth=0.49)
+
             if len(deudas) !=0:
                 # El usuario tiene cunetas y puede realizar un prestamo
                 # Le mostramos al usuario las cuentas con las que puede hacer prestamo
@@ -2245,9 +2269,7 @@ class App():
                 deudasCombobox.place(relwidth=0.75,relx=0.1,rely=0.2,relheight=0.1)
                 deudasCombobox.bind("<<ComboboxSelected>>",deudaCambiada)
             else:
-                messagebox.showinfo("Mis Finanzasa","Usted no tiene deudas por pagar")
-                back_menu_main()
-        
+                mostrarError("Usted no tiene deudas por pagar")        
         def verCuentas():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Ver Cuentas")
