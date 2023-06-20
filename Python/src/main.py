@@ -1303,17 +1303,6 @@ class App():
 
             start_functionality()
 
-        def compra_corriente():
-            # Editar la descripcion de su funcionalidad
-            titulo_funcionalidad.set("Funcionalidad - Comprar con cuenta corriente")
-            text_description_title.config(state="normal")
-            descripcion_funcionalidad.set("Agregar la descripcion en el metodo compra_corriente y agregar aca el funcionamiento de su funcionalidad")
-            text_description_title.delete("1.0", END)
-            text_description_title.insert("1.0", descripcion_funcionalidad.get())
-            text_description_title.tag_configure("justifying", justify="center")
-            text_description_title.tag_add("justifying", "1.0", END)
-            text_description_title.config(state="disabled")
-
         def asesoramiento_inversiones():
             cls.user.asociarMeta(Metas.getMetasTotales()[0])
             # Editar la descripcion de su funcionalidad
@@ -2373,7 +2362,6 @@ class App():
         proceso2 = "Invertir saldo de mi cuenta"
         proceso3 = "Consignar saldo a mi cuenta"
         proceso4 = "Transferir saldo entre cuentas"
-        proceso5 = "Compra con cuenta corriente"
         proceso6 = "Gestionar mis prestamos"
         proceso7 = "Asesoramiento de inversiones"
         proceso8 = "Compra de cartera"
@@ -2416,8 +2404,6 @@ class App():
         procesos_consultas.add_command(label=proceso3, command=consignar_saldo,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso4, command=transferir_saldo,
-                             activebackground="gray", activeforeground="white")
-        procesos_consultas.add_command(label=proceso5, command=compra_corriente,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_cascade(label=proceso6, menu=prestamos_menu,
                              activebackground="gray", activeforeground="white")
