@@ -7,14 +7,14 @@ class Deuda(Metas):
         self._cuenta = cuenta
         self._banco = banco
         Deuda._deudasTotales.append(self)        
-        Metas._metasTotales.append(self)
     @classmethod
     def conseguirDeuda(cls,usuario):
         deudas = Deuda.getDeudasTotales();
         deudasUsuario = []
         for deuda in deudas:
-            if deuda.getDueno() == usuario:
+            if deuda.getDueno().getNombre() == usuario.getNombre():
                 deudasUsuario.append(deuda)
+        print(deudasUsuario)
         return deudasUsuario
     
 

@@ -55,12 +55,13 @@ class Movimientos():
 
     @staticmethod
     def crearMovimiento(destino, cantidad, categoria, fecha, origen = None, **kwargs):
-        if(origen != None):
+        if(origen != None and categoria != Categoria.PRESTAMO):
             origen.setSaldo(origen.getSaldo() - cantidad)
             destino.setSaldo(destino.getSaldo() + (cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision())))
             return(Movimientos(cantidad=cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision()), origen=origen, destino=destino, categoria=categoria, fecha=fecha))
         if(categoria == Categoria.PRESTAMO and origen == None):
             destino.setSaldo(destino.getSaldo() + cantidad)
+            print("entra aca")
             return(Movimientos(cantidad=cantidad,destino=destino, categoria=categoria, fecha=fecha))
         else:
             destino.setSaldo(destino.getSaldo() + (cantidad - cantidad * (destino.getBanco().getEstadoAsociado().getTasa_impuestos() +  destino.getBanco().getComision())))
@@ -216,8 +217,11 @@ class Movimientos():
         
     @classmethod
     def pagarDeuda(cls,_usuario,_deuda,cantidad):
+        cuenta = _deuda.getCuenta()
+        for cuentaUsuario in _usuario.getCuentasAhorroAsociadas(): 
+            if cuentaUsuario.getNombre()== cuenta.getNombre():
+                cuenta = cuentaUsuario
         if _deuda.getCantidad()==cantidad:
-            cuenta = _deuda.getCuenta()
             Deuda.getDeudasTotales().remove(_deuda)
             Metas.getMetasTotales().remove(_deuda)
             _deuda.setCantidad(0)
@@ -225,7 +229,6 @@ class Movimientos():
             return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO, datetime.now())
         else:
             _deuda.setCantidad(_deuda.getCantidad()-cantidad)
-            cuenta = _deuda.getCuenta()
             cantidad = -cantidad
             return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,datetime.now())
         
