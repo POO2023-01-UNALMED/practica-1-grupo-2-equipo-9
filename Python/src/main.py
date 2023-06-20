@@ -1338,9 +1338,8 @@ class App():
                     widget.destroy()
 
                 # Crear etiqueta y menú desplegable
-                label1 = Label(frame, text="Tolerancia a Riesgos:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label1 = Label(frame, text="Tolerancia a Riesgos", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label1.pack()
-                
                 global combobox
                 texto1 = StringVar()
                 combobox = Combobox(frame, textvariable=texto1, font=font.Font(family="Times New Roman", size=16))
@@ -1348,49 +1347,62 @@ class App():
                 combobox.current(0)
                 combobox.pack()
 
-                # Crear etiqueta y campo de texto
-                label2 = Label(frame, text="¿Cuánto dinero deseas invertir?:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
-                label2.pack()
-                
-                global entry2
-                texto2 = StringVar()
-                entry2 = Entry(frame, textvariable=texto2, font=font.Font(family="Times New Roman", size=16), bg="white")
-                entry2.pack()
-
                 frame2 = Frame(frame, width=200, height=100, bg="#B3B6B7")
                 frame2.pack()
 
                 # Crear botón "Siguiente"
-                Siguiente = Button(frame2, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=16), bg="white")
+                Siguiente = Button(frame2, text="Siguiente", command=next, font=font.Font(family="Times New Roman", size=16), bg="white")
                 Siguiente.place(relx=0.5, rely=0.5, anchor='s')
 
             # Crear botón "Comenzar"
             comenzar = Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
             comenzar.place(relx=0.5, rely=0.5, anchor=CENTER)
-    
-            def mostrar_siguiente():
-                tolerancia_riesgos = combobox.get()
-                monto_inversion = entry2.get()
 
-                if tolerancia_riesgos == "" or monto_inversion == "":
+            def next():
+                global tolerancia_riesgos
+                tolerancia_riesgos = combobox.get()
+
+                if tolerancia_riesgos == "":
                     messagebox.showerror("Error", "Debes llenar todos los campos.")
                     return
-                try:
-                    monto_inversion == int(monto_inversion)
-                except ValueError:
-                    messagebox.showerror("Error", "El campo '¿Cuánto dinero deseas invertir?' debe ser un número entero.")
-                    return
-                
                 if tolerancia_riesgos not in ('Baja', 'Media', 'Alta'):
                     messagebox.showerror("Error", "El campo 'Tolerancia a Riesgos' solo acepta los valores 'Baja', 'Media' o 'Alta'.")
                     return
                 
+                global as_frame
+                as_frame = Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
+                as_frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
+                as_frame.columnconfigure(0, weight=1)
+                as_frame.columnconfigure(1, weight=1)
+                as_frame.columnconfigure(2, weight=0)
+                as_frame_label = Label(as_frame, text="¿Cuánto dinero deseas invertir?", font=font.Font(family="Times New Roman", size=16), cursor="cross", border=1, relief="solid", bg="white")
+                as_frame_label.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                global as_frame_ff
+                as_frame_ff = FieldFrame("Datos", ["Entero"], "Valor", frame=[as_frame, 1, 0, 2, 1])
+                button_continue = Button(as_frame, text="Continuar", font=font.Font(family="Times New Roman", size=16), command=mostrar_siguiente, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white")
+                button_continue.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
+    
+            def mostrar_siguiente():
+                cantidad_invertir = as_frame_ff.getValoresInsertados()[0].get()
+
+                if (cantidad_invertir is None or cantidad_invertir == ""):
+                    messagebox.showerror("Error", "Debes llenar todos los campos.")
+                    return
+                try:
+                    cantidad_invertir == int(cantidad_invertir)
+                except ValueError:
+                    messagebox.showerror("Error", "El campo '¿Cuánto dinero deseas invertir?' debe ser un número entero.")
+                    return
+                    
                 global numero_portafolio
-                numero_portafolio = Banco.retorno_portafolio(tolerancia_riesgos, int(monto_inversion))
+                numero_portafolio = Banco.retorno_portafolio(tolerancia_riesgos, int(cantidad_invertir))
                 
                 # Eliminar todos los widgets del contenedor
                 for widget in frame.winfo_children():
                     widget.destroy()
+
+                as_frame.destroy()
+                as_frame_ff.getFieldFrameObject().destroy()
 
                 # Obtener los datos de la revisión de metas
                 resultado = Metas.revision_metas(cls.user)
@@ -1426,32 +1438,33 @@ class App():
                 for widget in frame.winfo_children():
                     widget.destroy()
 
-                # Mostrar mensaje y campo de texto para la fecha
-                mensaje_fecha = "Ingrese la nueva fecha de la meta (en el formato dd/mm/yyyy):"
-                label_fecha = Label(frame, text=mensaje_fecha, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
-                label_fecha.pack()
-                
-                entry_fecha = Entry(frame, font=font.Font(family="Times New Roman", size=16), bg="white")
-                entry_fecha.pack()
-
-                # Crear botón "Guardar"
-                boton_guardar = Button(frame, text="Guardar", command=guardar_fecha_meta, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_guardar.pack()
+                global as_frame2
+                as_frame2 = Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
+                as_frame2.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
+                as_frame2.columnconfigure(0, weight=1)
+                as_frame2.columnconfigure(1, weight=1)
+                as_frame2.columnconfigure(2, weight=0)
+                as_frame2_label = Label(as_frame2, text="Ingrese la nueva fecha de la meta (en el formato dd/mm/yyyy):", font=font.Font(family="Times New Roman", size=16), cursor="cross", border=1, relief="solid", bg="white")
+                as_frame2_label.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                global as_frame2_ff
+                as_frame2_ff = FieldFrame("Datos", ["Fecha"], "Valor", frame=[as_frame2, 1, 0, 2, 1])
+                button_continue = Button(as_frame2, text="Continuar", font=font.Font(family="Times New Roman", size=16), command=guardar_fecha_meta, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white")
+                button_continue.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
 
             def guardar_fecha_meta():
-                
-                if entry_fecha.get() == '':
+                fecha = as_frame2_ff.getValoresInsertados()[0].get()
+
+                if (fecha is None or fecha == ""):
                     messagebox.showerror("Error", "Debes llenar todos los campos.")
                     return
-                
                 try:
-                    datetime.strptime(entry_fecha.get(), "%d/%m/%Y")
+                    datetime.strptime(fecha, "%d/%m/%Y")
                 except ValueError:
                     messagebox.showerror("Error", "La fecha debe estar en el formato dd/mm/yyyy.")
                     return
                 
-                Metas.cambio_fecha(Metas.revision_metas(cls.user), entry_fecha.get())
-                nueva_fecha = entry_fecha.get()
+                Metas.cambio_fecha(Metas.revision_metas(cls.user), fecha)
+                nueva_fecha = fecha
                 plazo_inversion = Metas.determinar_plazo(Metas.revision_metas(cls.user))
 
                 mensaje_confirmacion = f"La fecha de la meta ha sido cambiada a: {nueva_fecha}\n"
@@ -1459,6 +1472,10 @@ class App():
 
                 # Mostrar mensaje de confirmación
                 messagebox.showinfo("Mensaje", mensaje_confirmacion)
+
+                as_frame2.destroy()
+                as_frame2_ff.getFieldFrameObject().destroy()
+
                 mostrar_advertencia()
 
 
@@ -1580,41 +1597,54 @@ class App():
                 mensaje_prestamo = "Las tasas de interés de los préstamos están muy altas, pero tenemos la solución perfecta para ti, aunque no sea la más correcta... Vas a hacer un préstamo con el usuario gota a gota."
                 label_prestamo = Label(frame, text=mensaje_prestamo, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7", wraplength=frame.winfo_width())
                 label_prestamo.pack()
-
-                # Mostrar campo de texto para ingresar el monto del préstamo
-                label_monto = Label(frame, text="Ingrese el monto que desea solicitar prestado:", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
-                label_monto.pack()
                 
-                global entry_monto
-                texto_monto = StringVar()
-                entry_monto = Entry(frame, textvariable=texto_monto, font=font.Font(family="Times New Roman", size=16), bg="white")
-                entry_monto.pack()
+                botones_frame = Frame(frame, bg="#B3B6B7")
+                botones_frame.pack()
                 
-                # Crear botón "Guardar"
-                boton_guardar = Button(frame, text="Guardar", command=guardar_monto_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_guardar.pack()
-
+                boton_continuar = Button(botones_frame, text="Continuar", command=prestamo_gota, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_continuar.pack(side=LEFT, padx=10)
+            
+            def prestamo_gota():
+                global as_frame3
+                as_frame3 = Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
+                as_frame3.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)  
+                as_frame3.columnconfigure(0, weight=1)
+                as_frame3.columnconfigure(1, weight=1)
+                as_frame3.columnconfigure(2, weight=0)
+                as_frame3_label = Label(as_frame3, text="Ingrese el monto que desea solicitar prestado", font=font.Font(family="Times New Roman", size=16), cursor="cross", border=1, relief="solid", bg="white")
+                as_frame3_label.grid(row=0, column=0, columnspan=2, sticky="NSEW", padx=2, pady=2)
+                global as_frame3_ff
+                as_frame3_ff = FieldFrame("Datos", ["Prestamo"], "Valor", frame=[as_frame3, 1, 0, 2, 1])
+                button_continue = Button(as_frame3, text="Continuar", font=font.Font(family="Times New Roman", size=16), command=guardar_monto_prestamo, activebackground="gray", activeforeground="black", cursor="cross", border=1, relief="solid", bg="white")
+                button_continue.grid(row=2, column=1, sticky="NSEW", padx=2, pady=2)
+            
             def guardar_monto_prestamo():
-                
-                if entry_monto.get() == "":
+                monto = as_frame3_ff.getValoresInsertados()[0].get()
+
+                if monto == "":
                     messagebox.showerror("Error", "Debes llenar todos los campos.")
                     return
                 try:
-                    entry_monto.get() == int(entry_monto.get())
+                    monto == int(monto)
                 except ValueError:
                     messagebox.showerror("Error", "Debes ingresar un número entero.")
                     return
+                
                 cuenta_gota = Usuario.getUsuariosTotales()[Usuario.hallarUsuariogotaGota()].getCuentasAsociadas()[0]
-                cuenta_usuario = Cuenta.gota_gota(entry_monto.get(), cls.user, cuenta_gota)
+                cuenta_usuario = Cuenta.gota_gota(monto, cls.user, cuenta_gota)
                 cuenta_usuario.vaciar_cuenta(cuenta_gota)
                 messagebox.showinfo("Mensaje", "Era una trampa, ahora el usuario gota a gota vació tu cuenta")
+
+                as_frame3.destroy()
+                as_frame3_ff.getFieldFrameObject().destroy()
+
                 no_hacer_prestamo()
 
             def no_hacer_prestamo():
                 # Eliminar widgets existentes
                 for widget in frame.winfo_children():
                     widget.destroy()
-
+                
                 # Mostrar mensaje de despedida
                 mensaje_despedida = "Ha sido un placer asesorarte en este proceso, espero que nuestra recomendación haya sido de ayuda."
                 label_despedida = Label(frame, text=mensaje_despedida, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
@@ -1622,6 +1652,7 @@ class App():
 
                 boton_reiniciar = Button(frame, text="Reiniciar", command=asesoramiento_inversiones, font=font.Font(family="Times New Roman", size=16), bg="white")
                 boton_reiniciar.pack()
+                
         #novato = True
         def cambio_divisa():
             novato=True
