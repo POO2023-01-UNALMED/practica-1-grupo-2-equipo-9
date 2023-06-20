@@ -276,7 +276,7 @@ class Banco():
     
     def retornar_descuentos_suscripcion(self):
         descuento = []
-        for i in range(5):
+        for i in range(1, 5):
             descuento[i-1] = self._desc_suscripcion * i
 
         return descuento

@@ -222,13 +222,13 @@ class App():
                                    "\static\\tomas_photos", "4.png")
             
             david_1 = os.path.join(cls.current_directory +
-                                   "\static\\david_photos", "1.jpg")
+                                   "\static\\david_photos", "1.png")
             david_2 = os.path.join(cls.current_directory +
-                                   "\static\\david_photos", "2.jpg")
+                                   "\static\\david_photos", "2.png")
             david_3 = os.path.join(cls.current_directory +
-                                   "\static\\david_photos", "3.jpg")
+                                   "\static\\david_photos", "3.png")
             david_4 = os.path.join(cls.current_directory +
-                                   "\static\\david_photos", "4.jpg")
+                                   "\static\\david_photos", "4.png")
             
             jorge_1 = os.path.join(cls.current_directory +
                                    "\static\\jorge_photos", "1.png")
@@ -342,7 +342,7 @@ class App():
         user1.setSuscripcion(Suscripcion.BRONCE)
         cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
         cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
-        cuenta2.setDisponible(500000)
+        cuenta2.setDisponible(800000)
         cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
         cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
         user1.asociarCuenta(cuenta1)
@@ -1614,7 +1614,6 @@ class App():
 
         def compra_cartera(cuenta = None):
             
-            print(Corriente.__name__)
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Compra Catera")
             text_description_title.config(state="normal")
@@ -1630,7 +1629,8 @@ class App():
             if cuenta == None:
 
                 #Cambio prueba, a espera confirmación de la SERIALIZACIÓN
-                cls.user.getCuentasCorrienteAsociadas()[0].setDisponible(500000)
+                cls.user.getCuentasCorrienteAsociadas()[0].setDisponible(800000)
+                
 
                 #Arreglo que almacena las cuentas con deuda alguna
                 cuentasEnDeuda = cls.user.retornarDeudas()
@@ -1639,9 +1639,6 @@ class App():
                 cuentasAux = cls.user.getCuentasAsociadas()
 
                 cuentasAux1 = cls.user.getCuentasCorrienteAsociadas()
-
-                for cuentas in cuentasAux1:
-                    print(cuentas)
 
                 #Comprobación de existencia de Cuentas Corriente por parte del Usuario
                 if len(cuentasAux1) <= 1:
@@ -1675,7 +1672,6 @@ class App():
                             global cuenta_Compra
                             cuenta_Compra = int(eleccion[0])
                             eleccion_compra()
-                    print(confirmacion_Compra)
 
                 impresion_1 = "Cuentas a nombre de " + cls.user.getNombre() + " con préstamos asociados: "
                 label_impresion = Label(framecc, text=impresion_1)
@@ -1697,7 +1693,6 @@ class App():
                 eleccion_cuenta.grid(row = len(cuentasEnDeuda) + 2, column= 20, padx=10)
 
                 def eleccion_compra():
-                    print(cuentasEnDeuda)
                     cuentasAux.remove(cuentasEnDeuda[cuenta_Compra - 1])
 
                     #Arreglo que almacena las cuentas capaces de recibir la deuda
@@ -1714,6 +1709,7 @@ class App():
                 
                     for widget in framecc.winfo_children():
                         widget.destroy()
+                        
 
                     confirmacion_Destino = False
                     cuenta_Destino = 0
