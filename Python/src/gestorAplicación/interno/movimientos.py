@@ -238,7 +238,7 @@ class Movimientos():
         for i in range(len(mov.getOwner().getBancosAsociados())):
             mov.getOwner().getBancosAsociados()[i].setAsociado(True)
 
-        cadena = mov.getDivisa().name + mov.getDivisaAux().name
+        cadena = mov.getDivisa() + mov.getDivisaAux()
         existe_cambio = []
         for j in range(len(Banco.getBancosTotales())):
             for k in range(len(Banco.getBancosTotales()[j].getDic())):

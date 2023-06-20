@@ -18,6 +18,7 @@ class Banco():
         self._prestamo = prestamo
         self._asociado = False
         self._dic = []
+        self.cionario=[]
 
         self._cupo_base = 1000000
         self._multiplicador = 2

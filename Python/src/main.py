@@ -343,9 +343,20 @@ class App():
         Deserializador.deserializar("Movimientos")
 
         #estado1 = Estado()
+        estado2=Estado(estado="Colombia", tasa_impuestos=0.2, divisa=Divisas.COP)
+        estado3=Estado(estado="Estados Unidos", tasa_impuestos=0.23, divisa=Divisas.USD)
+        estado4=Estado(estado="España", tasa_impuestos=0.27, divisa=Divisas.EUR)
         #banco1 = Banco(estado=estado1)
         #banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
-        #banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
+        dic1=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
+        cionario1=[4.12, 4.79, 0.34, 0.97, 0.29, 1.05]
+        dic2=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
+        cionario2=[4.13, 4.8, 0.35, 0.98, 0.3, 1.06]
+        dic3=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
+        cionario3=[4.11, 4.78, 0.33, 0.96, 0.28, 1.04]
+        banco3 = Banco(estado=estado2, nombre="Banco Colombiano", comision=0.3, prestamo=100, dic=dic1, cionario=cionario1)
+        banco4=Banco(nombre="Banco Estadounidense", comision=0.11, estado=estado3, prestamo=300, dic=dic2, cionario=cionario2 )
+        banco5=Banco(nombre="Banco Español", comision=0.07, estado=estado3, prestamo=150, dic=dic3, cionario=cionario3)
         #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
         #user1.asociarBanco(banco1)
         #user1.setSuscripcion(Suscripcion.BRONCE)
@@ -371,12 +382,12 @@ class App():
         #user1.asociarMeta(meta1)
         #movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
         #user1.asociarMovimiento(movimiento1)
-        #Serializador.serializar("Usuarios")
-        #Serializador.serializar("Bancos")
-        #Serializador.serializar("Estados")
-        #Serializador.serializar("Cuentas")
-        #Serializador.serializar("Movimientos")
-        #Serializador.serializar("Metas")
+        Serializador.serializar("Usuarios")
+        Serializador.serializar("Bancos")
+        Serializador.serializar("Estados")
+        Serializador.serializar("Cuentas")
+        Serializador.serializar("Movimientos")
+        Serializador.serializar("Metas")
 
         # Configuración básica de parámetros de la ventana de inicio
         cls.initial_window = Tk()
@@ -1746,11 +1757,11 @@ class App():
                     try:
                         if divisa_destino == divisa_origen:
                             messagebox.showerror("Error en la elección", "No es posible efectuar un cambio de divisa de una divisa a la misma")
-                        else:
-                            cotizacion()
+                            mostrar_siguiente()
                     except Exception:
-                        messagebox.showerror("información incompleta", "Por favor rellena todo lo pedido")
+                        messagebox.showerror("Información incompleta", "Por favor rellena todo lo pedido")
                         mostrar_siguiente()
+                    cotizacion()
                 divisa1_combobox = Combobox(frame, values=divisas)
                 divisa1_combobox.bind("<<ComboboxSelected>>", me_seleccionaron)
                 divisa2_combobox = Combobox(frame, values=divisas)
@@ -1767,9 +1778,8 @@ class App():
                 continuar.pack(pady=10)
             def cotizacion():
                 limpiar(frame)
-                mov=Movimientos(cls.user, divisa_origen, divisa_destino)
+                mov=Movimientos(owner=cls.user, divisa=divisa_origen, divisaAux=divisa_destino)
                 existe_cambio=Movimientos.facilitar_informacion(mov)
-                confirmacion=messagebox.askyesno("¿Continuar con el proceso?")
                 if len(existe_cambio)==0:
                     messagebox.showwarning("¡Oh no!","No existe banco que pueda hacer dicho cambio de divisa")
                     limpiar(frame)
@@ -1777,15 +1787,37 @@ class App():
                 else:
                     messagebox.showinfo("¡Que bien!", f"Es posible hacer el cambio de divisa en {len(existe_cambio)} bancos. A continuación las cotizaciones posibles.")
                 ahorrosPosibles = []
-                for ahorro in Ahorros.getCuentasAhorrosTotales(cls.user):
+                for ahorro in cls.user._cuentasAhorroTotales:
                     if ahorro.getDivisa() == divisa_origen:
                         ahorrosPosibles.append(ahorro)    
                 if len(ahorrosPosibles)==0:
                     messagebox.showwarning("¡Oh no!", f"Usted no posee ninguna cuenta con divisa {divisa_origen}")
                     limpiar(frame)
                     welcome_text_reset()
+                cadena=divisa_origen+divisa_destino
+                imprimir=Banco.cotizar_taza(cls.user, existe_cambio, cadena, ahorrosPosibles)
+                Tablas.impresionCotizaciones(imprimir, frame, 2, column=0)
+                valores=[]
+                for i in range(len(imprimir)):
+                    valores.append(i+1)
+                def me_han_tocado(evento):
+                    global cot
+                    cot=imprimir(int(cotizacion_combobox.get())-1)
+                    cambiar()
+
+                cotizacion_combobox=Combobox(frame, values=valores)
+                cotizacion_combobox.bind( "<<ComboboxSelected>>", me_han_tocado)
+                cotizacion_combobox.pack()
+
+            def cambiar():
+                confirmacion=messagebox.askyesno("¿Continuar con el proceso?")
+                if confirmacion!=True:
+                    limpiar(frame)
+                    welcome_text_reset()
                 
+                limpiar(frame)
                 
+
 
             
 
