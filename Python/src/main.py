@@ -1463,6 +1463,9 @@ class App():
                     messagebox.showerror("Error", "La fecha debe estar en el formato dd/mm/yyyy.")
                     return
                 
+                as_frame2.destroy()
+                as_frame2_ff.getFieldFrameObject().destroy()
+                
                 Metas.cambio_fecha(Metas.revision_metas(cls.user), fecha)
                 nueva_fecha = fecha
                 plazo_inversion = Metas.determinar_plazo(Metas.revision_metas(cls.user))
@@ -1470,14 +1473,11 @@ class App():
                 mensaje_confirmacion = f"La fecha de la meta ha sido cambiada a: {nueva_fecha}\n"
                 mensaje_confirmacion += f"Plazo de inversión: {plazo_inversion}"
 
-                # Mostrar mensaje de confirmación
-                messagebox.showinfo("Mensaje", mensaje_confirmacion)
+                label_siguiente = Label(frame, text=mensaje_confirmacion, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_siguiente.place(relheight=0.25, relwidth=0.50, rely=0.75, relx=0.25)
 
-                as_frame2.destroy()
-                as_frame2_ff.getFieldFrameObject().destroy()
-
-                mostrar_advertencia()
-
+                boton_siguiente = Button(frame, text="Siguiente", command=mostrar_advertencia, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_siguiente.place(relheight=0.1, relwidth=0.3, rely=0.5, relx=0.5, anchor="center")
 
             def no_cambiar_fecha_meta():
                 plazo_inversion = Metas.determinar_plazo(Metas.revision_metas(cls.user))
@@ -1486,16 +1486,18 @@ class App():
                 mensaje_confirmacion += f"Plazo de inversión: {plazo_inversion}"
 
                 # Mostrar mensaje de confirmación
-                messagebox.showinfo("Mensaje", mensaje_confirmacion)
-                mostrar_advertencia()
+                label_siguiente = Label(frame, text=mensaje_confirmacion, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_siguiente.place(relheight=0.25, relwidth=0.50, rely=0.75, relx=0.25)
 
+                boton_siguiente = Button(frame, text="Siguiente", command=mostrar_advertencia, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_siguiente.place(relheight=0.1, relwidth=0.3, rely=0.5, relx=0.5, anchor="center")
 
             def mostrar_advertencia():
                 # Eliminar widgets existentesa
                 for widget in frame.winfo_children():
                     widget.destroy()
 
-                mensaje_advertencia = "Advertencia: Con el fin de hacer un buen asesoramiento analizaremos sus movimientos para encontrar la categoría en la que más dinero ha gastado."
+                mensaje_advertencia = "Advertencia: Con el fin de hacer un buen asesoramiento analizaremos\nsus movimientos para encontrar la categoría en la que más dinero ha gastado."
                 label_advertencia = Label(frame, text=mensaje_advertencia, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 label_advertencia.pack()
 
@@ -1517,11 +1519,15 @@ class App():
                 boton_no.pack(side=LEFT, padx=10)
 
             def crear_meta_ahorro():
-                messagebox.showinfo("Mensaje", "Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas")
+                x = "Usaremos tus datos para crear la meta. Luego vamos a priorizar esa meta respecto a las demás que tengas"
                 Movimientos.analizar_categoria(Metas.determinar_plazo(Metas.revision_metas(cls.user)))
-                messagebox.showinfo("Mensaje", "La meta ha sido creada y puesta como prioridad en tu lista de metas")
-                # LLAMAR A VER_METAS
-                mostrar_recomendaciones()
+                y = "La meta ha sido creada y puesta como prioridad en tu lista de metas"
+                n = f'{x}\n{y}'
+                label_siguiente = Label(frame, text= n , font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_siguiente.place(relheight=0.25, relwidth=1, rely=0.75, relx=0.5, anchor="center")
+                boton_siguiente = Button(frame, text="Siguiente", command=mostrar_recomendaciones, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_siguiente.place(relheight=0.1, relwidth=0.3, rely=0.5, relx=0.5, anchor="center")
+                
 
             def mostrar_recomendaciones():
                 # Eliminar widgets existentes
@@ -1630,15 +1636,24 @@ class App():
                     messagebox.showerror("Error", "Debes ingresar un número entero.")
                     return
                 
+                for widget in frame.winfo_children():
+                    widget.destroy()
+                
+                as_frame3.destroy()
+                as_frame3_ff.getFieldFrameObject().destroy()
+                
                 cuenta_gota = Usuario.getUsuariosTotales()[Usuario.hallarUsuariogotaGota()].getCuentasAsociadas()[0]
                 cuenta_usuario = Cuenta.gota_gota(monto, cls.user, cuenta_gota)
                 cuenta_usuario.vaciar_cuenta(cuenta_gota)
-                messagebox.showinfo("Mensaje", "Era una trampa, ahora el usuario gota a gota vació tu cuenta")
+                
+                label_siguiente = Label(frame, text="Era una trampa, ahora el usuario gota a gota vació tu cuenta", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                label_siguiente.place(relheight=0.25, relwidth=0.50, rely=0.75, relx=0.25)
 
-                as_frame3.destroy()
-                as_frame3_ff.getFieldFrameObject().destroy()
 
-                no_hacer_prestamo()
+                boton_siguiente = Button(frame, text="Siguiente", command=no_hacer_prestamo, font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_siguiente.place(relheight=0.1, relwidth=0.3, rely=0.5, relx=0.5, anchor="center")
+
+                
 
             def no_hacer_prestamo():
                 # Eliminar widgets existentes
