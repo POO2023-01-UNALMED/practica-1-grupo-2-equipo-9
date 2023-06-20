@@ -172,7 +172,7 @@ class App():
             #CAMBIAR LA VARIABLE STYLE PARA DARLE UN ESTILO PARTICULAR A CADA UNO
             if button_developers_text.get()[0:1] == "1":
                 button_developers_text.set(
-                    "2. Leonard David Vivas Dallos.\n PONER HOJA DE VIDA")
+                    "2. Leonard David Vivas Dallos.\n Estudiante de Ciencias de la Programación con grandes aspiraciones en el mundo computacional, el mundo de la inteligencia artificial y el mundo cuántico. Persona con disciplina, empeño, responsabilidad y con experiencia en trabajos en grupo y en el liderazgo de los mismos. Amante del fútbol y de la fórmula 1 y con ganas de abrir las puertas al conocimiento del gran mundo de la programación y de la inteligencia artificial que nos rodea en este momento.")
                 style = font.Font(family="Times New Roman", size=12)
                 button_developers.config(
                     font=style, bg="#f8e5c7", border=2, relief="raised")
@@ -1704,7 +1704,7 @@ class App():
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Compra Catera")
             text_description_title.config(state="normal")
-            descripcion_funcionalidad.set("Agregar la descripcion en el metodo compra_cartera y agregar aca el funcionamiento de su funcionalidad")
+            descripcion_funcionalidad.set("Con la Compra de Cartera, alivias tu bolsillo momentáneamente, transferiendo tu deuda de una cuenta a otra y pudiendo escoger entre los mejores beneficios para tí. Escoje una cuenta Corriente en la que tengas deuda, y escoje tus preferencias para hacer realidad ese respiro económico que tanto sueñas.")
             text_description_title.delete("1.0", END)
             text_description_title.insert("1.0", descripcion_funcionalidad.get())
             text_description_title.tag_configure("justifying", justify="center")
@@ -1876,6 +1876,7 @@ class App():
                                     else:
                                         eleccion_periodicidad = Cuotas.C48
                                         messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C48) + ".")
+                                    vista_previa()
 
                         impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
                         label_impresion_3 = Label(framecc, text=impresion_3)
@@ -1890,17 +1891,28 @@ class App():
 
                 
                 def vista_previa():
-                    vistaPrevia = Corriente.vistaPreviaMovimiento(cuentas_capaces_deuda[cuenta_Destino - 1], eleccion_periodicidad, deuda, tasacion_cuentas[cuenta_Destino - 1])
+                    #vistaPrevia
+
+                    global disponible_anterior
+                    disponible_anterior = cuentas_capaces_deuda[cuenta_Destino - 1].getDisponible()
+                    global intereses_anterior
+                    intereses_anterior = cuentas_capaces_deuda[cuenta_Destino - 1].getIntereses()
+                    global plazo_anterior
+                    plazo_anterior = cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()
+
+                    cuentas_capaces_deuda[cuenta_Destino - 1].setDisponible(cuentas_capaces_deuda[cuenta_Destino - 1].getDisponible() - deuda)
+                    cuentas_capaces_deuda[cuenta_Destino - 1].setIntereses(tasacion_cuentas[cuenta_Destino - 1])
+                    cuentas_capaces_deuda[cuenta_Destino - 1].setPlazo_Pago(eleccion_periodicidad)
 
                     cuota = []
                     message_pago = "¿Desea pagar intereses en el primer mes? Tenga en cuenta que de no hacerlo, en el segundo mes deberá pagar su valor correspondiente."
                     validacion_pago = messagebox.askyesno("Elección", message= message_pago)
                     if validacion_pago:
-                        cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible())
-                        vistaPrevia.setPrimerMensualidad(True)
+                        cuota = cuentas_capaces_deuda[cuenta_Destino - 1].retornoCuotaMensual(cuentas_capaces_deuda[cuenta_Destino - 1].getCupo() - cuentas_capaces_deuda[cuenta_Destino - 1].getDisponible())
+                        cuentas_capaces_deuda[cuenta_Destino - 1].setPrimerMensualidad(True)
                     else:
-                        cuota = vistaPrevia.retornoCuotaMensual(vistaPrevia.getCupo() - vistaPrevia.getDisponible(), 1)
-                        vistaPrevia.setPrimerMensualidad(False)
+                        cuota = cuentas_capaces_deuda[cuenta_Destino - 1].retornoCuotaMensual(cuentas_capaces_deuda[cuenta_Destino - 1].getCupo() - cuentas_capaces_deuda[cuenta_Destino - 1].getDisponible(), 1)
+                        cuentas_capaces_deuda[cuenta_Destino - 1].setPrimerMensualidad(False)
                     
                     for widget in framecc.winfo_children():
                         widget.destroy()
@@ -1910,7 +1922,7 @@ class App():
                     label_impresion_4 = Label(framecc, text=impresion_4)
                     label_impresion_4.grid(row=0, column=0, columnspan=11)
 
-                    label_impresion_5 = Label(framecc, text=vistaPrevia)
+                    label_impresion_5 = Label(framecc, text=cuentas_capaces_deuda[cuenta_Destino - 1])
                     label_impresion_5.grid(row=2, column=0, columnspan=11)
 
                     cuotaMensual = Corriente.imprimirCuotaMensual(cuota)
@@ -1918,20 +1930,9 @@ class App():
                     label_impresion_6 = Label(framecc, text="Primer Cuota: ")
                     label_impresion_6.grid(row=3, column=0, columnspan=11)
 
-                    impresion_8 = cuotaMensual + " " + vistaPrevia.getDivisa()
+                    impresion_8 = cuotaMensual + " " + cuentas_capaces_deuda[cuenta_Destino - 1].getDivisa().name
                     label_impresion_7 = Label(framecc, text=impresion_8)
                     label_impresion_7.grid(row=4, column=0, columnspan=11)
-
-                    message_pago = "¿Desea un resumen completo de las cuotas a pagar?"
-                    validacion_resumen = messagebox.askyesno("Elección", message= message_pago)
-                    if validacion_resumen:
-                        cuota_calculadora = []
-                        if vistaPrevia.getPrimerMensualidad():
-                            cuota_calculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses())
-                        else:
-                            cuota_calculadora = Corriente.calculadoraCuotas(vistaPrevia.getPlazo_Pago(), vistaPrevia.getCupo() - vistaPrevia.getDisponible(), vistaPrevia.getIntereses(), True)
-                        info_adicional = Corriente.informacionAdicionalCalculadora(cuota_calculadora, vistaPrevia.getCupo() - vistaPrevia.getDisponible())
-                        calculadora_financiera(cuota_calculadora, info_adicional, vistaPrevia.getDivisa())
                     
                     message_confirmacion = "¿Desea confirmar la realización del movimiento?"
                     validacion_confirmacion = messagebox.askyesno("Elección", message= message_confirmacion)
@@ -1940,20 +1941,12 @@ class App():
                         cuentasEnDeuda[cuenta_Compra - 1].setDisponible(cuentasEnDeuda[cuenta_Compra - 1].getCupo())
                         cuentasEnDeuda[cuenta_Compra - 1].setPlazo_Pago(Cuotas.C1)
 
-                        #Cambios para la cuenta destino
-                        Cuenta.getCuentasTotales().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
-                        cls.user.getCuentasAsociadas().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
-                        cls.user.getCuentasCorrienteAsociadas().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
-                        Corriente.getCuentasCorrienteTotales().remove(cuentas_capaces_deuda[cuenta_Destino - 1])
-
-                        cls.user.asociarCuenta(vistaPrevia)
-
                         messagebox.showinfo("Finalizado", "Compra de cartera realizada con éxito")
                     
                     else:
-                        Cuenta.getCuentasTotales().remove(vistaPrevia)
-                        Corriente.getCuentasCorrienteTotales().remove(vistaPrevia)
-                        vistaPrevia = None
+                        cuentas_capaces_deuda[cuenta_Destino - 1].setDisponible(disponible_anterior)
+                        cuentas_capaces_deuda[cuenta_Destino - 1].setIntereses(intereses_anterior)
+                        cuentas_capaces_deuda[cuenta_Destino - 1].setPlazo_Pago(plazo_anterior)
 
                         messagebox.showinfo("Cancelación", "Movimiento cancelado.")
 
@@ -1963,17 +1956,6 @@ class App():
 
             else:
                 pass
-
-        def calculadora_financiera():
-            # Editar la descripcion de su funcionalidad
-            titulo_funcionalidad.set("Funcionalidad - Calculadora Financiera")
-            text_description_title.config(state="normal")
-            descripcion_funcionalidad.set("Agregar la descripcion en el metodo calculadora_financiera y agregar aca el funcionamiento de su funcionalidad")
-            text_description_title.delete("1.0", END)
-            text_description_title.insert("1.0", descripcion_funcionalidad.get())
-            text_description_title.tag_configure("justifying", justify="center")
-            text_description_title.tag_add("justifying", "1.0", END)
-            text_description_title.config(state="disabled")
     
         def pedir_prestamo():
             # Editar la descripcion de su funcionalidad
@@ -2372,10 +2354,6 @@ class App():
         procesos_consultas.add_command(label=proceso7, command=asesoramiento_inversiones,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso8, command=compra_cartera,
-                             activebackground="gray", activeforeground="white")
-        procesos_consultas.add_command(label=proceso9, command=calculadora_financiera,
-                             activebackground="gray", activeforeground="white")
-        procesos_consultas.add_command(label=proceso10, command=cambio_divisa,
                              activebackground="gray", activeforeground="white")
         home_menu.add_cascade(label="Archivo", menu=archivo,
                               activebackground="gray", activeforeground="white")

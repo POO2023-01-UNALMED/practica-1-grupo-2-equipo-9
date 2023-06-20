@@ -28,7 +28,7 @@ class Corriente(Cuenta):
             return Corriente(banco =  banco, clave = clave, nombre = nombre)
     
     def __str__(self):
-        return "Cuenta: " + self._nombre + "\nCuenta Corriente # " + str(self._id) + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + str(self._divisa) + "\nCupo: " + str(self._cupo) + " " + str(self._divisa) + "\nCupo disponible: " + str(self._disponible) + " " + str(self._divisa) + "\nCuotas: " + str(self._plazo_Pago.getCantidad_Cuotas) + "\nIntereses: " + str(self._intereses)
+        return "Cuenta: " + self._nombre + "\nCuenta Corriente # " + str(self._id) + "\nTitular: " + self.getTitular().getNombre() + "\nBanco: " + self._banco.getNombre() + "\nDivisa: " + self._divisa.name + "\nCupo: " + str(self._cupo) + " " + self._divisa.name + "\nCupo disponible: " + str(self._disponible) + " " + self._divisa.name + "\nCuotas: " + str(self._plazo_Pago) + "\nIntereses: " + str(self._intereses)
     
     # Método para la funcionalidad asesoramiento de inversiones
     def vaciar_cuenta(self, gota):
@@ -43,56 +43,48 @@ class Corriente(Cuenta):
         interes_nominal_mensual = Corriente.calculoInteresNominalMensual(self.getIntereses())
         if mes == 0:
             interes = deudaActual * (interes_nominal_mensual / 100)
-            cuotaMensual[0] = interes
+            cuotaMensual.append(interes)
             abono_capital = (self.getCupo() - self.getDisponible()) / self.getPlazo_Pago().getCantidad_Cuotas()
-            cuotaMensual[1] = abono_capital
+            cuotaMensual.append(abono_capital)
             cuotaMensualFinal = interes + abono_capital
-            cuotaMensual[2] = cuotaMensualFinal
+            cuotaMensual.append(cuotaMensualFinal)
         elif mes == 1:
-            cuotaMensual[0] = 0
+            cuotaMensual.append(0)
             abono_capital = (self.getCupo() - self.getDisponible()) / self.getPlazo_Pago().getCantidad_Cuotas()
+            cuotaMensual.append(abono_capital)
             cuotaMensualFinal = abono_capital
-            cuotaMensual[2] = cuotaMensualFinal
+            cuotaMensual.append(cuotaMensualFinal)
         elif mes == 2:
             abono_capital = (self.getCupo() - self.getDisponible()) / self.getPlazo_Pago().getCantidad_Cuotas()
             interes_mes1 = (interes_nominal_mensual / 100) * (abono_capital + deudaActual)
             interes_mes2 = deudaActual * (interes_nominal_mensual / 100)
             interes = interes_mes1 + interes_mes2
-            cuotaMensual[0] = interes
-            cuotaMensual[1] = abono_capital
+            cuotaMensual.append(interes)
+            cuotaMensual.append(abono_capital)
             cuotaMensualFinal = interes + abono_capital
-            cuotaMensual[2] = cuotaMensualFinal
+            cuotaMensual.append(cuotaMensualFinal)
         else:
             interes = deudaActual * (interes_nominal_mensual / 100)
-            cuotaMensual[0] = interes
+            cuotaMensual.append(interes)
             abono_capital = (self.getCupo() - self.getDisponible()) / self.getPlazo_Pago().getCantidad_Cuotas()
-            cuotaMensual[1] = abono_capital
+            cuotaMensual.append(abono_capital)
             cuotaMensualFinal = interes + abono_capital
-            cuotaMensual[2] = cuotaMensualFinal
+            cuotaMensual.append(cuotaMensualFinal)
         return cuotaMensual
 
     @staticmethod
-    def imprimirCuotaMensual(cls, cuotaMensual):
-        return "Cuota: " + Corriente.redondeoDeciomal(cuotaMensual[2], 2) + "\nIntereses: " + Corriente.redondeoDecimal(cuotaMensual[0], 2) + "\nAbono a capital: " + Corriente.redondeoDecimal(cuotaMensual[1], 2)
+    def imprimirCuotaMensual(cuotaMensual):
+        return "Cuota: " + str(round(cuotaMensual[2], 2)) + "\nIntereses: " + str(round(cuotaMensual[0], 2)) + "\nAbono a capital: " + str(round(cuotaMensual[1], 2))
 
     @staticmethod
-    def calculoInteresNominalMensual(cls, interesEfectivoAnual):
+    def calculoInteresNominalMensual(interesEfectivoAnual):
         interes = math.pow((1 + (interesEfectivoAnual / 100)), (30.0 / 360.0)) - 1
         interes_porcentaje = interes * 100
-        interes_porcentaje_redondeado = Corriente.redondeoDecimal(interes_porcentaje, 2)
+        interes_porcentaje_redondeado = round(interes_porcentaje, 2)
         return interes_porcentaje_redondeado
 
     @staticmethod
-    def vistaPreviaMovimiento(cls, cuenta, plazo, deuda_Previa, interes):
-        cuenta_aux = cuenta.clone()
-        cuenta_aux.setDisponible(cuenta.getDisponible() - deuda_Previa)
-        cuenta_aux.setIntereses(interes)
-        cuenta_aux.setPlazo_Pago(plazo)
-        return cuenta_aux
-    #Revisar necesidad del clonado
-
-    @staticmethod
-    def calculadoraCuotas(cls, cuotas, deuda, intereses, auxiliar = False):
+    def calculadoraCuotas(cuotas, deuda, intereses, auxiliar = False):
         cuotasTotales = cuotas.getCantidad_Cuotas()
         cuota = []
         interesMensual = Corriente.calculoInteresNominalMensual(intereses)
@@ -101,36 +93,36 @@ class Corriente(Cuenta):
         abono_capital = deuda / cuotasTotales
 
         if not auxiliar:
-            for i in range(0, i < cuotasTotales, 1):
+            for i in range(0, cuotasTotales, 1):
                 cuotaMes = []
                 interes = deudaActual * (interesMensual / 100)
-                cuotaMes[0] = interes
+                cuotaMes.append(interes)
                 cuota_pagar = interes + abono_capital
-                cuotaMes[1] = cuota_pagar
+                cuotaMes.append(cuota_pagar)
                 deudaTotal = deudaActual - (cuota_pagar - interes)
-                cuotaMes[2] = deudaTotal
-                cuota[i] = cuotaMes
+                cuotaMes.append(deudaTotal)
+                cuota.append(cuotaMes)
 
                 deudaActual = deudaTotal
         else:
             interesMes1 = deudaActual * (interesMensual / 100)
             cuotaMes1 = []
-            cuotaMes1[0] = 0
-            cuotaMes1[1] = abono_capital
-            cuotaMes1[2] = deudaActual - abono_capital
-            cuota[0] = cuotaMes1
+            cuotaMes1.append(0)
+            cuotaMes1.append(abono_capital)
+            cuotaMes1.append(deudaActual - abono_capital)
+            cuota.append(cuotaMes1)
 
             deudaActual = deudaActual - abono_capital
 
-            for i in range(1, 1 < cuotasTotales, 1):
+            for i in range(1, cuotasTotales, 1):
                 cuotaMes = []
                 interes = deudaActual * (interesMensual / 100)
-                cuotaMes[0] = interes + interesMes1
+                cuotaMes.append(interes + interesMes1)
                 cuota_pagar = interes + abono_capital + interesMes1
-                cuotaMes[1] = cuota_pagar
+                cuotaMes.append(cuota_pagar)
                 deudaTotal = deudaActual - (cuota_pagar - (interes + interesMes1))
-                cuotaMes[2] = deudaTotal
-                cuota[i] = cuotaMes
+                cuotaMes.append(deudaTotal)
+                cuota.append(cuotaMes)
 
                 interesMes1 = 0
                 deudaActual = deudaTotal
@@ -140,7 +132,7 @@ class Corriente(Cuenta):
         
 
     @staticmethod
-    def informacionAdicionalCalculadora(cls, cuota, deuda):
+    def informacionAdicionalCalculadora(cuota, deuda):
         infoAdicional = []
         totalPagado = 0
 
@@ -149,13 +141,13 @@ class Corriente(Cuenta):
         
         interesesPagados = totalPagado - deuda
 
-        totalPagado = Corriente.redondeoDecimal(totalPagado, 2)
-        interesesPagados = Corriente.redondeoDecimal(interesesPagados, 2)
-        deuda = Corriente.redondeoDecimal(deuda, 2)
+        totalPagado = round(totalPagado, 2)
+        interesesPagados = round(interesesPagados, 2)
+        deuda = round(deuda, 2)
 
-        infoAdicional[0] = totalPagado
-        infoAdicional[1] = interesesPagados
-        infoAdicional[2] = deuda
+        infoAdicional.append(totalPagado)
+        infoAdicional.append(interesesPagados)
+        infoAdicional.append(deuda)
 
         return infoAdicional
 
@@ -187,9 +179,6 @@ class Corriente(Cuenta):
             return -1
         else:
             return 0
-
-    #Revisar la parte del clone
-    
 
     #Atributos Get & Set
     def getCupo(self):
