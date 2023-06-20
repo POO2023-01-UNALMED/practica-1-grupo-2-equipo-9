@@ -2337,8 +2337,7 @@ class App():
         proceso6 = "Gestionar mis prestamos"
         proceso7 = "Asesoramiento de inversiones"
         proceso8 = "Compra de cartera"
-        proceso9 = "Calculadora financiera"
-        proceso10= "Cambio de divisa"
+        proceso9= "Cambio de divisa"
 
         # Configuración de barra de menú para ventana principal
         home_menu = Menu(subframe_title, cursor="cross")
@@ -2385,6 +2384,8 @@ class App():
         procesos_consultas.add_command(label=proceso7, command=asesoramiento_inversiones,
                              activebackground="gray", activeforeground="white")
         procesos_consultas.add_command(label=proceso8, command=compra_cartera,
+                             activebackground="gray", activeforeground="white")
+        procesos_consultas.add_command(label=proceso9, command=cambio_divisa,
                              activebackground="gray", activeforeground="white")
         home_menu.add_cascade(label="Archivo", menu=archivo,
                               activebackground="gray", activeforeground="white")
