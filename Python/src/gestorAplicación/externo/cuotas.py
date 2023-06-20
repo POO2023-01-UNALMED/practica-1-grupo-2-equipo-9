@@ -17,3 +17,9 @@ class Cuotas(Enum):
     #Métodos de instancia
     def getCantidad_Cuotas(self):
         return self._CANTIDAD_CUOTAS
+    
+    def __str__(self):
+        if (self._CANTIDAD_CUOTAS == 1):
+            return str(self._CANTIDAD_CUOTAS) + " cuota"
+        else:
+            return str(self._CANTIDAD_CUOTAS) + " cuotas"

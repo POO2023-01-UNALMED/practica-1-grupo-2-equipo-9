@@ -79,7 +79,7 @@ class Tablas():
             else:
                 c_ordenada.append("True")
             c_ordenada.append(cuenta.getBanco().getNombre())
-            c_ordenada.append(str(round(intereses[m]), 2) + " %")
+            c_ordenada.append(str(round(intereses[m], 2)) + " %")
             llenado.append(c_ordenada)
             m += 1
 

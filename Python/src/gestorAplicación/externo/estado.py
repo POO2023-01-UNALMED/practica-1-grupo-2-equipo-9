@@ -49,7 +49,7 @@ class Estado():
         return self._tasa_usura
     
     def getInteres_bancario_corriente(self):
-        return self._Interes_bancario_corriente
+        return self._interes_bancario_corriente
 
     def setInteres_bancario_corriente(self,interes_bancario_corriente):
         self._interes_bancario_corriente= interes_bancario_corriente

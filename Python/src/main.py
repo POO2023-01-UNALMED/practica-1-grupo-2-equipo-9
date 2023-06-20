@@ -333,38 +333,38 @@ class App():
         Deserializador.deserializar("Metas")
         Deserializador.deserializar("Movimientos")
 
-        estado1 = Estado()
-        banco1 = Banco(estado=estado1)
-        banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
-        banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
-        user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
-        user1.asociarBanco(banco1)
-        user1.setSuscripcion(Suscripcion.BRONCE)
-        cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
-        cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
-        cuenta2.setDisponible(800000)
-        cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
-        cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
-        user1.asociarCuenta(cuenta1)
-        user1.asociarCuenta(cuenta2)
-        user1.asociarCuenta(cuenta3)
-        user1.asociarCuenta(cuenta4)
-        userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-        userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
-        cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
-        cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
-        userGota.asociarCuenta(cuenta7)
-        userImpuestosPortafolio.asociarCuenta(cuenta8)
-        meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
-        user1.asociarMeta(meta1)
-        movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
-        user1.asociarMovimiento(movimiento1)
-        Serializador.serializar("Usuarios")
-        Serializador.serializar("Bancos")
-        Serializador.serializar("Estados")
-        Serializador.serializar("Cuentas")
-        Serializador.serializar("Movimientos")
-        Serializador.serializar("Metas")
+        #estado1 = Estado()
+        #banco1 = Banco(estado=estado1)
+        #banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
+        #banco3 = Banco(estado=estado1, nombre="Banco prueba 2")
+        #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
+        #user1.asociarBanco(banco1)
+        #user1.setSuscripcion(Suscripcion.BRONCE)
+        #cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
+        #cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
+        #cuenta2.setDisponible(800000)
+        #cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
+        #cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
+        #user1.asociarCuenta(cuenta1)
+        #user1.asociarCuenta(cuenta2)
+        #user1.asociarCuenta(cuenta3)
+        #user1.asociarCuenta(cuenta4)
+        #userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+        #userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
+        #cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
+        #cuenta8 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Portafolio", divisa = Divisas.COP, saldo = 100000)
+        #userGota.asociarCuenta(cuenta7)
+        #userImpuestosPortafolio.asociarCuenta(cuenta8)
+        #meta1 = Metas(nombre = "Carro", cantidad = 100, fecha = "10/10/2025")
+        #user1.asociarMeta(meta1)
+        #movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
+        #user1.asociarMovimiento(movimiento1)
+        #Serializador.serializar("Usuarios")
+        #Serializador.serializar("Bancos")
+        #Serializador.serializar("Estados")
+        #Serializador.serializar("Cuentas")
+        #Serializador.serializar("Movimientos")
+        #Serializador.serializar("Metas")
 
         # Configuración básica de parámetros de la ventana de inicio
         cls.initial_window = Tk()
@@ -1663,16 +1663,7 @@ class App():
                 framecc = Frame(cls.subframe_main, borderwidth=1, relief="solid")
                 framecc.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)
 
-                #Atributos auxiliares para cada función
-                cuentas_capaces_deuda = []
-                deuda = 0
-                tasacion_cuentas = []
-
-                confirmacion_Compra = False
-                cuenta_Compra = 0
-
                 def eleccion(evento):
-                    global confirmacion_Compra
                     eleccion = eleccion_cuenta.get()
                     if eleccion == "Seleccionar Cuenta":
                         messagebox.showerror("Mala elección", "Por favor, selecciona una cuenta válida")
@@ -1704,12 +1695,15 @@ class App():
                 eleccion_cuenta.grid(row = len(cuentasEnDeuda) + 2, column= 20, padx=10)
 
                 def eleccion_compra():
+                    global cuenta_Destino
                     cuentasAux.remove(cuentasEnDeuda[cuenta_Compra - 1])
 
                     #Arreglo que almacena las cuentas capaces de recibir la deuda
+                    global cuentas_capaces_deuda
                     cuentas_capaces_deuda = cls.user.capacidad_endeudamiento(cuentasAux, cuentasEnDeuda[cuenta_Compra-1])
 
                     #Arreglo que almacena las tasas de interes aplicables con orden del arreglo anterior
+                    global tasacion_cuentas
                     tasacion_cuentas = Banco.verificar_tasas_de_interes(cls.user, cuentas_capaces_deuda)
 
                     cuentasAux.append(cuentasEnDeuda[cuenta_Compra-1])
@@ -1720,14 +1714,9 @@ class App():
                 
                     for widget in framecc.winfo_children():
                         widget.destroy()
-                        
-
-                    confirmacion_Destino = False
-                    cuenta_Destino = 0
 
                     def eleccion_2(evento):
-                        global confirmacion_Destino
-                        eleccion = eleccion_cuenta.get()
+                        eleccion = eleccion_cuenta_compra.get()
                         if eleccion == "Seleccionar Cuenta":
                             messagebox.showerror("Mala elección", "Por favor, selecciona una cuenta válida")
                         else:
@@ -1736,6 +1725,7 @@ class App():
                             if confirmacion_Destino:
                                 global cuenta_Destino
                                 cuenta_Destino = int(eleccion[0])
+                                periodicidad()
 
                     impresion_2 = "Las cuentas a su nombre que pueden recibir la deuda de la Cuenta escogida son: "
                     label_impresion_2 = Label(framecc, text=impresion_2)
@@ -1747,40 +1737,39 @@ class App():
                         
                     j = 1
                     for cuenta_capaz in cuentas_capaces_deuda:
-                        cadena = str(i) + ". ID:" + str(cuenta_capaz.getId()) + " " + cuenta_capaz.getNombre()
+                        cadena = str(j) + ". ID:" + str(cuenta_capaz.getId()) + " " + cuenta_capaz.getNombre()
                         cuen_comb_2.append(cadena)
                         j += 1
 
                     eleccion_cuenta_compra = Combobox(framecc, values= cuen_comb_2)
                     eleccion_cuenta_compra.set("Seleccionar Cuenta")
                     eleccion_cuenta_compra.bind("<<ComboboxSelected>>", eleccion_2)
-                    eleccion_cuenta_compra.grid(row = len(cuentas_capaces_deuda) + 2, column= 20, padx=10)
-
-                    if confirmacion_Destino:
-                        periodicidad()
+                    eleccion_cuenta_compra.grid(row = len(cuentas_capaces_deuda) + 4, column= 0, pady=10, columnspan=10)
                     
                 def periodicidad():
-
+                    print(cuenta_Destino)
+                    print(cuenta_Compra)
+                    global deuda
                     deuda = Cuenta.dineroATenerDisponible(cuentas_capaces_deuda[cuenta_Destino - 1], cuentasEnDeuda[cuenta_Compra - 1].getDivisa())
 
                     #Atributo auxiliar para almacenar decision de periodicidad
-                    eleccion_periodicidad = Cuotas.C1
 
                     message_per = "¿Desea mantener la periodicidad del pago de la deuda?"
                     validacion_periodicidad = messagebox.askyesno("Elección", message= message_per)
                     if validacion_periodicidad:
-                        message_info_per = "Perfecto, la deuda mantendrá un plazo de pago a " + cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago() + "."
+                        global eleccion_periodicidad
+                        message_info_per = "Perfecto, la deuda mantendrá un plazo de pago a " + str(cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()) + "."
                         messagebox.showinfo("Anuncio", message_info_per)
                         eleccion_periodicidad = cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()
+                        vista_previa()
+
                     else:
                         #Atributo de validacion de la seleccion de periodicidad
                         for widget in framecc.winfo_children():
                             widget.destroy()
                         
-                        confirmacion_Periodicidad = False
                         def eleccion_3(evento):
-                            global confirmacion_Periodicidad
-                            eleccion = eleccion_cuenta.get()
+                            eleccion = eleccion_cperiodicidad.get()
                             if eleccion == "Seleccionar Cuotas":
                                 messagebox.showerror("Mala elección", "Por favor, selecciona una cantidad de cuotas válida")
                             else:
@@ -1792,39 +1781,37 @@ class App():
                                     global eleccion_periodicidad
                                     if eleccion_asignar == 1:
                                         eleccion_periodicidad = Cuotas.C1
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C1 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C1) + ".")
                                     elif eleccion_asignar == 6:
                                         eleccion_periodicidad = Cuotas.C6
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C6 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C6) + ".")
                                     elif eleccion_asignar == 12:
                                         eleccion_periodicidad = Cuotas.C12
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C12 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C12) + ".")
                                     elif eleccion_asignar == 18:
                                         eleccion_periodicidad = Cuotas.C18
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C18 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C18) + ".")
                                     elif eleccion_asignar == 24:
                                         eleccion_periodicidad = Cuotas.C24
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C24 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C24) + ".")
                                     elif eleccion_asignar == 36:
                                         eleccion_periodicidad = Cuotas.C36
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C36 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C36) + ".")
                                     else:
                                         eleccion_periodicidad = Cuotas.C48
-                                        messagebox.showinfo("Información", "Deuda establecida a: " + Cuotas.C48 + ".")
+                                        messagebox.showinfo("Información", "Deuda establecida a: " + str(Cuotas.C48) + ".")
 
-                            impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
-                            label_impresion_3 = Label(framecc, text=impresion_3)
-                            label_impresion_3.grid(row=0, column=0, columnspan=5)
+                        impresion_3 = "Por favor seleccione la nueva periodicidad de la Deuda: "
+                        label_impresion_3 = Label(framecc, text=impresion_3)
+                        label_impresion_3.grid(row=0, column=0, columnspan=5)
 
                         cuen_comb_3 = ["Seleccionar Cuotas", "1 Cuota", "6 Cuotas", "12 Cuotas", "18 Cuotas", "24 Cuotas", "36 Cuotas", "48 Cuotas"]
 
-                        eleccion_cuenta_compra = Combobox(framecc, values= cuen_comb_3)
-                        eleccion_cuenta_compra.set("Seleccionar Cuotas")
-                        eleccion_cuenta_compra.bind("<<ComboboxSelected>>", eleccion_3)
-                        eleccion_cuenta_compra.grid(row = 3, column= 2)
+                        eleccion_cperiodicidad = Combobox(framecc, values= cuen_comb_3)
+                        eleccion_cperiodicidad.set("Seleccionar Cuotas")
+                        eleccion_cperiodicidad.bind("<<ComboboxSelected>>", eleccion_3)
+                        eleccion_cperiodicidad.grid(row = 3, column= 2)
 
-                        while confirmacion_Periodicidad:
-                            vista_previa()
                 
                 def vista_previa():
                     vistaPrevia = Corriente.vistaPreviaMovimiento(cuentas_capaces_deuda[cuenta_Destino - 1], eleccion_periodicidad, deuda, tasacion_cuentas[cuenta_Destino - 1])

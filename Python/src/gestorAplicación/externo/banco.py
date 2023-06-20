@@ -16,12 +16,15 @@ class Banco():
         self._comision = comision
         self._estado = estado
         self._prestamo = prestamo
+        self._asociado = False
+        self._dic = []
 
         self._cupo_base = 1000000
         self._multiplicador = 2
         self._desc_suscripcion = 0.2
         self._desc_movimientos_porcentaje = 0.2
         self._desc_movimientos_cantidad = 5
+
 
         #Atributos de instancia
         Banco._bancosTotales.append(self)
@@ -276,8 +279,10 @@ class Banco():
     
     def retornar_descuentos_suscripcion(self):
         descuento = []
-        for i in range(1, 5):
-            descuento[i-1] = self._desc_suscripcion * i
+        i = 1
+        while i < 5:
+            descuento.append(self._desc_suscripcion * i)
+            i += 1
 
         return descuento
     
@@ -319,3 +324,15 @@ class Banco():
     @classmethod
     def setConf(cls, conf):
         cls.conf = conf
+
+    def setAsociado(self, aso):
+        self._asociado = aso
+
+    def getAsociado(self):
+        return self._asociado
+    
+    def setDic(self, dic):
+        self._dic = dic
+
+    def getDic(self):
+        return self._dic

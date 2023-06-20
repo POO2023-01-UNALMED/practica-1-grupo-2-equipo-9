@@ -150,6 +150,7 @@ class Cuenta(ABC):
 
     @staticmethod
     def dineroATenerDisponible(cuenta, divisaB):
+        from .movimientos import Movimientos
         deuda = cuenta.getCupo() - cuenta.getDisponible()
         cambio_div = Movimientos(divisa=cuenta.getDivisa(), divisaAux=divisaB, owner = cuenta.getTitular())
         existe_cambio = Movimientos.facilitar_informacion(cambio_div)

@@ -230,17 +230,17 @@ class Movimientos():
             return Movimientos.crearMovimiento(cuenta,cantidad,Categoria.PRESTAMO,datetime.now())
         
     # Funcionalidad de cambio de divisa
-    @classmethod
+    @staticmethod
     def facilitar_informacion(mov):
-        for i in range(len(mov.get_owner().get_bancos_asociados())):
-            mov.get_owner().get_bancos_asociados()[i].set_asociado(True)
+        for i in range(len(mov.getOwner().getBancosAsociados())):
+            mov.getOwner().getBancosAsociados()[i].setAsociado(True)
 
-        cadena = mov.get_divisa().name + mov.get_divisa_aux().name
+        cadena = mov.getDivisa().name + mov.getDivisaAux().name
         existe_cambio = []
-        for j in range(len(Banco.get_bancos_totales())):
-            for k in range(len(Banco.get_bancos_totales()[j].get_dic())):
-                if cadena == Banco.get_bancos_totales()[j].get_dic()[k]:
-                    existe_cambio.append(Banco.get_bancos_totales()[j])
+        for j in range(len(Banco.getBancosTotales())):
+            for k in range(len(Banco.getBancosTotales()[j].getDic())):
+                if cadena == Banco.getBancosTotales()[j].getDic()[k]:
+                    existe_cambio.append(Banco.getBancosTotales()[j])
 
         return existe_cambio
     
@@ -287,12 +287,10 @@ class Movimientos():
     @classmethod
     def setMovimientosTotales(cls, _movimientosTotales):
         cls._movimientosTotales = _movimientosTotales
-    @classmethod
-    def getOwner(cls):
-        return cls._owner
-    @classmethod
-    def setOwner(cls, owner):
-        cls._owner = owner
+    def getOwner(self):
+        return self._owner
+    def setOwner(self, owner):
+        self._owner = owner
     @classmethod
     def getNombreCategoria(cls):
         return cls._nombre_categoria
@@ -353,3 +351,15 @@ class Movimientos():
     
     def setId(self, _id):
         self._id = _id
+
+    def getDivisa(self):
+        return self._divisa
+    
+    def setDivisa(self, divisa):
+        self._divisa = divisa
+
+    def getDivisaAux(self):
+        return self._divisaAux
+    
+    def setDivisaAux(self, divisaAux):
+        self._divisaAux = divisaAux
