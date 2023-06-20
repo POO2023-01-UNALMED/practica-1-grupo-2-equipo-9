@@ -1988,7 +1988,7 @@ class App():
                         def cancelar():
                             back_menu_main()
                         cuentaSeleccionada = cuentas[cuentasCombobox.current()]
-                        label2= Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"El banco {cuentaSeleccionada.getBanco().getNombre()} le presta como maximo $ {cuentaSeleccionada.getBanco().getPrestamo()}. Ingrese la cantiadad que desea prestar")
+                        label2= Label(subframeFuncionalidad,bg="#222426",fg="white",font=fuente,text=f"El banco {cuentaSeleccionada.getBanco().getNombre()} le presta como maximo $ {cuentaSeleccionada.getBanco().getPrestamo()}. Ingrese la cantidad que desea prestar")
                         label2.place(anchor="w",rely=0.35,relx=0.02)
                         
                         subframeCantidad = Frame(subframeFuncionalidad,bg="#222426")
@@ -2044,6 +2044,18 @@ class App():
                 # Le mostramos al usuario las cuentas con las que puede hacer prestamo
                 deudaSeleccionada=None
                 # Funciones para el funcionamiento
+                def verPrestamoPagado(cadena):
+                    for widget in subframeFuncionalidad.winfo_children():
+                            widget.destroy()
+
+                    fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+                    label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="Movimiento realizado con exito")
+                    label1.place(anchor="w",rely=0.1,relx=0.4,relheight=0.1)
+                    labelCuenta= Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text=cadena)
+                    labelCuenta.place(relx=0.4,rely=0.3)
+                    button_back = Button(subframeFuncionalidad, text="Pagar otro Prestamo", font=fuente, command=pagar_prestamo, activebackground="#94B43B", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#94B43B", fg="black")
+                    button_back.place(relx=0.27,rely=0.5,relwidth=0.49)
+
                 def deudaCambiada(event):
                     deudaSeleccionada = deudas[deudasCombobox.current()]
                     def pagarPrestamo():
@@ -2084,13 +2096,11 @@ class App():
                             # Se realiza el prestamo   
                             if cantidad < deudaSeleccionada.getCantidad():
                                 prestamo = Movimientos.pagarDeuda(cls.user,deudaSeleccionada,int(cantidad))
-                                messagebox.showinfo("Mis Finanzasa",f"Has pagado ${cantidad}. \n Su deuda ahora es de ${deudaSeleccionada.getCantidad()}")
-
-                                pagar_prestamo()
+                                verPrestamoPagado(f"Has pagado ${cantidad}. \n Su deuda ahora es de ${deudaSeleccionada.getCantidad()}")
                             else:
-                                messagebox.showinfo("Mis Finanzasa",f"¡FELICIDADES!\nHas pagado por completo tu deuda")
                                 prestamo = Movimientos.pagarDeuda(cls.user,deudaSeleccionada,int(cantidad))
-                                pagar_prestamo()
+                                cadena="¡FELICIDADES!\nHas pagado por completo tu deuda"
+                                verPrestamoPagado(cadena)
 
                         elif error == "continuar":
                             pagar_prestamo()
