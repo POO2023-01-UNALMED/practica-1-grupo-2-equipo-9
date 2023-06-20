@@ -776,7 +776,7 @@ class App():
         def welcome_text_reset():
             titulo_funcionalidad.set("Bienvenido " + cls.user.getNombre() + " a Mis Finanzas")
             text_description_title.config(state="normal")
-            descripcion_funcionalidad.set("Estamos encantados de ayudarte a aprovechar al máximo todas las funcionalidades que ofrecemos. A continuación, te enumeramos las disponibles: 1. Comprobar tu suscripción. 2. Invertir tu saldo. 3. Consignar saldo a tu cuenta. 4. Transferir saldo entre tus cuentas. 5. Compra con tu cuenta corriente. 6. Pedir un prestamo 7. Pagar un prestamo. 8. Asesoramiento de inversiones. 9. Compra de cartera. 10. Cambio de divisa.")
+            descripcion_funcionalidad.set("Estamos encantados de ayudarte a aprovechar al máximo todas las funcionalidades que ofrecemos. A continuación, te enumeramos las disponibles: 1. Comprobar tu suscripción. 2. Invertir tu saldo. 3. Consignar saldo a tu cuenta. 4. Transferir saldo entre tus cuentas. 5. Compra con tu cuenta corriente. 6. Pedir un prestamo 7. Pagar un prestamo. 8. Asesoramiento de inversiones. 9. Cambio de divisa.")
             text_description_title.delete("1.0", END)
             text_description_title.insert("1.0", descripcion_funcionalidad.get())
             text_description_title.tag_configure("justifying", justify="center")
@@ -1662,23 +1662,25 @@ class App():
                 
         #novato = True
         def cambio_divisa():
+            def limpiar(frame):
+                # Eliminar todos los widgets del contenedor
+                for widget in frame.winfo_children():
+                    widget.destroy()
+            
             novato=True
             titulo_funcionalidad.set("Funcionalidad - Cambio de divisa")
             descripcion_funcionalidad.set("La funcionalidad permite hacer conversiones de dinero de una divisa a otra.")
 
             #global novato
             #Se crea el subframe donde se va a presentar la funcionalidad
-            frame = Tk.Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
+            frame = Frame(cls.subframe_main, bg="#B3B6B7", borderwidth=1, relief="solid")
             frame.place(relheight=0.75, relwidth=1, rely=0.25, relx=0)
 
             def primera_vez(novato):
                     if novato:
                         messagebox.showinfo("Explicación", "Nota: El cambio de divisa se puede hacer de dos formas: \nLa Convencional se da cuando se tiene una cantidad de dinero en una divisa y se desea convertirla a otra divisa, \ny la Exacta se da cuando se desea obtener exactamente una cifra de dinero de una divisa a partir de otra divisa.")
 
-            def limpiar(frame):
-                # Eliminar todos los widgets del contenedor
-                for widget in frame.winfo_children():
-                    widget.destroy()
+           
             def comienzo():
                 # Ocultar el botón "Comenzar"
                 comenzar.pack_forget()
@@ -1688,23 +1690,23 @@ class App():
                     #widget.destroy()
                 limpiar(frame)
 
-                etiqueta_bienvenida= Tk.Label(frame, text="Bienvenido al servicio de cambio de divisa", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                etiqueta_bienvenida= Label(frame, text="Bienvenido al servicio de cambio de divisa", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 etiqueta_bienvenida.pack(side="top")
                 primera_vez(novato)
-                etiqueta_pregunta1= Tk.Label(frame, text="¿Cuál tipo de cambio desea hacer?", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                etiqueta_pregunta1= Label(frame, text="¿Cuál tipo de cambio desea hacer?", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 etiqueta_pregunta1.pack(side="top")
                 exacta=None
-                boton_convencional= Tk.Button(frame, text="Convencional", command= lambda: exacta(False), font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_exacta=Tk.Button(frame, text="Exacta", command= lambda: exacta(True), font=font.Font(family="Times New Roman", size=16), bg="white")
-                boton_convencional.pack(side="left", anchor="ne", padx=255, pady=10)
-                boton_exacta.pack(side="right", anchor="nw", padx=280, pady=10)
+                boton_convencional= Button(frame, text="Convencional", command= lambda: exacta(False), font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_exacta= Button(frame, text="Exacta", command= lambda: exacta(True), font=font.Font(family="Times New Roman", size=16), bg="white")
+                boton_convencional.pack(side="left", anchor="ne", padx=200, pady=10)
+                boton_exacta.pack(side="right", anchor="nw", padx=200, pady=10)
 
-                #frame2 = tk.Frame(frame, width=200, height=100, bg="#B3B6B7")
+                #frame2 = Frame(frame, width=200, height=100, bg="#B3B6B7")
                 #frame2.pack()
                 #Crear un botón en el centro invisible
-                #centro = tk.Label(frame2, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                #centro = Label(frame2, font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 # Crear botón "Siguiente"
-                #Siguiente = tk.Button(frame, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=16), bg="white")
+                #Siguiente = Button(frame, text="Siguiente", command=mostrar_siguiente, font=font.Font(family="Times New Roman", size=16), bg="white")
                 #Siguiente.pack(side= "bottom", anchor="n")
 
 
@@ -1714,31 +1716,52 @@ class App():
                     #limpiar(frame)
 
              # Crear botón "Comenzar"
-            comenzar = Tk.Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
-            comenzar.place(relx=0.5, rely=0.5, anchor=Tk.CENTER)
+            comenzar = Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
+            comenzar.place(relx=0.5, rely=0.5, anchor=CENTER)
 
             def mostrar_siguiente():
                 #Aquí continúa la lógica de la funcionalidad
                 limpiar(frame)
-                divisa_origen=None
-                etiqueta_divisa_origen = Tk.Label(frame, text="¿Desde qué divisa va a hacer el cambio?")
-                etiqueta_divisa_origen.pack(side="top")
+                etiqueta_divisa_origen = Label(frame, text="¿Desde qué divisa va a hacer el cambio?", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                etiqueta_divisa_origen.pack(side="top", pady=10)
                 divisas = []
                 for divisa in Divisas.getDivisas():
                     divisas.append(str(divisa.name))
-                divisa1_combobox = Tk.ttk.Combobox(frame, values=divisas)
-                divisa1_combobox.bind("<<comboboxSelected>>", seleccionado)
-                divisa1_combobox.pack()
-                def seleccionado():
+                def me_seleccionaron(evento):
+                    global divisa_origen
                     divisa_origen=divisa1_combobox.get()
-                    divisas_aux=divisas
-                    divisas_aux.remove(str(divisa_origen))
-                    divisa2_combobox = Tk.ttk.Combobox(frame, values=[divisa.name for divisa in divisas_aux])
+                    if divisa_destino == divisa_origen:
+                        messagebox.showerror("Error en la elección", text="No es posible efectuar un cambio de divisa de una divisa a la misma")
+                def me_seleccionaron2(evento):
+                    global divisa_destino
                     divisa_destino=divisa2_combobox.get()
-                    divisa2_combobox.pack()
-                    cotizacion()
-            def cotizacion():
-                print()
+                    if divisa_destino == divisa_origen:
+                        messagebox.showerror("Error en la elección", text="No es posible efectuar un cambio de divisa de una divisa a la misma")
+                def continuare(divisa_origen, divisa_destino):
+                    #global divisa_destino
+                    #global divisa_origen
+                    if divisa_destino==None or divisa_origen==None:
+                        messagebox.showerror("información incompleta", "Por favor rellena todo lo pedido")
+                    else:
+                        cotizacion()
+                divisa_origen=None
+                divisa_destino=None
+                divisa1_combobox = Combobox(frame, values=divisas)
+                divisa1_combobox.bind("<<comboboxSelected>>", me_seleccionaron)
+                divisa2_combobox = Combobox(frame, values=divisas)
+                divisa2_combobox.bind( "<<comboboxSelected>>", me_seleccionaron2)
+                etiqueta_divisa_destino=Label(frame, text="¿A qué divisa va a hacer el cambio?", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
+                divisa1_combobox.pack(pady=15)
+                etiqueta_divisa_destino.pack(pady=10)
+                divisa2_combobox.pack(pady=15)
+                continuar=Button(frame, text="Continuar",command= lambda: continuare(divisa_origen, divisa_destino), font=font.Font(family="Times New Roman", size=16), bg="white")
+                continuar.pack(pady=10)
+            def cotizacion(divisas_aux):
+                limpiar(frame)
+                divisa2_combobox = Combobox(frame, values=[divisa.name for divisa in divisas_aux])
+                divisa_destino=divisa2_combobox.get()
+                divisa2_combobox.pack()
+            
 
         def compra_cartera(cuenta = None):
             
