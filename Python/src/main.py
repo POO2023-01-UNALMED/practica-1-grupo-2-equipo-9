@@ -1831,7 +1831,7 @@ class App():
                 eleccion_cuenta = Combobox(framecc, values= cuen_comb)
                 eleccion_cuenta.set("Seleccionar Cuenta")
                 eleccion_cuenta.bind("<<ComboboxSelected>>", eleccion)
-                eleccion_cuenta.grid(row = len(cuentasEnDeuda) + 2, column= 20, padx=10)
+                eleccion_cuenta.grid(row = len(cuentasEnDeuda) + 5, column= 0, columnspan=11, pady=15)
 
                 def eleccion_compra():
                     global cuenta_Destino
@@ -1887,7 +1887,7 @@ class App():
                     
                 def periodicidad():
                     global deuda
-                    deuda = Cuenta.dineroATenerDisponible(cuentas_capaces_deuda[cuenta_Destino - 1], cuentasEnDeuda[cuenta_Compra - 1].getDivisa())
+                    deuda = cuentasEnDeuda[cuenta_Compra - 1].getCupo() - cuentasEnDeuda[cuenta_Compra - 1].getDisponible()
 
                     #Atributo auxiliar para almacenar decision de periodicidad
 
@@ -1898,6 +1898,9 @@ class App():
                         message_info_per = "Perfecto, la deuda mantendrá un plazo de pago a " + str(cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()) + "."
                         messagebox.showinfo("Anuncio", message_info_per)
                         eleccion_periodicidad = cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()
+                        impresion_ad = "Deuda establecida a: " + str(cuentas_capaces_deuda[cuenta_Destino - 1].getPlazo_Pago()) + "."
+                        label_impresion_ad = Label(framecc, text=impresion_ad)
+                        label_impresion_ad.grid(row= 7, column=0, columnspan=11, pady=15)
                         vista_previa()
 
                     else:

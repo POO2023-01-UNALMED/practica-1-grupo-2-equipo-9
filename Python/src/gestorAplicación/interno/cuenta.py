@@ -152,6 +152,9 @@ class Cuenta(ABC):
     def dineroATenerDisponible(cuenta, divisaB):
         from .movimientos import Movimientos
         deuda = cuenta.getCupo() - cuenta.getDisponible()
+        if cuenta.getDivisa() == divisaB:
+            print(1)
+            return cuenta.getCupo() - cuenta.getDisponible()
         cambio_div = Movimientos(divisa=cuenta.getDivisa(), divisaAux=divisaB, owner = cuenta.getTitular())
         existe_cambio = Movimientos.facilitar_informacion(cambio_div)
         if len(existe_cambio) == 0:
@@ -162,7 +165,7 @@ class Cuenta(ABC):
             if conta.getDivisa() == cuenta.getDivisa():
                 cuentas_posibles.append(conta)
         
-        cadena = cuenta.getDivisa().__name__() + divisaB.__name__()
+        cadena = cuenta.getDivisa().name + divisaB.name
         imprimir = Banco.cotizar_taza_aux(cuenta.getTitular(), existe_cambio, cadena, cuentas_posibles)
         cambio_max = 0
         valor = 999999999
