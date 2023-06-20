@@ -7,8 +7,8 @@ class Estado():
         self._tasa_impuestos = tasa_impuestos
         self._divisa = divisa
 
-        self._interes_bancario_corriente = 0.0
-        self._tasa_usura = 0.0
+        self._interes_bancario_corriente = 15.28
+        self._tasa_usura = 25.7
 
         #Atributos de instancia
         self._id = len(Estado._estadosTotales)
