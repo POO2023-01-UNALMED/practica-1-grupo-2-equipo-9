@@ -5,14 +5,6 @@ from tkinter import Label
 class Tablas():
 
     @staticmethod
-    def impresionBancos(bancos):
-        pass
-
-    @staticmethod
-    def impresionEstados(estados):
-        pass
-
-    @staticmethod
     def impresionCuentasCorriente(cuentas, frame, row, column = 0):
 
         i = row
@@ -99,31 +91,3 @@ class Tablas():
 
             i += 1
             k += 1
-
-    @staticmethod
-    def impresionCuentasAhorros(cuentas):
-        pass
-
-    @staticmethod
-    def impresionCuentas(cuentas):
-        pass
-
-    @staticmethod
-    def impresionDeudas(deudas):
-        pass
-
-    @staticmethod
-    def impresionMetas(metas):
-        pass
-
-    @staticmethod
-    def impresionMovimientos(movimientos):
-        pass
-
-    @staticmethod
-    def impresionUsuarios(usuarios):
-        pass
-
-    @staticmethod
-    def impresionCotizaciones(movimientos):
-        pass

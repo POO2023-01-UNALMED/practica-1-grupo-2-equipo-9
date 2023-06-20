@@ -202,8 +202,6 @@ class Usuario():
         cuentasConDeuda = []
         for cuenta in self.getCuentasAsociadas():
             if isinstance(cuenta, Corriente):
-                print(cuenta.getDisponible())
-                print(cuenta.getCupo())
                 if cuenta.getDisponible() != cuenta.getCupo():
                     cuentasConDeuda.append(cuenta)
         

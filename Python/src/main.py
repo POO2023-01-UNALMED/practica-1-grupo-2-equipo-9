@@ -342,13 +342,16 @@ class App():
         #user1.setSuscripcion(Suscripcion.BRONCE)
         #cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
         #cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
-        #cuenta2.setDisponible(800000)
         #cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
         #cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
+        #cuenta5 = Corriente(banco = banco1, clave = 1234, nombre = "Premium", divisa = Divisas.EUR)
         #user1.asociarCuenta(cuenta1)
         #user1.asociarCuenta(cuenta2)
         #user1.asociarCuenta(cuenta3)
         #user1.asociarCuenta(cuenta4)
+        #user1.asociarCuenta(cuenta5)
+        #cuenta2.setDisponible(800000)
+        #cuenta5.setDisponible(724500)
         #userGota = Usuario(_nombre="gotaGota", _correo="gotagota@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
         #userImpuestosPortafolio = Usuario(_nombre="impuestosPortafolio", _correo="impuestosPortafolio@mail", _contrasena="1234", _suscripcion=Suscripcion.DIAMANTE)
         #cuenta7 = Ahorros(banco = banco1, clave = 1234, nombre = "Ahorros Gota", divisa = Divisas.COP, saldo = 10000000)
@@ -1861,8 +1864,6 @@ class App():
                     eleccion_cuenta_compra.grid(row = len(cuentas_capaces_deuda) + 4, column= 0, pady=10, columnspan=10)
                     
                 def periodicidad():
-                    print(cuenta_Destino)
-                    print(cuenta_Compra)
                     global deuda
                     deuda = Cuenta.dineroATenerDisponible(cuentas_capaces_deuda[cuenta_Destino - 1], cuentasEnDeuda[cuenta_Compra - 1].getDivisa())
 
@@ -1988,9 +1989,7 @@ class App():
 
                         messagebox.showinfo("Cancelación", "Movimiento cancelado.")
 
-                    return
-
-                
+                    return  
 
             else:
                 pass
