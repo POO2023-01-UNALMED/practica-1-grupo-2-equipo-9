@@ -238,6 +238,15 @@ class App():
                                    "\static\\jorge_photos", "3.png")
             jorge_4 = os.path.join(cls.current_directory +
                                    "\static\\jorge_photos", "4.png")
+            
+            daniel_1 = os.path.join(cls.current_directory +
+                                   "\static\\daniel_photos", "1.png")
+            daniel_2 = os.path.join(cls.current_directory +
+                                   "\static\\daniel_photos", "2.png")
+            daniel_3 = os.path.join(cls.current_directory +
+                                   "\static\\daniel_photos", "3.png")
+            daniel_4 = os.path.join(cls.current_directory +
+                                   "\static\\daniel_photos", "4.png")
 
             image_paths = [
                 # Pack de imagenes 1
@@ -251,10 +260,10 @@ class App():
                 david_3,
                 david_4,
                 # Pack de imagenes 3
-                route_logo,
-                route_logo,
-                route_image,
-                route_logo,
+                daniel_1,
+                daniel_2,
+                daniel_3,
+                daniel_4,
                 # Pack de imagenes 4
                 jorge_1,
                 jorge_2,
