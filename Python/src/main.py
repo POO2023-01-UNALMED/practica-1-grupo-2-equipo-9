@@ -1900,7 +1900,6 @@ class App():
             text_description_title.config(state="disabled")
     
         def pedir_prestamo():
-
             # Editar la descripcion de su funcionalidad
             titulo_funcionalidad.set("Funcionalidad - Pedir Prestamo")
             text_description_title.config(state="normal")
@@ -1925,6 +1924,19 @@ class App():
                 if isinstance(cuentas[0],Ahorros):
                     cuentaSeleccionada=None
                     # Funciones para el funcionamiento
+                    def mostrarPrestamo(prestamo):
+                        for widget in subframeFuncionalidad.winfo_children():
+                            widget.destroy()
+
+                        fuente = font.Font(size=12,weight="bold", family="Alegreya Sans")
+                        label1= Label(subframeFuncionalidad,bg="gray",borderwidth=1,relief="solid",fg="white",font=fuente,text="Su prestamo se ha creado con exito")
+                        label1.place(anchor="w",rely=0.1,relx=0.4,relheight=0.1)
+                        labelCuenta= Label(subframeFuncionalidad,bg="white",borderwidth=1,relief="solid",fg="black",font=fuente,text=prestamo)
+                        labelCuenta.place(relx=0.4,rely=0.3)
+                        button_back = Button(subframeFuncionalidad, text="Realizar otro Prestamo", font=fuente, command=pedir_prestamo, activebackground="#94B43B", activeforeground="black", cursor="cross", border=1, relief="solid", bg="#94B43B", fg="black")
+                        button_back.place(relx=0.27,rely=0.6,relwidth=0.49)
+                        
+
 
                     def cuentaCambiada(event):
                         def realizarPrestamo():
@@ -1964,9 +1976,10 @@ class App():
                             if error == None:
                                 # Se realiza el prestamo   
                                 print("todo bien")
+                                
                                 prestamo =Movimientos.realizarPrestamo(cuentaSeleccionada,cantidad)
-                                messagebox.showinfo("Mis Finanzas",f"¡Prestamo Creado!\n{prestamo}")
-                                back_menu_main()
+                                mostrarPrestamo(prestamo)
+                                # back_menu_main()
                                 
                             elif error == "continuar":
                                 pedir_prestamo()
