@@ -91,3 +91,37 @@ class Tablas():
 
             i += 1
             k += 1
+
+    @staticmethod
+    def impresionCotizaciones(movimientos, frame, row, column=0):
+        i = row
+        j = column
+        k = 1
+
+        encabezados = ["#", "CUENTA", "BANCO", "TASA", "CUOTA DE MANEJO"]
+
+        llenado = []
+        for movimiento in movimientos:
+            m_ordenada = []
+            m_ordenada.append((str(movimiento.getOrigen().getId()) + ": " + movimiento.getOrigen().getNombre()))
+            m_ordenada.append(cuenta.getBanco().getNombre())
+            m_ordenada.append(str(round(movimiento.getCantidad(), 4)))
+            m_ordenada.append(str(round(movimiento.getCuotaManejo, 4)))
+            llenado.append(m_ordenada)
+
+        for col, encabezado in enumerate(encabezados):
+            label_encabezado = Label(frame, text = encabezado, relief= "ridge", padx = 10, pady = 5)
+            label_encabezado.grid(row=i, column= j + col, sticky="nswe")
+
+        i += 1
+
+        for row, cuenta in enumerate(llenado, start=1):
+            num_el = Label(frame, text=str(k), relief= "ridge", padx = 10, pady = 5)
+            num_el.grid(row= i + row, column=j, sticky="nswe")
+
+            for col, valor in enumerate(cuenta):
+                label_cuentas = Label(frame, text=valor, relief= "ridge", padx = 10, pady = 5)
+                label_cuentas.grid(row= i + row, column= 1 + j + col, sticky="nswe")
+
+            i += 1
+            k += 1
