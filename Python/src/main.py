@@ -1727,10 +1727,10 @@ class App():
              # Crear botón "Comenzar"
             comenzar = Button(frame, text="Comenzar", command=comienzo, font=font.Font(family="Times New Roman", size=16), bg="white")
             comenzar.place(relx=0.5, rely=0.5, anchor=CENTER)
-
             def mostrar_siguiente():
                 #Aquí continúa la lógica de la funcionalidad
                 limpiar(frame)
+
                 etiqueta_divisa_origen = Label(frame, text="¿Desde qué divisa va a hacer el cambio?", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 etiqueta_divisa_origen.pack(side="top", pady=10)
                 divisas = []
@@ -1743,12 +1743,14 @@ class App():
                     global divisa_destino
                     divisa_destino=divisa2_combobox.get()
                 def continuare():
-                    if divisa_destino==None or divisa_origen==None:
+                    try:
+                        if divisa_destino == divisa_origen:
+                            messagebox.showerror("Error en la elección", "No es posible efectuar un cambio de divisa de una divisa a la misma")
+                        else:
+                            cotizacion()
+                    except Exception:
                         messagebox.showerror("información incompleta", "Por favor rellena todo lo pedido")
-                    elif divisa_destino == divisa_origen:
-                        messagebox.showerror("Error en la elección", "No es posible efectuar un cambio de divisa de una divisa a la misma")
-                    else:
-                        cotizacion()
+                        mostrar_siguiente()
                 divisa1_combobox = Combobox(frame, values=divisas)
                 divisa1_combobox.bind("<<ComboboxSelected>>", me_seleccionaron)
                 divisa2_combobox = Combobox(frame, values=divisas)
@@ -1757,13 +1759,34 @@ class App():
                 divisa1_combobox.pack(pady=15)
                 etiqueta_divisa_destino.pack(pady=10)
                 divisa2_combobox.pack(pady=15)
+                #try:
                 continuar=Button(frame, text="Continuar",command=continuare, font=font.Font(family="Times New Roman", size=16), bg="white")
+                #except Exception:
+                    #messagebox.showerror("información incompleta", "Por favor rellena todo lo pedido")
+                    #mostrar_siguiente()
                 continuar.pack(pady=10)
-            def cotizacion(divisas_aux):
+            def cotizacion():
                 limpiar(frame)
-                divisa2_combobox = Combobox(frame, values=[divisa.name for divisa in divisas_aux])
-                divisa_destino=divisa2_combobox.get()
-                divisa2_combobox.pack()
+                mov=Movimientos(cls.user, divisa_origen, divisa_destino)
+                existe_cambio=Movimientos.facilitar_informacion(mov)
+                confirmacion=messagebox.askyesno("¿Continuar con el proceso?")
+                if len(existe_cambio)==0:
+                    messagebox.showwarning("¡Oh no!","No existe banco que pueda hacer dicho cambio de divisa")
+                    limpiar(frame)
+                    welcome_text_reset()
+                else:
+                    messagebox.showinfo("¡Que bien!", f"Es posible hacer el cambio de divisa en {len(existe_cambio)} bancos. A continuación las cotizaciones posibles.")
+                ahorrosPosibles = []
+                for ahorro in Ahorros.getCuentasAhorrosTotales(cls.user):
+                    if ahorro.getDivisa() == divisa_origen:
+                        ahorrosPosibles.append(ahorro)    
+                if len(ahorrosPosibles)==0:
+                    messagebox.showwarning("¡Oh no!", f"Usted no posee ninguna cuenta con divisa {divisa_origen}")
+                    limpiar(frame)
+                    welcome_text_reset()
+                
+                
+
             
 
         def compra_cartera(cuenta = None):
