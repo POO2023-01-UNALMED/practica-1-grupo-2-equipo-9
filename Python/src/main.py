@@ -1730,31 +1730,25 @@ class App():
                 def me_seleccionaron(evento):
                     global divisa_origen
                     divisa_origen=divisa1_combobox.get()
-                    if divisa_destino == divisa_origen:
-                        messagebox.showerror("Error en la elección", text="No es posible efectuar un cambio de divisa de una divisa a la misma")
                 def me_seleccionaron2(evento):
                     global divisa_destino
                     divisa_destino=divisa2_combobox.get()
-                    if divisa_destino == divisa_origen:
-                        messagebox.showerror("Error en la elección", text="No es posible efectuar un cambio de divisa de una divisa a la misma")
-                def continuare(divisa_origen, divisa_destino):
-                    #global divisa_destino
-                    #global divisa_origen
+                def continuare():
                     if divisa_destino==None or divisa_origen==None:
                         messagebox.showerror("información incompleta", "Por favor rellena todo lo pedido")
+                    elif divisa_destino == divisa_origen:
+                        messagebox.showerror("Error en la elección", "No es posible efectuar un cambio de divisa de una divisa a la misma")
                     else:
                         cotizacion()
-                divisa_origen=None
-                divisa_destino=None
                 divisa1_combobox = Combobox(frame, values=divisas)
-                divisa1_combobox.bind("<<comboboxSelected>>", me_seleccionaron)
+                divisa1_combobox.bind("<<ComboboxSelected>>", me_seleccionaron)
                 divisa2_combobox = Combobox(frame, values=divisas)
-                divisa2_combobox.bind( "<<comboboxSelected>>", me_seleccionaron2)
+                divisa2_combobox.bind( "<<ComboboxSelected>>", me_seleccionaron2)
                 etiqueta_divisa_destino=Label(frame, text="¿A qué divisa va a hacer el cambio?", font=font.Font(family="Times New Roman", size=16), bg="#B3B6B7")
                 divisa1_combobox.pack(pady=15)
                 etiqueta_divisa_destino.pack(pady=10)
                 divisa2_combobox.pack(pady=15)
-                continuar=Button(frame, text="Continuar",command= lambda: continuare(divisa_origen, divisa_destino), font=font.Font(family="Times New Roman", size=16), bg="white")
+                continuar=Button(frame, text="Continuar",command=continuare, font=font.Font(family="Times New Roman", size=16), bg="white")
                 continuar.pack(pady=10)
             def cotizacion(divisas_aux):
                 limpiar(frame)
