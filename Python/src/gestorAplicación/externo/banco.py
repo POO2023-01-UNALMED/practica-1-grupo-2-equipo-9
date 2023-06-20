@@ -61,17 +61,29 @@ class Banco():
         imprimir = []
         for ahorro in ahorros_posibles:
             for banco in existe_cambio:
-                indice = banco.get_dic().index(cadena)
+                indice = banco.getDic().index(cadena)
                 valor = banco.get_cionario()[indice]
-                if ahorro.get_banco() == banco:
+                if ahorro.getBanco() == banco:
                     valor *= 0.98
-                if banco.is_asociado():
+                if banco.getAsociado():
                     valor *= 0.97
                 cuota_manejo = Banco.divisa_suscripcion(user)
-                cotizacion = Movimientos(banco, ahorro, valor, cuota_manejo)
+                aux = {"banco": banco, "origen": ahorro, "cantidad":valor, "cuotaManejo":cuota_manejo}
+                cotizacion = Movimientos(aux)
                 imprimir.append(cotizacion)
 
         return imprimir
+
+    @staticmethod
+    def divisa_suscripcion(user):
+        if user.getSuscripcion() == Suscripcion.BRONCE:
+            return 0.01
+        elif user.getSuscripcion() == Suscripcion.PLATA:
+            return 0.008
+        elif user.getSuscripcion() == Suscripcion.ORO:
+            return 0.006
+        else:
+            return 0.004
 
     @staticmethod
     def cotizar_taza_aux(user, existe_cambio, cadena, cuentas_posibles):
@@ -337,3 +349,9 @@ class Banco():
 
     def getDic(self):
         return self._dic
+    
+    def set_cionario(self, cionario):
+        self._cionario = cionario
+    
+    def get_cionario(self):
+        return self._cionario

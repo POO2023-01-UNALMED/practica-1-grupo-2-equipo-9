@@ -17,7 +17,7 @@ class Movimientos():
     _fecha_categoria = "01/01/2024"
     _cantidad_categoria = 0
     
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         Movimientos._movimientosTotales.append(self)
         self._id = len(Movimientos._movimientosTotales)
         self._cantidad = 0

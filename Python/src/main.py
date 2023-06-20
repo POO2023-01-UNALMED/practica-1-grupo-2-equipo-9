@@ -343,27 +343,27 @@ class App():
         Deserializador.deserializar("Movimientos")
 
         #estado1 = Estado()
-        estado2=Estado(estado="Colombia", tasa_impuestos=0.2, divisa=Divisas.COP)
-        estado3=Estado(estado="Estados Unidos", tasa_impuestos=0.23, divisa=Divisas.USD)
-        estado4=Estado(estado="España", tasa_impuestos=0.27, divisa=Divisas.EUR)
+        #estado2=Estado(estado="Colombia", tasa_impuestos=0.2, divisa=Divisas.COP)
+        #estado3=Estado(estado="Estados Unidos", tasa_impuestos=0.23, divisa=Divisas.USD)
+        #estado4=Estado(estado="España", tasa_impuestos=0.27, divisa=Divisas.EUR)
         #banco1 = Banco(estado=estado1)
         #banco2 = Banco(estado=estado1, nombre="Banco prueba 1")
-        dic1=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
-        cionario1=[4.12, 4.79, 0.34, 0.97, 0.29, 1.05]
-        dic2=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
-        cionario2=[4.13, 4.8, 0.35, 0.98, 0.3, 1.06]
-        dic3=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
-        cionario3=[4.11, 4.78, 0.33, 0.96, 0.28, 1.04]
-        banco3 = Banco(estado=estado2, nombre="Banco Colombiano", comision=0.3, prestamo=100, dic=dic1, cionario=cionario1)
-        banco4=Banco(nombre="Banco Estadounidense", comision=0.11, estado=estado3, prestamo=300, dic=dic2, cionario=cionario2 )
-        banco5=Banco(nombre="Banco Español", comision=0.07, estado=estado3, prestamo=150, dic=dic3, cionario=cionario3)
+        #dic1=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
+        #cionario1=[4.12, 4.79, 0.34, 0.97, 0.29, 1.05]
+        #dic2=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
+        #cionario2=[4.13, 4.8, 0.35, 0.98, 0.3, 1.06]
+        #dic3=["COPUSD", "COPEUR", "USDCOP", "USDEUR", "EURCOP", "EURUSD"]
+        #cionario3=[4.11, 4.78, 0.33, 0.96, 0.28, 1.04]
+        #banco3 = Banco(estado=estado2, nombre="Banco Colombiano", comision=0.3, prestamo=100, dic=dic1, cionario=cionario1)
+        #banco4=Banco(nombre="Banco Estadounidense", comision=0.11, estado=estado3, prestamo=300, dic=dic2, cionario=cionario2 )
+        #banco5=Banco(nombre="Banco Español", comision=0.07, estado=estado3, prestamo=150, dic=dic3, cionario=cionario3)
         #user1 = Usuario(_nombre="Jaime Guzman", _correo="JaimeGuzman@mail", _contrasena="12345")
         #user1.asociarBanco(banco1)
         #user1.setSuscripcion(Suscripcion.BRONCE)
         #cuenta1 = Corriente(banco = banco1, clave = 1234, nombre = "Visa", divisa = Divisas.COP)
         #cuenta2 = Corriente(banco = banco1, clave = 1234, nombre = "Master", divisa = Divisas.COP)
         #cuenta3 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba", divisa = Divisas.COP, saldo = 100)
-        #cuenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
+        #uenta4 = Ahorros(banco = banco1, clave = 1234, nombre = "Cuenta ahorros prueba 1", divisa = Divisas.COP, saldo = 500)
         #cuenta5 = Corriente(banco = banco1, clave = 1234, nombre = "Premium", divisa = Divisas.EUR)
         #user1.asociarCuenta(cuenta1)
         #user1.asociarCuenta(cuenta2)
@@ -382,12 +382,12 @@ class App():
         #user1.asociarMeta(meta1)
         #movimiento1 = Movimientos(cantidad = 0, categoria = Categoria.TRANSPORTE, fecha = datetime.now(), origen = cuenta3, destino = cuenta4 )
         #user1.asociarMovimiento(movimiento1)
-        Serializador.serializar("Usuarios")
-        Serializador.serializar("Bancos")
-        Serializador.serializar("Estados")
-        Serializador.serializar("Cuentas")
-        Serializador.serializar("Movimientos")
-        Serializador.serializar("Metas")
+        #Serializador.serializar("Usuarios")
+        #Serializador.serializar("Bancos")
+        #Serializador.serializar("Estados")
+        #Serializador.serializar("Cuentas")
+        #Serializador.serializar("Movimientos")
+        #Serializador.serializar("Metas")
 
         # Configuración básica de parámetros de la ventana de inicio
         cls.initial_window = Tk()
@@ -1787,13 +1787,14 @@ class App():
                 else:
                     messagebox.showinfo("¡Que bien!", f"Es posible hacer el cambio de divisa en {len(existe_cambio)} bancos. A continuación las cotizaciones posibles.")
                 ahorrosPosibles = []
-                for ahorro in cls.user._cuentasAhorroTotales:
-                    if ahorro.getDivisa() == divisa_origen:
+                for ahorro in cls.user._cuentasAhorroAsociadas:
+                    if ahorro.getDivisa().name == divisa_origen:
                         ahorrosPosibles.append(ahorro)    
                 if len(ahorrosPosibles)==0:
                     messagebox.showwarning("¡Oh no!", f"Usted no posee ninguna cuenta con divisa {divisa_origen}")
                     limpiar(frame)
                     welcome_text_reset()
+                    mostrar_siguiente()
                 cadena=divisa_origen+divisa_destino
                 imprimir=Banco.cotizar_taza(cls.user, existe_cambio, cadena, ahorrosPosibles)
                 Tablas.impresionCotizaciones(imprimir, frame, 2, column=0)
