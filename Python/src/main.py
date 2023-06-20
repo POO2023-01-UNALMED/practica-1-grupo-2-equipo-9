@@ -1779,10 +1779,6 @@ class App():
 
             if cuenta == None:
 
-                #Cambio prueba, a espera confirmación de la SERIALIZACIÓN
-                cls.user.getCuentasCorrienteAsociadas()[0].setDisponible(800000)
-                
-
                 #Arreglo que almacena las cuentas con deuda alguna
                 cuentasEnDeuda = cls.user.retornarDeudas()
 
