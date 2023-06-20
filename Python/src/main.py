@@ -1719,16 +1719,19 @@ class App():
                 divisas = []
                 for divisa in Divisas.getDivisas():
                     divisas.append(str(divisa.name))
-                divisa1_combobox = Tk.ttk.Combobox(frame, values=divisas, command=seleccionado)
+                divisa1_combobox = Tk.ttk.Combobox(frame, values=divisas)
+                divisa1_combobox.bind("<<comboboxSelected>>", seleccionado)
+                divisa1_combobox.pack()
                 def seleccionado():
                     divisa_origen=divisa1_combobox.get()
-                divisa1_combobox.pack()
-                divisas_aux=divisas
-                divisas_aux.remove(str(divisa_origen))
-
-                divisa2_combobox = Tk.ttk.Combobox(frame, values=[divisa.name for divisa in divisas_aux])
-                divisa_destino=divisa2_combobox.get()
-                divisa2_combobox.pack()
+                    divisas_aux=divisas
+                    divisas_aux.remove(str(divisa_origen))
+                    divisa2_combobox = Tk.ttk.Combobox(frame, values=[divisa.name for divisa in divisas_aux])
+                    divisa_destino=divisa2_combobox.get()
+                    divisa2_combobox.pack()
+                    cotizacion()
+            def cotizacion():
+                print()
 
         def compra_cartera(cuenta = None):
             
